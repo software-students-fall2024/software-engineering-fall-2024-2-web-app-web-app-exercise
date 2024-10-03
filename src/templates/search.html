@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedal Search</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #e0e0e0;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .search-query {
+            flex-grow: 1;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .filter-sort {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background-color: #ffffff;
+        }
+
+        .filter-sort button {
+            padding: 10px;
+            border: 1px solid #333;
+            background-color: #ffffff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .pedal-list {
+            padding: 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .pedal-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+            background-color: #ffffff;
+        }
+
+        .pedal-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .pedal-info {
+            flex-grow: 1;
+        }
+
+        .pedal-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .pedal-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 5px 0 0;
+        }
+    </style>
+    <script>
+        function goBack() {
+            window.location.href = "create-board.html"; 
+        }
+
+        function selectPedal() {
+            
+            window.location.href = "create-board.html";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="top-bar">
+        <span class="back-arrow" onclick="goBack()">&#x2190;</span>
+        <span class="search-query">Example Search Query...</span>
+    </div>
+
+    <div class="filter-sort">
+        <button>Filters</button>
+        <button>Sort By</button>
+    </div>
+
+    <ul class="pedal-list">
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+        
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+        <li class="pedal-item" onclick="selectPedal()">
+            <img src="https://via.placeholder.com/50" alt="Pedal Image">
+            <div class="pedal-info">
+                <p class="pedal-name">Pedal Name</p>
+                <p class="pedal-description">Lorem ipsum dolor sin amet</p>
+            </div>
+        </li>
+    </ul>
+</body>
+
+</html>
