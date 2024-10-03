@@ -1,4 +1,3 @@
-# test_dotenv.py
 from dotenv import load_dotenv
 import os
 
