@@ -1,0 +1,5 @@
+@app.route('/delete/<id>')
+    def delete(id):
+        transactions.delete_one({"_id": ObjectId(id)})  # Delete the transaction by its ID
+        return redirect(url_for('transactions'))
+        
