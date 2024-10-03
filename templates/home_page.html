@@ -4,16 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Tracker - Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Linking external stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Transactions</a>
+                <div class="dropdown-content">
+                    <a href="/add">Add Transaction</a>
+                    <a href="/edit">Edit Transaction</a>
+                    <a href="/search">Search Transactions</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
     <div class="container">
         <h1>Personal Budget Tracker</h1>
         <div class="summary">
             <h2>Financial Overview</h2>
             <p>Total Income: ${ total_income }</p>
             <p>Total Expenses: ${ total_expenses }</p>
-            <p>Balance: ${balance }</p>
+            <p>Balance: ${ balance }</p>
         </div>
         <div class="actions">
             <a href="/add" class="button">Add Transaction</a>
