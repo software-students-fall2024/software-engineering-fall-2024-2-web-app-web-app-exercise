@@ -1,5 +1,22 @@
-@app.route('/delete/<id>')
-    def delete(id):
-        transactions.delete_one({"_id": ObjectId(id)})  # Delete the transaction by its ID
-        return redirect(url_for('transactions'))
-        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Deletion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Confirm Deletion</h1>
+        <p>Are you sure you want to delete the transaction?</p>
+        <div class="actions">
+            <form action="/delete/{{ transaction._id }}" method="POST">
+                <button type="submit" class="button">Yes, Delete</button>
+            </form>
+            <a href="/transactions" class="button cancel">Cancel</a>
+        </div>
+    </div>
+</body>
+</html>
+
