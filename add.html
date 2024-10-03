@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Transaction</h1>
+        <form method="POST">
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" id="amount" required>
+
+            <label for="category">Category:</label>
+            <input type="text" name="category" id="category" required>
+
+            <label for="description">Description:</label>
+            <input type="text" name="description" id="description">
+
+            <label for="type">Type:</label>
+            <select name="type" id="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date" required>
+
+            <button type="submit" class="button">Add Transaction</button>
+        </form>
+    </div>
+</body>
+</html>
