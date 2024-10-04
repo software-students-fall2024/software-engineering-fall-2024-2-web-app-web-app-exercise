@@ -1,75 +1,83 @@
-html, body {
-    height: 100%; /* Make sure the body takes the full height */
+/* Reset margins and padding */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
 
+/* Body will hold the container and center it */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+}
+
+/* Center container that holds all content */
+.container {
+    width: 80%; /* Adjust width to your liking */
+    text-align: center;
+}
+
+/* Navigation styles */
 nav {
     background-color: #333;
     padding: 10px;
 }
 
-.menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.nav {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.nav-links {
     display: flex;
     justify-content: center; /* Center the menu horizontally */
-    align-items: center;
+    list-style: none;
 }
 
-.menu li {
-    margin: 0 15px; /* Add some spacing between menu items */
+.nav-links li {
+    margin: 0 20px;
 }
 
-.menu li a {
+.nav-links li a {
     text-decoration: none;
     color: white;
     background-color: #555;
     padding: 10px 20px;
     border-radius: 5px;
-    display: block;
     transition: background-color 0.3s ease;
 }
 
-.menu li a:hover {
+.nav-links li a:hover {
     background-color: #777;
 }
 
+/* Summary and budget styles */
 .summary {
     display: flex;
-    justify-content: center;  
-    align-items: center;    
-    flex-direction: column; 
-    height: calc(100vh - 50px);
+    flex-direction: column;
+    align-items: center;
 }
 
-.container {
-    display: flex;
-    justify-content: center;  
-    align-items: center;    
-    flex-direction: column; 
-    height: calc(100vh - 30px);
-}
-
-h1 {
-    margin-bottom: 20px;
-}
-
-h2, h3 {
-    margin: 10px 0;
-}
-
-h3 {
-    font-size: 3em; 
+.budget h3 {
+    font-size: 3rem;
 }
 
 p {
-    font-size: 1.2em;
+    font-size: 1.2rem;
+    margin-top: 10px;
 }
 
+/* Additional styling for buttons if necessary */
 .button {
     display: inline-block;
     text-decoration: none;
