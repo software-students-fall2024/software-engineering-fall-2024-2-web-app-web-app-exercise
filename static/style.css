@@ -6,6 +6,7 @@
 }
 
 html, body {
+    width: 80%;
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -14,6 +15,7 @@ html, body {
 
 /* Body will hold the container and center it */
 body {
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,8 +63,9 @@ nav {
     background-color: #777;
 }
 
-/* Summary and budget styles */
+/* Summary  */
 .summary {
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
