@@ -1,7 +1,8 @@
 from dotenv import load_dotenv
-import os
+from flask import Flask, render_template, request, redirect, abort, url_for, make_response
+
 
 load_dotenv()
 
-secret_key = os.getenv('SECRET_KEY')
-print(f"SECRET_KEY: {secret_key}")
+app = Flask(__name__)
+
