@@ -41,6 +41,8 @@ def search_exercise():
     
         result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
         return jsonify(result)
+    
+    return jsonify([]) # empty if no query
 
 # endpoint for exercise by category (on click categories side-bar)
 @app.route("/api/exercises/category/<category>", methods=["GET"])
