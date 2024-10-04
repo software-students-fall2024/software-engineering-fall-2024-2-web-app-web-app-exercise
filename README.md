@@ -8,7 +8,9 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+For this project, we have decided to only create the student part for the app. Students will be the only user type.
+1. As a student, I want to be able to enroll in courses so that I can meet my academic requirements.
+2. As a student, I want to drop classes so that I can adjust my course selections based on my academic needs and workload.
 
 ## Steps necessary to run the software
 
