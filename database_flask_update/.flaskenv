@@ -1,0 +1,2 @@
+FLASK_APP=gym
+FLASK_ENV=development
