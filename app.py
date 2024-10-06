@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -6,16 +7,24 @@ from flask import Flask, jsonify, render_template, request, redirect, abort, url
 
 """
 Deafult root of the flask: templates
+
+HTTP status code reference: https://docs.python.org/3/library/http.html
 """
 load_dotenv()
 
 app = Flask(__name__)
+
+class Nutrition:
+    pass
 
 # mongodb connection - exercise_data
 mongo_uri = os.getenv("MONGO_URI")
 client = MongoClient(mongo_uri)
 db = client["exercise_db"]
 exercise_collection = db["exercise"]
+
+# mongodb connection
+user_service = User(db)
 
 # index means home
 @app.route("/")
@@ -96,13 +105,60 @@ def get_exercise_details(exercise_id):
     except Exception as e:
         # catch whatever errors here, status is 500 - internal server error
         return jsonify({"error": str(e)}), 500
+
+# user register
+@app.route("/api/user/register", methods=["POST"])
+def register():
+    data = request.json
+    user_name = data.get("user_name")
+    password = data.get("password")
+    if not user_name or not password:
+        return jsonify({"error": "Username and password are required"}), 400
     
-class Nutrition:
-    pass
+    response, status_code = user_service.register_user(user_name, password)
+    return jsonify(response), status_code
 
-class User:
-    pass
+# user login
+@app.route("/api/user/login", methods=["POST"])
+def login():
+    data = request.json
+    user_name = data.get("user_name")
+    password = data.get("password")
+    if not user_name or not password:
+        return jsonify({"error": "Username and password are required"}), 400
+    
+    response, status_code = user_service.login_user(user_name, password)
+    return jsonify(response), status_code
+ 
+# update user height
+@app.route("/api/user/<user_name>/update_height", methods=["PUT"])
+def update_height(user_name):
+    data = request.json
+    height = data.get("height")
+    if height is None:
+        return jsonify({"error": "Height is required"}), 400
 
+    user_service.update_user_height(user_name, height)
+    return jsonify({"message": "User height updated successfully"}), 200
+
+# update user data (weight, calorie intake)
+@app.route("/api/user/<user_name>/update_data", methods=["PUT"])
+def update_uer_data(user_name):
+    data = request.json
+    date = data.get("date")
+    weight = data.get("weight")
+    calorie_intake = data.get("calorie_intake")
+    if not data:
+        return jsonify({"error": "Date is required"}), 400
+    
+    user_service.update_user_data(user_name, date, weight, calorie_intake)
+    return jsonify({"message": "User data updated successfully"}), 200
+
+# update user data
+@app.route()
+def update_user_data():
+    return
 
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -2,7 +2,7 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
-## Project structure (10/4/2024)
+### Project structure (10/4/2024)
 
 ```text
 .
@@ -37,6 +37,32 @@ A little exercise to build a web application following an agile development proc
 │   └── workout_instruction.html
 └── utils
     └── exercise_db.py
+```
+
+### Idea of User structure
+```json
+[
+    {
+        "user_name": ""
+        , "password": ""
+        , "height": ""
+        , "weekly_values":[ # i am planning to track multiple weeks (such as previous 2 weeks), and let user decide whether to delete it
+            {
+                "weekly_weight":[]
+                , "weekly_calorie":[]
+                , "weekly_bmi":[]
+            },
+            {
+                ...
+                ...
+            }
+        ]
+    },
+    {
+        ...
+        ...
+    }
+]
 ```
 
 ## Product vision statement
