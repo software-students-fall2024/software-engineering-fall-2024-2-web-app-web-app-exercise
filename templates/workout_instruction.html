@@ -1,6 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Instruction</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">🏋️‍♂️</div>
+
+    </header>
     <div class="container">
-        <p>This is the workout instruction page</p>
+        <nav class="workout-nav">
+            <ul>
+            
+              <li onclick="showInstructions('workout1')">Workout 1</li>
+              <li onclick="showInstructions('workout2')">Workout 2</li>
+              <li onclick="showInstructions('workout3')">Workout 3</li>
+              <li onclick="showInstructions('workout4')">Workout 4</li>
+              <li onclick="showInstructions('workout5')">Workout 5</li>
+              <li onclick="showInstructions('workout6')">Workout 6</li>
+              <li onclick="showInstructions('workout7')">Workout 7</li>
+              <li onclick="showInstructions('workout8')">Workout 8</li>
+              <li onclick="showInstructions('workout9')">Workout 9</li>
+              <li onclick="showInstructions('workout10')">Workout 10</li>
+              <li onclick="showInstructions('workout11')">Workout 11</li>
+              <li onclick="showInstructions('workout12')">Workout 12</li>
+              <li onclick="showInstructions('workout13')">Workout 13</li>
+              <li onclick="showInstructions('workout14')">Workout 14</li>
+              <li onclick="showInstructions('workout15')">Workout 15</li>
+              <li onclick="showInstructions('workout16')">Workout 16</li>
+              <li onclick="showInstructions('workout17')">Workout 17</li>
+              <li onclick="showInstructions('workout18')">Workout 18</li>
+              <li onclick="showInstructions('workout19')">Workout 19</li>
+              <li onclick="showInstructions('workout20')">Workout 20</li>
+             
+         
+              
+                
+            
+            </ul>
+          </nav>
+          <section class="workout-instructions">
+            <div id="workout1" class="instruction-group">
+              <button>Instruction 1</button>
+              <button>Instruction 2</button>
+              <button>Instruction 3</button>
+            </div>
+      
+            <div id="workout2" class="instruction-group hidden">
+              <button>Instruction A</button>
+              <button>Instruction B</button>
+              <button>Instruction C</button>
+            </div>
+      
+            <div id="workout3" class="instruction-group hidden">
+              <button>Step 1</button>
+              <button>Step 2</button>
+              <button>Step 3</button>
+            </div>
+      
+            <!-- More sub-categories for each workout -->
+          </section>
+      
     </div>
+    <footer>
+        <div class="footer-box"><a href="index.html"></a>Home</a></div>
+        <div class="footer-box"><a href="instruction.html">Workout Instructions</a></div>
+        <div class="footer-box"><a href="report.html"></a>My Weekly Report</a></div>
+    </footer>
+    <script src="script.js"></script>
+</body>
 </html>
