@@ -1,4 +1,5 @@
 import os
+from User import User
 from datetime import datetime
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -143,7 +144,7 @@ def update_height(user_name):
 
 # update user data (weight, calorie intake)
 @app.route("/api/user/<user_name>/update_data", methods=["PUT"])
-def update_uer_data(user_name):
+def update_user_data(user_name):
     data = request.json
     date = data.get("date")
     weight = data.get("weight")
@@ -153,11 +154,6 @@ def update_uer_data(user_name):
     
     user_service.update_user_data(user_name, date, weight, calorie_intake)
     return jsonify({"message": "User data updated successfully"}), 200
-
-# update user data
-@app.route()
-def update_user_data():
-    return
 
 if __name__ == "__main__":
     app.run(debug=True)
