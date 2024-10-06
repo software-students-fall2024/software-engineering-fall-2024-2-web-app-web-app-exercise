@@ -28,7 +28,9 @@
                     <td>{{ transaction.type }}</td>
                     <td>
                         <a href="/edit/{{ transaction._id }}" class="button">Edit</a>
-                        <a href="/delete/{{ transaction._id }}" class="button">Delete</a>
+                        <form action="/delete/{{ transaction._id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="button">Delete</button>
+                        </form>  
                     </td>
                 </tr>
                 {% endfor %}
