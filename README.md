@@ -4,11 +4,12 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Our app will aid in time management by providing a platform to organize and priortize tasks, increasing productivity.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+1. As a student, I want to view all upcoming assignment deadlines so that I can prioritize my schoolwork.
+2. As a procrastinator, I want to receive frequent reminders so that I avoid missing deadlines.
 
 ## Steps necessary to run the software
 
