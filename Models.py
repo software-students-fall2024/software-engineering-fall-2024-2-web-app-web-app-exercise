@@ -91,10 +91,10 @@ class Nutrition:
             return {"error": "Unable to fetch nutrition info"}, 500
         
         for n in nutrition_info:
-            self.__daily_calorie += n.get('calories', 0)
-            self.__daily_protein += n.get('protein_g', 0)
-            self.__daily_carbs += n.get('carbohydrates_total_g', 0)
-            self.__daily_fats += n.get('fat_total_g', 0)
+            self.__daily_calorie += n.get("calories", 0)
+            self.__daily_protein += n.get("protein_g", 0)
+            self.__daily_carbs += n.get("carbohydrates_total_g", 0)
+            self.__daily_fats += n.get("fat_total_g", 0)
         
         # update the user's weekly calorie data in the databse
         current_day_index = datetime.now().weekday()
