@@ -7,9 +7,10 @@ A little exercise to build a web application following an agile development proc
 ```text
 .
 ├── LICENSE
+├── Models.py
 ├── README.md
 ├── app.py
-├── database_flask_update (delete this one)
+├── database_flask_update (delete this one later)
 │   └── gym
 │       ├── __init__.py
 │       ├── extensions.py
@@ -20,13 +21,12 @@ A little exercise to build a web application following an agile development proc
 │       │       └── flag.gif
 │       └── templates
 │           └── index.html
-├── exercise_data.ipynb (delete this later)
 ├── exercise_data.json
+├── food_data.txt
 ├── images
 │   ├── ankle_circles.gif
 │   ├── ...
 ├── instructions.md
-├── nutrition_data.ipynb (also delete this later)
 ├── requirements.txt
 ├── static
 │   └── css
@@ -34,9 +34,13 @@ A little exercise to build a web application following an agile development proc
 ├── templates
 │   ├── index.html
 │   ├── my_weekly_report.html
-│   └── workout_instruction.html
+│   ├── script.js
+│   ├── style.css
+│   ├── workout_instruction.html
+│   └── workout_plan.html
 └── utils
-    └── exercise_db.py
+    ├── exercise_db.py
+    └── food_db.py
 ```
 
 ### Idea of User structure
