@@ -57,11 +57,7 @@ A little exercise to build a web application following an agile development proc
                 ...
             }
         ]
-        , "workout_palns": [
-            [],
-            [],
-            []
-        ]
+        , "workout_palns": []
     },
     {
         ...
@@ -69,12 +65,17 @@ A little exercise to build a web application following an agile development proc
     }
 ]
 ```
-
+### Idea of Food Nutrition structure
 ```json
 [
     {
         "food_name": "Bread"
+        , "category": ""
         , "query_name": "bread" + variable
+    },
+    {
+        ...
+        ...
     }
 ]
 ```

@@ -1,9 +1,10 @@
 import os
-from User import User
 from datetime import datetime
 from dotenv import load_dotenv
 from pymongo import MongoClient
+from Models import User, Nutrition
 from bson.objectid import ObjectId
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response
 
 """
@@ -15,16 +16,16 @@ load_dotenv()
 
 app = Flask(__name__)
 
-class Nutrition:
-    pass
-
 # mongodb connection - exercise_data
 mongo_uri = os.getenv("MONGO_URI")
 client = MongoClient(mongo_uri)
 db = client["exercise_db"]
 exercise_collection = db["exercise"]
 
-# mongodb connection
+# mongodb connection - usr
+user_service = User(db)
+
+# mongodb connection - food
 user_service = User(db)
 
 # index means home
@@ -155,6 +156,31 @@ def update_user_data(user_name):
     user_service.update_user_data(user_name, date, weight, calorie_intake)
     return jsonify({"message": "User data updated successfully"}), 200
 
+# endpoint to add food intake for a user
+@app.route("/api/user/<user_name>/add_food", methods=["POST"])
+def add_food(user_name):
+    data = request.json
+    food_name = data.get("food_name")
+    amount = data.get("amount")
+
+    if not food_name or not amount:
+        return jsonify({"error": "Food name and amount are required"}), 400
+
+    response, status_code = nutrition_service.add_food_intake(user_name, food_name, amount)
+    return jsonify(response), status_code
+
+# APScheduler to reset daily nutrition at midnight
+def reset_daily_nuntrition():
+    nutrition_service.reset_daily_nutrition()
+
+scheduler = BackgroundScheduler()
+# Schedule the reset job to run at midnight every day
+scheduler.add_job(reset_daily_nutrition_job, 'cron', hour=0, minute=0)
+scheduler.start()
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    try:
+        app.run(debug=True, use_reloader=False)  # set use_reloader=False to avoid starting the scheduler multiple times
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
 

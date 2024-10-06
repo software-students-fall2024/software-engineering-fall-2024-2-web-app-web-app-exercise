@@ -1,0 +1,152 @@
+Apple, fruit, apple
+Banana, fruit, banana
+Orange, fruit, orange
+Grapes, fruit, grapes
+Strawberries, fruit, strawberries
+Blueberries, fruit, blueberries
+Watermelon, fruit, watermelon
+Pineapple, fruit, pineapple
+Mango, fruit, mango
+Pear, fruit, pear
+Peach, fruit, peach
+Tomato, vegetable, tomato
+Cucumber, vegetable, cucumber
+Carrot, vegetable, carrot
+Broccoli, vegetable, broccoli
+Spinach, vegetable, spinach
+Bell Pepper, vegetable, bell pepper
+Onion, vegetable, onion
+Garlic, vegetable, garlic
+Potato, vegetable, potato
+Sweet Potato, vegetable, sweet potato
+Green Beans, vegetable, green beans
+Mushroom, vegetable, mushroom
+Lettuce, vegetable, lettuce
+Egg, dairy, egg
+Milk, dairy, milk
+Cheese, dairy, cheese
+Yogurt, dairy, yogurt
+Butter, dairy, butter
+Bread, grain, bread
+Pasta, grain, pasta
+Rice, grain, rice
+Oats, grain, oats
+Quinoa, grain, quinoa
+Chicken Breast, meat, chicken breast
+Ground Beef, meat, ground beef
+Pork Chop, meat, pork chop
+Bacon, meat, bacon
+Sausage, meat, sausage
+Steak, meat, steak
+Salmon, fish, salmon
+Tuna, fish, tuna
+Cod, fish, cod
+Shrimp, seafood, shrimp
+Lobster, seafood, lobster
+Crab, seafood, crab
+Tofu, protein, tofu
+Chickpeas, legumes, chickpeas
+Lentils, legumes, lentils
+Black Beans, legumes, black beans
+Peanuts, nuts, peanuts
+Almonds, nuts, almonds
+Cashews, nuts, cashews
+Walnuts, nuts, walnuts
+Hazelnuts, nuts, hazelnuts
+Pecan, nuts, pecan
+Peanut Butter, spread, peanut butter
+Jam, spread, jam
+Honey, sweetener, honey
+Maple Syrup, sweetener, maple syrup
+Sugar, sweetener, sugar
+Salt, seasoning, salt
+Pepper, seasoning, pepper
+Cinnamon, seasoning, cinnamon
+Curry Powder, seasoning, curry powder
+Soy Sauce, condiment, soy sauce
+Ketchup, condiment, ketchup
+Mayonnaise, condiment, mayonnaise
+Mustard, condiment, mustard
+Butter Chicken, Indian, butter chicken
+Tacos, Mexican, tacos
+Spaghetti Bolognese, Italian, spaghetti bolognese
+Lasagna, Italian, lasagna
+Sushi, Japanese, sushi
+Fried Rice, Chinese, fried rice
+Burrito, Mexican, burrito
+Pizza, Italian, pizza
+Hamburger, American, hamburger
+Hotdog, American, hotdog
+French Fries, American, french fries
+Mashed Potatoes, American, mashed potatoes
+Chicken Alfredo, Italian, chicken alfredo
+Grilled Cheese, American, grilled cheese
+Caesar Salad, American, caesar salad
+Greek Salad, Greek, greek salad
+Vegetable Soup, International, vegetable soup
+Chicken Noodle Soup, American, chicken noodle soup
+Omelette, French, omelette
+Scrambled Eggs, American, scrambled eggs
+Pancakes, American, pancakes
+Waffles, Belgian, waffles
+Muffin, American, muffin
+Bagel, American, bagel
+Smoothie, drink, smoothie
+Orange Juice, drink, orange juice
+Coffee, drink, coffee
+Tea, drink, tea
+Water, drink, water
+Beef Stroganoff, Russian, beef stroganoff
+Chicken Curry, Indian, chicken curry
+Beef Tacos, Mexican, beef tacos
+Grilled Salmon, International, grilled salmon
+Chicken Caesar Wrap, American, chicken caesar wrap
+Vegetable Stir Fry, Chinese, vegetable stir fry
+BLT Sandwich, American, blt sandwich
+Turkey and Cheese Panini, Italian, turkey and cheese panini
+Falafel Wrap, Middle Eastern, falafel wrap
+Stuffed Bell Peppers, Mediterranean, stuffed bell peppers
+Beef Chili, American, beef chili
+Baked Ziti, Italian, baked ziti
+Shepherd's Pie, British, shepherd's pie
+Beef and Broccoli, Chinese, beef and broccoli
+Chicken Fajitas, Mexican, chicken fajitas
+Shrimp Scampi, Italian, shrimp scampi
+Pasta Carbonara, Italian, pasta carbonara
+Chicken Parmesan, Italian, chicken parmesan
+Teriyaki Chicken Bowl, Japanese, teriyaki chicken bowl
+Beef Bourguignon, French, beef bourguignon
+Steamed Mussels, French, steamed mussels
+Grilled Lamb Chops, Mediterranean, grilled lamb chops
+Vegetable Lasagna, Italian, vegetable lasagna
+Lamb Biryani, Indian, lamb biryani
+Beef Stew, American, beef stew
+Chicken and Dumplings, Southern American, chicken and dumplings
+Paella, Spanish, paella
+Ratatouille, French, ratatouille
+Peking Duck, Chinese, peking duck
+Kimchi, Korean, kimchi
+Bibimbap, Korean, bibimbap
+Shakshuka, Middle Eastern, shakshuka
+Goulash, Hungarian, goulash
+Pierogi, Polish, pierogi
+Moussaka, Greek, moussaka
+Pho, Vietnamese, pho
+Banh Mi, Vietnamese, banh mi
+Pad Thai, Thai, pad thai
+Tom Yum Soup, Thai, tom yum soup
+Baklava, Turkish, baklava
+Gyro, Greek, gyro
+Bratwurst, German, bratwurst
+Ceviche, Peruvian, ceviche
+Fajitas, Mexican, fajitas
+Jerk Chicken, Jamaican, jerk chicken
+Poutine, Canadian, poutine
+Fish and Chips, British, fish and chips
+Chicken Shawarma, Middle Eastern, chicken shawarma
+Empanadas, Argentine, empanadas
+Croissant, French, croissant
+Arepas, Venezuelan, arepas
+Chimichurri Steak, Argentine, chimichurri steak
+Tempura, Japanese, tempura
+Paneer Tikka, Indian, paneer tikka
