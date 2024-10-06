@@ -26,7 +26,7 @@ A little exercise to build a web application following an agile development proc
 │   ├── ankle_circles.gif
 │   ├── ...
 ├── instructions.md
-├── nutrition_data.ipynb
+├── nutrition_data.ipynb (also delete this later)
 ├── requirements.txt
 ├── static
 │   └── css
@@ -57,6 +57,11 @@ A little exercise to build a web application following an agile development proc
                 ...
             }
         ]
+        , "workout_palns": [
+            [],
+            [],
+            []
+        ]
     },
     {
         ...
@@ -65,13 +70,37 @@ A little exercise to build a web application following an agile development proc
 ]
 ```
 
+```json
+[
+    {
+        "food_name": "Bread"
+        , "query_name": "bread" + variable
+    }
+]
+```
+
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+The vision behind our application is simple: to simplify the journey towards personal health and fitness. So our vision statement can be:
+
+> Our app empowers users to achieve their fitness goals by providing a platform that not only guides through workout plans but also tracks dietary calorie intake.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+___Workout Tracking___
+
+- As a `user`, I want to browse exercises by muscle group so that I can focus on specific areas during my workout.
+- As a `user`, I want to see animated GIFs and instructions for each exercise so that I can perform them correctly.
+
+___Dietary Calorie Tracking___
+
+- As a `user`, I want to search for food items and see their nutritional information so that I can track my calorie intake accurately.
+- As a `user`, I want to add my daily meals to the app so that I can see how many calories I have consumed throughout the day.
+
+___Personal Progress___
+
+- As a `user`, I want to input my daily weight and height so that I can track my BMI and monitor my progress.
+- As a `user`, I want to see a weekly report of my calorie intake and body weight so that I can evaluate my health progress over time.
 
 ## Steps necessary to run the software
 
