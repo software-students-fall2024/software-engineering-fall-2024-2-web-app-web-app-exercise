@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+A mobile-friendly web application that helps users manage their budget by tracking, searching, and organizing their spending through transaction records and balance views.
 
 ## User stories
 
