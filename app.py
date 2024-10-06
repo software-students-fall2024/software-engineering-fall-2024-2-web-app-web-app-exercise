@@ -83,20 +83,26 @@ def get_exercise_details(exercise_id):
             return jsonify({"error": "Exercise not found"}), 404
         
         result = {
-            "id": str(exercise["_id"]),
-            "name": exercise["name"],
-            # "categories": exercise.get("categories", ""),
-            # "equipment": exercise.get("equipment", ""),
-            "gif_path": exercise.get("gif_path", ""),
-            "target_muscle": exercise.get("target_muscle", ""),
-            "secondaryMuscles": exercise.get("secondaryMuscles", []),
-            "instructions": exercise.get("instructions", []),
+            "id": str(exercise["_id"])
+            , "name": exercise["name"]
+            # , "categories": exercise.get("categories", "")
+            # , "equipment": exercise.get("equipment", "")
+            , "gif_path": exercise.get("gif_path", "")
+            , "target_muscle": exercise.get("target_muscle", "")
+            , "secondaryMuscles": exercise.get("secondaryMuscles", [])
+            , "instructions": exercise.get("instructions", [])
         }
         return jsonify(result)
     except Exception as e:
         # catch whatever errors here, status is 500 - internal server error
         return jsonify({"error": str(e)}), 500
     
+class Nutrition:
+    pass
+
+class User:
+    pass
+
 
 if __name__ == "__main__":
     app.run(debug=True)
