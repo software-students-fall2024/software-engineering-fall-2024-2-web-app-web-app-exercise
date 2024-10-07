@@ -1,9 +1,5 @@
 
 from flask import Flask, render_template
-from flask_pymongo import PyMongo
-
-app.config["MONGO_URI"] = "mongodb://localhost:27017/your_database_name"
-mongo = PyMongo(app)
 
 app = Flask(__name__)
 
@@ -11,23 +7,23 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/')
+@app.route('/add')
 def add():
     return render_template('add.html')
 
-@app.route('/')
+@app.route('/delete')
 def delete():
     return render_template('delete.html')
 
-@app.route('/')
+@app.route('/edit')
 def edit():
     return render_template('edit.html')
 
-@app.route('/')
+@app.route('/search')
 def search():
     return render_template('search.html')
 
-@app.route('/')
+@app.route('/view')
 def view():
     return render_template('view.html')
 

@@ -10,12 +10,12 @@
             <header>
                 <h1>Search Recipes</h1>
                 <nav>
-                    <a href="index.html">Home</a>&nbsp;&nbsp;&nbsp;
-                    <a href="view.html">View All Recipes</a>&nbsp;&nbsp;&nbsp;
-                    <a href="search.html"><b>Search Recipes</b></a>&nbsp;&nbsp;&nbsp;
-                    <a href="add.html">Add a Recipe</a>&nbsp;&nbsp;&nbsp;
-                    <a href="edit.html">Edit a Recipe</a>&nbsp;&nbsp;&nbsp;
-                    <a href="delete.html">Delete a Recipe</a>
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('view') }}">View All Recipes</a>
+                    <a href="{{ url_for('search') }}">Search Recipes</a>
+                    <a href="{{ url_for('add') }}">Add a Recipe</a>
+                    <a href="{{ url_for('edit') }}">Edit a Recipe</a>
+                    <a href="{{ url_for('delete') }}">Delete a Recipe</a>
                 </nav>
             </header>
         </div>
