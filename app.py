@@ -17,3 +17,21 @@ db = MongoClient(connstr)
 @app.route("/")
 def index():
     return render_template('index.html')
+
+#commenting code for now before we fill in functionalities
+
+# @app.route("/add_task")
+# def add_task():
+#     return render_template("add_task.html")
+#
+# @app.route("/edit_task")
+# def edit_task():
+#     return render_template("edit_task.html")
+#
+# @app.route("/list_tasks")
+# def list_tasks():
+#     return render_template("list_tasks.html")
+#
+# @app.route("/search_task")
+# def search_task():
+#     return render_template("search_task.html")
