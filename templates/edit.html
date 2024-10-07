@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Transaction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Edit Transaction</h1>
+
         <form method="POST">
             <label for="amount">Amount:</label>
             <input type="number" name="amount" id="amount" value="{{ transaction.amount }}" required>
@@ -17,7 +18,7 @@
             <input type="text" name="category" id="category" value="{{ transaction.category }}" required>
 
             <label for="description">Description:</label>
-            <input type="text" name="description" id="description" value="{{ transaction.description }}">
+            <input type="text" name="description" id="description" value="{{ transaction.description }}" required>
 
             <label for="type">Type:</label>
             <select name="type" id="type">
@@ -26,7 +27,7 @@
             </select>
 
             <label for="date">Date:</label>
-            <input type="date" name="date" id="date" value="{{ transaction.date }}" required>
+            <input type="date" name="date" id="date" value="{{ transaction.date.strftime('%Y-%m-%d') }}" required>
 
             <button type="submit" class="button">Update Transaction</button>
         </form>

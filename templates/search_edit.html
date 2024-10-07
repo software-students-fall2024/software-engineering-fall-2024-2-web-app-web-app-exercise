@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search & Edit Transaction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Transaction to Edit</h1>
+
+        <!-- Dropdown Form to select a transaction to edit -->
+        <form method="POST">
+            <label for="transaction_id">Choose a transaction:</label>
+            <select name="transaction_id" id="transaction_id" required>
+                <option value="">-- Select a Transaction --</option>
+                {% for transaction in transactions %}
+                    <option value="{{ transaction._id }}">{{ transaction.description }} - {{ transaction.category }} - ${{ transaction.amount }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="button">Edit Transaction</button>
+        </form>
+    </div>
+</body>
+</html>
