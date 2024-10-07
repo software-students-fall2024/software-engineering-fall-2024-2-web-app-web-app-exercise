@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -26,6 +26,11 @@ def search():
 @app.route('/view')
 def view():
     return render_template('view.html')
+
+@app.route('/addData', methods=['POST'])
+def addData():
+    ...
+    return (request.form['projectFilePath'])
 
 if __name__ == '__main__':
     app.run(debug=True)

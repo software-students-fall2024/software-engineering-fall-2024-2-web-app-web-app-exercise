@@ -1,3 +1,16 @@
 body {
-    background-color: rgb(238, 238, 255);
-}  
+    background-color: rgb(254, 255, 249);
+}
+
+nav {
+    font-size: 2.5vw;
+    text-align: center;
+}
+
+h1 {
+    font-size: 5vw;
+}
+
+#mainArea {
+    margin-top: 20px;
+}
