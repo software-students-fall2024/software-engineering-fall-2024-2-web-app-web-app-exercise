@@ -5,3 +5,6 @@ routes=Blueprint('routes',__name__)
 def not_found(e):
     return render_template('404.html')
 from . import login
+from . import home
+from . import search
+from . import signup
