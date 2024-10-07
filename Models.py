@@ -13,7 +13,7 @@ class User:
         new_user = {
             "user_name": user_name
             , "password": password
-            , "height": None,
+            , "height": None
             , "weely_values": [
                 {
                     "weekly_weight": [None] * 7,
@@ -125,11 +125,11 @@ class Nutrition:
         
         # update the user's weekly calorie data in the databse
         current_day_index = datetime.now().weekday()
-        self.__collection.update_one{
+        self.__collection.update_one(
             {"user_name": user_name}
             , {"$set": {f"weekly_values.0.weekly_calorie.{current_day_index}": self.__daily_calorie}}
             , upsert=True
-        }
+        )
 
         return {"message": "Food intake updated successfully"}, 200
     
