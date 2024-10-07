@@ -1,3 +1,4 @@
+import os
 import requests
 from datetime import datetime
 
@@ -20,10 +21,11 @@ class User:
                     "weekly_bmi": [None] * 7                    
                 }
             ]
+            , "daily_workout_plan": []
         }
 
-    self.__collection.insert_one(new_user)
-    return {"message": "User registered successfully"}, 201
+        self.__collection.insert_one(new_user)
+        return {"message": "User registered successfully"}, 201
 
     def login_user(self, user_name, password):
         user = self.__collection.find_one({"user_name": user_name, "password": password})
@@ -57,6 +59,30 @@ class User:
             , upsert=True
         )
 
+    # only accept metrics units (cm, m, g, kg etc)
+    def cacluate_bmi(self, user_name, weight):
+        user = self.find_user(user_name)
+        height = user.get("height")
+
+        if height and weight:
+            height_m = height / 100
+            bmi = round(weight / (height_m ** 2), 2)
+            current_day_index = datetime.now().weekday()
+            self.__collection.update_one(
+                {"user_name": user_name}
+                , {"$set": {f"weekly_values.0.weekly_bmi.{current_day_index}": bmi}}
+            )
+            return bmi
+        return None
+
+    def reset_body_values(self):
+        current_day_index = datetime.now().weekday()
+        update_fields = {
+            f"weekly_values.0.weekly_calorie.{current_day_index}": None,
+            f"weekly_values.0.weekly_weight.{current_day_index}": None,
+            f"weekly_values.0.weekly_bmi.{current_day_index}": None
+        }
+        self.__collection.update_many({}, {"$set": update_fields})
 
 
 class Nutrition:
@@ -69,8 +95,9 @@ class Nutrition:
         self.__daily_fats = 0
     
     def fetch_nutrition_info(self, query):
+        api_key = os.getenv("API_NINJAS_KEY")
         api_url = f"https://api.api-ninjas.com/v1/nutrition?query={query}"
-        headers = {'X-Api-Key': '3/8OcZmswlIcnvOJgeDsig==wroCzK0qvIl8W7XM'}
+        headers = {'X-Api-Key': api_key}
         response = requests.get(api_url, headers=headers)
 
         if response.status_code == 200:
@@ -100,7 +127,7 @@ class Nutrition:
         current_day_index = datetime.now().weekday()
         self.__collection.update_one{
             {"user_name": user_name}
-            , {"$set": {f"weekly_values.0.weekly_calorie.{current_day_index}"}: self.__daily_calorie}
+            , {"$set": {f"weekly_values.0.weekly_calorie.{current_day_index}": self.__daily_calorie}}
             , upsert=True
         }
 

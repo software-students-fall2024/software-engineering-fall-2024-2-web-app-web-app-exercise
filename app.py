@@ -11,6 +11,7 @@ from flask import Flask, jsonify, render_template, request, redirect, abort, url
 Deafult root of the flask: templates
 
 HTTP status code reference: https://docs.python.org/3/library/http.html
+APScheduler reference: https://apscheduler.readthedocs.io/en/3.x/modules/schedulers/background.html#module-apscheduler.schedulers.background
 """
 load_dotenv()
 
@@ -26,7 +27,7 @@ exercise_collection = db["exercise"]
 user_service = User(db)
 
 # mongodb connection - food
-user_service = User(db)
+nutrition_service = User(db)
 
 # index means home
 @app.route("/")
@@ -170,12 +171,17 @@ def add_food(user_name):
     return jsonify(response), status_code
 
 # APScheduler to reset daily nutrition at midnight
-def reset_daily_nuntrition():
+def reset_daily_nutrition():
     nutrition_service.reset_daily_nutrition()
+
+# APScheduler to reset daily values (weight and bmi)
+def reset_daily_values():
+    nutrition_service.reset_daily_nutrition()
+    user_service.reset_body_values()
 
 scheduler = BackgroundScheduler()
 # Schedule the reset job to run at midnight every day
-scheduler.add_job(reset_daily_nutrition_job, 'cron', hour=0, minute=0)
+scheduler.add_job(reset_daily_values, 'cron', hour=0, minute=0)
 scheduler.start()
 
 if __name__ == "__main__":
