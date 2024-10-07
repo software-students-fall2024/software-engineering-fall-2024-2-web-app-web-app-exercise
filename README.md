@@ -8,7 +8,7 @@ Share and discover favorite food recipes with your community.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[User Stories](https://github.com/software-students-fall2024/2-web-app-jeh/issues)
 
 ## Steps necessary to run the software
 
