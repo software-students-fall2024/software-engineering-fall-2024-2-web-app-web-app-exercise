@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-Our app will aid in time management by providing a platform to organize and priortize tasks, increasing productivity.
+Our app will aid in time management by providing a platform to organize and prioritize tasks, increasing productivity.
 
 ## User stories
 
