@@ -6,7 +6,7 @@ body {
   background-color: #ffffff;
   display: flex;             
   align-items: center;        
-  height: 150vh; 
+  height: 180vh; 
   flex-direction: column;
   margin: 0;             
 } 
@@ -111,6 +111,7 @@ body {
     margin: 30px;
     margin-top: 20px;
     margin-left: -10px;
+    color: black;
 }
 h2 {
     font-weight: normal; 
@@ -197,6 +198,13 @@ span.unit {
     align-items: center;
     margin-bottom: 10px;
 }
+.form-column {
+    display: flex;
+
+    align-items: center;
+    margin-bottom: 10px;
+    margin-left: -230px;
+}
 
 .equals {
     margin-left: 145px; 
@@ -272,51 +280,18 @@ span.unit {
 
 
     <div class="textbox-container">
-        <a href="foodInstruction.html" class="textbox">Protein</a>
-        <a href="foodInstruction.html" class="textbox1">Carbs</a>
-        <a href="foodInstruction.html" class="textbox2">Fats</a>
-        <a href="foodInstruction.html" class="textbox3">Water</a>
+        <a class="textbox">Protein</a>
+        <a class="textbox1">Carbs</a>
+        <a class="textbox2">Fats</a>
+        <a class="textbox3">Water</a>   
     </div>
-    <div class="text">
-        <div><strong>breakfast</strong></div>
-        <div><strong>lunch</strong></div>
-        <div><strong>dinner</strong></div>
-        <div><strong>snacks</strong></div>
-        <div><strong>water</strong></div>
-    </div>
+    
+
+    <a href="foodInstruction.html" class="text" style="display: block; text-align: right; margin-right: 20px;"><strong>Enter your Intake Food</strong></a>
     
 
 </div>
 <script>
-    // update days so that it will not only stay on Monday
-    function updateDay() {
-        const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-        const now = new Date().getTime();
-
-        let startDate = localStorage.getItem('startDate');
-
-        if (!startDate) {
-            startDate = now;
-            localStorage.setItem('startDate', startDate);
-        }
-
-        const daysPassed = Math.floor((now - startDate) / 86400000);
-
-        const dayIndex = daysPassed % 7;
-
-        const currentDay = daysOfWeek[dayIndex];
-        document.getElementById('current-day').innerHTML = "Date: " + currentDay;
-    }
-    // update Calories so that it will not only stay 0 calories
-    function updateCalories() {
-
-        let totalCalories = localStorage.getItem('totalCalories');
-        if (!totalCalories) {
-            totalCalories = 0;
-        }
-        document.getElementById('calories-value').textContent = totalCalories;
-    }
     function calculateBMI() {
         const weight = document.getElementById("weight").value;
         const heightFeet = document.getElementById("height-feet").value;
@@ -328,13 +303,18 @@ span.unit {
             document.getElementById("bmi").value = bmi.toFixed(2);
         }
     }
-    document.getElementById("weight").addEventListener("input", calculateBMI);
-    document.getElementById("height-feet").addEventListener("input", calculateBMI);
-    document.getElementById("height-inches").addEventListener("input", calculateBMI);
+    function validateInputs() {
+        const weight = document.getElementById("weight").value;
+        const heightFeet = document.getElementById("height-feet").value;
+        const heightInches = document.getElementById("height-inches").value;
 
-
-    updateDay();
-    updateCalories();
+        if (weight < 0 || heightFeet < 0 || heightInches < 0) {
+            alert("Please enter valid positive values for weight and height.");
+            return;
+        }
+    
+        calculateBMI();
+    }
 </script>
 <div class="main1-container">
     <h3>My Body Value</h3>
@@ -342,17 +322,18 @@ span.unit {
 <div class="container1">
     <div class="form-row">
         <label for="weight">Enter your Weight:</label>
-        <input type="number" id="weight" placeholder="lbs">
+        <input type="number" id="weight" placeholder="lbs" min="0">
         <span class="unit">lbs</span>
     </div>
-
+    
     <div class="form-row">
         <label for="height-feet">Enter your Height:</label>
-        <input type="number" id="height-feet" placeholder="ft">
+        <input type="number" id="height-feet" placeholder="ft" min="0">
         <span class="unit">ft</span>
-        <input type="number" id="height-inches" placeholder="in">
+        <input type="number" id="height-inches" placeholder="in" min="0">
         <span class="unit">in</span>
     </div>
+    
 
     <div class="form-row">
         <span class="equals">=</span>
@@ -361,7 +342,7 @@ span.unit {
     </div>
 
     <div class="bmi-output">
-        <button onclick="calculateBMI()">Calculate BMI</button>
+        <button onclick="validateInputs()">Calculate BMI</button>
     </div>
 
 </div>
