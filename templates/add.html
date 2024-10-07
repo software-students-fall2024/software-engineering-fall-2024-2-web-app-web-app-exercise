@@ -21,7 +21,7 @@
 
             <section id="mainArea">
                 <form action="{{ url_for('addData') }}" method="post">
-                    <table width="800px" border="1">
+                    <table width="100%" border="1">
                         <tbody>
                             <tr><td colspan="2">Enter all applicable information</td></tr>
                             <tr>
@@ -46,11 +46,11 @@
                             </tr>
                             <tr>
                                 <td>Ingredients:</td>
-                                <td><textarea name="ingredients" cols="50" rows="10"></textarea></td>
+                                <td><textarea class="textarea" name="ingredients" cols="50" rows="10"></textarea></td>
                             </tr>
                             <tr>
                                 <td>Instructions:</td>
-                                <td><textarea name="instructions" cols="50" rows="10"></textarea></td>
+                                <td><textarea class="textarea" name="instructions" cols="50" rows="10"></textarea></td>
                             </tr>
                             <tr>
                                 <td colspan="2">

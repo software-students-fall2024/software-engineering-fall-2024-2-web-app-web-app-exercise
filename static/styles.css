@@ -14,3 +14,7 @@ h1 {
 #mainArea {
     margin-top: 20px;
 }
+
+.textarea {
+    width: 99%;
+}

@@ -36,7 +36,8 @@ def addData():
     time = request.form['time']
     ingredients = request.form['ingredients']
     instructions = request.form['instructions']
-    return f"Recipe '{recipeTitle}' submitted successfully!", 200
+    return request.form
+    #return f"Recipe '{recipeTitle}' submitted successfully!", 200
 
 @app.route('/deleteData', methods=['POST'])
 def deleteData():
