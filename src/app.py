@@ -1,18 +1,38 @@
 import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for
-import pymongo
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 
-from database_initialisation import *
+
+def db_connect():
+
+    load_dotenv()
+    username = os.getenv('MONGO_USERNAME')
+    password = os.getenv('MONGO_PASSWORD')
+    db_name = os.getenv('MONGO_DBNAME')
+
+    uri = f"mongodb+srv://{username}:{password}@cluster0.lrz8n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+    # Create a new client and connect to the server
+    client = MongoClient(uri, server_api=ServerApi('1'))
+
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+
+    db = client[db_name]
+    return db
 
 
 def create_app():
     app = Flask(__name__)
 
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
-    db = client['db']
-    database_add(db, "pedals", "data/pedal_data.json")
+    db = db_connect()
 
     @app.route("/")
     def login():
