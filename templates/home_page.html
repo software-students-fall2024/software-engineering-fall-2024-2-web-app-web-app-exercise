@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+body {
+  background-color: #ffffff;
+  display: flex;             
+  align-items: center;        
+  height: 150vh; 
+  flex-direction: column;
+  margin: 0;             
+} 
+.container {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    background-color: #b9b2b28c;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.container1 {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    background-color: #b9b2b28c;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+
+}
+.container3 {
+    max-width: 600px;
+    width: 600px;
+    height: auto;
+    background-color: #b9b2b28c;
+    padding: 30px;
+    margin-bottom:30px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+
+}
+.unit {
+    margin-left: -10px; 
+    margin-right: 15px;
+    font-weight: bold;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.textbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    width: 80px;
+    height: 65px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: -20px;
+    
+}
+.textbox1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    width: 80px;
+    height: 65px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: -20px;
+}
+.textbox2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    width: 80px;
+    height: 65px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: -20px;
+}
+.textbox3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    width: 80px;
+    height: 65px;
+    border-radius: 8px;
+    margin: 20px;
+    margin-left: -20px;
+}
+.textbox-container {
+    display: flex; 
+    justify-content: space-between; 
+    margin-top: 20px;
+    margin: 20px;
+}
+.text {
+    display: flex; 
+    justify-content: space-between; 
+    margin: 30px;
+    margin-top: 20px;
+    margin-left: -10px;
+}
+h2 {
+    font-weight: normal; 
+    margin-left: -430px;
+    font-size: 24px; 
+}
+h1 {
+    font-weight: bold;
+    margin-bottom: -25px;
+    margin-left: -190px;
+}
+p#current-day {
+  margin-left: -410px;
+  font-size: 40px; 
+  margin-bottom: 60px;
+}
+.main-container {
+  text-align: center;
+  margin-bottom: -30px;
+  font-size: 24px; 
+}
+.main1-container {
+  text-align: center;
+  margin-bottom: -30px;
+  margin-left: 30px;
+  font-size: 24px; 
+}
+.main2-container {
+
+  margin-bottom: -10px;
+  font-size: 24px; 
+  margin-left: -300px;
+}
+h3 {
+    font-weight: normal; 
+    margin-left: -430px;
+    font-size: 40px; 
+}
+h4 {
+    font-weight: normal; 
+    margin-left: -25px;
+    font-size: 40px; 
+    margin-top: -16px;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    min-width: 150px; 
+    text-align: left;
+
+}
+
+input[type="number"] {
+    width: 50px;
+    padding: 10px;
+    text-align: left;
+    border-radius: 8px;
+    border: 4px solid #ccc;
+    margin-right: -4px;
+}
+
+.bmi-output {
+    margin-top: 15px;
+}
+
+.bmi-result {
+    font-size: 20px;
+    font-weight: bold;
+}
+span.unit {
+    margin-left: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+.form-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.equals {
+    margin-left: 145px; 
+    margin-right: 5px;
+    font-weight: bold;
+}
+.add-workout-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 30px;
+}
+
+.add-workout-button {
+    display: flex;
+    align-items: center;
+    background-color: #d3d3d3;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    border: 1px solid #000;
+    transition: background-color 0.3s ease;
+}
+
+.add-workout-button:hover {
+    background-color: #b0b0b0;
+}
+
+.add-workout-button img {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #6b63638c;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+.footer a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.footer a:hover {
+    background-color: #ccc;
+}
+</style>
+</head>
+<body>
+    <header>
+        <div class="logo">🏋️‍♂️</div>
+
+    </header>
+    <div class="main-container">
+        <h1>Daily Calories Record</h1>
+        <p id="current-day">Date: Monday</p>
+    </div>
+    <div class="container">
+    <h2 id="calories-record">Daily value: <span id="calories-value">0</span> /--cal</h2>
+
+
+
+    <div class="textbox-container">
+        <a href="foodInstruction.html" class="textbox">Protein</a>
+        <a href="foodInstruction.html" class="textbox1">Carbs</a>
+        <a href="foodInstruction.html" class="textbox2">Fats</a>
+        <a href="foodInstruction.html" class="textbox3">Water</a>
+    </div>
+    <div class="text">
+        <div><strong>breakfast</strong></div>
+        <div><strong>lunch</strong></div>
+        <div><strong>dinner</strong></div>
+        <div><strong>snacks</strong></div>
+        <div><strong>water</strong></div>
+    </div>
+    
+
+</div>
+<script>
+    // update days so that it will not only stay on Monday
+    function updateDay() {
+        const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+        const now = new Date().getTime();
+
+        let startDate = localStorage.getItem('startDate');
+
+        if (!startDate) {
+            startDate = now;
+            localStorage.setItem('startDate', startDate);
+        }
+
+        const daysPassed = Math.floor((now - startDate) / 86400000);
+
+        const dayIndex = daysPassed % 7;
+
+        const currentDay = daysOfWeek[dayIndex];
+        document.getElementById('current-day').innerHTML = "Date: " + currentDay;
+    }
+    // update Calories so that it will not only stay 0 calories
+    function updateCalories() {
+
+        let totalCalories = localStorage.getItem('totalCalories');
+        if (!totalCalories) {
+            totalCalories = 0;
+        }
+        document.getElementById('calories-value').textContent = totalCalories;
+    }
+    function calculateBMI() {
+        const weight = document.getElementById("weight").value;
+        const heightFeet = document.getElementById("height-feet").value;
+        const heightInches = document.getElementById("height-inches").value;
+
+        if (weight && heightFeet && heightInches) {
+            const heightInInches = (parseFloat(heightFeet) * 12) + parseFloat(heightInches);
+            const bmi = (parseFloat(weight) / (heightInInches * heightInInches)) * 703;
+            document.getElementById("bmi").value = bmi.toFixed(2);
+        }
+    }
+    document.getElementById("weight").addEventListener("input", calculateBMI);
+    document.getElementById("height-feet").addEventListener("input", calculateBMI);
+    document.getElementById("height-inches").addEventListener("input", calculateBMI);
+
+
+    updateDay();
+    updateCalories();
+</script>
+<div class="main1-container">
+    <h3>My Body Value</h3>
+</div>
+<div class="container1">
+    <div class="form-row">
+        <label for="weight">Enter your Weight:</label>
+        <input type="number" id="weight" placeholder="lbs">
+        <span class="unit">lbs</span>
+    </div>
+
+    <div class="form-row">
+        <label for="height-feet">Enter your Height:</label>
+        <input type="number" id="height-feet" placeholder="ft">
+        <span class="unit">ft</span>
+        <input type="number" id="height-inches" placeholder="in">
+        <span class="unit">in</span>
+    </div>
+
+    <div class="form-row">
+        <span class="equals">=</span>
+        <input type="number" id="bmi" placeholder="BMI" readonly>
+        <span class="unit">BMI</span>
+    </div>
+
+    <div class="bmi-output">
+        <button onclick="calculateBMI()">Calculate BMI</button>
+    </div>
+
+</div>
+<div class="add-workout-container">
+    <div class="main2-container">
+    <h4>My Workout Plan:</h4>
+</div>
+</div>
+    <div class="container3">
+    <a href="workout_instruction.html" class="add-workout-button">
+        <img src="C:\Users\Owner\Downloads\add-button-with-plus-symbol-in-a-black-circle.png" alt="Add Icon">
+        add workout
+    </a>
+    </div>
+</div>
+<div class="footer">
+    <a href="index.html">Home</a>
+    <a href="workout_instruction.html">Workout instructions</a>
+    <a href="my_weekly_report.html">My Weekly Report</a>
+</div>
+</body>
+</html>
