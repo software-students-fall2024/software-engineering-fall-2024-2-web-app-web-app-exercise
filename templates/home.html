@@ -9,7 +9,6 @@
 </head>
 <body>
     <nav id="desktop-nav">
-        <div class="nav">Menu</div>
         <div>
             <ul class="nav-links">
                 <li><a href="/transactions">Transactions</a></li>
@@ -24,9 +23,11 @@
         <h1>Personal Budget Tracker</h1>
         <h2>Financial Overview</h2>
         <div class="summary">
-            <div class="budget"><h3>Balance: $60500505</h3></div>
-            <p>Spending Budget for the Month: ${ budget }</p>
-            <p>Spending Budget Left for the Month: ${ budget_left }</p>
+            <div class="budget">
+                <h3>Balance: ${{ budget }}</h3>
+            </div>
+            <p>Spending Budget for the Month: ${{ budget }}</p>
+            <p>Spending Budget Left for the Month: ${{ budget_left }}</p>
         </div>
     </div>
 </body>

@@ -10,17 +10,18 @@ app = Flask(__name__)
 client = MongoClient('mongodb://localhost:27017/')
 db = client['bankingSystem']
 transactions_collection = db['transactions']
- 
-
-
 
 # homepage router
 @app.route('/')
 def home():
-    
-    budget = 5000   
-    budget_left = 3000  
+    budget_data = db['budgets'].find_one()
+    budget = budget_data.get('total_budget', 0) if budget_data else 0
+    budget_left = budget_data.get('budget_left', 0) if budget_data else 0
+
     return render_template('home.html', budget=budget, budget_left=budget_left)
+    # budget = 5000   
+    # budget_left = 3000  
+    # return render_template('home.html', budget=budget, budget_left=budget_left)
 
 # show transaction page
 @app.route('/transactions')

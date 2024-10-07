@@ -6,48 +6,47 @@
 }
 
 html, body {
-    width: 80%;
+    width: 100%;
     height: 100%;
-    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
 
-/* Body will hold the container and center it */
+/* Body styling to handle the top navigation */
 body {
-    width: 80%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start; /* Push content down */
+    align-items: center; /* Center everything horizontally */
     text-align: center;
     height: 100vh;
 }
 
 /* Center container that holds all content */
 .container {
-    width: 80%; /* Adjust width to your liking */
+    width: 80%; 
     text-align: center;
+    margin-top: 150px; /* Adjust this margin to fit below the menu */
 }
 
-/* Navigation styles */
+/* Adjust Navigation styles to position at the top */
 nav {
     background-color: #333;
+    width: 100%; /* Take full width */
     padding: 10px;
-}
-
-.nav {
-    font-size: 1.5rem;
-    color: white;
+    position: fixed; /* Fixes the navigation to the top */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it's always on top */
+    display: flex;
+    justify-content: center; /* Center the menu items */
 }
 
 .nav-links {
     display: flex;
     justify-content: center; /* Center the menu horizontally */
     list-style: none;
-}
-
-.nav-links li {
-    margin: 0 20px;
+    gap: 20px; /* Add space between items to prevent overlap */
 }
 
 .nav-links li a {
@@ -63,16 +62,22 @@ nav {
     background-color: #777;
 }
 
-/* Summary  */
+/* Summary styling for balance */
 .summary {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.budget h3 {
-    font-size: 3rem;
+.budget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    gap: 10px; /* Add spacing between balance label and number */
+    margin-top: 20px; /* Add some spacing below the header */
 }
 
 p {
