@@ -29,8 +29,21 @@ def view():
 
 @app.route('/addData', methods=['POST'])
 def addData():
-    ...
-    return (request.form['projectFilePath'])
+    username = request.form['username']
+    password = request.form['password']
+    recipeTitle = request.form['recipeTitle']
+    servings = request.form['servings']
+    time = request.form['time']
+    ingredients = request.form['ingredients']
+    instructions = request.form['instructions']
+    return f"Recipe '{recipeTitle}' submitted successfully!", 200
+
+@app.route('/deleteData', methods=['POST'])
+def deleteData():
+    username = request.form['username']
+    password = request.form['password']
+    recipeTitle = request.form['recipeTitle']
+    return f"Recipe '{recipeTitle}' deleted successfully!", 200
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,7 +10,7 @@
             <header>
                 <h1>Add a Recipe</h1>
                 <nav>
-                    <a href="{{ url_for('index') }}"><Home></a>&nbsp;&nbsp;
+                    <a href="{{ url_for('index') }}">Home</a>&nbsp;&nbsp;
                     <a href="{{ url_for('view') }}">View All Recipes</a>&nbsp;&nbsp;
                     <a href="{{ url_for('search') }}">Search Recipes</a>&nbsp;&nbsp;
                     <a href="{{ url_for('add') }}"><b>Add a Recipe</b></a>&nbsp;&nbsp;
@@ -23,10 +23,14 @@
                 <form action="{{ url_for('addData') }}" method="post">
                     <table width="800px" border="1">
                         <tbody>
-                            <tr><td colspan="2">Please enter the following information in all applicable fields</td></tr>
+                            <tr><td colspan="2">Enter all applicable information</td></tr>
                             <tr>
                                 <td>Username:</td>
                                 <td><input type="text" placehodler="Enter your name" name="username"></td>
+                            </tr>
+                            <tr>
+                                <td>Password:</td>
+                                <td><input type="text" placehodler="Enter your password" name="password"></td>
                             </tr>
                             <tr>
                                 <td>Recipe title:</td>

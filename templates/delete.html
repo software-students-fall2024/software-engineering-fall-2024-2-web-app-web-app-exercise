@@ -18,6 +18,34 @@
                     <a href="{{ url_for('delete') }}"><b>Delete a Recipe</b></a>
                 </nav>
             </header>
+
+            <section id="mainArea">
+                <form action="{{ url_for('deleteData') }}" method="post">
+                    <table width="800px" border="1">
+                        <tbody>
+                            <tr><td colspan="2">Enter all applicable information</td></tr>
+                            <tr>
+                                <td>Username:</td>
+                                <td><input type="text" placehodler="Enter your name" name="username"></td>
+                            </tr>
+                            <tr>
+                                <td>Password:</td>
+                                <td><input type="text" placehodler="Enter your password" name="password"></td>
+                            </tr>
+                            <tr>
+                                <td>Recipe title:</td>
+                                <td><input type="text" placehodler="Enter recipe title" name="recipeTitle"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="reset" value="CLEAR">
+                                    <input type="submit" value="DELETE">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </section>
         </div>
     </body>
 </html>
