@@ -23,29 +23,29 @@
                 <form action="{{ url_for('addData') }}" method="post" onsubmit="submitForm(event)">
                     <table width="100%" border="1">
                         <tbody>
-                            <tr><td colspan="2">Enter all applicable information</td></tr>
+                            <tr><td colspan="2"><b>Enter all applicable information</b></td></tr>
                             <tr>
-                                <td>Author Name:</td>
-                                <td><input type="text" placehodler="Enter your name" name="authorName"></td>
+                                <td>Author Name</td>
+                                <td><input class="textarea" type="text" placehodler="Enter your name" name="authorName"></td>
                             </tr>
                             <tr>
-                                <td>Recipe title:</td>
-                                <td><input type="text" placehodler="Enter recipe title" name="recipeTitle"></td>
+                                <td>Recipe Title</td>
+                                <td><input class="textarea" type="text" placehodler="Enter recipe title" name="recipeTitle"></td>
                             </tr>
                             <tr>
-                                <td># of servings:</td>
-                                <td><input type="text" placehodler="Enter # of servings" name="servings"></td>
+                                <td># of Servings</td>
+                                <td><input class="textarea" type="text" placehodler="Enter # of servings" name="servings"></td>
                             </tr>
                             <tr>
-                                <td>Time:</td>
-                                <td><input type="text" placehodler="Enter estimated time" name="time"></td>
+                                <td>Cook Time</td>
+                                <td><input class="textarea" type="text" placehodler="Enter estimated time" name="time"></td>
                             </tr>
                             <tr>
-                                <td>Ingredients:</td>
+                                <td>Ingredients</td>
                                 <td><textarea class="textarea" name="ingredients" cols="50" rows="10"></textarea></td>
                             </tr>
                             <tr>
-                                <td>Instructions:</td>
+                                <td>Instructions</td>
                                 <td><textarea class="textarea" name="instructions" cols="50" rows="10"></textarea></td>
                             </tr>
                             <tr>
