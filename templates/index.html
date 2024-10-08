@@ -352,10 +352,10 @@ span.unit {
 </div>
 </div>
     <div class="container3">
-    <a href="workout_instruction.html" class="add-workout-button">
-        <img src="C:\Users\Owner\Downloads\add-button-with-plus-symbol-in-a-black-circle.png" alt="Add Icon">
-        add workout
-    </a>
+        <a href="{{ url_for('show_workout_instruction') }}" class="add-workout-button">
+            <img src="{{ url_for('static', filename='add-button.png') }}" alt="Add Icon">
+            add workout
+        </a>
     </div>
 </div>
 <div class="footer">
