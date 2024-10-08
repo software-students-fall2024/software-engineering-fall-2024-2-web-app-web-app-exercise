@@ -359,9 +359,9 @@ span.unit {
     </div>
 </div>
 <div class="footer">
-    <a href="index.html">Home</a>
-    <a href="workout_instruction.html">Workout instructions</a>
-    <a href="my_weekly_report.html">My Weekly Report</a>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a>
+    <a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a>
 </div>
 </body>
 </html>
