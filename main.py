@@ -52,18 +52,24 @@ def addData():
         'instructions': request.form['instructions']
     }
 
+    #if we want to write to json
+    #with open('recipes.json', 'a') as file:
+        #json.dump(recipeData, file)
+        #file.write("\n")
+
     #Add recipe data to db
     db.RecipeCluster.insert_one(recipeData)
 
-    #For testing/debugging purposes
-    return f"Recipe '{request.form['recipeTitle']}' submitted successfully!", 200
+    #For testing/debugging purposes (change to a popup on screen)
+    #return f"Recipe '{request.form['recipeTitle']}' submitted successfully!", 200
 
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
 def deleteData():
     authorName = request.form['authorName']
     recipeTitle = request.form['recipeTitle']
-    deleteRecipe = db.RecipeCluster.delete_one({'username': authorName, 'recipeTitle': recipeTitle})
+    deleteRecipe = db.RecipeCluster.delete_one({'authorName': authorName, 'recipeTitle': recipeTitle})
+    
     if deleteRecipe.deleted_count==1: #if deleted ouput result to user
         return f"Recipe '{recipeTitle}' by '{authorName}' deleted successfully!", 200
     else:
