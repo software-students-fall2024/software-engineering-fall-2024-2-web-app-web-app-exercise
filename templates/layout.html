@@ -7,12 +7,17 @@
 </head>
  
 <body>
-    
-{% block body %}
+    <div class="navBar">
+        <div>
+        <h1>NYU Maintenance Request Portal</h1>
+        </div>
+        <a href="/login">Login</a>
+        <a href="/list">Requests</a>
+    </div>
 
+{% block body %}
+<!-- Content here is overwritten by child(currently index.html)  -->
 {% endblock %}
- 
- 
 </body>
  
 </html>

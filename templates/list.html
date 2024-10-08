@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+<ul>
+{% block body %}
+    {% for report in reports %}
+    <li>{{report}}</li>
+    {% endfor %}
+{% endblock %}
+</ul>
