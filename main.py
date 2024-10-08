@@ -43,25 +43,23 @@ def view():
 @app.route('/addData', methods=['POST'])
 def addData():
     recipeData = {
-        'username': request.form['username'],
-        'password': request.form['password'],
+        'username': request.form['authorName'],
         'recipeTitle': request.form['recipeTitle'],
         'servings': request.form['servings'],
         'time': request.form['time'],
         'ingredients': request.form['ingredients'],
         'instructions': request.form['instructions']
     }
-
+    #add recipe data to db
     db.RecipeCluster.insert_one(recipeData)
+
     #For testing/debugging purposes
-    return request.form
-    #return f"Recipe '{recipeTitle}' submitted successfully!", 200
+    return f"Recipe '{recipeTitle}' submitted successfully!", 200
 
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
 def deleteData():
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form['authorName']
     recipeTitle = request.form['recipeTitle']
     return f"Recipe '{recipeTitle}' deleted successfully!", 200
 
