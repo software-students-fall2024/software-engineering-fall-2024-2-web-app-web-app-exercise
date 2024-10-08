@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from Models import User, Nutrition
 from bson.objectid import ObjectId
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response
+from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory
 
 """
 Deafult root of the flask: templates
@@ -29,14 +29,82 @@ user_service = User(db)
 # mongodb connection - food
 nutrition_service = User(db)
 
+# this function is for customize rout to serve the image
+@app.route("/images/<path:filename>")
+def serve_image(filename):
+    return send_from_directory('images', filename)
+
 # index means home
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/workout_instruction")
+@app.route("/workout_instruction", methods=["GET", "POST"])
 def show_workout_instruction():
-    return render_template("workout_instruction.html")
+    # get distinct categories from the exercise collection
+    categories = exercise_collection.distinct("categories")
+
+    # handle post request for filtering workouts
+    if request.method == "POST":
+        selected_category = request.form.get('category')
+        exercises = exercise_collection.find({"categories": selected_category})
+        
+        workouts = [
+            {
+                "id": str(exercise["_id"]),
+                "name": exercise["name"],
+                "gif_path": exercise.get("gif_path", ""),
+                "target_muscle": exercise.get("target_muscle", ""),
+                "instructions": exercise.get("instructions", [])
+            }
+            for exercise in exercises
+        ]
+
+    # handle the initial get request (no category selected yet)
+    # display all exercises
+    else:
+        exercises = exercise_collection.find()
+        selected_category = None
+        workouts = [
+            {
+                "id": str(exercise["_id"]),
+                "name": exercise["name"],
+                "gif_path": exercise.get("gif_path", ""),
+                "target_muscle": exercise.get("target_muscle", ""),
+                "instructions": exercise.get("instructions", [])
+            }
+            for exercise in exercises
+        ]
+
+    return render_template("workout_instruction.html", categories=categories, workouts=workouts, selected_category=selected_category)
+
+@app.route("/workout_instruction/exercise_details/<exercise_id>")
+def exercise_details(exercise_id):
+    try:
+        # Fetch the exercise directly from the database
+        exercise = exercise_collection.find_one({"_id": ObjectId(exercise_id)})
+        if not exercise:
+            abort(404, description="Exercise not found")
+
+        # Prepare the exercise data to pass to the template
+        exercise_data = {
+            "id": str(exercise["_id"]),
+            "name": exercise["name"],
+            "gif_path": exercise.get("gif_path", ""),
+            "target_muscle": exercise.get("target_muscle", ""),
+            "secondaryMuscles": exercise.get("secondaryMuscles", []),
+            "instructions": exercise.get("instructions", [])
+        }
+
+        return render_template("details.html", exercise=exercise_data)
+    except Exception as e:
+        abort(500, description=str(e))
+
+@app.route("/my_weekly_report", methods=["GET"])
+def show_my_weekly_report():
+    return render_template("my_weekly_report.html")
+
+"""-----------------------------------------API Endpoints--------------------------------------------------------------"""
 
 # endpoint search exercise (workout instruction action) by name
 @app.route("/api/exercises/search", methods=["GET"])
@@ -73,7 +141,7 @@ def get_exercise_by_category(category):
         "exercise": result
         , "sub_category_equipment": list(equipment_set)
     }
-    return jsonify(result)
+    return jsonify(response)
 
 # endpoint for exercise by catgoery with subcategory in equipment (sub side-bar maybe)
 @app.route("/api/exercises/category/<category>/equipment/<equipment>", methods=["GET"])
@@ -84,31 +152,7 @@ def get_exercises_by_category_and_equipment(category, equipment):
         })
     result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
     return jsonify(result)
-
-# endpoint to get exercise details by id, return coresponding details in json format if success, return error message with status code if failed
-@app.route("/api/exercises/<exercise_id>", methods=["GET"])
-def get_exercise_details(exercise_id):
-    # https://flask.palletsprojects.com/en/3.0.x/errorhandling/  Returning API Errors as JSON (Returning API Errors as JSON)
-    try:
-        exercise = exercise_collection.find_one({"_id": ObjectId(exercise_id)})
-        if not exercise:
-            return jsonify({"error": "Exercise not found"}), 404
-        
-        result = {
-            "id": str(exercise["_id"])
-            , "name": exercise["name"]
-            # , "categories": exercise.get("categories", "")
-            # , "equipment": exercise.get("equipment", "")
-            , "gif_path": exercise.get("gif_path", "")
-            , "target_muscle": exercise.get("target_muscle", "")
-            , "secondaryMuscles": exercise.get("secondaryMuscles", [])
-            , "instructions": exercise.get("instructions", [])
-        }
-        return jsonify(result)
-    except Exception as e:
-        # catch whatever errors here, status is 500 - internal server error
-        return jsonify({"error": str(e)}), 500
-
+    
 # user register
 @app.route("/api/user/register", methods=["POST"])
 def register():
@@ -169,6 +213,9 @@ def add_food(user_name):
 
     response, status_code = nutrition_service.add_food_intake(user_name, food_name, amount)
     return jsonify(response), status_code
+
+
+"""-----------------------------------------APScheduler--------------------------------------------------------------"""
 
 # APScheduler to reset daily nutrition at midnight
 def reset_daily_nutrition():
