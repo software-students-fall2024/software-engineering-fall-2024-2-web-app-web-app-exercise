@@ -17,9 +17,16 @@
     <div class="container">
         <nav class="workout-nav">
             <ul>
+            
               <li onclick="showInstructions('workout1')">Waist</li>
               <li onclick="showInstructions('workout2')">back</li>
               <li onclick="showInstructions('workout3')">chest</li>
+              
+             
+         
+              
+                
+            
             </ul>
           </nav>
           <section class="workout-instructions">
@@ -27,11 +34,11 @@
             <div class="card-deck" style="max-height: 700px; overflow-y: auto;">
               {% for workout in workouts %}
                 <div class="card" style="width: 18rem;">
-                  <img class="card-img-top" src="{{ url_for('images', filename=exercise.gif_path) }}" alt="Card image cap"> <!-- Use the gif_path for the image -->
+                  <img class="card-img-top" src="{{ url_for('static', filename=workout.gif_path) }}" alt="Card image cap"> <!-- Use the gif_path for the image -->
                   <div class="card-body">
                     
-                    <h5 class="card-title">{{ exercise.name }}</h5> <!-- Display workout name -->
-                    <p class="card-text">Target muscles: {{ exercise.target_muscle }}</p> <!-- Display categories -->
+                    <h5 class="card-title">{{ workout.name }}</h5> <!-- Display workout name -->
+                    <p class="card-text">Target muscles: {{ workout.target_muscle }}</p> <!-- Display categories -->
                     <a href="#" class="btn btn-primary">Details</a>
                   </div>
               </div>
