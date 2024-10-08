@@ -59,7 +59,7 @@ def addData():
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
 def deleteData():
-    username = request.form['authorName']
+    authorName = request.form['authorName']
     recipeTitle = request.form['recipeTitle']
     return f"Recipe '{recipeTitle}' deleted successfully!", 200
 
