@@ -41,6 +41,7 @@ def index():
 
 @app.route("/workout_instruction", methods=["GET", "POST"])
 def show_workout_instruction():
+    exercises = None
     # get distinct categories from the exercise collection
     categories = exercise_collection.distinct("categories")
 
@@ -48,33 +49,23 @@ def show_workout_instruction():
     if request.method == "POST":
         selected_category = request.form.get('category')
         exercises = exercise_collection.find({"categories": selected_category})
-        
-        workouts = [
-            {
-                "id": str(exercise["_id"]),
-                "name": exercise["name"],
-                "gif_path": exercise.get("gif_path", ""),
-                "target_muscle": exercise.get("target_muscle", ""),
-                "instructions": exercise.get("instructions", [])
-            }
-            for exercise in exercises
-        ]
 
     # handle the initial get request (no category selected yet)
     # display all exercises
     else:
         exercises = exercise_collection.find()
         selected_category = None
-        workouts = [
-            {
-                "id": str(exercise["_id"]),
-                "name": exercise["name"],
-                "gif_path": exercise.get("gif_path", ""),
-                "target_muscle": exercise.get("target_muscle", ""),
-                "instructions": exercise.get("instructions", [])
-            }
-            for exercise in exercises
-        ]
+   
+    workouts = [
+        {
+            "id": str(exercise["_id"]),
+            "name": exercise["name"],
+            "gif_path": exercise.get("gif_path", ""),
+            "target_muscle": exercise.get("target_muscle", ""),
+            "instructions": exercise.get("instructions", [])
+        }
+        for exercise in exercises
+    ]
 
     return render_template("workout_instruction.html", categories=categories, workouts=workouts, selected_category=selected_category)
 
