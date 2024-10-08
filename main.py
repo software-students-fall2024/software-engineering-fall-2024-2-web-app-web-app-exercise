@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -60,8 +60,8 @@ def addData():
     #Add recipe data to db
     db.RecipeCluster.insert_one(recipeData)
 
-    #For testing/debugging purposes (change to a popup on screen)
-    #return f"Recipe '{request.form['recipeTitle']}' submitted successfully!", 200
+    #change to a popup on screen
+    return jsonify({'message': f"Recipe '{request.form['recipeTitle']}' submitted successfully!"}), 200
 
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
@@ -70,6 +70,7 @@ def deleteData():
     recipeTitle = request.form['recipeTitle']
     deleteRecipe = db.RecipeCluster.delete_one({'authorName': authorName, 'recipeTitle': recipeTitle})
     
+    #change to a popup on screen
     if deleteRecipe.deleted_count==1: #if deleted ouput result to user
         return f"Recipe '{recipeTitle}' by '{authorName}' deleted successfully!", 200
     else:

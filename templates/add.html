@@ -20,7 +20,7 @@
             </header>
 
             <section id="mainArea">
-                <form action="{{ url_for('addData') }}" method="post">
+                <form action="{{ url_for('addData') }}" method="post" onsubmit="submitForm(event)">
                     <table width="100%" border="1">
                         <tbody>
                             <tr><td colspan="2">Enter all applicable information</td></tr>
@@ -57,6 +57,8 @@
                         </tbody>
                     </table>
                 </form>
+
+                
             </section>
         </div>
     </body>
