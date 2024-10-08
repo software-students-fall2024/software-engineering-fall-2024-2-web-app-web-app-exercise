@@ -44,7 +44,7 @@ def view():
 @app.route('/addData', methods=['POST'])
 def addData():
     recipeData = {
-        'username': request.form['authorName'],
+        'authorName': request.form['authorName'],
         'recipeTitle': request.form['recipeTitle'],
         'servings': request.form['servings'],
         'time': request.form['time'],
