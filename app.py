@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import datetime
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -11,10 +13,27 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['bankingSystem']
 transactions_collection = db['transactions']'''
 
-# MongoDB Atlas connection 
-client = MongoClient('mongodb+srv://nsb8225:<db_password>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client['SWE Project 2 - Webstars']
+client = MongoClient('mongodb://localhost:27017/')
+db = client['bankingSystem']
 transactions_collection = db['transactions']
+
+
+'''# MongoDB Atlas connection 
+client = MongoClient('mongodb+srv://nsb8225:<db_password>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client['SWE_Project_2-Webstars']
+transactions_collection = db['transactions']'''
+
+#connection to mongo for laterßßß
+'''uri = "mongodb+srv://nsb8225:<db_password>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)'''
+
 
 # Homepage route
 @app.route('/')
@@ -71,10 +90,6 @@ def search_and_edit_transaction():
     return render_template('search_edit.html', transactions=transactions)
 
 
-
-
-
-
 @app.route('/edit/<transaction_id>', methods=['GET', 'POST'])
 def edit_transaction(transaction_id):
     transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id)})
@@ -128,6 +143,8 @@ def search_transactions():
         return render_template('search.html', results=results)
 
     return render_template('search.html')
+
+
 
 # Run the app
 if __name__ == '__main__':

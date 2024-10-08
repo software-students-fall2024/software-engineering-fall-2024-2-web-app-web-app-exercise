@@ -11,10 +11,17 @@
     <nav id="desktop-nav">
         <div>
             <ul class="nav-links">
-                <li><a href="transactions.html">Transactions</a></li>
-                <li><a href="add.html">Add Transaction</a></li>
-                <li><a href="edit.html">Edit Transaction</a></li>
-                <li><a href="search.html">Search Transactions</a></li>
+                <!-- Link to the Transactions page -->
+                <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
+
+                <!-- Link to the Add Transaction page -->
+                <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
+
+                <!-- Link to the Edit Transaction page -->
+                <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
+
+                <!-- Link to the Search Transactions page -->
+                <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
             </ul>
         </div>
     </nav>
@@ -29,5 +36,6 @@
             <p>Spending Budget Left for the Month: ${{ budget_left }}</p>
         </div>
     </div>
+    
 </body>
 </html>
