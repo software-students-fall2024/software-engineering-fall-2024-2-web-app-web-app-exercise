@@ -37,6 +37,7 @@ def search():
 #View all data route
 @app.route('/view')
 def view():
+    recipes=db.RecipeCluster.find()
     return render_template('view.html')
 
 #Handle add data form
@@ -61,7 +62,11 @@ def addData():
 def deleteData():
     authorName = request.form['authorName']
     recipeTitle = request.form['recipeTitle']
-    return f"Recipe '{recipeTitle}' deleted successfully!", 200
+    deleteRecipe = db.RecipeCluster.delete_one({'username': authorName, 'recipeTitle': recipeTitle})
+    if deleteRecipe.deleted_count==1: #if deleted ouput result to user
+        return f"Recipe '{recipeTitle}' by '{authorName}' deleted successfully!", 200
+    else:
+        return f"Recipe '{recipeTitle}' by '{authorName}' not found / could not be deleted", 404
 
 if __name__ == '__main__':
     app.run(debug=True)
