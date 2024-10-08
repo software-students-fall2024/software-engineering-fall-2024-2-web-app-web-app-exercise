@@ -1,23 +1,41 @@
 import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for
-import pymongo
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
-import flask
-from src.database_initialisation import *
-import flask_login
 from flask_login import LoginManager
-from dotenv import dotenv_values
 
-config = dotenv_values(".env")
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client['db']
-database_add(db, "pedals", "src/data/pedal_data.json")
-database_add(db, "users", "src/data/user_data.json")
+def db_connect():
+
+    load_dotenv()
+    username = os.getenv('MONGO_USERNAME')
+    password = os.getenv('MONGO_PASSWORD')
+    db_name = os.getenv('MONGO_DBNAME')
+    
+
+    uri = f"mongodb+srv://{username}:{password}@cluster0.lrz8n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+    # Create a new client and connect to the server
+    client = MongoClient(uri, server_api=ServerApi('1'))
+
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+
+    db = client[db_name]
+    return db
+
+db = db_connect()
 login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
-    app.secret_key = config['SECRET_KEY']
+   
+    load_dotenv()
+    app.secret_key = os.getenv('SECRET_KEY')
     login_manager.init_app(app)
     register_blueprint(app)
     return app
