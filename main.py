@@ -37,7 +37,8 @@ def search():
 @app.route('/view')
 def view():
     recipes=db.RecipeCluster.find()
-    return render_template('view.html')
+    recipe_list = list(recipes)
+    return render_template('view.html', recipes=recipe_list)
 
 #Handle add data form
 @app.route('/addData', methods=['POST'])
