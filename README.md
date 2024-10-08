@@ -2,25 +2,16 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
-### Project structure (10/4/2024)
+### Project structure (10/8/2024)
 
 ```text
 .
 ├── LICENSE
 ├── Models.py
 ├── README.md
+├── __pycache__
+│   └── Models.cpython-310.pyc
 ├── app.py
-├── database_flask_update (delete this one later)
-│   └── gym
-│       ├── __init__.py
-│       ├── extensions.py
-│       ├── main.py
-│       ├── settings.py
-│       ├── static
-│       │   └── images
-│       │       └── flag.gif
-│       └── templates
-│           └── index.html
 ├── exercise_data.json
 ├── food_data.txt
 ├── images
@@ -32,6 +23,8 @@ A little exercise to build a web application following an agile development proc
 │   └── css
 │       └── style.css
 ├── templates
+│   ├── add-button-with-plus-symbol-in-a-black-circle.png
+│   ├── details.html
 │   ├── index.html
 │   ├── my_weekly_report.html
 │   ├── script.js
@@ -41,6 +34,7 @@ A little exercise to build a web application following an agile development proc
 └── utils
     ├── exercise_db.py
     └── food_db.py
+
 ```
 
 ### Idea of User structure
