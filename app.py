@@ -48,7 +48,12 @@ class UserSchema:
 
 @app.route('/')
 def home():
-    return "MongoDB and Flask connection successful!"
+    try:
+        # Perform a simple query to check the connection
+        client.admin.command('ping')
+        return "MongoDB and Flask connection successful!"
+    except Exception as e:
+        return f"Error connecting to MongoDB: {str(e)}", 500
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
