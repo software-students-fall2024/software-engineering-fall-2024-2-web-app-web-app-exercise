@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 
@@ -51,11 +50,12 @@ def addData():
         'ingredients': request.form['ingredients'],
         'instructions': request.form['instructions']
     }
-    #add recipe data to db
+
+    #Add recipe data to db
     db.RecipeCluster.insert_one(recipeData)
 
     #For testing/debugging purposes
-    return f"Recipe '{recipeTitle}' submitted successfully!", 200
+    return f"Recipe '{request.form['recipeTitle']}' submitted successfully!", 200
 
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
@@ -68,5 +68,6 @@ def deleteData():
     else:
         return f"Recipe '{recipeTitle}' by '{authorName}' not found / could not be deleted", 404
 
+#run
 if __name__ == '__main__':
     app.run(debug=True)
