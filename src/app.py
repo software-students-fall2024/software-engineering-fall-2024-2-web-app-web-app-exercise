@@ -51,7 +51,3 @@ def create_app():
 def register_blueprint(app):
     from src.routes import routes
     app.register_blueprint(routes)
-
-@app.route("/")
-def login():
-    return render_template('login.html')
