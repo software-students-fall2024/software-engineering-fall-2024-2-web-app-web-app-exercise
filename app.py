@@ -19,12 +19,12 @@ transactions_collection = db['transactions']
 
 
 '''# MongoDB Atlas connection 
-client = MongoClient('mongodb+srv://nsb8225:<db_password>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient('mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['SWE_Project_2-Webstars']
 transactions_collection = db['transactions']'''
 
 #connection to mongo for laterßßß
-'''uri = "mongodb+srv://nsb8225:<db_password>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+'''uri = "mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
