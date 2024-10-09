@@ -18,7 +18,21 @@ Job Application Tracker helps users streamline their job search process by allow
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+Start by setting up pipenv and its specified dependencies
+```
+pip install pipenv
+pipenv install
+```
+
+Create new file .env (will be git ignored) to hold environment variables in the following format:
+```
+MONGO_CONNECTION_URI=<mongo_connection_str>
+```
+
+Run the flask app
+```
+python app.py
+```
 
 ## Task boards
 
@@ -28,3 +42,4 @@ See instructions. Delete this line and place a link to the task boards here.
 
 * Wilson Xu [Profile](https://github.com/wilsonxu101)
 * Hanna Han [Profile](https://github.com/HannaHan2)
+* Sewon Kim [Profile](https://github.com/SewonKim0)
