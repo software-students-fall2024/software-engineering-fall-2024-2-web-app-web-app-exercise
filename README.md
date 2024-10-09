@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Job Application Tracker helps users streamline their job search process by allowing them to easily manage, track, and update their job applications, view deadlines, and perform actions like adding, editing, deleting, or searching for applications by key attributes.
 
 ## User stories
 
