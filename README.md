@@ -42,3 +42,4 @@ See instructions. Delete this line and place a link to the task boards here.
 
 * Wilson Xu [Profile](https://github.com/wilsonxu101)
 * Hanna Han [Profile](https://github.com/HannaHan2)
+* Sewon Kim [Profile](https://github.com/SewonKim0)
