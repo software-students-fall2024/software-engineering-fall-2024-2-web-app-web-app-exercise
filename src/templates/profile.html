@@ -88,12 +88,13 @@
             <a href="#">Profile</a>
         </div>
         <a href="login">Log Out</a>
+
     </div>
 
     <div class="profile">
         <div class="avatar"></div>
         <div>
-            <h2>Username</h2>
+            <h2>{{ username }}</h2>
             <a href="account-setting"><button class="account-settings">Account Settings</button></a>
         </div>
     </div>
@@ -101,38 +102,16 @@
     <h3>Saved Boards</h3>
     <div class="boards-container">
         <div class="new-board">+</div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
+        {% for board in boards%}
+            <div class="board">
+                <div class="board-image"></div>
+                <span class="board-title">{{board['name']}}</span>
+                <div class="board-actions">
+                    <button>🗑️</button>
+                    <button>✏️</button>
+                </div>
             </div>
+        {% endfor%}
         </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
