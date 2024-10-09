@@ -107,4 +107,5 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-- [Task board for our team](https://github.com/orgs/software-students-fall2024/projects/6)
+- [Task board1 for our team](https://github.com/orgs/software-students-fall2024/projects/6)
+- [Task board2 for our team](https://github.com/orgs/software-students-fall2024/projects/21/views/1)
