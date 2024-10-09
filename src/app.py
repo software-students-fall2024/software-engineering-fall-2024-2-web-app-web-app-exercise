@@ -26,7 +26,8 @@ def db_connect():
         print(e)
 
     db = client[db_name]
-    return db
+    g.db = db
+    return g.db
 
 def get_db():
     if 'db' not in g:
