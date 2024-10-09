@@ -28,7 +28,7 @@ collection = db["users"]
 
 @app.route('/')
 def home():
-    return "MongoDB and Flask connection successful!"
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
