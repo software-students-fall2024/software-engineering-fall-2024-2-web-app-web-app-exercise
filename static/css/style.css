@@ -8,21 +8,22 @@ body {
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 header {
   position: sticky;
   top: 0;
+  width: 100%;
   background-color: #333;
   color: white;
-  padding: 10px;
+  padding: 0px;
   text-align: center;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
@@ -31,30 +32,73 @@ header {
 
 .container {
   display: flex;
-  width: 100%;
-  max-width: 1000px;
   flex: 1;
-  margin: 0 auto;
+  overflow: hidden;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .workout-nav {
   width: 30%;
   background-color: #f4f4f4;
-  padding: 10px;
   border-right: 2px solid #ddd;
   position: relative;
+  overflow-y: auto;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  max-height: 85vh;
 }
 
 .workout-nav ul {
+  padding-left: 0;
   list-style: none;
 }
 
 .workout-nav li {
-  padding: 10px;
-  background-color: #ddd;
+  padding: 15px;
+  background-color: #bbb9b991;
   margin-bottom: 5px;
   cursor: pointer;
   position: relative; /* Set relative to manage submenus within this container */
+}
+
+/* Style for category buttons */
+.category-button {
+  background-color: #bbb9b991;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.category-button:hover {
+  background-color: #ccc;
+}
+
+/* Style for equipment menu */
+.equipment-menu {
+  list-style-type: none;
+  padding-left: 20px;
+  margin-top: 5px;
+  display: none; /* Hidden by default */
+}
+
+/* Style for equipment buttons */
+.equipment-button {
+  background-color: #ddd;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.equipment-button:hover {
+  background-color: #eee;
 }
 
 .workout-nav li:hover {
@@ -62,38 +106,18 @@ header {
 }
 
 .equipment-menu {
-  display: none;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  min-width: 160px;
-  z-index: 9999; /* Set a high z-index to ensure it appears above other content */
-  padding: 0;
-  margin-left: 5px;
+  list-style-type: none;
+  padding-left: 20px;
+  margin-top: 5px;
+  display: none; /* Initially hidden */
 }
 
 .equipment-menu li {
-  padding: 8px 16px;
   cursor: pointer;
 }
 
-.equipment-menu li:hover {
-  background-color: #ddd;
-}
-
-.category-item {
-  position: relative;
-  z-index: 1; /* Add a lower z-index to the category item */
-}
-
-.category-item:hover .equipment-menu {
-  display: block;  /* Show the equipment menu when hovering over the category */
-}
-
 .workout-instructions {
-  width: 70%; /* Adjust as needed */
+  width: 70%;
   padding: 10px;
   margin-top: 10px;
   position: relative;
@@ -124,15 +148,8 @@ header {
   background-color: #555;
 }
 
-footer {
-  display: flex;
-  background-color: #333;
-  color: white;
-  justify-content: space-around;
-  padding: 10px 0;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+.hidden {
+  display: none;
 }
 
 .footer-box {
@@ -155,6 +172,17 @@ footer {
   color: #b8b8b8; /* Light grey for visited state */
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background-color: #333;
+  color: white;
+  justify-content: space-evenly;
+  padding: 0px;
+}
+
 /* Mobile Devices */
 @media only screen and (max-width: 767px) {
   html, body {
@@ -165,20 +193,19 @@ footer {
   .container {
       display: flex;
       width: 100%;
-      max-width: 1000px; /* Ensure this matches header and footer */
       flex: 1;
-      margin: 0 auto; /* Center the container */
-      padding: 10px; /* Add padding for better spacing */
-      flex-direction: column; /* Stack nav and instructions vertically */
+      margin: 0 auto;
+      padding: 10px;
+      flex-direction: column;
   }
 
   .workout-nav {
-      width: 100%; /* Full width */
+      width: 100%;
   }
 
   .workout-instructions {
-      width: 100%; /* Full width */
-      margin-top: 20px; /* Add spacing between sections */
+      width: 100%;
+      margin-top: 20px;
   }
 }
 
@@ -190,12 +217,11 @@ footer {
   }
 
   .workout-nav {
-      width: 45%; /* Slightly wider nav-bar */
+      width: 45%;
   }
 
   .workout-instructions {
       width: 55%;
-      
   }
 }
 

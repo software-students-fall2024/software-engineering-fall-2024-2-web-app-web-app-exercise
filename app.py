@@ -45,10 +45,27 @@ def show_workout_instruction():
     # get distinct categories from the exercise collection
     categories = exercise_collection.distinct("categories")
 
+    sub_category_equipment = []
+    selected_equipment = None
+
     # handle post request for filtering workouts
     if request.method == "POST":
-        selected_category = request.form.get('category')
-        exercises = exercise_collection.find({"categories": selected_category})
+        selected_category = request.form.get("category")
+        selected_equipment = request.form.get("equipment")
+
+        if selected_equipment:
+            exercises = exercise_collection.find({
+                "categories": selected_category
+                , "equipment": selected_equipment
+                })
+        # filter exercise by category
+        else:
+            exercises = exercise_collection.find({"categories": selected_category})
+        
+        # get equipment list for the selected category
+        exercises_for_equipment = exercise_collection.find({"categories": selected_category})
+        equipment_set = {e.get("equipment") for e in exercises_for_equipment}
+        sub_category_equipment = list(equipment_set) # cast it into list
 
     # handle the initial get request (no category selected yet)
     # display all exercises
@@ -67,7 +84,8 @@ def show_workout_instruction():
         for exercise in exercises
     ]
 
-    return render_template("workout_instruction.html", categories=categories, workouts=workouts, selected_category=selected_category)
+    return render_template("workout_instruction.html", categories=categories, workouts=workouts
+    , selected_category=selected_category, sub_category_equipment=sub_category_equipment, selected_equipment=selected_equipment)
 
 @app.route("/workout_instruction/exercise_details/<exercise_id>")
 def exercise_details(exercise_id):
