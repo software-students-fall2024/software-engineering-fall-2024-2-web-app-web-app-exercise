@@ -1,0 +1,266 @@
+body {
+    font-family: "Protest Strike", sans-serif;
+    background-color: #ffffff;
+    display: flex;             
+    align-items: center;        
+    height: 180vh; 
+    flex-direction: column;
+    margin: 0;             
+  } 
+  .container {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    background-color: #b9b2b28c;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .container1 {
+      max-width: 600px;
+      width: 100%;
+      height: auto;
+      background-color: #b9b2b28c;
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+  
+  }
+
+  .container3 {
+      max-width: 600px;
+      width: 600px;
+      height: auto;
+      background-color: #b9b2b28c;
+      padding: 30px;
+      margin-bottom:30px;
+      border-radius: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+  
+  }
+  .unit {
+      margin-left: -10px; 
+      margin-right: 15px;
+      font-weight: bold;
+  }
+  .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  
+  .textbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      width: 80px;
+      height: 65px;
+      border-radius: 8px;
+      margin: 20px;
+      margin-left: -20px;
+      
+  }
+  .textbox1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      width: 80px;
+      height: 65px;
+      border-radius: 8px;
+      margin: 20px;
+      margin-left: -20px;
+  }
+  .textbox2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      width: 80px;
+      height: 65px;
+      border-radius: 8px;
+      margin: 20px;
+      margin-left: -20px;
+  }
+  .textbox3 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      width: 80px;
+      height: 65px;
+      border-radius: 8px;
+      margin: 20px;
+      margin-left: -20px;
+  }
+  .textbox-container {
+      display: flex; 
+      justify-content: space-between; 
+      margin-top: 20px;
+      margin: 20px;
+  }
+  .text {
+      display: flex; 
+      justify-content: space-between; 
+      margin: 30px;
+      margin-top: 20px;
+      margin-left: -10px;
+      color: black;
+  }
+  h2 {
+      font-weight: normal; 
+      margin-left: -430px;
+      font-size: 24px; 
+  }
+  h1 {
+      font-weight: bold;
+      margin-bottom: -25px;
+      margin-left: -190px;
+  }
+  p#current-day {
+    margin-left: -380px;
+    font-size: 40px; 
+    margin-bottom: 60px;
+  }
+  .main-container {
+    text-align: center;
+    margin-bottom: -30px;
+    font-size: 24px; 
+    margin-left: -40px;
+  }
+  .main1-container {
+    font-optical-sizing: auto;
+    text-align: center;
+    margin-bottom: -30px;
+    margin-left: 20px;
+    font-size: 24px; 
+  }
+  .content-in-box {
+    margin-bottom: -10px;
+    font-size: 30px; 
+    margin-left: -220px;
+  }
+  h3 {
+      font-weight: normal; 
+      margin-left: -430px;
+      font-size: 40px; 
+  }
+  h4 {
+      font-weight: normal; 
+      margin-left: -25px;
+      font-size: 40px; 
+      margin-top: -16px;
+  }
+  .form-group {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+  }
+  
+  label {
+      font-weight: bold;
+      min-width: 150px; 
+      text-align: left;
+  
+  }
+  
+  input[type="number"] {
+      width: 50px;
+      padding: 10px;
+      text-align: left;
+      border-radius: 8px;
+      border: 4px solid #ccc;
+      margin-right: -4px;
+  }
+  
+  .bmi-output {
+      margin-top: 15px;
+  }
+  
+  .bmi-result {
+      font-size: 20px;
+      font-weight: bold;
+  }
+  span.unit {
+      margin-left: 5px;
+      margin-right: 10px;
+      font-weight: bold;
+  }
+  .form-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 10px;
+  }
+  .form-column {
+      display: flex;
+  
+      align-items: center;
+      margin-bottom: 10px;
+      margin-left: -230px;
+  }
+  
+  .equals {
+      margin-left: 145px; 
+      margin-right: 5px;
+      font-weight: bold;
+  }
+  .add-workout-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 5px;
+  }
+  
+  .add-workout-button {
+      display: flex;
+      align-items: center;
+      background-color: #d3d3d3;
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+      border: 1px solid #000;
+      transition: background-color 0.3s ease;
+  }
+  
+  .add-workout-button:hover {
+      background-color: #b0b0b0;
+  }
+  
+  .add-workout-button img {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+  }
+  .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #6b63638c;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .footer a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+  }
+  
+  .footer a:hover {
+      background-color: #ccc;
+  }
