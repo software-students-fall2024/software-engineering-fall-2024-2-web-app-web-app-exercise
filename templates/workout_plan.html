@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Instruction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <div class="logo">🏋️‍♂️</div>
+    </header>
+    <div class="container">
+        <section class="workout-instructions">
+            <h2>Workouts for Category: {{ selected_category }}</h2>
+            <div class="card-deck">
+                {% for workout in workouts %}
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ url_for('serve_image', filename=workout.gif_path.split('/')[-1]) }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ workout.name }}</h5>
+                            <p class="card-text">Target muscles: {{ workout.target_muscle }}</p>
+                            <!-- Button to add workout -->
+                            <form action="{{ url_for('add_workout', workout_id=workout.id) }}" method="POST">
+                                <button type="submit" class="btn btn-primary">Add Workout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+
+    <footer>
+        <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
+    </footer>
+
+    <script>
+          function fetchEquipment(category) {
+              // Make an API call to get the equipment for the given category
+              fetch(`/api/exercises/category/${category}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      // Create or select the equipment menu
+                      let equipmentMenu = document.getElementById(`equipment-${category}`);
+                      if (!equipmentMenu) {
+                          equipmentMenu = document.createElement('ul');
+                          equipmentMenu.id = `equipment-${category}`;
+                          equipmentMenu.className = 'equipment-menu';
+                          document.getElementById('equipment-menus').appendChild(equipmentMenu);
+                      }
+                      equipmentMenu.innerHTML = ''; // Clear previous content
+
+                      // Populate the equipment menu
+                      if (data.sub_category_equipment && data.sub_category_equipment.length > 0) {
+                          data.sub_category_equipment.forEach(equipment => {
+                              const equipmentItem = document.createElement('li');
+                              equipmentItem.textContent = equipment;
+                              equipmentItem.onclick = (event) => {
+                                  event.stopPropagation();
+                                  filterExercisesByEquipment(category, equipment);
+                              };
+                              equipmentMenu.appendChild(equipmentItem);
+                          });
+                          equipmentMenu.style.display = 'block'; // Show the equipment menu
+                          // Position the equipment menu next to the category item
+                          const categoryItem = document.querySelector(`.category-item[onclick*="${category}"]`);
+                          const rect = categoryItem.getBoundingClientRect();
+                          equipmentMenu.style.position = 'absolute';
+                          equipmentMenu.style.left = `${rect.right}px`;
+                          equipmentMenu.style.top = `${rect.top}px`;
+                          equipmentMenu.style.zIndex = 9999;
+                      }
+                  })
+                  .catch(error => console.error('Error fetching equipment:', error));
+          }
+
+          function hideEquipment() {
+              // Hide all equipment menus when the cursor leaves the category
+              const equipmentMenus = document.querySelectorAll('.equipment-menu');
+              equipmentMenus.forEach(menu => menu.style.display = 'none');
+          }
+
+          function filterExercisesByCategory(category) {
+              // Perform a form submission to filter workouts based on category
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = `/workout_instruction`;  // Use workout_instruction endpoint
+
+              // Add hidden input for category
+              const categoryInput = document.createElement('input');
+              categoryInput.type = 'hidden';
+              categoryInput.name = 'category';
+              categoryInput.value = category;
+
+              form.appendChild(categoryInput);
+              document.body.appendChild(form);
+              form.submit(); // Submit the form to filter workouts
+          }
+
+          function filterExercisesByEquipment(category, equipment) {
+            // Make an API call to get exercises filtered by both category and equipment
+            fetch(`/api/exercises/category/${category}/equipment/${equipment}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response to render filtered workouts
+                    // Assuming you want to dynamically update the workout cards
+                    const workoutContainer = document.querySelector('.workout-instructions .card-deck');
+                    workoutContainer.innerHTML = ''; // Clear previous content
+
+                    if (data.length > 0) {
+                        data.forEach(workout => {
+                            // Create workout card elements dynamically
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.style.width = '18rem';
+
+                            const img = document.createElement('img');
+                            img.className = 'card-img-top';
+                            img.src = `/images/${workout.name.replace(' ', '_').toLowerCase()}.gif`;  // Assuming the naming convention for images matches workout names
+                            img.alt = "Card image cap";
+
+                            const cardBody = document.createElement('div');
+                            cardBody.className = 'card-body';
+
+                            const cardTitle = document.createElement('h5');
+                            cardTitle.className = 'card-title';
+                            cardTitle.textContent = workout.name;
+
+                            const cardButton = document.createElement('a');
+                            cardButton.className = 'btn btn-primary';
+                            cardButton.href = `/exercise_details/${workout.id}`;
+                            cardButton.textContent = 'Details';
+
+                            // Append elements
+                            cardBody.appendChild(cardTitle);
+                            cardBody.appendChild(cardButton);
+                            card.appendChild(img);
+                            card.appendChild(cardBody);
+                            workoutContainer.appendChild(card);
+                        });
+                    } else {
+                        // If no workouts are found, display a message
+                        const noWorkoutsMessage = document.createElement('p');
+                        noWorkoutsMessage.textContent = 'No workouts found for this equipment.';
+                        workoutContainer.appendChild(noWorkoutsMessage);
+                    }
+                })
+                .catch(error => console.error('Error fetching workouts:', error));
+          }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
