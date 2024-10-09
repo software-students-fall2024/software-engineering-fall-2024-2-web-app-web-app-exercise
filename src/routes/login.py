@@ -8,6 +8,7 @@ from src.models.user import user_loader, request_loader
 from src.models.user import User
 from src.app import get_db
 
+@routes.route("/",methods=['GET','POST'])
 @routes.route("/login",methods=['GET','POST'])
 def login():
     users = get_db().users
@@ -28,4 +29,4 @@ def login():
 @routes.route('/protected')
 @flask_login.login_required
 def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
+    return flask.redirect('/profile')

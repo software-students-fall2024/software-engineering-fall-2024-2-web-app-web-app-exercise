@@ -15,7 +15,9 @@ def validate_password(email:str, password:str):
     users = get_db().users
     return users.find_one({"password":password,"email": email}, {})
 
-users = {'username': {'password': 'password'}}
+def create_user(email: str, username:str, password:str):
+    users = get_db().users
+    return users.insert_one({"email":email, "username": username, "password":password })
 
 @login_manager.user_loader
 def user_loader(email): 
