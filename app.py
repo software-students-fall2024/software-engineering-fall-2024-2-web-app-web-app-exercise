@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 import datetime
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-
+import os
 # Initialize Flask application
 app = Flask(__name__)
 
@@ -13,27 +13,19 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['bankingSystem']
 transactions_collection = db['transactions']'''
 
-client = MongoClient('mongodb://localhost:27017/')
-db = client['bankingSystem']
-transactions_collection = db['transactions']
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client['bankingSystem']
+# transactions_collection = db['transactions']
 
+# MongoDB Atlas connection 
+# client = MongoClient('mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+# db = client['SWE_Project_2-Webstars']
+# transactions_collection = db['transactions']
 
-'''# MongoDB Atlas connection 
-client = MongoClient('mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+MONGO_URI = os.getenv('MONGO_URI')
+client = MongoClient(MONGO_URI)
 db = client['SWE_Project_2-Webstars']
-transactions_collection = db['transactions']'''
-
-#connection to mongo for laterßßß
-'''uri = "mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)'''
-
+transactions_collection = db['transactions']
 
 # Homepage route
 @app.route('/')
