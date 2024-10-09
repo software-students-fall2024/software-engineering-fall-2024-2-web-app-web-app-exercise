@@ -1,17 +1,16 @@
 from . import routes
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import pymongo
 from dotenv import load_dotenv
 import flask
 import flask_login
-from src.app import db
 from src.models.user import user_loader, request_loader
 from src.models.user import User
+from src.app import get_db
 
-users = db['users']
-thing = users.find()
 @routes.route("/login",methods=['GET','POST'])
 def login():
+    users = get_db().users
     if flask.request.method == 'GET':
         return flask.render_template('login.html')
     username = flask.request.form['username']

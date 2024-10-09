@@ -1,5 +1,6 @@
 import flask_login
 from src.app import login_manager
+from flask import session
 
 class User(flask_login.UserMixin):
     pass
