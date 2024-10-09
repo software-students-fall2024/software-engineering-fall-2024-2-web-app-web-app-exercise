@@ -1,13 +1,13 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, g, session
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
-
+from flask_login import LoginManager
+from pprint import pprint
 
 def db_connect():
-
     load_dotenv()
     username = os.getenv('MONGO_USERNAME')
     password = os.getenv('MONGO_PASSWORD')
@@ -28,19 +28,30 @@ def db_connect():
     db = client[db_name]
     return db
 
+def get_db():
+    if 'db' not in g:
+        g.db = db_connect()
+    return g.db
+
+login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
 
-    db = db_connect()
+    load_dotenv()
+    app.secret_key = os.getenv('SECRET_KEY')
+    login_manager.init_app(app)
+    register_blueprint(app)
 
-    @app.route("/")
-    def login():
-        return render_template('login.html')
-
+    with app.app_context():
+        get_db()
+    
     return app
 
+def register_blueprint(app):
+    from src.routes import routes
+    app.register_blueprint(routes)
 
-if __name__ == "__main__":
-    app = create_app()
-    app.run(port='5000')
+@app.route("/")
+def login():
+    return render_template('login.html')
