@@ -7,6 +7,6 @@ import flask_login
 from src.models.user import user_loader, request_loader
 from src.models.user import User
 
-@routes.route('/', methods=["GET"])
+@routes.route('/profile', methods=["GET"])
 def home():
     return(render_template('profile.html'))

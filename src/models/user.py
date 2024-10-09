@@ -7,27 +7,30 @@ class User(flask_login.UserMixin):
    pass
 
 
-def find_user(email:str, username:str, password:str):
-    users = getdb().users
-    return users.find_one({"username":username,"email": email}, {})
+def find_user(email:str):
+    users = get_db().users
+    return users.find_one({"email": email}, {})
 
-#def validate_password(email:str, password:str)
+def validate_password(email:str, password:str):
+    users = get_db().users
+    return users.find_one({"password":password,"email": email}, {})
 
-users = {'username': {'password': 'password'}}
+def create_user(email: str, username:str, password:str):
+    users = get_db().users
+    return users.insert_one({"email":email, "username": username, "password":password })
 
 @login_manager.user_loader
-def user_loader(username): 
-    if username not in users:
+def user_loader(email): 
+    if not find_user(email):
         return
     user = User()
-    user.id = username
+    user.id = email
     return user
 @login_manager.request_loader
 def request_loader(request):
-    email = request.form.get('username')
-    if email not in users:
+    email = request.form.get('email')
+    if not find_user(email):
         return
-
     user = User()
     user.id = email
     return user
