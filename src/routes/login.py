@@ -16,7 +16,6 @@ def login():
     username = flask.request.form['username']
     password = flask.request.form['password']
     result = users.find_one({}, {"username":username, "password":password})
-    print(result)
     if result:
         user = User()
         user.id = username
