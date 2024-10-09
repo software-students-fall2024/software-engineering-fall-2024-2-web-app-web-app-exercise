@@ -65,8 +65,5 @@ def register():
 
     return render_template('register.html')
 
-secret_key = os.urandom(24).hex()
-print(secret_key)
-
 if __name__ == "__main__":
     app.run(debug=True)
