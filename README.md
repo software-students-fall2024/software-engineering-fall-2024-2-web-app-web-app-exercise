@@ -20,4 +20,5 @@ See instructions. Delete this line and place a link to the task boards here.
 
 ## Team members
 
-* Wilson Xu [Profile](https://github.com/wilsonxu101)   
+* Wilson Xu [Profile](https://github.com/wilsonxu101)
+* Hanna Han [Profile](https://github.com/HannaHan2)
