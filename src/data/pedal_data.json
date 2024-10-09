@@ -1,7 +1,6 @@
 [
     {
         "name": "Boss TU-3 Chromatic Tuner",
-        "_id": "00001",
         "brand": "Boss",
         "type": "Tuner",
         "image_url": "/images/pedals/boss_tu_3_chromatic_tuner.webp",
@@ -14,7 +13,6 @@
     },
     {
         "name": "Boss CE-2 Chorus",
-        "_id": "00002",
         "brand": "Boss",
         "type": "Chorus",
         "image_url": "/images/pedals/boss_ce_2_chorus.webp",
@@ -27,7 +25,6 @@
     },
     {
         "name": "Boss DD-8 Digital Delay",
-        "_id": "00003",
         "brand": "Boss",
         "type": "Delay",
         "image_url": "/images/pedals/boss_dd_8_digital_delay.webp",
@@ -40,7 +37,6 @@
     },
     {
         "name": "Boss DD-3T Digital Delay",
-        "_id": "00004",
         "brand": "Boss",
         "type": "Delay",
         "image_url": "/images/pedals/boss_dd_3t_digital_delay.webp",
@@ -53,7 +49,6 @@
     },
     {
         "name": "Boss DM-2 Delay",
-        "_id": "00005",
         "brand": "Boss",
         "type": "Delay",
         "image_url": "/images/pedals/boss_dm_2_delay.webp",
@@ -66,7 +61,6 @@
     },
     {
         "name": "Boss DS-1 Distortion",
-        "_id": "00006",
         "brand": "Boss",
         "type": "Distortion",
         "image_url": "/images/pedals/boss_ds_1_distortion.webp",
@@ -79,7 +73,6 @@
     },
     {
         "name": "Boss DS-2 Distortion",
-        "_id": "00007",
         "brand": "Boss",
         "type": "Distortion",
         "image_url": "/images/pedals/boss_ds_2_distortion.webp",
@@ -92,7 +85,6 @@
     },
     {
         "name": "Boss FZ-1W Fuzz",
-        "_id": "00008",
         "brand": "Boss",
         "type": "Fuzz",
         "image_url": "/images/pedals/boss_fz_1w_fuzz.webp",
@@ -105,7 +97,6 @@
     },
     {
         "name": "Boss GE-7 Equalizer",
-        "_id": "00009",
         "brand": "Boss",
         "type": "Equalizer",
         "image_url": "/images/pedals/boss_ge_7_equalizer.webp",
@@ -118,7 +109,6 @@
     },
     {
         "name": "Boss OC-3 Super Octave",
-        "_id": "00010",
         "brand": "Boss",
         "type": "Octave",
         "image_url": "/images/pedals/boss_oc_3_super_octave.webp",
@@ -131,7 +121,6 @@
     },
     {
         "name": "Boss OD-320 Overdrive",
-        "_id": "00011",
         "brand": "Boss",
         "type": "Overdrive",
         "image_url": "/images/pedals/boss_od_320_overdrive.webp",
@@ -144,7 +133,6 @@
     },
     {
         "name": "Boss RE-2 Space Echo",
-        "_id": "00012",
         "brand": "Boss",
         "type": "Delay",
         "image_url": "/images/pedals/boss_re_2_space_echo.webp",
@@ -157,7 +145,6 @@
     },
     {
         "name": "Boss RV-6 Reverb",
-        "_id": "00013",
         "brand": "Boss",
         "type": "Reverb",
         "image_url": "/images/pedals/boss_rv_6_reverb.webp",
@@ -170,7 +157,6 @@
     },
     {
         "name": "Boss SDE-3 Dual Digital Delay",
-        "_id": "00014",
         "brand": "Boss",
         "type": "Delay",
         "image_url": "/images/pedals/boss_sde_3_dual_digital_delay.webp",
@@ -183,7 +169,6 @@
     },
     {
         "name": "Boss SL-2 Slicer",
-        "_id": "00015",
         "brand": "Boss",
         "type": "Modulation",
         "image_url": "/images/pedals/boss_sl_2_slicer.webp",
