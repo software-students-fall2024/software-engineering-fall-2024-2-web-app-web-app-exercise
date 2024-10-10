@@ -11,6 +11,10 @@ body {
     flex-direction: column;
 }
 
+.textarea {
+    width: 99%;
+}
+
 a, p, li {
     color: rgb(25, 25, 25);
     font-size: 16px;

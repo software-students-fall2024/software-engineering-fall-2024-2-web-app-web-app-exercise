@@ -4,16 +4,16 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 #MongoDB connection
-mongo_uri = "mongodb+srv://recipeUser:RECIPE@recipecluster.red1l.mongodb.net/?retryWrites=true&w=majority&appName=RecipeCluster"
+mongo_uri = "mongodb+srv://User:GoodEats@restaurantcluster.mny9a.mongodb.net/?retryWrites=true&w=majority&appName=RestaurantCluster"
 client = MongoClient(mongo_uri)
-db = client["RecipeCluster"] 
+db = client["RestaurantCluster"] 
 
 #Home route
 @app.route('/')
 def home():
-    recipes=db.RecipeCluster.find()
-    recipe_list = list(recipes)
-    return render_template('index.html', recipes=recipe_list)
+    restaurants=db.RestaurantCluster.find()
+    restaurant_list = list(restaurants)
+    return render_template('index.html', restaurants=restaurant_list)
 
 #Add data route
 @app.route('/add')
@@ -38,38 +38,33 @@ def search():
 #Handle add data form
 @app.route('/addData', methods=['POST'])
 def addData():
-    recipeData = {
-        'authorName': request.form['authorName'],
-        'recipeTitle': request.form['recipeTitle'],
-        'servings': request.form['servings'],
-        'time': request.form['time'],
-        'ingredients': request.form['ingredients'],
-        'instructions': request.form['instructions']
+    restaurantData = {
+        'userName': request.form['userName'],
+        'restaurantName': request.form['restaurantName'],
+        'cuisine': request.form['cuisine'],
+        'location': request.form['location'],
+        'review': request.form['review']
     }
 
-    #if we want to write to json
-    #with open('recipes.json', 'a') as file:
-        #json.dump(recipeData, file)
-        #file.write("\n")
-
     #Add recipe data to db
-    db.RecipeCluster.insert_one(recipeData)
+    db.RestaurantCluster.insert_one(restaurantData)
 
     #change to a popup on screen
-    return jsonify({'message': f"Recipe '{request.form['recipeTitle']}' submitted successfully!"}), 200
+    return jsonify({'message': f"Restaurant '{request.form['restaurantName']}' submitted successfully!"}), 200
 
 #Handle delete data form
 @app.route('/deleteData', methods=['POST'])
 def deleteData():
-    authorName = request.form['authorName']
-    recipeTitle = request.form['recipeTitle']
-    deleteRecipe = db.RecipeCluster.delete_one({'authorName': authorName, 'recipeTitle': recipeTitle})
+    userName = request.form['userName']
+    restaurantName = request.form['restaurantName']
+    cuisine = request.form['cuisine']
+    deleteRestaurant = db.RecipeCluster.delete_one({'userName': userName, 'restaurantName': restaurantName, 'cuisine': cuisine})
     
     #change to a popup on screen
-    if deleteRecipe.deleted_count==1: #if deleted ouput result to user
-        return f"Recipe '{recipeTitle}' by '{authorName}' deleted successfully!", 200
+    if deleteRestaurant.deleted_count == 1: #if deleted ouput result to user
+        return f"Restaurant '{restaurantName}' by '{userName}' deleted successfully!", 200
     else:
-        return f"Recipe '{recipeTitle}' by '{authorName}' not found / could not be deleted", 404
+        return f"Restaurant '{restaurantName}' by '{userName}' not found / could not be deleted", 404
 
 #run
 if __name__ == '__main__':
