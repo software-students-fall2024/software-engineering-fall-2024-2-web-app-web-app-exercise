@@ -14,7 +14,7 @@ Job Application Tracker helps users streamline their job search process by allow
 4. As a job seeker, I want to search applications by job title, company, location, or stage so that I can quickly find specific applications I have previously saved.
 5. As a job seeker, I want to view a list of all my job applications with deadlines so that I can prioritize applications based on approaching deadlines.
 6. As a job seeker, I want to access the link to the job description directly from the application so that I can quickly revisit the job posting for more details.
-7. As a job seeker, I want to track the current stage of my job applications so that I can where I am in the hiring process and follow up when necessary.
+7. As a job seeker, I want to track the current stage of my job applications so that I can know where I am in the hiring process and follow up when necessary.
 
 ## Steps necessary to run the software
 
