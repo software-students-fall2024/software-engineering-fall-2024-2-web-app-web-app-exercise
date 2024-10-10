@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>Result Page</h1>
+    <head>
+    <div>
+        <body>
+            {% for doc in docs%}
+            <article>
+                <p>
+                    {{doc.job_title}}
+                </p>
+                <p>
+                    {{doc.company}}
+                </p>
+            </article>
+            {%endfor%}
+            <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+        </body>
+    </div>
+</html>

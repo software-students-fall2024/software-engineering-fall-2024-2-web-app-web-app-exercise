@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>home page</h1>
+    <head>
+    <div>
+        <body>
+            <a href="{{url_for('add_post')}}">Add</a>
+            <a href='{{url_for('search')}}'>Search</a>
+            {% for doc in docs%}
+            <article>
+                <nav>
+                    <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
+                </nav>
+                <p>
+                    {{doc.job_title}}
+                </p>
+                <p>
+                    {{doc.company}}
+                </p>
+            </article>
+            {%endfor%}
+        </body>
+    </div>
+</html>
