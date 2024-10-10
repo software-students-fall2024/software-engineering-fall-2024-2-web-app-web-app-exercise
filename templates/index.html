@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>home page</h1>
+    <head>
+    <div>
+        <body>
+            <a href="{{url_for('add_post')}}">Add</a>
+            {% for doc in docs%}
+            <article>
+                <nav>
+                    <a href="{{url_for('edit',post_id=doc._id)}}">Edit</a> | <a href="{{url_for('delete',post_id=doc._id)}}">Delete</a>
+                </nav>
+                <p>
+                    {{doc.job_title}}
+                </p>
+                <p>
+                    {{doc.company}}
+                </p>
+            </article>
+            {%endfor%}
+        </body>
+    </div>
+</html>
