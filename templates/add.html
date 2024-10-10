@@ -1,65 +1,40 @@
-<!DOCTYPE html>
-<html>
-    <link rel="stylesheet" href="static/styles.css">
-    <head>
-        <title>Welcome!</title>
-    </head>
-
-    <body>
-        <div id="wrap">
-            <header>
-                <h1>Add a Recipe</h1>
-                <nav>
-                    <a href="{{ url_for('index') }}">Home</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('view') }}">View All Recipes</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('search') }}">Search Recipes</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('add') }}"><b>Add a Recipe</b></a>&nbsp;&nbsp;
-                    <a href="{{ url_for('edit') }}">Edit a Recipe</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('delete') }}">Delete a Recipe</a>
-                </nav>
-            </header>
-
-            <section id="mainArea">
-                <form action="{{ url_for('addData') }}" method="post" onsubmit="submitForm(event)">
-                    <table width="100%" border="1">
-                        <tbody>
-                            <tr><td colspan="2"><b>Enter all applicable information</b></td></tr>
-                            <tr>
-                                <td>Author Name</td>
-                                <td><input class="textarea" type="text" placehodler="Enter your name" name="authorName"></td>
-                            </tr>
-                            <tr>
-                                <td>Recipe Title</td>
-                                <td><input class="textarea" type="text" placehodler="Enter recipe title" name="recipeTitle"></td>
-                            </tr>
-                            <tr>
-                                <td># of Servings</td>
-                                <td><input class="textarea" type="text" placehodler="Enter # of servings" name="servings"></td>
-                            </tr>
-                            <tr>
-                                <td>Cook Time</td>
-                                <td><input class="textarea" type="text" placehodler="Enter estimated time" name="time"></td>
-                            </tr>
-                            <tr>
-                                <td>Ingredients</td>
-                                <td><textarea class="textarea" name="ingredients" cols="50" rows="10"></textarea></td>
-                            </tr>
-                            <tr>
-                                <td>Instructions</td>
-                                <td><textarea class="textarea" name="instructions" cols="50" rows="10"></textarea></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <input type="reset" value="CLEAR">
-                                    <input type="submit" value="SUBMIT">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-
-                
-            </section>
-        </div>
-    </body>
-</html>
+{% extends 'base.html' %} 
+{% block container %}
+<form action="{{ url_for('addData') }}" method="post" onsubmit="submitForm(event)">
+    <table width="100%" border="1">
+        <tbody>
+            <tr><td colspan="2"><b>Enter all applicable information</b></td></tr>
+            <tr>
+                <td>Author Name</td>
+                <td><input class="textarea" type="text" placehodler="Enter your name" name="authorName"></td>
+            </tr>
+            <tr>
+                <td>Recipe Title</td>
+                <td><input class="textarea" type="text" placehodler="Enter recipe title" name="recipeTitle"></td>
+            </tr>
+            <tr>
+                <td># of Servings</td>
+                <td><input class="textarea" type="text" placehodler="Enter # of servings" name="servings"></td>
+            </tr>
+            <tr>
+                <td>Cook Time</td>
+                <td><input class="textarea" type="text" placehodler="Enter estimated time" name="time"></td>
+            </tr>
+            <tr>
+                <td>Ingredients</td>
+                <td><textarea class="textarea" name="ingredients" cols="50" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td>Instructions</td>
+                <td><textarea class="textarea" name="instructions" cols="50" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="reset" value="CLEAR">
+                    <input type="submit" value="SUBMIT">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
