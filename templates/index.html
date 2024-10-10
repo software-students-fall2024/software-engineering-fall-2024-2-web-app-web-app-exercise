@@ -8,9 +8,13 @@
     </head>
     <body>
         <header>
-            <div class="logo">🏋️‍♂️</div>
-
+            <div class="logo">
+                <img src = "{{url_for('static', filename = 'icon.svg')}}" alt = "Icon" width="30" height="30">
+            </div>
+           
+            
         </header>
+
         <div class="main-container">
             <h1>Daily Calories Record</h1>
             <p id="current-day">Date: Monday</p>
@@ -91,10 +95,11 @@
                 </a>
             </div>
         </div>
-        <div class="footer">
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a>
-            <a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a>
-        </div>
+       
     </body>
+    <footer>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a>
+        <a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a>
+    </footer>
 </html>

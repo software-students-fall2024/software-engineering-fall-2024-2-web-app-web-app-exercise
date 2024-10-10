@@ -2,28 +2,51 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
+  
 }
 
 body {
-  font-family: Arial, sans-serif;
+  
+  background-color: hsl(0, 0%, 100%);
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0;
   padding: 0;
+
 }
 
 header {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #333;
+  background-color: #6b63638c;
   color: white;
   padding: 0px;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.search-bar{
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+ 
+  
+
+}
+.search-bar input[type="text"] {
+  width: 300px;
+  padding: 10px; /* Add padding for better appearance */
+  font-size: 16px; /* Increase font size */
+  border: 1px solid black; /* Add a border */
+  border-radius: 5px; /* Optional: add rounded corners */
+  margin-right: 5px; /* Space between input and button */
 }
 
 .logo {
@@ -33,10 +56,11 @@ header {
 .container {
   display: flex;
   flex: 1;
-  overflow: hidden;
-  height: 100%;
+  
+  
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .workout-nav {
@@ -75,9 +99,7 @@ header {
   cursor: pointer;
 }
 
-.category-button:hover {
-  background-color: #ccc;
-}
+
 
 /* Style for equipment menu */
 .equipment-menu {
@@ -97,13 +119,8 @@ header {
   cursor: pointer;
 }
 
-.equipment-button:hover {
-  background-color: #eee;
-}
 
-.workout-nav li:hover {
-  background-color: #ccc;
-}
+
 
 .equipment-menu {
   list-style-type: none;
@@ -144,91 +161,74 @@ header {
   cursor: pointer;
 }
 
-.instruction-group button:hover {
-  background-color: #555;
-}
+
 
 .hidden {
   display: none;
 }
 
-.footer-box {
-  text-align: center;
-  flex: 1;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.footer-box:hover {
-  background-color: #555;
-}
-
-.footer-box a {
-  color: white;
-  text-decoration: none;
-}
-
-.footer-box a:visited {
-  color: #b8b8b8; /* Light grey for visited state */
-}
 
 footer {
   position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: #6b63638c;
   display: flex;
-  background-color: #333;
-  color: white;
   justify-content: space-evenly;
-  padding: 0px;
+  align-items: center;
+  padding: 10px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
+footer a {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+  font-weight: bold;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+
+
 
 /* Mobile Devices */
 @media only screen and (max-width: 767px) {
-  html, body {
-      margin-left: 2%;
-      margin-right: 2%;
+  .search-bar {
+      width: 80%; /* Make the search bar take up most of the screen width */
+      margin: 10px; /* Center the search bar horizontally */
+      padding: 5px;
+      display: flex; /* Keep elements in a row */
+      flex-direction: row; /* Align input and button horizontally */
+      justify-content: space-between; /* Add spacing between the input and button */
+      align-items: center;
   }
 
-  .container {
-      display: flex;
-      width: 100%;
-      flex: 1;
-      margin: 0 auto;
-      padding: 10px;
-      flex-direction: column;
+  .search-bar input[type="text"] {
+    width: 70%;
+      flex: 1; /* Allow the input to take up available space */
+      padding: 10px; /* Adjust padding for better appearance on smaller screens */
+      font-size: 14px; /* Reduce font size for better fit */
+      margin-right: 5px; /* Space between the input and the button */
   }
 
-  .workout-nav {
-      width: 100%;
+  .search-bar button {
+      padding: 8px; /* Adjust padding for consistency */
+      font-size: 14px; /* Adjust font size */
+      flex-shrink: 0; /* Prevent the button from shrinking */
   }
+  header{
+    height: 50px;
+  }
+  footer{
+    
+    height: 50px;
+    font-size: 10px;
+    
 
-  .workout-instructions {
-      width: 100%;
-      margin-top: 20px;
   }
+ 
+ 
 }
 
-/* Tablets */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  html, body {
-      margin-left: 3%;
-      margin-right: 3%;
-  }
 
-  .workout-nav {
-      width: 45%;
-  }
-
-  .workout-instructions {
-      width: 55%;
-  }
-}
-
-/* Larger Screens */
-@media only screen and (min-width: 1025px) {
-  html, body {
-      margin-left: 5%;
-      margin-right: 5%;
-  }
-}
