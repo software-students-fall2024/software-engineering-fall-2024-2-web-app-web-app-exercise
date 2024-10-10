@@ -42,8 +42,13 @@
     </div>
     <div class="container" id="navigation page">
         <!-- Correct the Home and Add Transactions buttons with Flask's url_for function -->
-        <button type="button" onclick="window.location.href='{{ url_for('home') }}';">Home</button>
-        <button type="button" onclick="window.location.href='{{ url_for('add_transaction') }}';">Add Transactions</button>
+        <button type="button" onclick="to('{{ url_for(\'home\')}}')">Home</button>
+        <button type="button" onclick="to('{{ url_for(\'add\') }}')">Add Transactions</button>
     </div>
+    <script>
+        function to(url){
+            window.location.href = url; 
+        }
+    </script>
 </body>
 </html>
