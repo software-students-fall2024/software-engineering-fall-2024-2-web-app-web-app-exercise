@@ -72,7 +72,7 @@ def register():
 def logout():
     # Clear the session data to log the user out
     session.clear()
-    flash("You have been logged out successfully.")
+    #flash("You have been logged out successfully.")
     return redirect(url_for('home'))
 
 
