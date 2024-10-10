@@ -2,7 +2,7 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
-### Project structure (10/8/2024)
+### Project structure (10/10/2024)
 
 ```text
 .
