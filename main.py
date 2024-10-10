@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import pymongo
@@ -23,7 +23,7 @@ def create_app():
     #Home route
     @app.route('/')
     def home():
-        restaurants=db.MONGO_DBNAME.find()
+        restaurants=db.MONGO_DBNAME.find().sort('restaurantName')
         restaurant_list = list(restaurants)
         return render_template('index.html', restaurants=restaurant_list)
 
