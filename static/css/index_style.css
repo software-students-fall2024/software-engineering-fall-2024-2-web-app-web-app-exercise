@@ -7,10 +7,16 @@ body {
     flex-direction: column;
     margin: 0;             
   } 
+
+  .container, .container1, .container3 {
+    max-width: 60%;
+    width: 100%;
+    margin: auto;
+}
   .container {
     font-family: "Roboto Mono", monospace;
     font-optical-sizing: auto;
-    max-width: 600px;
+    
     width: 100%;
     height: auto;
     background-color: #b9b2b28c;
@@ -20,7 +26,7 @@ body {
     text-align: center;
   }
   .container1 {
-      max-width: 600px;
+     
       width: 100%;
       height: auto;
       background-color: #b9b2b28c;
@@ -32,8 +38,8 @@ body {
   }
 
   .container3 {
-      max-width: 600px;
-      width: 600px;
+     
+      
       height: auto;
       background-color: #b9b2b28c;
       padding: 30px;
@@ -117,50 +123,49 @@ body {
       justify-content: space-between; 
       margin: 30px;
       margin-top: 20px;
-      margin-left: -10px;
+      
       color: black;
   }
   h2 {
       font-weight: normal; 
-      margin-left: -430px;
+      
       font-size: 24px; 
   }
   h1 {
       font-weight: bold;
-      margin-bottom: -25px;
-      margin-left: -190px;
+      
   }
   p#current-day {
-    margin-left: -380px;
+    
     font-size: 40px; 
     margin-bottom: 60px;
   }
   .main-container {
     text-align: center;
-    margin-bottom: -30px;
+    
     font-size: 24px; 
-    margin-left: -40px;
+   
   }
   .main1-container {
     font-optical-sizing: auto;
     text-align: center;
-    margin-bottom: -30px;
+    
     margin-left: 20px;
     font-size: 24px; 
   }
   .content-in-box {
     margin-bottom: -10px;
     font-size: 30px; 
-    margin-left: -220px;
+    
   }
   h3 {
       font-weight: normal; 
-      margin-left: -430px;
+      
       font-size: 40px; 
   }
   h4 {
       font-weight: normal; 
-      margin-left: -25px;
+      
       font-size: 40px; 
       margin-top: -16px;
   }
@@ -184,7 +189,7 @@ body {
       text-align: left;
       border-radius: 8px;
       border: 4px solid #ccc;
-      margin-right: -4px;
+     
   }
   
   .bmi-output {
@@ -203,7 +208,7 @@ body {
   .form-row {
       display: flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: left;
       margin-bottom: 10px;
   }
   .form-column {
@@ -211,7 +216,7 @@ body {
   
       align-items: center;
       margin-bottom: 10px;
-      margin-left: -230px;
+      
   }
   
   .equals {
@@ -250,34 +255,38 @@ body {
       margin-right: 8px;
   }
   footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #6b63638c;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      padding: 10px 0;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #6b63638c;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
   footer a {
-      text-decoration: none;
-      color: black;
-      
-      padding: 10px 20px;
-      background-color: #ffffff;
-      border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
   }
   
   @media only screen and (max-width: 767px){
+
     header{
         height: 50px;
+       
       }
     footer{
         
         height: 50px;
         font-size: 10px;
-        
+        position: sticky;
     
     }
+
   }

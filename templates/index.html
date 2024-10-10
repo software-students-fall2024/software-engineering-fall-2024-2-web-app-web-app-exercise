@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Protest+Strike&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -19,7 +22,7 @@
             <h1>Daily Calories Record</h1>
             <p id="current-day">Date: Monday</p>
         </div>
-        <div class="container">
+        <div class="container" href="{{url_for('food_calories')}}" >
             <h2 class="content-in-box">Daily value: <span>0</span> /--cal</h2>
             <div class="textbox-container">
                 <a class="textbox">Protein</a>
@@ -27,7 +30,7 @@
                 <a class="textbox2">Fats</a>
                 <a class="textbox3">Water</a>   
             </div>
-            <a href="foodInstruction.html" class="text" style="display: block; text-align: right; margin-right: 20px;"><strong>Enter your Intake Food</strong></a>
+            <a class="text" style="display: block; text-align: right; margin-right: 20px;"><strong>Enter your Intake Food</strong></a>
         </div>
         <script>
             function calculateBMI() {
