@@ -26,7 +26,9 @@
                         <p><strong>Description:</strong> {{ event.description }}</p>
                         <p><strong>Date:</strong> {{ event.date }}</p>
                         <p><strong>Location:</strong> {{ event.location }}</p>
-                    </div>
+                        <a href="{{ url_for('rsvp_page', event_id=event['_id']) }}"><button>RSVP</button></a>
+
+            </div>
                 </details>
             {% endfor %}
             </ul>
@@ -34,6 +36,8 @@
             <p>No events found.</p>
         {% endif %}
         
+    <a href="{{ url_for('rsvp_list') }}"><button>Your RSVPs</button></a>
+
         <a href="{{ url_for('create_event') }}"><button>Create Event</button></a>
         <a href="{{ url_for('logout') }}"><button>Logout</button></a>
     </div>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from bson.objectid import ObjectId
 import bcrypt
 import os
 
@@ -114,6 +115,60 @@ def create_event():
         return redirect(url_for('home'))
 
     return render_template('create_event.html')
+
+@app.route('/rsvp/<event_id>', methods=['GET'])
+def rsvp_page(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    # Find the event using events_collection (corrected)
+    event = events_collection.find_one({'_id': ObjectId(event_id)})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('home_feed'))
+
+    return render_template('rsvp_page.html', event=event)
+
+@app.route('/rsvp/<event_id>', methods=['POST'])
+def rsvp_event(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user = collection.find_one({'username': session['username']})
+    event = events_collection.find_one({'_id': ObjectId(event_id)})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('home_feed'))
+
+    # Add event to user's RSVP'd events
+    if 'rsvped_events' not in user:
+        user['rsvped_events'] = []
+
+    if event_id not in user['rsvped_events']:
+        collection.update_one({'_id': user['_id']}, {'$push': {'rsvped_events': event_id}})
+        flash(f"RSVP confirmed for {event['title']}.")
+    else:
+        flash("You have already RSVP'd for this event.")
+
+    # Redirect to the RSVPed events page
+    return redirect(url_for('rsvp_list'))
+
+@app.route('/rsvped_events')
+def rsvp_list():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user = collection.find_one({'username': session['username']})
+
+    # Get the list of event IDs the user has RSVPed for
+    rsvped_event_ids = user.get('rsvped_events', [])
+    
+    # Fetch all events corresponding to the IDs
+    rsvped_events = [events_collection.find_one({'_id': ObjectId(event_id)}) for event_id in rsvped_event_ids]
+
+    return render_template('rsvped_events.html', events=rsvped_events)
 
 
 if __name__ == "__main__":

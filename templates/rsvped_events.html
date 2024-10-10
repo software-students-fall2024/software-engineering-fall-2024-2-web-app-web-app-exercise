@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your RSVPed Events</title>
+</head>
+<body>
+    <h1>Your RSVPed Events</h1>
+
+    {% if events %}
+        <ul>
+        {% for event in events %}
+            <li>
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>Date: {{ event.date }}</p>
+                <p>Location: {{ event.location }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't RSVPed for any events yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home_feed') }}"><button>Back to Home Feed</button></a>
+</body>
+</html>
