@@ -20,15 +20,16 @@ A little exercise to build a web application following an agile development proc
 ├── instructions.md
 ├── requirements.txt
 ├── static
+│   ├── add-button.png
 │   └── css
+│       ├── index_style.css
+│       ├── my_weekly_report_style.css
 │       └── style.css
 ├── templates
-│   ├── add-button-with-plus-symbol-in-a-black-circle.png
 │   ├── details.html
 │   ├── index.html
 │   ├── my_weekly_report.html
 │   ├── script.js
-│   ├── style.css
 │   ├── workout_instruction.html
 │   └── workout_plan.html
 └── utils
