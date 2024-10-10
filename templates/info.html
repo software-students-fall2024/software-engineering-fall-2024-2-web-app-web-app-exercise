@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <head>
+        <h1>Record Info</h1>
+    </head>
+    <body>
+        <h1>Record Information</h1>
+        <nav>
+            <a href="{{url_for('edit',post_id=doc._id)}}">Edit</a> | <a href="{{url_for('delete',post_id=doc._id)}}">Delete</a>
+        </nav>
+        <p>
+            {{doc.job_title}}
+        </p>
+        <p>
+            {{doc.company}}
+        </p>
+        <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+    </body>
+</html>

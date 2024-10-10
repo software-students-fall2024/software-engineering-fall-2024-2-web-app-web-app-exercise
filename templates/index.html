@@ -9,7 +9,7 @@
             {% for doc in docs%}
             <article>
                 <nav>
-                    <a href="{{url_for('edit',post_id=doc._id)}}">Edit</a> | <a href="{{url_for('delete',post_id=doc._id)}}">Delete</a>
+                    <a href='{{url_for('info',post_id=doc._id)}}'>More Info</a>
                 </nav>
                 <p>
                     {{doc.job_title}}

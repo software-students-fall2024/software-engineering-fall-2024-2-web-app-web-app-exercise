@@ -62,6 +62,20 @@ def create_app():
         }
         db.messages.insert_one(doc)
         return redirect(url_for("home"))
+    @app.route('/info/<post_id>')
+    def info(post_id):
+        """
+        Route for GET requests
+        Shows the specific info of the record
+
+        Args:
+            post_id (str): the ID of the record to see the specific info
+
+        Returns:
+            render_template(str): The rendered HTML template.
+        """
+        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        return render_template('info.html',doc=doc);
     @app.route('/edit/<post_id>')
     def edit(post_id):
         """
