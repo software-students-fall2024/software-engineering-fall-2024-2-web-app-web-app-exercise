@@ -56,9 +56,17 @@ def create_app():
         
         job_title = request.form["job title"]
         company = request.form["company"]
+        location = request.form["location"]
+        link = request.form["link"]
+        stage = request.form["stage"]
+        time = request.form["time"]
         doc = {
             "job_title": job_title,
             "company": company,
+            "location": location,
+            "link": link,
+            "stage": stage,
+            "time": time
         }
         db.records.insert_one(doc)
         return redirect(url_for("home"))
@@ -69,7 +77,7 @@ def create_app():
         Shows the specific info of the record
 
         Args:
-            post_id (str): the ID of the record to see the specific info
+            record_id (str): the ID of the record to see the specific info
 
         Returns:
             render_template(str): The rendered HTML template.
@@ -82,7 +90,7 @@ def create_app():
         Route for GET requests to the edit page
         Displays a form users can fill out to edit an existing record
         Args:
-            post_id (str): The ID of the post to edit
+            record_id (str): The ID of the record to edit
         Returns:
             rendered template (str): The rendered HTML template.
         """
@@ -93,16 +101,24 @@ def create_app():
         """
         Route for POST requests to the edit page
         Args:
-            post_id (str): The ID of the post edited
+            record_id (str): The ID of the record edited
 
         Returns:
             redirect (Response): a redirect response to the home page
         """
         job_title = request.form["job title"]
         company = request.form["company"]
+        location = request.form["location"]
+        link = request.form["link"]
+        stage = request.form["stage"]
+        time = request.form["time"]
         doc = {
             "job_title": job_title,
             "company": company,
+            "location": location,
+            "link": link,
+            "stage": stage,
+            "time": time
         }
         db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
         return redirect(url_for("home"))
@@ -112,7 +128,7 @@ def create_app():
         Route for GET requests to the delete page.
         Deletes the specified record from the database, and then redirects the browser to the home page.
         Args:
-            post_id (str): The ID of the post to delete
+            record_id (str): The ID of the record to delete
         Returns:
             redirect (Response): a redirect response to the home page
         """
@@ -137,7 +153,7 @@ def create_app():
         """
         job_title = request.form["job title"]
         docs = db.records.find({"job_title":job_title})
-        return render_template("result.html",docs=docs)
+        return render_template("result.html",docs=docs,count=len(list(docs)))
     return app
 
 if __name__ == '__main__':

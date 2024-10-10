@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <h1>Search Records</h1>
+        <title>Search Page</title>
     </head>
     <body>
-        <form method="POST" action="{{url_for('search_post')}}">
-            <input type="text" name="job title" placeholder="job title">
-            <button type="submit">Search</button>
-        </form>
-        <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+        <header>
+            <h1>Search</h1>
+        </header>
+        <main>
+            <form method="POST" action="{{url_for('search_post')}}">
+                <input type="text" name="job title" placeholder="job title">
+                <button type="submit">Search</button>
+            </form>
+        </main>
+        <footer>
+            <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+        </footer>
     </body>
 </html>
