@@ -6,10 +6,17 @@ import flask
 import flask_login
 from src.models.user import user_loader, request_loader
 from src.models.user import User
-from src.models.boards import get_boards_by_user
+from src.models.boards import get_boards_by_user, delete_board
 
+@flask_login.login_required
 @routes.route('/profile', methods=["GET", "POST"])
 def home():
-    boards = get_boards_by_user(flask_login.current_user.email)
-    boards = boards.to_list()
-    return(render_template('profile.html', username=flask_login.current_user.username, boards=boards))
+        if flask.request.method == 'POST':    
+            if 'delete' in flask.request.form:
+                delete_board(flask.request.form['delete'])
+        try:
+            boards = get_boards_by_user(flask_login.current_user.email)
+            boards = boards.to_list()
+        except:
+            return flask.redirect('/login')
+        return(render_template('profile.html', username=flask_login.current_user.username, boards=boards))

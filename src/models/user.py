@@ -37,4 +37,3 @@ def request_loader(request):
     user = User()
     user.id = email
     return user
-
