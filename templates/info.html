@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <h1>Record Info</h1>
+        <title>Info Page</title>
     </head>
     <body>
-        <h1>Record Information</h1>
-        <nav>
-            <a href="{{url_for('edit',record_id=doc._id)}}">Edit</a> | <a href="{{url_for('delete',record_id=doc._id)}}">Delete</a>
-        </nav>
-        <p>
-            {{doc.job_title}}
-        </p>
-        <p>
-            {{doc.company}}
-        </p>
-        <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+        <header>
+            <h1>Specific Information</h1>
+        </header>
+        <main>
+            <p>Job Title: {{doc.job_title}}</p>
+            <p>Company: {{doc.company}}</p>
+            <p>Location: {{doc.location}}</p>
+            <p>Link: {{doc.link}}</p>
+            <p>Stage: {{doc.stage}}</p>
+            <p>Time/DDL: {{doc.time}}</p>
+        </main>
+        <footer>
+            <nav>
+                <a href="{{url_for('edit',record_id=doc._id)}}">Edit</a> | <a href="{{url_for('delete',record_id=doc._id)}}">Delete</a> | <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+            </nav>
+        </footer>
     </body>
 </html>

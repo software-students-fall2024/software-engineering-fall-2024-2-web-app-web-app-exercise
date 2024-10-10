@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <h1>home page</h1>
+        <title>Home Page</title>
     <head>
-    <div>
-        <body>
+    <body>
+        <header>
+            <h1>To Do</h1>
+        </header>
+        <main>
             <a href="{{url_for('add_post')}}">Add</a>
             <a href='{{url_for('search')}}'>Search</a>
             {% for doc in docs%}
@@ -12,14 +15,12 @@
                 <nav>
                     <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
                 </nav>
-                <p>
-                    {{doc.job_title}}
-                </p>
-                <p>
-                    {{doc.company}}
-                </p>
+                <p>Job Title: {{doc.job_title}}</p>
+                <p>Company: {{doc.company}}</p>
             </article>
             {%endfor%}
-        </body>
-    </div>
+        </main>
+        
+    </body>
+    
 </html>
