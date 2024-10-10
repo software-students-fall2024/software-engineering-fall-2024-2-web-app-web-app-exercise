@@ -11,9 +11,13 @@
     <div class="container">
         <h1>Welcome, {{ username }}!</h1>
         
-        <div class="search-filter">
-            <input type="text" placeholder="Search:" id="search" name="search">
-        </div>
+        <form method="GET" action="{{ url_for('home_feed') }}" class="search-container">
+            <div class="search-filter">
+                <input type="text" placeholder="Search:" id="search" name="search" value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="search-button">Search</button>
+            </div>
+            
+        </form>
 
         <p>Browse the latest events:</p>
 
@@ -36,8 +40,7 @@
             <p>No events found.</p>
         {% endif %}
         
-    <a href="{{ url_for('rsvp_list') }}"><button>Your RSVPs</button></a>
-
+        <a href="{{ url_for('rsvp_list') }}"><button>Your RSVPs</button></a>
         <a href="{{ url_for('create_event') }}"><button>Create Event</button></a>
         <a href="{{ url_for('logout') }}"><button>Logout</button></a>
     </div>
