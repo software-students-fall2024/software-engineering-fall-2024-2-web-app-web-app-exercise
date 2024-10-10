@@ -88,6 +88,33 @@ def home_feed():
         # Redirect to the login page if the user is not authenticated
         return redirect(url_for('login'))
 
+@app.route('/create_event', methods=['GET', 'POST'])
+def create_event():
+    if 'username' not in session:
+        flash("You need to be logged in to create an event.")
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        date = request.form['date']
+        location = request.form['location']
+        creator = session['username']  # Get the username of the logged-in user
+
+        # Insert the new event into the database
+        events_collection.insert_one({
+            "title": title,
+            "description": description,
+            "date": date,
+            "location": location,
+            "creator": creator  # Add the creator to the event data
+        })
+
+        flash("Event created successfully!")
+        return redirect(url_for('home'))
+
+    return render_template('create_event.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
