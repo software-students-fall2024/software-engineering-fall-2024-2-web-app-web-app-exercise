@@ -8,7 +8,6 @@ class Board():
         self.pedals = pedals
         self.name = name
 
-
 def get_boards_by_user(email:str):
     boards = get_db().boards
     return boards.find({"user":email})
