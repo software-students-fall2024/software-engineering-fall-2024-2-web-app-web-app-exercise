@@ -32,7 +32,7 @@ def create_app():
         Returns: 
             rendered template (str): The rendered HTML template.
         """
-        docs = db.messages.find()
+        docs = db.records.find()
         return render_template("index.html",docs=docs)
     
     @app.route('/add')
@@ -51,7 +51,7 @@ def create_app():
         Route for POST requests
         Accepts the new job application and save it to the database
         Returns:
-            _type_: _description_
+            redirect (Response): a redirect response to the home page
         """
         
         job_title = request.form["job title"]
@@ -60,10 +60,10 @@ def create_app():
             "job_title": job_title,
             "company": company,
         }
-        db.messages.insert_one(doc)
+        db.records.insert_one(doc)
         return redirect(url_for("home"))
-    @app.route('/info/<post_id>')
-    def info(post_id):
+    @app.route('/info/<record_id>')
+    def info(record_id):
         """
         Route for GET requests
         Shows the specific info of the record
@@ -74,10 +74,10 @@ def create_app():
         Returns:
             render_template(str): The rendered HTML template.
         """
-        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        doc = db.records.find_one({"_id": ObjectId(record_id)})
         return render_template('info.html',doc=doc);
-    @app.route('/edit/<post_id>')
-    def edit(post_id):
+    @app.route('/edit/<record_id>')
+    def edit(record_id):
         """
         Route for GET requests to the edit page
         Displays a form users can fill out to edit an existing record
@@ -86,10 +86,10 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        doc = db.records.find_one({"_id": ObjectId(record_id)})
         return render_template("edit.html",doc=doc)
-    @app.route('/edit/<post_id>',methods=["POST"])
-    def edit_post(post_id):
+    @app.route('/edit/<record_id>',methods=["POST"])
+    def edit_post(record_id):
         """
         Route for POST requests to the edit page
         Args:
@@ -104,10 +104,10 @@ def create_app():
             "job_title": job_title,
             "company": company,
         }
-        db.messages.update_one({"_id": ObjectId(post_id)},{"$set": doc})
+        db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
         return redirect(url_for("home"))
-    @app.route("/delete/<post_id>")
-    def delete(post_id):
+    @app.route("/delete/<record_id>")
+    def delete(record_id):
         """
         Route for GET requests to the delete page.
         Deletes the specified record from the database, and then redirects the browser to the home page.
@@ -116,8 +116,28 @@ def create_app():
         Returns:
             redirect (Response): a redirect response to the home page
         """
-        db.messages.delete_one({"_id": ObjectId(post_id)})
+        db.records.delete_one({"_id": ObjectId(record_id)})
         return redirect(url_for("home"))
+    @app.route("/search")
+    def search():
+        """
+        Route for GET requests to the search page.
+        Searchs the certain records based on the user's inputs
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+        return render_template("search.html")
+    @app.route("/search_post",methods=["POST"])
+    def search_post():
+        """
+        Route for POST requests to the result page
+        Shows the result of the user's search
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+        job_title = request.form["job title"]
+        docs = db.records.find({"job_title":job_title})
+        return render_template("result.html",docs=docs)
     return app
 
 if __name__ == '__main__':
