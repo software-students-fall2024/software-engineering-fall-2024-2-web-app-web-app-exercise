@@ -21,6 +21,10 @@ def create_board(user:str, name:str):
     return boards.insert_one({"user": user, "name": name})
 
 def delete_board(id: str):
-    print(str)
     boards = get_db().boards
     return boards.delete_one( {"_id": ObjectId(id)})
+
+def duplicate_board(id: str):
+    boards = get_db().boards
+    original_board = boards.find_one({"_id": ObjectId(id)})
+    return boards.insert_one({"user": original_board['user'] , "name": original_board['name'] + " - Copy", "pedals": original_board['pedals']})
