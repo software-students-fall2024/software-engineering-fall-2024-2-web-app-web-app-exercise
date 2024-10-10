@@ -10,6 +10,13 @@
 <body>
     <header>
         <div class="logo">🏋️‍♂️</div>
+        <!-- add search bar here -->
+        <div class="search-bar">
+            <form action="{{ url_for('search_exercise') }}" method="POST">
+                <input type="text" name="query" placeholder="Search for a workout..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
     </header>
     <div class="container">
         <!-- Categories Navigation -->
@@ -29,14 +36,16 @@
         <!-- Workout Instructions Section -->
         <section class="workout-instructions">
           <h2>
-              {% if selected_category %}
-                  Workouts for Category: {{ selected_category }}
-                  {% if selected_equipment %}
-                      (Equipment: {{ selected_equipment }})
-                  {% endif %}
-              {% else %}
-                  All Workouts
-              {% endif %}
+            {% if search_query %}
+                Search results for: "{{ search_query }}"
+            {% elif selected_category %}
+                Workouts for Category: {{ selected_category }}
+                {% if selected_equipment %}
+                    (Equipment: {{ selected_equipment }})
+                {% endif %}
+            {% else %}
+                All Workouts
+            {% endif %}
           </h2>
           <div class="card-deck" style="max-height: 700px; overflow-y: auto;">
               {% for workout in workouts %}

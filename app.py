@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from Models import User, Nutrition
 from bson.objectid import ObjectId
+from fuzzywuzzy import fuzz
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory
 
@@ -72,7 +73,7 @@ def show_workout_instruction():
     else:
         exercises = exercise_collection.find()
         selected_category = None
-   
+
     workouts = [
         {
             "id": str(exercise["_id"]),
@@ -116,22 +117,33 @@ def show_my_weekly_report():
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
 
 # endpoint search exercise (workout instruction action) by name
-@app.route("/api/exercises/search", methods=["GET"])
+@app.route("/api/exercises/search", methods=["GET", "POST"])
 def search_exercise():
-    # request.args is used to access the query parameters
-    query = request.args.get("query", "")
+    if request.method == "POST":
+        # request.args is used to access the query parameters
+        query = request.form.get("query", "")
 
-    if query:
-        # perform a search in mongodb 'exercise' collection based on query
-        # $option: 'i' to search name in case insensitive
-        exercises = exercise_collection.find({
-            "name": {"$regex": query, "$option": "i"}
-            })
+        if query:
+            all_exercises = list(exercise_collection.find())
+            exercises = [exercise for exercise in all_exercises if fuzz.partial_ratio(query.lower(), exercise["name"].lower()) > 70]
+
+            workouts = [
+                {
+                    "id": str(exercise["_id"]),
+                    "name": exercise["name"],
+                    "gif_path": exercise.get("gif_path", ""),
+                    "target_muscle": exercise.get("target_muscle", ""),
+                    "instructions": exercise.get("instructions", [])
+                } 
+                for exercise in exercises
+            ]
+
+            # return the result list of dictionaries for use
+            return render_template("workout_instruction.html", categories=exercise_collection.distinct("categories")
+            , workouts=workouts, search_query=query)
     
-        result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
-        return jsonify(result)
-    
-    return jsonify([]) # empty if no query
+    # return an empty form with all workouts
+    return redirect(url_for("show_workout_instruction"))
 
 # endpoint for exercise by category (on click categories side-bar)
 @app.route("/api/exercises/category/<category>", methods=["GET"])
