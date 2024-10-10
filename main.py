@@ -10,8 +10,10 @@ db = client["RecipeCluster"]
 
 #Home route
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    recipes=db.RecipeCluster.find()
+    recipe_list = list(recipes)
+    return render_template('index.html', recipes=recipe_list)
 
 #Add data route
 @app.route('/add')
@@ -32,13 +34,6 @@ def edit():
 @app.route('/search')
 def search():
     return render_template('search.html')
-
-#View all data route
-@app.route('/view')
-def view():
-    recipes=db.RecipeCluster.find()
-    recipe_list = list(recipes)
-    return render_template('view.html', recipes=recipe_list)
 
 #Handle add data form
 @app.route('/addData', methods=['POST'])

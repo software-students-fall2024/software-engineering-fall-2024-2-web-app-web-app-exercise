@@ -1,54 +1,30 @@
-<!DOCTYPE html>
-<html>
-    <link rel="stylesheet" href="static/styles.css">
-    <head>
-        <title>Welcome!</title>
-    </head>
-
-    <body>
-        <div id="wrap">
-            <header>
-                <h1>Search Recipes</h1>
-                <nav>
-                    <a href="{{ url_for('index') }}">Home</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('view') }}">View All Recipes</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('search') }}"><b>Search Recipes</b></a>&nbsp;&nbsp;
-                    <a href="{{ url_for('add') }}">Add a Recipe</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('edit') }}">Edit a Recipe</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('delete') }}">Delete a Recipe</a>
-                </nav>
-            </header>
-
-            <section id="mainArea">
-                <form action="{{ url_for('search') }}" method="post" onsubmit="submitForm(event)">
-                    <table width="100%" border="1">
-                        <tbody>
-                            <tr>
-                                <td colspan="2"><b>Search Recipes</b></td>
-                            </tr>
-                            <tr>
-                                <td>Recipe Title</td>
-                                <td>
-                                    <input class="textarea" type="text" placeholder="Search..." name="recipeTitle">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Recipe Author</td>
-                                <td>
-                                    <input class="textarea" type="text" placeholder="Search..." name="recipeAuthor">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: center;">
-                                    <input type="submit" value="Search">
-                                    <input type="reset" value="Clear">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </section>            
-            </div>
-        </div>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block container %}
+<form action="{{ url_for('search') }}" method="post" onsubmit="submitForm(event)">
+    <table width="100%" border="1">
+        <tbody>
+            <tr>
+                <td colspan="2"><b>Search Recipes</b></td>
+            </tr>
+            <tr>
+                <td>Recipe Title</td>
+                <td>
+                    <input class="textarea" type="text" placeholder="Search..." name="recipeTitle">
+                </td>
+            </tr>
+            <tr>
+                <td>Recipe Author</td>
+                <td>
+                    <input class="textarea" type="text" placeholder="Search..." name="recipeAuthor">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="submit" value="Search">
+                    <input type="reset" value="Clear">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}

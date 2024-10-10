@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>GoodEats</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/styles.css') }}"
+        />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a id="logo" href="{{ url_for('home')}}">GoodEats</a>
+                <ul>
+                    <li><a href="{{ url_for('search')}}">Search</a></li>
+                    <li><a href="{{ url_for('add')}}">Add Restaurant</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="wrapper">
+            {% block container %} {% endblock %}
+        </main>
+        <footer>
+            <p>&copy; 2024. GoodEats</p>
+        </footer>
+    </body>
+</html>

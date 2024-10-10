@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <link rel="stylesheet" href="static/styles.css">
-    <head>
-        <title>Welcome!</title>
-    </head>
+{% extends 'base.html' %}
+{% block container %}
 
-    <body>
-        <div id="wrap">
-            <header>
-                <h1>Edit a Recipe</h1>
-                <nav>
-                    <a href="{{ url_for('index') }}">Home</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('view') }}">View All Recipes</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('search') }}">Search Recipes</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('add') }}">Add a Recipe</a>&nbsp;&nbsp;
-                    <a href="{{ url_for('edit') }}"><b>Edit a Recipe</b></a>&nbsp;&nbsp;
-                    <a href="{{ url_for('delete') }}">Delete a Recipe</a>
-                </nav>
-            </header>
-
-            
-        </div>
-    </body>
-</html>
+{% endblock %}
