@@ -21,8 +21,9 @@ client = MongoClient(MONGO_URI)
 # Define your database
 db = client["occasio"]
 
-# Define a test collection
+# Define collections
 collection = db["users"]
+events_collection = db["events"]
 
 @app.route('/')
 def home():
@@ -72,18 +73,21 @@ def register():
 def logout():
     # Clear the session data to log the user out
     session.clear()
-    #flash("You have been logged out successfully.")
     return redirect(url_for('home'))
 
 
 @app.route('/home_feed')
 def home_feed():
     if 'username' in session:
-        # Render the home feed page for authenticated users
-        return render_template('home_feed.html', username=session['username'])
+        # Fetch all events from the MongoDB events collection
+        events = list(events_collection.find())
+
+        # Render the home feed page for authenticated users with events
+        return render_template('home_feed.html', username=session['username'], events=events)
     else:
         # Redirect to the login page if the user is not authenticated
         return redirect(url_for('login'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
