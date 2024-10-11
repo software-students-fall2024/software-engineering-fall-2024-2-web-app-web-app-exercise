@@ -5,7 +5,6 @@ from bson.objectid import ObjectId
 import os
 load_dotenv()
 
-
 def create_app():
     """
     Create and configure the Flask application
@@ -153,7 +152,8 @@ def create_app():
         """
         job_title = request.form["job title"]
         docs = db.records.find({"job_title":job_title})
-        return render_template("result.html",docs=docs,count=len(list(docs)))
+        docs_list = list(docs)
+        return render_template("result.html",docs=docs_list,count=len(docs_list))
     return app
 
 if __name__ == '__main__':
