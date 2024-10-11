@@ -11,7 +11,13 @@
     <main>
         <form method="POST" action="{{url_for('search_post')}}">
             <input type="text" name="job title" placeholder="job title">
+            <br/>
+            <input type="text" name="company" placeholder="company">
+            <br/>
+            <input type="text" name="location" placeholder="location">
+            <br/> 
             <button type="submit">Search</button>
+            <br/>
         </form>
     </main>
 {% endblock %}

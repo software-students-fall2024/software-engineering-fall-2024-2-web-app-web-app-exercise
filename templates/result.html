@@ -7,17 +7,30 @@
     {% include "components/back-link.html" %}
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
     <main>
         {% if count==0 %}
             <p>No records found.</p>
         {% else %}
-            {% for doc in docs%}
-            <article>
-                <p>Job Title: {{doc.job_title}}</p>
-                <p>Company: {{doc.company}}</p>
-            </article>
-            {%endfor%}
+            <section className="job-list">
+                {% for doc in docs%}
+                    <article class="job-entry">
+                        <div class="job-text">
+                            <p>Job Title: {{doc.job_title}}</p>
+                            <p>Company: {{doc.company}}</p>
+                            <p>Location: {{doc.location}}</p>
+                            <p>Link: {{doc.link}}</p>
+                            <p>Stage: {{doc.stage}}</p>
+                            <p>Time/DDL: {{doc.time}}</p>
+                        </div>
+                    </article>
+                {%endfor%}
+            </section>
+            
         {% endif %}
     </main>
     <footer>
