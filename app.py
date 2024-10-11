@@ -316,6 +316,7 @@ def create_app():
         job_title = request.form["job title"]
         company_name = request.form["company"]
         location_name = request.form["location"]
+        ddl_date = request.form["time"]
 
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
@@ -325,7 +326,13 @@ def create_app():
             search_criteria['company'] = company_name
         if location_name and location_name.strip():  # Check if location is not empty
             search_criteria['location'] = location_name
-
+        if ddl_date and ddl_date.strip():  # Check if location is not empty
+            search_criteria['time'] = ddl_date
+            if validate_date(ddl_date)== False:
+            # Insert data into MongoDB
+                flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+                return search()
+        
      #   docs = db.records.find({"job_title":job_title, "company":company_name})#
         docs = db.records.find(search_criteria)
         docs_list = list(docs)
