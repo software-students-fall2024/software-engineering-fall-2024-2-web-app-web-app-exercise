@@ -5,7 +5,7 @@
 }
 
 .base-header {
-    background-color: lightblue;
+    background-color: rgb(52, 186, 231);
     border: 2px solid black;
     display: flex;
     justify-content: center;
