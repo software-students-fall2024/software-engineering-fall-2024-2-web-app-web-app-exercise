@@ -7,6 +7,10 @@
     {% include "components/back-link.html" %}
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
+{% endblock %}
+
 {% block content %}
     <form method="POST" action="{{url_for('signup_post')}}">
         <label for="usernameInput">Username:</label>
