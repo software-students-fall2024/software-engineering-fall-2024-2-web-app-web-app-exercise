@@ -5,33 +5,25 @@ from bson.objectid import ObjectId
 import bcrypt
 import os
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['SESSION_PERMANENT'] = False
 
-# Fetch the MongoDB URI from .env file
 MONGO_URI = os.getenv('MONGO_URI')
 
-# Establish MongoDB connection using PyMongo
 client = MongoClient(MONGO_URI)
 
-# Define your database
 db = client["occasio"]
 
-# Define collections
 collection = db["users"]
 events_collection = db["events"]
 
 @app.route('/')
 def home():
     if 'username' in session:
-        # If the user is already authenticated, redirect them to the home feed
         return redirect(url_for('home_feed'))
-    # Render the welcome page with buttons for login and register
     return render_template('welcome.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -40,11 +32,10 @@ def login():
         username = request.form['username']
         password = request.form['password'].encode('utf-8')
 
-        # Check if user exists
         user = collection.find_one({"username": username})
         if user and bcrypt.checkpw(password, user['password']):
             session['username'] = username
-            session.permanent = False  # Session expires when the browser closes
+            session.permanent = False  
             return redirect(url_for('home_feed'))
         else:
             flash("Invalid username or password. Please try again.")
@@ -58,11 +49,9 @@ def register():
         username = request.form['username']
         password = request.form['password'].encode('utf-8')
 
-        # Check if user already exists
         if collection.find_one({"username": username}):
             flash("Username already exists. Please choose a different one.")
         else:
-            # Hash the password before saving it to the database
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
             collection.insert_one({"username": username, "password": hashed_password})
             flash("Registration successful! Please log in.")
@@ -72,26 +61,21 @@ def register():
 
 @app.route('/logout')
 def logout():
-    # Clear the session data to log the user out
     session.clear()
     return redirect(url_for('home'))
 
 @app.route('/home_feed', methods=['GET'])
 def home_feed():
     if 'username' in session:
-        # Get the search query from the request
         search_query = request.args.get('search', '')
 
-        # Build the query to search for events by title (case-insensitive)
         if search_query:
             query = {"title": {"$regex": search_query, "$options": "i"}}
         else:
-            query = {}  # No search, fetch all events
+            query = {}  
 
-        # Fetch events from MongoDB based on the query
         events = list(events_collection.find(query))
 
-        # Render the home feed page with the search results
         return render_template('home_feed.html', username=session['username'], events=events)
     else:
         return redirect(url_for('login'))
@@ -107,19 +91,17 @@ def create_event():
         description = request.form['description']
         date = request.form['date']
         location = request.form['location']
-        creator = session['username']  # Get the username of the logged-in user
+        creator = session['username']  
 
-        # Insert the new event into the database
         event_id = events_collection.insert_one({
             "title": title,
             "description": description,
             "date": date,
             "location": location,
-            "creator": creator,  # Add the creator to the event data
-            "attendees": []  # Initialize the attendees list
+            "creator": creator, 
+            "attendees": []  
         }).inserted_id
 
-        # Update the user's document to include the created event
         collection.update_one(
             {"username": creator},
             {"$push": {"created_events": event_id}}
@@ -135,7 +117,6 @@ def rsvp_page(event_id):
     if 'username' not in session:
         return redirect(url_for('login'))
     
-    # Find the event using events_collection (corrected)
     event = events_collection.find_one({'_id': ObjectId(event_id)})
 
     if not event:
@@ -156,12 +137,10 @@ def rsvp_event(event_id):
         flash("Event not found.")
         return redirect(url_for('home_feed'))
 
-    # Ensure the 'attendees' field exists in the event document
     if 'attendees' not in event:
         event['attendees'] = []
         events_collection.update_one({'_id': event['_id']}, {'$set': {'attendees': event['attendees']}})
 
-    # Add event to user's RSVP'd events
     if 'rsvped_events' not in user:
         user['rsvped_events'] = []
 
@@ -173,7 +152,6 @@ def rsvp_event(event_id):
     else:
         flash("You have already RSVP'd for this event.")
 
-    # Redirect to the RSVPed events page
     return redirect(url_for('rsvp_list'))
 
 @app.route('/rsvped_events')
@@ -183,10 +161,8 @@ def rsvp_list():
 
     user = collection.find_one({'username': session['username']})
 
-    # Get the list of event IDs the user has RSVPed for
     rsvped_event_ids = user.get('rsvped_events', [])
     
-    # Fetch all events corresponding to the IDs
     rsvped_events = [events_collection.find_one({'_id': ObjectId(event_id)}) for event_id in rsvped_event_ids]
 
     return render_template('rsvped_events.html', events=rsvped_events)
