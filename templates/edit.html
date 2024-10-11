@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Edit Page</title>
-    <head>
-    <body>
-        <header>
-            <h1>Edit Job Information</h1>
-        <header>
-        <main>
-            <form method="POST" action="{{url_for('edit_post',record_id=doc._id)}}">
-                <label for="titleInput">Job Title:</label>
-                <input type="text" id="titleInput" name="job title" value="{{doc.job_title}}"/>
-                <br/>
-                <label for="companyInput">Company:</label>
-                <input type="text" id="companyInput" name="company" value="{{doc.company}}"/>
-                <br/>
-                <label for="locationInput">Location:</label>
-                <input type="text" id="locationInput" name="location" value="{{doc.location}}"/>
-                <br/>
-                <label for="linkInput">Link (to the job description):</label>
-                <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
-                <br/>
-                <label for="stageInput">Stage:</label>
-                <input type="text" id="stageInput" name="stage" value="{{doc.stage}}"/>
-                <br/>
-                <label for="timeInput">Time/DDL:</label>
-                <input type="text" id="timeInput" name="time" value="{{doc.time}}"/>
-                <br/>
-                <input type="submit" value="Save"/>
-            </form>
-        </main>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Edit Page{% endblock %}
+
+{% block header %}
+    <h1>Edit Job Information</h1>
+    {% include "components/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{{url_for('edit_post',record_id=doc._id)}}">
+        <label for="titleInput">Job Title:</label>
+        <input type="text" id="titleInput" name="job title" value="{{doc.job_title}}"/>
+        <br/>
+        <label for="companyInput">Company:</label>
+        <input type="text" id="companyInput" name="company" value="{{doc.company}}"/>
+        <br/>
+        <label for="locationInput">Location:</label>
+        <input type="text" id="locationInput" name="location" value="{{doc.location}}"/>
+        <br/>
+        <label for="linkInput">Link (to the job description):</label>
+        <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
+        <br/>
+        <label for="stageInput">Stage:</label>
+        <input type="text" id="stageInput" name="stage" value="{{doc.stage}}"/>
+        <br/>
+        <label for="timeInput">Time/DDL:</label>
+        <input type="text" id="timeInput" name="time" value="{{doc.time}}"/>
+        <br/>
+        <input type="submit" value="Save"/>
+    </form>
+{% endblock %}
