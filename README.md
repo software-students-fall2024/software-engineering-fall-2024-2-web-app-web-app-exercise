@@ -18,7 +18,7 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+run `python app.py` in your .venv folder
 
 ## Task boards
 

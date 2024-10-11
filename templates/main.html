@@ -1,0 +1,61 @@
+{% extends 'base.html' %}{% block container %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
+
+  .header div {
+    font-size: 14px;
+  }
+
+  .nav {
+    background-color: #d3d3d3;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .section-title {
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .box {
+    background-color: #d3d3d3;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .box input[type="checkbox"] {
+    margin-right: 10px;
+  }
+</style>
+
+<body>
+  <div class="main-content">
+    <div class="section-title">YOUR WORKSPACES</div>
+
+    <div class="section-title">As a manager...</div>
+    {% for program in programs %}
+    <li>{{ program.p_name }}</li>
+    {% endfor %}
+
+    <div class="section-title">As a member...</div>
+    {% for program in programs %}
+    <li>{{ program.p_name }}</li>
+    {% endfor %}
+  </div>
+
+  {% endblock %}
+</body>
