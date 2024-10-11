@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up Page{% endblock %}
+
+{% block header %}
+    <h1>Sign Up</h1>
+    {% include "components/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{{url_for('signup_post')}}">
+        <label for="usernameInput">Username:</label>
+        <input type="text" id="usernameInput" name="username" required/>
+        <br/>
+        <label for="passwordInput">Password:</label>
+        <input type="text" id="passwordInput" name="password" required/>
+        <br/>
+        <input type="submit" value="Sign Up"/>
+    </form>
+{% endblock %}

@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+import flask_login
+from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
@@ -11,6 +13,12 @@ def create_app():
     Returns: app: the Flask application object
     """
     app = Flask(__name__)
+    app.secret_key = "secret key"
+    
+    # Flask-login and Flask-Bcrypt setup
+    login_manager = flask_login.LoginManager()
+    login_manager.init_app(app)
+    bcrypt = Bcrypt(app)
     
     # mongo setup
     mongo_uri = os.getenv('MONGO_CONNECTION_URI')
@@ -23,8 +31,66 @@ def create_app():
         print("Hello, Flask! MongoDB connection successful.")
     except Exception as e:
         print(f"Hello, Flask! MongoDB connection failed: {e}")
+    
+    # User class for Flask-login
+    class User(flask_login.UserMixin):
+        def __init__(self, user_id, username, password_hash):
+            self.id = user_id
+            self.username = username
+            self.password_hash = password_hash
+    
+    @login_manager.user_loader
+    def user_loader(user_id):
+        """
+        load user callback for Flask-Login
+        Args:
+            user_id (str): the ID of the user
 
-    @app.route('/')
+        Returns:
+            User object if this user exists
+            None if this user does not exist
+        """
+        user = db.users.find_one({"_id":ObjectId(user_id)})
+        if user:
+            return User(str(user["_id"]),user["username"],user["password"])
+        return None
+    
+    @app.route("/")
+    def signin():
+        return render_template("signin.html")
+    
+    @app.route("/signin_post",methods=["POST"])
+    def signin_post():
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = db.users.find_one({"username":username})
+        if user and bcrypt.check_password_hash(user["password"],password):
+            user_obj = User(str(user["_id"]),user["username"],user["password"])
+            flask_login.login_user(user_obj)
+            print("User logged in, redirecting to home...")
+            return redirect(url_for('home'))
+        else:
+            flash("Invalid username or password")
+            return redirect(url_for('signin'))
+    
+    @app.route('/signup')
+    def signup():
+        return render_template("signup.html")
+    
+    @app.route('/signup_post',methods=["POST"])
+    def signup_post():
+        username = request.form['username']
+        password = request.form['password']
+        if db.users.find_one({"username":username}):
+            flash("Username already exists.")
+            return redirect(url_for('signup'))
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        db.users.insert_one({"username":username, "password": password_hash})
+        flash("registration successful, please sign in.")
+        return redirect(url_for('signin'))
+
+    @app.route('/home')
     def home():
         """
         Route for the home page
