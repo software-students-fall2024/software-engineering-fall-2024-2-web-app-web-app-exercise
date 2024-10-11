@@ -1,65 +1,146 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* General styles for mobile-friendly layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
 
-.login-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
+        /* Status bar (Time, Battery) */
+        .status-bar {
+            width: 100%;
+            background-color: #ccc;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
 
-h1 {
-    margin-bottom: 20px;
-}
+        .status-bar span {
+            font-size: 14px;
+        }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
+        /* Container for login content */
+        .login-container {
+            width: 100%;
+            max-width: 360px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-}
+        /* App logo placeholder */
+        .logo {
+            width: 200px;
+            height: 200px;
+            background-color: #ccc;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #000;
+        }
 
-.input-group input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #5cb85c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        /* Input styles */
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #e0e0e0;
+            box-sizing: border-box;
+        }
 
-button:hover {
-    background-color: #4cae4c;
-}
+        /* Login button */
+        button {
+            width: 100%; /* Make the button the same width as inputs */
+            padding: 12px;
+            font-size: 16px;
+            background-color: #e0e0e0;
+            border: 1px solid #000;
+            cursor: pointer;
+            box-sizing: border-box; /* Ensure padding doesn't exceed container width */
+        }
 
-p {
-    margin-top: 20px;
-}
+        button:hover {
+            background-color: #d3d3d3;
+        }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
+        /* Sign up link */
+        .signup {
+            text-align: center;
+            margin-top: 16px;
+        }
 
-a:hover {
-    text-decoration: underline;
-}
+        .signup a {
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: #ccc;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .signup a:hover {
+            background-color: #bbb;
+        }
+
+        .signup p {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Status bar -->
+    <div class="status-bar">
+        <span>Time</span>
+        <span>Battery</span>
+    </div>
+
+    <div class="login-container">
+        <!-- App logo placeholder -->
+        <div class="logo">
+            [App Logo]
+        </div>
+
+        <!-- Welcome text -->
+        <h1>Welcome</h1>
+
+        <!-- Login form -->
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="Username or Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Sign up link -->
+        <div class="signup">
+            <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
