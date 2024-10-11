@@ -1,27 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Result Page</title>
-    <head>
-    <body>
-        <header>
-            <h1>Result</h1>
-        </header>
-        <main>
-            {% if count==0 %}
-                <p>No records found.</p>
-            {% else %}
-                {% for doc in docs%}
-                <article>
-                    <p>Job Title: {{doc.job_title}}</p>
-                    <p>Company: {{doc.company}}</p>
-                </article>
-                {%endfor%}
-            {% endif %}
-        </main>
-        <footer>
-            <a href="{{url_for('home')}}"><button>Back to Home</button></a>
-        </footer>
-    </body>
-    
-</html>
+{% extends "base.html" %}
+
+{% block title %}Result Page{% endblock %}
+
+{% block header %}
+    <h1>Result</h1>
+{% endblock %}
+
+{% block content %}
+    <main>
+        {% if count==0 %}
+            <p>No records found.</p>
+        {% else %}
+            {% for doc in docs%}
+            <article>
+                <p>Job Title: {{doc.job_title}}</p>
+                <p>Company: {{doc.company}}</p>
+            </article>
+            {%endfor%}
+        {% endif %}
+    </main>
+    <footer>
+        <a href="{{url_for('home')}}"><button>Back to Home</button></a>
+    </footer>
+{% endblock %}

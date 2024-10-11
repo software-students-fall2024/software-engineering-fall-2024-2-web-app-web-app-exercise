@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Home Page</title>
-    <head>
-    <body>
-        <header>
-            <h1>To Do</h1>
-        </header>
-        <main>
-            <a href="{{url_for('add_post')}}">Add</a>
-            <a href='{{url_for('search')}}'>Search</a>
-            {% for doc in docs%}
-            <article>
-                <nav>
-                    <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
-                </nav>
-                <p>Job Title: {{doc.job_title}}</p>
-                <p>Company: {{doc.company}}</p>
-            </article>
-            {%endfor%}
-        </main>
-        
-    </body>
-    
-</html>
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block header %}
+    <h1>To Do</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="{{url_for('add_post')}}">Add</a>
+    <a href='{{url_for('search')}}'>Search</a>
+    {% for doc in docs%}
+    <article>
+        <nav>
+            <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
+        </nav>
+        <p>Job Title: {{doc.job_title}}</p>
+        <p>Company: {{doc.company}}</p>
+    </article>
+    {%endfor%}
+{% endblock %}

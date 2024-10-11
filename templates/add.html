@@ -1,36 +1,33 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Add Page</title>
-    <head>
-    <body>
-        <header>
-            <h1>Add a Job Application</h1>
-        </header>
-        <main>
-            <article>
-                <form method="POST" action="{{url_for('add_post')}}">
-                    <label for="titleInput">Job Title:</label>
-                    <input type="text" id="titleInput" name="job title" placeholder="job title"/>
-                    <br/>
-                    <label for="companyInput">Company:</label>
-                    <input type="text" id="companyInput" name="company" placeholder="company"/>
-                    <br/>
-                    <label for="companyInput">Location:</label>
-                    <input type="text" id="locationInput" name="location" placeholder="location"/>
-                    <br/>
-                    <label for="linkInput">Link (to the job description):</label>
-                    <input type="text" id="linkInput" name="link" placeholder="link to the job description"/>
-                    <br/>
-                    <label for="stageInput">Stage:</label>
-                    <input type="text" id="stageInput" name="stage" placeholder="stage"/>
-                    <br/>
-                    <label for="timeInput">Time/DDL:</label>
-                    <input type="text" id="timeInput" name="time" placeholder="MM/DD/YYYY"/>
-                    <br/>
-                    <input type="submit" value="Save"/>
-                </form>
-            </article>
-        </main>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Add Page{% endblock %}
+
+{% block header %}
+    <h1>Add a Job Application</h1>
+{% endblock %}
+
+{% block content %}
+    <article>
+        <form method="POST" action="{{url_for('add_post')}}">
+            <label for="titleInput">Job Title:</label>
+            <input type="text" id="titleInput" name="job title" placeholder="job title"/>
+            <br/>
+            <label for="companyInput">Company:</label>
+            <input type="text" id="companyInput" name="company" placeholder="company"/>
+            <br/>
+            <label for="companyInput">Location:</label>
+            <input type="text" id="locationInput" name="location" placeholder="location"/>
+            <br/>
+            <label for="linkInput">Link (to the job description):</label>
+            <input type="text" id="linkInput" name="link" placeholder="link to the job description"/>
+            <br/>
+            <label for="stageInput">Stage:</label>
+            <input type="text" id="stageInput" name="stage" placeholder="stage"/>
+            <br/>
+            <label for="timeInput">Time/DDL:</label>
+            <input type="text" id="timeInput" name="time" placeholder="MM/DD/YYYY"/>
+            <br/>
+            <input type="submit" value="Save"/>
+        </form>
+    </article>
+{% endblock %}
