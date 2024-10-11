@@ -7,23 +7,33 @@
     {% include "components/back-link.html" %}
 {% endblock %}
 
+{% block styles %}
+    <style>
+        .required{
+            color: red;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <article>
+        <!-- Information about required fields-->
+        <p><span class="required">*</span> indicates required fields</p>
+
         <form method="POST" action="{{url_for('add_post')}}">
-            <label for="titleInput">Job Title:</label>
-            <input type="text" id="titleInput" name="job_title" placeholder="job title"/>
+            <label for="titleInput">Job Title: <span class="required">*</span></label>
+            <input type="text" id="titleInput" name="job_title" placeholder="job title" required/>
             <br/>
-            <label for="companyInput">Company:</label>
-            <input type="text" id="companyInput" name="company" placeholder="company"/>
+            <label for="companyInput">Company: <span class="required">*</span></label>
+            <input type="text" id="companyInput" name="company" placeholder="company" required/>
             <br/>
-            <label for="companyInput">Location:</label>
-            <input type="text" id="locationInput" name="location" placeholder="location"/>
+            <label for="companyInput">Location: <span class="required">*</span></label>
+            <input type="text" id="locationInput" name="location" placeholder="location" required/>
             <br/>
             <label for="linkInput">Link (to the job description):</label>
             <input type="text" id="linkInput" name="link" placeholder="link to the job description"/>
             <br/>
-            <label for="stageInput">Stage:</label>
-            <input type="text" id="stageInput" name="stage" placeholder="stage"/>
+            <label for="stageInput">Stage: <span class="required">*</span></label>
+            <input type="text" id="stageInput" name="stage" placeholder="stage" required/>
             <br/>
             <label for="timeInput">Time/DDL:</label>
             <input type="text" id="timeInput" name="time" placeholder="MM/DD/YYYY"/>

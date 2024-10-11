@@ -245,7 +245,7 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         job_title = request.form["job title"]
-        company_name = request.form["company"]#
+        company_name = request.form["company"]
         location_name = request.form["location"]
 
         search_criteria = {}
