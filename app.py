@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv('SECRET_KEY') 
 
-    @app.route("/")
+    @app.route("/main")
     def home():
         programs = [{"p_name": "1"}, {"p_name": "2"}]
         return render_template("main.html", programs=programs)
