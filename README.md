@@ -8,7 +8,7 @@ Our vision is to create a simple and easy job application tracker, that aims to 
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+*User Story Issues:* https://github.com/software-students-fall2024/2-web-app-rbf/issues
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,5 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+*Task Board - Sprint 1:* https://github.com/orgs/software-students-fall2024/projects/27
+*Task Board - Sprint 2:* https://github.com/orgs/software-students-fall2024/projects/29
