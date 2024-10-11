@@ -7,6 +7,10 @@
     {% include "components/back-link.html" %}
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
 {% block content %}
     <p>New User? <a href="{{url_for("signup")}}">Register Now!</a></p>
     <form method="POST" action="{{url_for('signin_post')}}">
