@@ -13,7 +13,9 @@ For this project, we will create an app for the bookstore to manage their invent
 2. As a bookstore manager, I want to check stock levels for all books so that I can quickly find out how many copies we have in stock and manage inventory efficiently.
 3. As a bookstore manager, I want to decrease book count in the inventory system when a book is sold so that I can keep accurate track of the book inventory. 
 4. As a bookstore manager, I want to be able to search for books satisfying some criteria in the inventory system so that I can better filter and quiry for my desired book. 
-
+5. As a bookstore manager, I want to have a list of all books so that I can efficiently track inventory and availability.
+6. As a bookstore manager, I want to be able to delete a book from the list when it is sold out so that I can inform customers about its unavailability.
+7. As a bookstore manager, I want to be able to edit any attributes of a book (e.g., title, price, or availability status) so that I can make corrections if needed.
 
 
 
