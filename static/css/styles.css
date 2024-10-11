@@ -5,10 +5,19 @@
 }
 
 body {
-    background-color: #fbf6f5;
+    background-color: #fffbfa;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    max-width: 640px;
+    margin: auto;
+}
+
+@media screen and (max-width:480px) {
+    body {
+        min-width: 100%;
+        margin: 0;
+    }
 }
 
 .textarea {
@@ -16,7 +25,7 @@ body {
 }
 
 a, p, li {
-    color: rgb(25, 25, 25);
+    color: #111111;
     font-size: 16px;
 }
 
@@ -60,4 +69,46 @@ footer {
     margin: 16px 24px;
     min-height: 100%;
     flex: 1;
+}
+
+.reviews {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.review {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.review-details p:last-child {
+    color: #888888;
+}
+
+.icon-buttons {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    background-color: none;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+}
+
+.icon-button:hover {
+    cursor: pointer;
 }
