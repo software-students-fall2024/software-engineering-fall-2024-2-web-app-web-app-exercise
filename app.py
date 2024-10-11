@@ -166,7 +166,7 @@ def create_app():
                 "stage": stage,
             }
             #return redirect(url_for("add"), doc)
-            return render_template("add.html", doc=doc, count = 1)
+            return render_template("add.html", doc=doc, count=1)
         else:
             doc = {
                 "user_id": current_user.id,
@@ -236,7 +236,7 @@ def create_app():
             render_template(str): The rendered HTML template.
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
-        return render_template('info.html',doc=doc)
+        return render_template('info.html',doc=doc, count=0)
     @app.route('/edit/<record_id>')
     def edit(record_id):
         """
@@ -265,6 +265,7 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
+        
         doc = {
             "job_title": job_title,
             "company": company,
@@ -272,9 +273,17 @@ def create_app():
             "link": link,
             "stage": stage,
             "time": time
-        }
-        db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
+            }
+        #db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
+
+        if validate_date(time)== False:
+            # Insert data into MongoDB
+            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+            return edit(record_id)
+        else:
+            db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
         return redirect(url_for("home"))
+        
     @app.route("/delete/<record_id>")
     def delete(record_id):
         """
