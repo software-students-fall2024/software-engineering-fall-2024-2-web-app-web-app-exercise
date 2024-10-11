@@ -156,6 +156,11 @@ def rsvp_event(event_id):
         flash("Event not found.")
         return redirect(url_for('home_feed'))
 
+    # Ensure the 'attendees' field exists in the event document
+    if 'attendees' not in event:
+        event['attendees'] = []
+        events_collection.update_one({'_id': event['_id']}, {'$set': {'attendees': event['attendees']}})
+
     # Add event to user's RSVP'd events
     if 'rsvped_events' not in user:
         user['rsvped_events'] = []
@@ -163,7 +168,7 @@ def rsvp_event(event_id):
     if event_id not in user['rsvped_events']:
         collection.update_one({'_id': user['_id']}, {'$push': {'rsvped_events': event_id}})
         flash(f"RSVP confirmed for {event['title']}.")
-    if user['_id'] not in event['attendees']:
+    elif user['_id'] not in event['attendees']:
         events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['_id']}})
     else:
         flash("You have already RSVP'd for this event.")
