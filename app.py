@@ -33,8 +33,16 @@ def create_app():
     @app.route("/main")
     @login_required
     def home():
-        programs = [{"p_name": "1"}, {"p_name": "2"}]
+        programs = [{"p_name": "1", "id": "1"}, {"p_name": "2", "id": "2"}]
         return render_template("main.html", programs=programs)
+        
+    # team page
+    @app.route('/program/<id>')
+    def program(id):
+        programs = [{"p_name": "1", "id": "1", "task": ["1.1", "1.2"]}, {"p_name": "2", "id": "2", "task": ["2.1", "2.2"]}]
+        for program in programs:
+            if program["id"] == id:
+                return render_template("team.html", program=program)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():

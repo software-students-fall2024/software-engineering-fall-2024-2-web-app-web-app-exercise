@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% block container %}
+
+<body>
+  <div class="main-content">
+    <div class="section-title">program {{ program.id }}</div>
+
+    <div class="section-title">Member List</div>
+
+    <div class="section-title">Task List</div>
+        {% for task in program.tasks %}
+            <li>{{ task }}</li>
+        {% endfor %}
+  </div>
+
+  {% endblock %}
+</body>
