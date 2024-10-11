@@ -76,17 +76,24 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
-
-@app.route('/home_feed')
+@app.route('/home_feed', methods=['GET'])
 def home_feed():
     if 'username' in session:
-        # Fetch all events from the MongoDB events collection
-        events = list(events_collection.find())
+        # Get the search query from the request
+        search_query = request.args.get('search', '')
 
-        # Render the home feed page for authenticated users with events
+        # Build the query to search for events by title (case-insensitive)
+        if search_query:
+            query = {"title": {"$regex": search_query, "$options": "i"}}
+        else:
+            query = {}  # No search, fetch all events
+
+        # Fetch events from MongoDB based on the query
+        events = list(events_collection.find(query))
+
+        # Render the home feed page with the search results
         return render_template('home_feed.html', username=session['username'], events=events)
     else:
-        # Redirect to the login page if the user is not authenticated
         return redirect(url_for('login'))
 
 @app.route('/create_event', methods=['GET', 'POST'])
