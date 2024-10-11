@@ -40,6 +40,10 @@
   .box input[type="checkbox"] {
     margin-right: 10px;
   }
+
+  li a:hover {
+    background-color: #d3d3d3;
+    }
 </style>
 
 <body>
@@ -48,12 +52,12 @@
 
     <div class="section-title">As a manager...</div>
     {% for program in programs %}
-    <li>{{ program.p_name }}</li>
+    <li><a href="{{ url_for('program', id=program.id) }}">{{ program.id }}</li>
     {% endfor %}
 
     <div class="section-title">As a member...</div>
     {% for program in programs %}
-    <li>{{ program.p_name }}</li>
+    <li><a href="{{ url_for('program', id=program.id) }}">{{ program.id }}</li>
     {% endfor %}
   </div>
 
