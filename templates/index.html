@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+<main>
     <a href="{{url_for('add')}}">Add</a>
     <a href="{{url_for('search')}}">Search</a>
     <section className="job-list">
@@ -29,4 +30,8 @@
             </article>
         {%endfor%}
     </section>
+</main>
+<footer>
+    <p><a href="{{url_for("signin")}}">Sign out</a></p>
+</footer>
 {% endblock %}

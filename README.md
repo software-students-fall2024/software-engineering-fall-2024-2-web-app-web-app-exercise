@@ -16,6 +16,8 @@ Start by setting up pipenv and its specified dependencies
 ```
 pip install pipenv
 pipenv install
+pipenv install flask_login
+pipenv install flask_bcrypt
 ```
 
 Create new file .env (will be git ignored) to hold environment variables in the following format:
