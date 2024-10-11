@@ -3,6 +3,8 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+        <!-- More Styles -->
+        {% block styles %}{% endblock %}
     </head>
     <body>
         <header class="base-header">

@@ -6,16 +6,27 @@
     <h1>To Do</h1>
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
     <a href="{{url_for('add_post')}}">Add</a>
-    <a href='{{url_for('search')}}'>Search</a>
-    {% for doc in docs%}
-        <article>
-            <nav>
-                <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
-            </nav>
-            <p>Job Title: {{doc.job_title}}</p>
-            <p>Company: {{doc.company}}</p>
-        </article>
-    {%endfor%}
+    <a href="{{url_for('search')}}">Search</a>
+    <section className="job-list">
+        {% for doc in docs%}
+            <article class="job-entry">
+                <div class="job-text">
+                    <p>Job Title: {{doc.job_title}}</p>
+                    <p>Company: {{doc.company}}</p>
+                </div>
+
+                <nav class="info-link">
+                    <a href="{{url_for('info',record_id=doc._id)}}">
+                        <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="Arrow Icon" />
+                    </a>
+                </nav>
+            </article>
+        {%endfor%}
+    </section>
 {% endblock %}
