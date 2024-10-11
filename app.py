@@ -103,16 +103,23 @@ def create_event():
         creator = session['username']  # Get the username of the logged-in user
 
         # Insert the new event into the database
-        events_collection.insert_one({
+        event_id = events_collection.insert_one({
             "title": title,
             "description": description,
             "date": date,
             "location": location,
-            "creator": creator  # Add the creator to the event data
-        })
+            "creator": creator,  # Add the creator to the event data
+            "attendees": []  # Initialize the attendees list
+        }).inserted_id
+
+        # Update the user's document to include the created event
+        collection.update_one(
+            {"username": creator},
+            {"$push": {"created_events": event_id}}
+        )
 
         flash("Event created successfully!")
-        return redirect(url_for('home'))
+        return redirect(url_for('home_feed'))
 
     return render_template('create_event.html')
 
@@ -149,6 +156,8 @@ def rsvp_event(event_id):
     if event_id not in user['rsvped_events']:
         collection.update_one({'_id': user['_id']}, {'$push': {'rsvped_events': event_id}})
         flash(f"RSVP confirmed for {event['title']}.")
+    if user['_id'] not in event['attendees']:
+        events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['_id']}})
     else:
         flash("You have already RSVP'd for this event.")
 
