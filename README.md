@@ -4,11 +4,11 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+To provide insights and analytics that empower store performance, help make informed decisions, and drive business growth.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[User Stories (Github Issues)](https://github.com/software-students-fall2024/2-web-app-all-stars-v2/issues)
 
 ## Steps necessary to run the software
 
