@@ -151,7 +151,19 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         job_title = request.form["job title"]
-        docs = db.records.find({"job_title":job_title})
+        company_name = request.form["company"]#
+        location_name = request.form["location"]
+
+        search_criteria = {}
+        if job_title and job_title.strip():  # Check if job is not empty
+            search_criteria['job_title'] = job_title
+        if company_name and company_name.strip():  # Check if company is not empty
+            search_criteria['company'] = company_name
+        if location_name and location_name.strip():  # Check if location is not empty
+            search_criteria['location'] = location_name
+
+     #   docs = db.records.find({"job_title":job_title, "company":company_name})#
+        docs = db.records.find(search_criteria)
         docs_list = list(docs)
         return render_template("result.html",docs=docs_list,count=len(docs_list))
     return app
