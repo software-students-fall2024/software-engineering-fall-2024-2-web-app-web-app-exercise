@@ -15,7 +15,9 @@ See instructions. Delete this line and place the Product Vision Statement here.
 1. Configure .env file and make sure there is a running MongoDB database within a docker container (no username, password)
 2. Install requirements
 3. In the commandline, within project folder, type the command:
-    >python app.py OR python3 app.py
+    >python app.py 
+    OR 
+    >python3 app.py
 
 ## Task boards
 
