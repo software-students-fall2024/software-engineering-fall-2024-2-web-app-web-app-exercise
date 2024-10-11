@@ -107,3 +107,13 @@ details[open] summary {
 details div {
     margin-top: 10px;
 }
+
+button {
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #007AFF;
+    color: white;
+    cursor: pointer;
+}
