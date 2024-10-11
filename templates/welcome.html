@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to Occasio!</h1>
-    <p>Your go-to platform for event planning.</p>
-    <div>
-        <a href="{{ url_for('login') }}"><button>Login</button></a>
-        <a href="{{ url_for('register') }}"><button>Register</button></a>
+    <div class="page-layout">
+        <h1>Welcome to Occasio!</h1>
+        <p>Your go-to platform for event planning.</p>
+        <div>
+            <a href="{{ url_for('login') }}"><button>Login</button></a>
+            <a href="{{ url_for('register') }}"><button>Register</button></a>
+        </div>
     </div>
 </body>
 </html>
