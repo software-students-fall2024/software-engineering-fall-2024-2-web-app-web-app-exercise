@@ -7,22 +7,30 @@
     {% include "components/back-link.html" %}
 {% endblock %}
 
+{% block styles %}
+    <style>
+        .required{
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <form method="POST" action="{{url_for('edit_post',record_id=doc._id)}}">
-        <label for="titleInput">Job Title:</label>
-        <input type="text" id="titleInput" name="job title" value="{{doc.job_title}}"/>
+        <label for="titleInput">Job Title: <span class="required">*</span></label>
+        <input type="text" id="titleInput" name="job title" value="{{doc.job_title}}" required/>
         <br/>
-        <label for="companyInput">Company:</label>
-        <input type="text" id="companyInput" name="company" value="{{doc.company}}"/>
+        <label for="companyInput">Company: <span class="required">*</span></label>
+        <input type="text" id="companyInput" name="company" value="{{doc.company}}" required/>
         <br/>
-        <label for="locationInput">Location:</label>
-        <input type="text" id="locationInput" name="location" value="{{doc.location}}"/>
+        <label for="locationInput">Location: <span class="required">*</span></label>
+        <input type="text" id="locationInput" name="location" value="{{doc.location}}" required/>
         <br/>
         <label for="linkInput">Link (to the job description):</label>
         <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
         <br/>
-        <label for="stageInput">Stage:</label>
-        <input type="text" id="stageInput" name="stage" value="{{doc.stage}}"/>
+        <label for="stageInput">Stage: <span class="required">*</span></label>
+        <input type="text" id="stageInput" name="stage" value="{{doc.stage}}" required/>
         <br/>
         <label for="timeInput">Time/DDL:</label>
         <input type="text" id="timeInput" name="time" value="{{doc.time}}"/>
