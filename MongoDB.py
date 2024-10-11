@@ -1,6 +1,16 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 
-connection_string = "mongodb+srv://raa9917:Rr12112002@cluster0.p902n.mongodb.net/?retryWrites=true&w=majority"
+# Load environment variables from .env file
+load_dotenv()
+
+connection_string = os.getenv("MONGO_URI")  # Corrected to use "MONGO_URI" instead of MONGO_URI
+
+if connection_string is None:
+    raise ValueError("MONGO_URI environment variable not found!")
+
+# Create a MongoDB client with the correct connection string
 client = MongoClient(connection_string)
 db = client["test_db"]
 collection = db["test_collection"]
