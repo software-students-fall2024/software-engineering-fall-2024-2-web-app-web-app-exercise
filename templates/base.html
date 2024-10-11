@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome!</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Flask-Pymongo Example App</h1>
+      </header>
+      <main>{% block container %} {% endblock %}</main>
+      <footer>
+        <div class="navbar">
+          <a href="{{ url_for('home')}}">Home</a>
+          <a href="{{ url_for('home')}}">Calendar</a>
+          <a href="{{ url_for('home')}}">Notification</a>
+          <a href="{{ url_for('home')}}">Profile</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
