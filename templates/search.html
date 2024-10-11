@@ -4,6 +4,7 @@
 
 {% block header %}
     <h1>Search</h1>
+    {% include "components/back-link.html" %}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +14,4 @@
             <button type="submit">Search</button>
         </form>
     </main>
-    <footer>
-        <a href="{{url_for('home')}}"><button>Back to Home</button></a>
-    </footer>
 {% endblock %}

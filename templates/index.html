@@ -10,12 +10,12 @@
     <a href="{{url_for('add_post')}}">Add</a>
     <a href='{{url_for('search')}}'>Search</a>
     {% for doc in docs%}
-    <article>
-        <nav>
-            <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
-        </nav>
-        <p>Job Title: {{doc.job_title}}</p>
-        <p>Company: {{doc.company}}</p>
-    </article>
+        <article>
+            <nav>
+                <a href='{{url_for('info',record_id=doc._id)}}'>More Info</a>
+            </nav>
+            <p>Job Title: {{doc.job_title}}</p>
+            <p>Company: {{doc.company}}</p>
+        </article>
     {%endfor%}
 {% endblock %}
