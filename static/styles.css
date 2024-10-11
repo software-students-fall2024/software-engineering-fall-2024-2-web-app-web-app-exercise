@@ -4,7 +4,7 @@ body {
     background-color: #f5f5f5;
 }
 
-#login-page, #register-page {
+#login-page, #register-page, #create-event-page {
     display: flex;
     flex-direction: column;
     align-items: center;
