@@ -9,6 +9,7 @@ python-dotenv = "*"
 pymongo = {extras = ["srv"], version = "*"}
 flask-login = "*"
 flask-bcrypt = "*"
+pandas = "*"
 
 [dev-packages]
 
