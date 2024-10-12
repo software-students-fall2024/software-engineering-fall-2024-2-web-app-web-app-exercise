@@ -9,26 +9,26 @@
 
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/add.css') }}">
+    <!--
     <style>
         .select-box{
-            margin-top: 10px;
-            width: 380px;
+            width: 100%%;
             position: relative;
         }
         .select-option{
             position: relative;
-            border: 1px solid black;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
         }
         .select-option input{
             width: 100%;
             background-color: #fff;
             color: #000;
-            border-radius: 7px;
             cursor: pointer;
-            font-size: 18px;
-            padding: 15px 20px;
-            border: 0 !important;
+            font-size: 1rem;
             outline: 0 !important;
+            padding: 0.5rem;
+            box-sizing: border-box;
         }
         .select-option:after{
             content: "";
@@ -44,7 +44,7 @@
             background-color: #fff;
             position: absolute;
             color: #000;
-            border-radius: 7px;
+            border-radius: 0.25rem;
             margin-top: 15px;
             width: 100%;
             z-index: 999;
@@ -53,11 +53,11 @@
         }
         .search input{
             width: 100%;
-            font-size: 17px;
-            padding: 15px;
+            font-size: 1rem;
+            padding: 0.5rem;
             outline: 0;
-            border: 1px solid #b3b3b3;
-            border-radius: 5px;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
         }
         .options{
             margin-top: 10px;
@@ -66,9 +66,9 @@
             padding: 0;
         }
         .options li{
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 18px;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 1rem;
             cursor: pointer;
             border-bottom: 1px solid gray;
         }
@@ -81,7 +81,9 @@
         .select-box.active .select-option:after{
             transform: rotate(-180deg);
         }
+    
     </style>
+    -->
 {% endblock %}
 {% block content %}
     <article>
