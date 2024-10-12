@@ -39,6 +39,7 @@ def profile():
 def account_settings():
     return render_template('account-setting.html')
 
-@routes.route('/edit_board/<board_id>', methods=["GET", "POST"])
-@flask_login.login_required
+def edit_board(board_id):
+    pass
+
 
