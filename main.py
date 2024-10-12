@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__, static_url_path="", static_folder="static", template_folder="templates")
 
 # set up mongodb database connection
-mongo_host = os.getenv("MONGO_HOSt")
+mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
 client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
