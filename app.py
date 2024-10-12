@@ -139,7 +139,13 @@ def create_app():
         Returns: 
             rendered template (str): The rendered HTML template.
         """
-        docs = db.records.find({"user_id": current_user.id})
+        query = {
+            "time": {
+            "$ne": "",   # Not equal to empty string
+            #"$exists": True  # Field exists
+            }, "user_id": current_user.id
+        }
+        docs = db.records.find(query)#{"user_id": current_user.id,})
         return_to = request.args.get('return_to','home')
         return render_template("index.html",docs=docs,return_to=return_to)
     
@@ -188,24 +194,6 @@ def create_app():
                 formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
                 return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
         
-            '''
-        if validate_date(time)== False:
-            # Insert data into MongoDB
-            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
-            doc = {
-                "user_id": current_user.id,
-                "job_title": job_title,
-                "company": company,
-                "location": location,
-                "link": link,
-                "stage": stage,
-            }
-            #return redirect(url_for("add"), doc)
-            locations = load_cities()
-            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
-            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
-        else:
-        '''
         doc = {
             "user_id": current_user.id,
             "job_title": job_title,
