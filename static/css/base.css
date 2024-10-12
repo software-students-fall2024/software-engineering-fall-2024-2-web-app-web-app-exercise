@@ -21,3 +21,10 @@
     top: 50%;
     transform: translateY(-50%);
 }
+.back-link > button {
+    color: black;
+    text-decoration: none;
+    padding: 0.4rem;
+    background-color: white;
+    border-radius: 0.3rem;
+}
