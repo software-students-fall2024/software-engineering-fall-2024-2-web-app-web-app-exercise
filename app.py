@@ -5,7 +5,9 @@ import pymongo
 from bson.objectid import ObjectId
 import os
 from pymongo.mongo_client import MongoClient
+
 load_dotenv()
+
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 db_uri = os.getenv("DB_URI")
