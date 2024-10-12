@@ -1,21 +1,23 @@
 {% extends 'base.html' %}
 {% block container %}
-<table width="100%" border="1">
-    <tr>
-        <th>User Name</th>
-        <th>Restaurant Name</th>
-        <th>Cuisine Type</th>
-        <th>Location</th>
-        <th>Review/Comments</th>
-    </tr>
+<ul class="reviews">
     {% for restaurant in restaurants %}
-    <tr>
-        <td>{{ restaurant.userName }}</td>
-        <td>{{ restaurant.restaurantName }}</td>
-        <td>{{ restaurant.cuisine }}</td>
-        <td>{{ restaurant.location }}</td>
-        <td>{{ restaurant.review }}</td>
-     </tr>
+    <li class="review">
+        <div class="icon-buttons">
+            <a href="/delete" class="icon-button">
+                <img src="static/images/trash.svg" alt="delete"/>
+            </a>
+            <a href="/edit" class="icon-button">
+                <img src="static/images/edit.svg" alt="edit"/>
+            </a>
+        </div>
+        <div class="review-details">
+            <p>{{ restaurant.userName }}</p>
+            <h2>{{ restaurant.restaurantName }}</h2>
+            <p>{{ restaurant.cuisine }} • {{ restaurant.location }}</p>
+        </div>
+        <p id>{{ restaurant.review }}</p>
+     </li>
     {% endfor %}
-</table>
+</ul>
 {% endblock %}
