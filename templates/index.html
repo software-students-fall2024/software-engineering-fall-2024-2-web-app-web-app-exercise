@@ -7,7 +7,7 @@
             <a href="/delete" class="icon-button">
                 <img src="static/images/trash.svg" alt="delete"/>
             </a>
-            <a href="/edit" class="icon-button">
+            <a href="{{ url_for('edit', post_id=restaurant._id)}}" class="icon-button">
                 <img src="static/images/edit.svg" alt="edit"/>
             </a>
         </div>
@@ -17,7 +17,7 @@
             <p>{{ restaurant.cuisine }} • {{ restaurant.location }}</p>
         </div>
         <p id>{{ restaurant.review }}</p>
-     </li>
+    </li>
     {% endfor %}
 </ul>
 {% endblock %}
