@@ -184,7 +184,9 @@ def create_app():
                 "stage": stage,
             }
             #return redirect(url_for("add"), doc)
-            return render_template("add.html", doc=doc, count=1)
+            locations = load_cities()
+            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
         else:
             doc = {
                 "user_id": current_user.id,
@@ -268,7 +270,9 @@ def create_app():
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
         return_to = request.args.get('return_to')
-        return render_template("edit.html",doc=doc,return_to=return_to)
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        return render_template("edit.html",doc=doc,return_to=return_to,locations=formatted_locations)
     @app.route('/edit_post/<record_id>',methods=["POST"])
     def edit_post(record_id):
         """
