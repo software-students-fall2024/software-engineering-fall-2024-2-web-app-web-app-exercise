@@ -18,7 +18,7 @@
 {% block content %}
     <form method="POST" action="{{url_for('edit_post',record_id=doc._id,return_to=return_to)}}">
         <label for="titleInput">Job Title: <span class="required">*</span></label>
-        <input type="text" id="titleInput" name="job title" value="{{doc.job_title}}" required/>
+        <input type="text" id="titleInput" name="job_title" value="{{doc.job_title}}" required/>
         <br/>
         <label for="companyInput">Company: <span class="required">*</span></label>
         <input type="text" id="companyInput" name="company" value="{{doc.company}}" required/>
