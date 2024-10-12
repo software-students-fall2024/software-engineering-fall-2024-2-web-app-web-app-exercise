@@ -262,7 +262,7 @@ def create_app():
         Returns:
             redirect (Response): a redirect response to the home page
         """
-        job_title = request.form["job title"]
+        job_title = request.form["job_title"]
         company = request.form["company"]
         location = request.form["location"]
         link = request.form["link"]
@@ -316,7 +316,7 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        job_title = request.form["job title"]
+        job_title = request.form["job_title"]
         company_name = request.form["company"]
         location_name = request.form["location"]
         ddl_date = request.form["time"]
