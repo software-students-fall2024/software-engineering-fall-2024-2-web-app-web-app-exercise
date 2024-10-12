@@ -125,7 +125,8 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         docs = db.records.find({"user_id": current_user.id})
-        return render_template("index.html",docs=docs)
+        return_to = request.args.get('return_to','home')
+        return render_template("index.html",docs=docs,return_to=return_to)
     
     @app.route('/add')
     def add():
@@ -236,7 +237,8 @@ def create_app():
             render_template(str): The rendered HTML template.
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
-        return render_template('info.html',doc=doc, count=0)
+        return_to = request.args.get('return_to')
+        return render_template('info.html',doc=doc,return_to=return_to,count=0)
     @app.route('/edit/<record_id>')
     def edit(record_id):
         """
@@ -248,8 +250,9 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
-        return render_template("edit.html",doc=doc)
-    @app.route('/edit/<record_id>',methods=["POST"])
+        return_to = request.args.get('return_to')
+        return render_template("edit.html",doc=doc,return_to=return_to)
+    @app.route('/edit_post/<record_id>',methods=["POST"])
     def edit_post(record_id):
         """
         Route for POST requests to the edit page
@@ -274,15 +277,14 @@ def create_app():
             "stage": stage,
             "time": time
             }
-        #db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
-
         if validate_date(time)== False:
             # Insert data into MongoDB
             flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
             return edit(record_id)
-        else:
-            db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
-        return redirect(url_for("home"))
+
+        db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
+        return_to = request.args.get('return_to')
+        return redirect(url_for(return_to))
         
     @app.route("/delete/<record_id>")
     def delete(record_id):
@@ -295,7 +297,8 @@ def create_app():
             redirect (Response): a redirect response to the home page
         """
         db.records.delete_one({"_id": ObjectId(record_id)})
-        return redirect(url_for("home"))
+        return_to = request.args.get('return_to')
+        return redirect(url_for(return_to))
     @app.route("/search")
     def search():
         """
@@ -336,7 +339,27 @@ def create_app():
      #   docs = db.records.find({"job_title":job_title, "company":company_name})#
         docs = db.records.find(search_criteria)
         docs_list = list(docs)
+        return_to = request.form.get('return_to','home')
+        return render_template("result.html",docs=docs_list,count=len(docs_list),return_to=return_to)
+    
+    @app.route("/search_post",methods=["GET"])
+    def search_post_get():
+        job_title = request.args.get('job_title')
+        company_name = request.args.get('company_name')
+        location_name = request.args.get('location_name')
+
+        search_criteria = {}
+        search_criteria["user_id"] = current_user.id
+        if job_title and job_title.strip():
+            search_criteria['job_title'] = job_title
+        if company_name and company_name.strip():
+            search_criteria['company'] = company_name
+        if location_name and location_name.strip():
+            search_criteria['location'] = location_name
+        docs = db.records.find(search_criteria)
+        docs_list = list(docs)
         return render_template("result.html",docs=docs_list,count=len(docs_list))
+    
     return app
 
 if __name__ == '__main__':
