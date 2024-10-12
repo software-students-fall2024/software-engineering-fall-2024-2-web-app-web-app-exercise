@@ -30,8 +30,8 @@ body {
     align-items: center;
     margin: 0 auto;
     text-align: center;        
-    width: 100%;                
-    max-width: 1000px;          
+    max-width: 100%;                
+             
   }
   table {
     border-collapse: collapse;
@@ -58,33 +58,23 @@ body {
     text-align: center;            
   }
   
-  table.a {
+  table .a {
     table-layout: auto;
-    width: 100px;  
+      
   }
-  .container3 {
-      max-width: 600px;
-      width: 600px;
-      height: auto;
-      background-color: #b9b2b28c;
-      padding: 30px;
-      margin-bottom:30px;
-      border-radius: 30px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: left;
-  
-  }
-  .footer {
+ 
+  footer {
       position: fixed;
       bottom: 0;
       width: 100%;
       background-color: #6b63638c;
       display: flex;
       justify-content: space-evenly;
-      padding: 10px 0;
+      align-items: center;
+     
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
-  .footer a {
+  footer a {
       text-decoration: none;
       color: black;
       font-weight: bold;
@@ -92,7 +82,39 @@ body {
       background-color: #ffffff;
       border-radius: 10px;
   }
-  
-  .footer a:hover {
-      background-color: #ccc;
+
+  @media only screen and (max-width: 767px) {
+    h1{
+      padding-top: 20px;
+      
+    }
+    table.a{
+      width: 100%;
+      max-width: 100%;
+    }
+    table{
+      border-spacing: 0;
+    }
+
+    .a{
+      padding-top: 0px;
+      max-width: 100%;
+    }
+    td, th{
+      
+      padding:10px;
+      font-size: 13px;
+    }
+   
+    header{
+      height: 50px;
+    }
+
+    footer{
+      height: 50px;
+      font-size: 10px;
+    }
+    
   }
+  
+  

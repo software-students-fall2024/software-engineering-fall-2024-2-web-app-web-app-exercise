@@ -1,78 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/my_weekly_report_style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_weekly_report_style.css') }}">
 </head>
+<header>
+  <div class="logo">
+      <img src = "{{url_for('static', filename = 'icon.svg')}}" alt = "Icon" width="30" height="30">
+  </div>
+ 
+  
+</header>
 <body>
-  <header>
-    <div class="logo">
-        <img src = "{{url_for('static', filename = 'icon.svg')}}" alt = "Icon" width="30" height="30">
-    </div>
-   
-    
-  </header>
+  
   <div class="container">
-  <h1>My Weekly Report</h1>
-  <table class="a">
-    <tr>
-      <th>Date</th>
-      <th>Calorie Intake(cal)</th>
-      <th>Weight(lbs)</th>
-      <th>BMI</th>
+    <h1>My Weekly Report</h1>
+    <table class="a">
+      <tr>
+        <th>Date</th>
+        <th>Calorie Intake(cal)</th>
+        <th>Weight(lbs)</th>
+        <th>BMI</th>
 
-    </tr>
-    <tr>
-      <th>Monday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Tuesday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Wednesday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Thursday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Friday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Saturday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
-    <tr>
-      <th>Sunday</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-      <th>xxxx</th>
-    </tr>
+      </tr>
+      <tr>
+        <th>Monday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Tuesday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Wednesday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Thursday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Friday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Saturday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
+      <tr>
+        <th>Sunday</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+        <th>xxxx</th>
+      </tr>
   </table>
-<div>
+</div>
 
-</div>
-</div>
-</div>
-<div class="footer">
+
+
+</body>
+<footer>
   <a href="{{ url_for('index') }}">Home</a>
   <a href="{{ url_for('show_workout_instruction') }}">Workout instructions</a>
   <a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a>
-</div>
-<body>
+</footer>
 </html>
