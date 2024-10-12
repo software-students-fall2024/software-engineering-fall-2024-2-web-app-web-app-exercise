@@ -46,9 +46,7 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        username = f"{first_name.lower()}.{last_name.lower()}" 
+        username = request.form['username']
         password = request.form['password'].encode('utf-8')
 
         if collection.find_one({"username": username}):
@@ -56,8 +54,6 @@ def register():
         else:
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
             collection.insert_one({
-                "first_name": first_name,
-                "last_name": last_name,
                 "username": username,
                 "password": hashed_password
             })
@@ -65,7 +61,6 @@ def register():
             return redirect(url_for('login'))
 
     return render_template('register.html')
-
 
 @app.route('/logout')
 def logout():
