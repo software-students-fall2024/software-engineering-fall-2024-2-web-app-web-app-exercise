@@ -61,6 +61,16 @@ def create_app():
                 flash("Invalid credentials, please try again.", "danger")
         
         return render_template("login.html")
+    
+    @app.route("/register", methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            flash("Registration successful!", "success")
+            return redirect(url_for('login'))
+        return render_template("register.html")
+    
 
     @app.route("/logout")
     @login_required
