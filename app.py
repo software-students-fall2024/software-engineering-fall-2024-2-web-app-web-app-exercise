@@ -77,7 +77,7 @@ def home_feed():
         else:
             query = {}  
 
-        events = list(events_collection.find(query))
+        events = list(events_collection.find(query).sort("date", -1))
 
         return render_template('home_feed.html', username=session['username'], events=events)
     else:
