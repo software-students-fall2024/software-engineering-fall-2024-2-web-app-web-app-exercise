@@ -4,11 +4,11 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+This web app lets guitarists design and plan custom equipment setups by arranging virtual representations of effect pedals on a pedal board interface.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[Link to User Stories/Issues Page](https://github.com/software-students-fall2024/2-web-app-book-of-amos/issues)
 
 ## Steps necessary to run the software
 

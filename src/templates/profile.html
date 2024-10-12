@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+    <style> 
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .header a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 20px;
+        }
+        .account-settings {
+            background-color: #eee;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .boards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .board {
+            border: 1px solid #ddd;
+            padding: 10px;
+            position: relative;
+        }
+        .board-image {
+            width: 100%;
+            height: 150px;
+            background-color: #eee;
+            margin-bottom: 10px;
+        }
+        .board-title {
+            font-weight: bold;
+        }
+        .board-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .board-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .new-board {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ddd;
+            height: 200px;
+            font-size: 40px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <a href="{{ url_for('routes.profile', new=True) }}">New</a>
+            <a href="{{ url_for('routes.profile') }}">Profile</a>
+        </div>
+        <a href="{{ url_for('routes.logout') }}">Log Out</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="flash {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="profile">
+        <div class="avatar"></div>
+        <div>
+            <h2>{{ username }}</h2>
+            <a href="{{ url_for('routes.account_settings') }}"><button class="account-settings">Account Settings</button></a>
+        </div>
+    </div>
+
+    <h3>Saved Boards</h3>
+    <div class="boards-container">
+        <form method="POST" action="{{ url_for('routes.profile') }}" class="new-board">
+            <input type="hidden" name="new" value="true">
+            <button type="submit">+</button>
+        </form>
+        {% for board in boards %}
+            <div class="board">
+                <div class="board-image"></div>
+                <span class="board-title">{{ board['name'] }}</span>
+                <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
+                    <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
+                    <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
+                    <button type="submit" name="duplicate" value="{{ board['_id'] }}">duplicate</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

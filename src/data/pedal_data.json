@@ -1,0 +1,182 @@
+[
+    {
+        "name": "Boss TU-3 Chromatic Tuner",
+        "brand": "Boss",
+        "type": "Tuner",
+        "image_url": "/images/pedals/boss_tu_3_chromatic_tuner.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss CE-2 Chorus",
+        "brand": "Boss",
+        "type": "Chorus",
+        "image_url": "/images/pedals/boss_ce_2_chorus.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss DD-8 Digital Delay",
+        "brand": "Boss",
+        "type": "Delay",
+        "image_url": "/images/pedals/boss_dd_8_digital_delay.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss DD-3T Digital Delay",
+        "brand": "Boss",
+        "type": "Delay",
+        "image_url": "/images/pedals/boss_dd_3t_digital_delay.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss DM-2 Delay",
+        "brand": "Boss",
+        "type": "Delay",
+        "image_url": "/images/pedals/boss_dm_2_delay.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss DS-1 Distortion",
+        "brand": "Boss",
+        "type": "Distortion",
+        "image_url": "/images/pedals/boss_ds_1_distortion.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss DS-2 Distortion",
+        "brand": "Boss",
+        "type": "Distortion",
+        "image_url": "/images/pedals/boss_ds_2_distortion.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss FZ-1W Fuzz",
+        "brand": "Boss",
+        "type": "Fuzz",
+        "image_url": "/images/pedals/boss_fz_1w_fuzz.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss GE-7 Equalizer",
+        "brand": "Boss",
+        "type": "Equalizer",
+        "image_url": "/images/pedals/boss_ge_7_equalizer.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss OC-3 Super Octave",
+        "brand": "Boss",
+        "type": "Octave",
+        "image_url": "/images/pedals/boss_oc_3_super_octave.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss OD-320 Overdrive",
+        "brand": "Boss",
+        "type": "Overdrive",
+        "image_url": "/images/pedals/boss_od_320_overdrive.webp",
+        "power": "DC 9V",
+        "circuit": "Analog",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss RE-2 Space Echo",
+        "brand": "Boss",
+        "type": "Delay",
+        "image_url": "/images/pedals/boss_re_2_space_echo.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss RV-6 Reverb",
+        "brand": "Boss",
+        "type": "Reverb",
+        "image_url": "/images/pedals/boss_rv_6_reverb.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss SDE-3 Dual Digital Delay",
+        "brand": "Boss",
+        "type": "Delay",
+        "image_url": "/images/pedals/boss_sde_3_dual_digital_delay.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    },
+    {
+        "name": "Boss SL-2 Slicer",
+        "brand": "Boss",
+        "type": "Modulation",
+        "image_url": "/images/pedals/boss_sl_2_slicer.webp",
+        "power": "DC 9V",
+        "circuit": "Digital",
+        "dimensions": {
+            "width": 287,
+            "height": 500
+        }
+    }
+]
