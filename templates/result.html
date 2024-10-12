@@ -16,20 +16,27 @@
         {% if count==0 %}
             <p>No records found.</p>
         {% else %}
-            <section className="job-list">
-                {% for doc in docs%}
-                    <article class="job-entry">
-                        <div class="job-text">
-                            <p>Job Title: {{doc.job_title}}</p>
-                            <p>Company: {{doc.company}}</p>
-                            <p>Location: {{doc.location}}</p>
-                            <p>Link: {{doc.link}}</p>
-                            <p>Stage: {{doc.stage}}</p>
-                            <p>Time/DDL: {{doc.time}}</p>
-                        </div>
-                    </article>
-                {%endfor%}
-            </section>
+        <section className="job-list">
+            {% for doc in docs%}
+                <article class="job-entry">
+                    <div class="job-text">
+                        <p>Job Title: {{doc.job_title}}</p>
+                        <p>Company: {{doc.company}}</p>
+                    </div>
+    
+                    <nav class="info-link">
+                        <!--
+                        <a href="{{url_for('info',record_id=doc._id)}}">
+                            <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="Arrow Icon" />
+                        </a>
+                        -->
+                        <a href="{{url_for('info',record_id=doc._id,return_to='search_post')}}">
+                            <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="Arrow Icon" />
+                        </a>
+                    </nav>
+                </article>
+            {%endfor%}
+        </section>
             
         {% endif %}
     </main>
