@@ -16,8 +16,19 @@
             <br/>
             <input type="text" name="location" placeholder="location">
             <br/> 
+            <input type="text" id="timeInput" name="time" placeholder="Deadline: YYYY/MM/DD"/>
+            <br/> 
             <button type="submit">Search</button>
             <br/>
         </form>
     </main>
+    {% with messages = get_flashed_messages()%}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 {% endblock %}
