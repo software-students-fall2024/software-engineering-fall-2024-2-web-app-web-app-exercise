@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_user, current_user
 from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
 import os
+import pandas as pd
 load_dotenv()
 
 def create_app():
@@ -31,6 +32,20 @@ def create_app():
         print("Hello, Flask! MongoDB connection successful.")
     except Exception as e:
         print(f"Hello, Flask! MongoDB connection failed: {e}")
+    
+    #df = pd.read_csv('uscities.csv')
+    #df_selected = df[["city","state_id"]]
+    #df_selected.to_csv('uscities.csv',index=False);
+    
+    # handle the CSV file
+    def load_cities():
+        df = pd.read_csv('uscities.csv')
+        return df.to_dict(orient='records')
+    
+    #@app.route('/cities')
+    #def cities():
+        #city_list = load_cities()
+        #return jsonify(city_list)
     
     # User class for Flask-login
     class User(UserMixin):
@@ -137,7 +152,9 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         doc = {}
-        return render_template("add.html", doc=doc, count = 0)
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        return render_template("add.html", doc=doc, count = 0,locations=formatted_locations)
     
     @app.route('/add_post', methods=["POST"])
     def add_post():
@@ -167,7 +184,9 @@ def create_app():
                 "stage": stage,
             }
             #return redirect(url_for("add"), doc)
-            return render_template("add.html", doc=doc, count=1)
+            locations = load_cities()
+            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
         else:
             doc = {
                 "user_id": current_user.id,
@@ -251,7 +270,9 @@ def create_app():
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
         return_to = request.args.get('return_to')
-        return render_template("edit.html",doc=doc,return_to=return_to)
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        return render_template("edit.html",doc=doc,return_to=return_to,locations=formatted_locations)
     @app.route('/edit_post/<record_id>',methods=["POST"])
     def edit_post(record_id):
         """
@@ -307,7 +328,9 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        return render_template("search.html")
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        return render_template("search.html",locations=formatted_locations)
     @app.route("/search_post",methods=["POST"])
     def search_post():
         """
