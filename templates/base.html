@@ -3,23 +3,6 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
-        <!-- style for flash message box -->
-        <style>
-            .flash-message-overlay{
-                display: none; /* Hidden by default */
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: rgba(248, 215, 218, 0.9); 
-                width: 300px; /* Adjust the width as needed */
-                text-align: center;
-                font-size: 18px;
-            }
-            .flash-message-overlay.show {
-                display: block;
-            }
-        </style>
         <!-- More Styles -->
         {% block styles %}{% endblock %}
     </head>
@@ -29,11 +12,9 @@
             {% if messages %}
                 <div id="flash-message-overlay">
                     <div>
-                        <ul>
-                            {% for message in messages %}
-                                <li>{{message}}</li>
-                            {% endfor %}
-                        </ul>
+                        {% for message in messages %}
+                            {{message}}</li>
+                        {% endfor %}
                     </div>
                 </div>
             {% endif %}
@@ -51,7 +32,7 @@
                 if (flashBox){
                     flashBox.style.display = 'none';
                 }
-            }, 10000);
+            }, 3000);
         </script>
     </body>
 </html>
