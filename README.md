@@ -18,6 +18,10 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## Steps necessary to run the software
 
+pip install -r requirements.txt
+
+Environment variables: Ensure .env contains your SECRET_KEY and MONGO_URI.
+
 run `python app.py` in your .venv folder
 
 ## Task boards
