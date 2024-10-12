@@ -6,11 +6,9 @@
     <h1>Add a Job Application</h1>
     {% include "components/back-link.html" %}
 {% endblock %}
-{% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/add.css') }}">
-{% endblock %}
 
 {% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/add.css') }}">
     <style>
         .select-box{
             margin-top: 10px;

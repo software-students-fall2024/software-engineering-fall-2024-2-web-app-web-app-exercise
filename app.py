@@ -328,7 +328,9 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        return render_template("search.html")
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        return render_template("search.html",locations=formatted_locations)
     @app.route("/search_post",methods=["POST"])
     def search_post():
         """
