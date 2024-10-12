@@ -28,7 +28,7 @@ exercise_collection = db["exercise"]
 user_service = User(db)
 
 # mongodb connection - food
-nutrition_service = User(db)
+nutrition_service = Nutrition(db)
 
 # this function is for customize rout to serve the image
 @app.route("/images/<path:filename>")
@@ -134,8 +134,6 @@ selected_plans = []
 @app.route("/workout_plan", methods=['GET', 'POST'])
 def show_workout_plan():
     return render_template("workout_plan.html", plans=selected_plans)
-
-
 
 @app.route("/workout_plan/select", methods=['GET','POST'])
 def show_workout_plan_select():
