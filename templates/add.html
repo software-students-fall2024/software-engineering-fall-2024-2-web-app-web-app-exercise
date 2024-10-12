@@ -145,7 +145,6 @@
                 </div>
 
 
-
                 <br/>
                 <label for="timeInput">Time/DDL:</label>
                 <input type="text" id="timeInput" name="time" placeholder="YYYY/MM/DD"/>
@@ -181,7 +180,27 @@
                 <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
                 <br/>
                 <label for="stageInput">Stage: <span class="required">*</span></label>
-                <input type="text" id="stageInput" name="stage" value="{{doc.stage}}" required/>
+                <div class="select-box">
+                    <div class="select-option">
+                        <input type="text" id="stageInput" name="stage" placeholder="Select" readonly>
+                    </div>
+                    <div class="content">
+                        <div class="search">
+                            <input type="text" id="optionSearch" placeholder="Search" name="">
+                        </div>
+                        <ul class="options">
+                            <li>Job Opening</li>
+                            <li>Applied</li>
+                            <li>Phone/Video Screening Interview</li>
+                            <li>Online Assessment</li>
+                            <li>Interview</li>
+                            <li>Job Offer</li>
+                            <li>Offer Accepted</li>
+                            <li>Offer Declined</li>
+                            <li>Rejection</li>
+                        </ul>
+                    </div>        
+                </div>
                 <br/>
                 <label for="timeInput">Time/DDL:</label>
                 <input type="text" id="timeInput" name="time" placeholder="YYYY/MM/DD"/>
@@ -222,39 +241,5 @@
                 }
             })
         })
-        /*
-        const selectOption = document.querySelector('.select-option');
-        const locationInput = document.querySelector('#locationInput');
-        const optionSearch = document.querySelector('#optionSearch');
-        const options = document.querySelector('.options');
-        const optionsList = document.querySelectorAll('.options li');
-
-        selectOption.addEventListener('click',function(){
-            selectBox.classList.toggle('active');
-        });
-
-        optionsList.forEach(function(optionsListSingle){
-            optionsListSingle.addEventListener('click',function(){
-                text = this.textContent;
-                locationInput.value = text;
-                selectBox.classList.remove('active');
-            })
-        });
-
-        optionSearch.addEventListener('keyup',function(){
-            var filter, li, i, textValue;
-            filter = optionSearch.value.toLowerCase();
-            li = document.querySelectorAll('.options li');
-            for(i=0;i<li.length;i++){
-                liCount = li[i];
-                textValue = liCount.textContent || liCount.innerText;
-                if (textValue.toLowerCase().indexOf(filter) > -1){
-                    li[i].style.display = '';
-                }else{
-                    li[i].style.display = 'none';
-                }
-            }
-        })
-        */
     </script>
 {% endblock %}
