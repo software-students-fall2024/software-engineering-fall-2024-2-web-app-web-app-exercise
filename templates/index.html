@@ -22,7 +22,7 @@
                     <p>Company: {{doc.company}}</p>
                     <p>Deadline: {{doc.time}}</p>
                 </div>
-
+                
                 <nav class="info-link">
                     <a href="{{url_for('info',record_id=doc._id,return_to='home')}}">
                         <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="Arrow Icon" />
