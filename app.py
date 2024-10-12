@@ -114,6 +114,87 @@ def exercise_details(exercise_id):
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
+class Plan:
+    def __init__(self, name, setNum, gif_path):
+        self.name = name
+        self.setNum = setNum
+        self.gif_path = gif_path
+    def __str__(self):
+        return f"Plan(name='{self.name}', setNum={self.setNum}, gif_path='{self.gif_path}')"
+
+def output_plans():
+    if not selected_plans:
+        print("No plans selected yet.")
+    else:
+        for plan in selected_plans:
+            print(plan)
+
+selected_plans = []
+
+@app.route("/workout_plan", methods=['GET', 'POST'])
+def show_workout_plan():
+    return render_template("workout_plan.html", plans=selected_plans)
+
+
+
+@app.route("/workout_plan/select", methods=['GET','POST'])
+def show_workout_plan_select():
+    exercises = None
+    # get distinct categories from the exercise collection
+    categories = exercise_collection.distinct("categories")
+
+    sub_category_equipment = []
+    selected_equipment = None
+
+    # handle post request for filtering workouts
+    if request.method == "POST":
+        selected_category = request.form.get("category")
+        selected_equipment = request.form.get("equipment")
+
+        if selected_equipment:
+            exercises = exercise_collection.find({
+                "categories": selected_category
+                , "equipment": selected_equipment
+                })
+        # filter exercise by category
+        else:
+            exercises = exercise_collection.find({"categories": selected_category})
+        
+        # get equipment list for the selected category
+        exercises_for_equipment = exercise_collection.find({"categories": selected_category})
+        equipment_set = {e.get("equipment") for e in exercises_for_equipment}
+        sub_category_equipment = list(equipment_set) # cast it into list
+
+    # handle the initial get request (no category selected yet)
+    # display all exercises
+    else:
+        exercises = exercise_collection.find()
+        selected_category = None
+
+    workouts = [
+        {
+            "id": str(exercise["_id"]),
+            "name": exercise["name"],
+            "gif_path": exercise.get("gif_path", ""),
+            "target_muscle": exercise.get("target_muscle", ""),
+            "instructions": exercise.get("instructions", [])
+        }
+        for exercise in exercises
+    ]
+
+    return render_template("workout_plan_select.html", categories=categories, workouts=workouts
+    , selected_category=selected_category, sub_category_equipment=sub_category_equipment, selected_equipment=selected_equipment)
+
+@app.route("/add_workout_to_plan", methods=["POST"])
+def add_workout_to_plan():
+    name = request.form.get("name")
+    setNum = int(request.form.get("setNum"))
+    gif_path = request.form.get("gif_path")
+    new_plan = Plan(name, setNum, gif_path)
+    selected_plans.append(new_plan)
+    return redirect(url_for("show_workout_plan"))
+
+
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
 
 # endpoint search exercise (workout instruction action) by name
