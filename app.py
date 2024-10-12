@@ -171,7 +171,24 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
+
+        if time and time.strip():  # Check if location is not empty
+            if validate_date(time)== False:
+                flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+                doc = {
+                    "user_id": current_user.id,
+                    "job_title": job_title,
+                    "company": company,
+                    "location": location,
+                    "link": link,
+                    "stage": stage,
+                }
+            #return redirect(url_for("add"), doc)
+                locations = load_cities()
+                formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+                return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
         
+            '''
         if validate_date(time)== False:
             # Insert data into MongoDB
             flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
@@ -188,17 +205,18 @@ def create_app():
             formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
             return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
         else:
-            doc = {
-                "user_id": current_user.id,
-                "job_title": job_title,
-                "company": company,
-                "location": location,
-                "link": link,
-                "stage": stage,
-                "time": time
-            }
-            db.records.insert_one(doc)
-            return redirect(url_for("home"))
+        '''
+        doc = {
+            "user_id": current_user.id,
+            "job_title": job_title,
+            "company": company,
+            "location": location,
+            "link": link,
+            "stage": stage,
+            "time": time
+        }
+        db.records.insert_one(doc)
+        return redirect(url_for("home"))
     
 
     def validate_date(date_str):
