@@ -20,25 +20,57 @@
         <p><span class="required">*</span> indicates required fields</p>
 
         <form method="POST" action="{{url_for('add_post')}}">
-            <label for="titleInput">Job Title: <span class="required">*</span></label>
-            <input type="text" id="titleInput" name="job_title" placeholder="job title" required/>
-            <br/>
-            <label for="companyInput">Company: <span class="required">*</span></label>
-            <input type="text" id="companyInput" name="company" placeholder="company" required/>
-            <br/>
-            <label for="companyInput">Location: <span class="required">*</span></label>
-            <input type="text" id="locationInput" name="location" placeholder="location" required/>
-            <br/>
-            <label for="linkInput">Link (to the job description):</label>
-            <input type="text" id="linkInput" name="link" placeholder="link to the job description"/>
-            <br/>
-            <label for="stageInput">Stage: <span class="required">*</span></label>
-            <input type="text" id="stageInput" name="stage" placeholder="stage" required/>
-            <br/>
-            <label for="timeInput">Time/DDL:</label>
-            <input type="text" id="timeInput" name="time" placeholder="MM/DD/YYYY"/>
-            <br/>
-            <input type="submit" value="Save"/>
+            {% if count==0 %}
+                <label for="titleInput">Job Title: <span class="required">*</span></label>
+                <input type="text" id="titleInput" name="job_title" placeholder="job title" required/>
+                <br/>
+                <label for="companyInput">Company: <span class="required">*</span></label>
+                <input type="text" id="companyInput" name="company" placeholder="company" required/>
+                <br/>
+                <label for="companyInput">Location: <span class="required">*</span></label>
+                <input type="text" id="locationInput" name="location" placeholder="location" required/>
+                <br/>
+                <label for="linkInput">Link (to the job description):</label>
+                <input type="text" id="linkInput" name="link" placeholder="link to the job description"/>
+                <br/>
+                <label for="stageInput">Stage: <span class="required">*</span></label>
+                <input type="text" id="stageInput" name="stage" placeholder="stage" required/>
+                <br/>
+                <label for="timeInput">Time/DDL:</label>
+                <input type="text" id="timeInput" name="time" placeholder="YYYY/MM/DD"/>
+                <br/>
+                <input type="submit" value="Save"/>
+            {% else %}
+                <label for="titleInput">Job Title: <span class="required">*</span></label>
+                <input type="text" id="titleInput" name="job_title" value="{{doc.job_title}}" required/>
+                <br/>
+                <label for="companyInput">Company: <span class="required">*</span></label>
+                <input type="text" id="companyInput" name="company" value="{{doc.company}}" required/>
+                <br/>
+                <label for="locationInput">Location: <span class="required">*</span></label>
+                <input type="text" id="locationInput" name="location" value="{{doc.location}}" required/>
+                <br/>
+                <label for="linkInput">Link (to the job description):</label>
+                <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
+                <br/>
+                <label for="stageInput">Stage: <span class="required">*</span></label>
+                <input type="text" id="stageInput" name="stage" value="{{doc.stage}}" required/>
+                <br/>
+                <label for="timeInput">Time/DDL:</label>
+                <input type="text" id="timeInput" name="time" placeholder="YYYY/MM/DD"/>
+                <br/>
+                <input type="submit" value="Save"/>
+            {% endif %}
         </form>
     </article>
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages()%}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 {% endblock %}

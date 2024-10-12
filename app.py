@@ -136,7 +136,8 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        return render_template("add.html")
+        doc = {}
+        return render_template("add.html", doc=doc, count = 0)
     
     @app.route('/add_post', methods=["POST"])
     def add_post():
@@ -153,17 +154,76 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
-        doc = {
-            "user_id": current_user.id,
-            "job_title": job_title,
-            "company": company,
-            "location": location,
-            "link": link,
-            "stage": stage,
-            "time": time
-        }
-        db.records.insert_one(doc)
-        return redirect(url_for("home"))
+        
+        if validate_date(time)== False:
+            # Insert data into MongoDB
+            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+            doc = {
+                "user_id": current_user.id,
+                "job_title": job_title,
+                "company": company,
+                "location": location,
+                "link": link,
+                "stage": stage,
+            }
+            #return redirect(url_for("add"), doc)
+            return render_template("add.html", doc=doc, count=1)
+        else:
+            doc = {
+                "user_id": current_user.id,
+                "job_title": job_title,
+                "company": company,
+                "location": location,
+                "link": link,
+                "stage": stage,
+                "time": time
+            }
+            db.records.insert_one(doc)
+            return redirect(url_for("home"))
+    
+
+    def validate_date(date_str):
+        parts = date_str.split('/')
+    
+        if len(parts) != 3:
+            return False
+    
+        year, month, day = parts
+
+    # Check if year, month, and day are digits
+        if not (year.isdigit() and month.isdigit() and day.isdigit()):
+            return False
+
+    # Convert to integers
+        year = int(year)
+        month = int(month)
+        day = int(day)
+
+    # Basic checks for valid ranges
+        if not (1000 <= year <= 9999):  # Check for 4-digit year
+            return False
+        if not (1 <= month <= 12):  # Month must be between 1 and 12
+            return False
+        if not (1 <= day <= 31):  # Day must be between 1 and 31 (basic check)
+            return False
+
+    # Additional checks for valid days per month
+        if month in [4, 6, 9, 11] and day > 30:
+            return False  # April, June, September, November have 30 days
+        if month == 2:
+            if is_leap_year(year):
+                if day > 29:
+                    return False  # February has 29 days in a leap year
+            else:
+                if day > 28:
+                    return False  # February has 28 days in a non-leap year
+
+        return True
+
+    # Function to check if a year is a leap year
+    def is_leap_year(year):
+        return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    
     @app.route('/info/<record_id>')
     def info(record_id):
         """
@@ -178,7 +238,7 @@ def create_app():
         """
         doc = db.records.find_one({"_id": ObjectId(record_id)})
         return_to = request.args.get('return_to')
-        return render_template('info.html',doc=doc,return_to=return_to)
+        return render_template('info.html',doc=doc,return_to=return_to,count=0)
     @app.route('/edit/<record_id>')
     def edit(record_id):
         """
@@ -208,6 +268,7 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
+        
         doc = {
             "job_title": job_title,
             "company": company,
@@ -215,10 +276,16 @@ def create_app():
             "link": link,
             "stage": stage,
             "time": time
-        }
+            }
+        if validate_date(time)== False:
+            # Insert data into MongoDB
+            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+            return edit(record_id)
+
         db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
         return_to = request.args.get('return_to')
         return redirect(url_for(return_to))
+        
     @app.route("/delete/<record_id>")
     def delete(record_id):
         """
