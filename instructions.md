@@ -43,6 +43,8 @@ Teams must create a public channel in the course Discord server to use for team 
 
 Teams must write a product vision statement for their web application and place it in the `README.md` file. This should be one-sentence description of the project.
 
+This mobile app is a comprehensive fitness tracker that empowers users at all fitness levels to create / update their personalized workout plans, log exercise details, and track their workout progress.
+
 ### User stories
 
 To begin, teams must develop a set of user stories that define the product they are building.
