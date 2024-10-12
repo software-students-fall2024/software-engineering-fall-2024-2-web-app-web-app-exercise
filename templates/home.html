@@ -4,35 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Tracker - Home</title>
-    <!-- Linking external stylesheet- need to work with flask change to work with flasj later -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav id="desktop-nav">
         <div>
             <ul class="nav-links">
-                <!-- Link to the Transactions page -->
+                <li><a href="{{ url_for('account') }}">Account</a></li> 
                 <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
-
-                <!-- Link to the Add Transaction page -->
                 <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
-
-                <!-- Link to the Edit Transaction page -->
                 <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
-
-                <!-- Link to the Search Transactions page -->
                 <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
             </ul>
         </div>
     </nav>
+    
     <div class="container">
-        <h1>Personal Budget Tracker</h1>
+        {% if name %}
+            <h1>Hi, {{ name }}, this is your Personal Budget Tracker</h1>
+        {% else %}
+            <h1>Personal Budget Tracker</h1>
+        {% endif %}
         <h2>Financial Overview</h2>
         <div class="summary">
             <div class="budget">
-                <h3>Balance: ${{ budget }}</h3>
+                <h3>Current Balance: ${{ balance }}</h3>
             </div>
-            <p>Spending Budget for the Month: ${{ budget }}</p>
+            <p>Spending Budget for the Month: ${{ spending_budget }}</p>
             <p>Spending Budget Left for the Month: ${{ budget_left }}</p>
         </div>
     </div>

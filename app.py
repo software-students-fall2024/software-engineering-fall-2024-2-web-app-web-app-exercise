@@ -28,14 +28,66 @@ db = client['SWE_Project_2-Webstars']
 transactions_collection = db['transactions']
 
 # Homepage route
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    return render_template('account.html')
+
+
+@app.route('/save_account', methods=['POST'])
+def save_account():
+    name = request.form['name']
+    total_budget = float(request.form['total_budget'])
+    spending_budget = float(request.form['spending_budget'])
+
+    # Save the name, total budget, and spending budget to the 'budgets' collection
+    db['budgets'].update_one(
+        {}, 
+        {'$set': {'name': name, 'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
+        upsert=True
+    )
+
+    return redirect(url_for('home'))
+
+
 @app.route('/')
 def home():
+    # Fetch budget data from the 'budgets' collection
     budget_data = db['budgets'].find_one()
-    budget = budget_data.get('total_budget', 0) if budget_data else 0
-    budget_left = budget_data.get('budget_left', 0) if budget_data else 0
-    transactions = list(transactions_collection.find())  # Convert cursor to list
 
-    return render_template('home.html', transactions=transactions, budget=budget, budget_left=budget_left)
+    if not budget_data:
+        return redirect(url_for('account'))
+
+    # Set the budget and spending budget values
+    name = budget_data.get('name', 'User')
+    total_budget = budget_data.get('total_budget', 0)
+    spending_budget = budget_data.get('spending_budget', 0)
+
+    # Fetch all transactions and calculate total expenses
+    transactions = list(transactions_collection.find())  # Convert cursor to list
+    total_expenses = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
+
+    # Corrected calculations:
+    # Balance should be total_budget minus expenses
+    balance = total_budget - total_expenses
+
+    # Spending Budget Left should be spending_budget minus expenses
+    budget_left = spending_budget - total_expenses
+
+    # Update the remaining budget in the database
+    db['budgets'].update_one(
+        {}, 
+        {'$set': {'budget_left': budget_left}}
+    )
+
+    return render_template(
+        'home.html', 
+        transactions=transactions, 
+        balance=balance,  # total budget - expenses
+        spending_budget=spending_budget,  # user gives - stays constant
+        budget_left=budget_left,  # spending budget minus expenses
+        name=name
+    )
+
 
 # View all transactions
 @app.route('/transactions')
