@@ -79,8 +79,7 @@ def show_workout_instruction():
             "id": str(exercise["_id"]),
             "name": exercise["name"],
             "gif_path": exercise.get("gif_path", ""),
-            "target_muscle": exercise.get("target_muscle", ""),
-            "instructions": exercise.get("instructions", [])
+            "target_muscle": exercise.get("target_muscle", "")
         }
         for exercise in exercises
     ]
@@ -174,8 +173,7 @@ def show_workout_plan_select():
             "id": str(exercise["_id"]),
             "name": exercise["name"],
             "gif_path": exercise.get("gif_path", ""),
-            "target_muscle": exercise.get("target_muscle", ""),
-            "instructions": exercise.get("instructions", [])
+            "target_muscle": exercise.get("target_muscle", "")
         }
         for exercise in exercises
     ]
@@ -211,8 +209,7 @@ def search_exercise():
                     "id": str(exercise["_id"]),
                     "name": exercise["name"],
                     "gif_path": exercise.get("gif_path", ""),
-                    "target_muscle": exercise.get("target_muscle", ""),
-                    "instructions": exercise.get("instructions", [])
+                    "target_muscle": exercise.get("target_muscle", "")
                 } 
                 for exercise in exercises
             ]
@@ -223,35 +220,6 @@ def search_exercise():
     
     # return an empty form with all workouts
     return redirect(url_for("show_workout_instruction"))
-
-# endpoint for exercise by category (on click categories side-bar)
-@app.route("/api/exercises/category/<category>", methods=["GET"])
-def get_exercise_by_category(category):
-    exercises = exercise_collection.find({
-        "categories": {"$regex": category}
-        })
-
-    # find() return cursor varible, it is iterable but can only be traced once, use list for multiple uses
-    exercise_list = list(exercises)
-    result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercise_list]
-    
-    # get a unique list of equipment used for each category
-    equipment_set = {e.get("equipment", "") for e in exercise_list}
-    response = {
-        "exercise": result
-        , "sub_category_equipment": list(equipment_set)
-    }
-    return jsonify(response)
-
-# endpoint for exercise by catgoery with subcategory in equipment (sub side-bar maybe)
-@app.route("/api/exercises/category/<category>/equipment/<equipment>", methods=["GET"])
-def get_exercises_by_category_and_equipment(category, equipment):
-    exercise = exercise_collection.find({
-        "categories": {"$regex": category}
-        , "equipment": {"$regex": equipment}
-        })
-    result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
-    return jsonify(result)
     
 # user register
 @app.route("/api/user/register", methods=["POST"])
