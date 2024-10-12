@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import pymongo
+from bson.objectid import ObjectId
 
 load_dotenv()
 
@@ -38,9 +39,10 @@ def create_app():
         return render_template('delete.html')
 
     #Edit data route
-    @app.route('/edit')
-    def edit():
-        return render_template('edit.html')
+    @app.route("/edit/<post_id>")
+    def edit(post_id):
+        restaurant=db.MONGO_DBNAME.find_one({"_id": ObjectId(post_id)})
+        return render_template('edit.html', restaurant=restaurant)
 
     #Search data route
     @app.route('/search')
