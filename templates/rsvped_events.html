@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="page-layout" id="rsvped-events-page">
-        <h1>Your RSVPed Events</h1>
+    <h1>Your RSVPed Events</h1>
 
-        {% if events %}
-            <ul>
-            {% for event in events %}
-                <li>
-                    <h2>{{ event.title }}</h2>
-                    <p>{{ event.description }}</p>
-                    <p>Date: {{ event.date }}</p>
-                    <p>Location: {{ event.location }}</p>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>You haven't RSVPed for any events yet.</p>
-        {% endif %}
-    
-        <a href="{{ url_for('home_feed') }}"><button>Back to Home Feed</button></a>
-    </div>
+    {% if events %}
+        <ul>
+        {% for event in events %}
+            <li>
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>Date: {{ event.date }}</p>
+                <p>Location: {{ event.location }}</p>
+                <form action="{{ url_for('delete_rsvp', event_id=event._id) }}" method="post">
+                    <button type="submit">Delete RSVP</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't RSVPed for any events yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home_feed') }}"><button>Back to Home Feed</button></a>
 </body>
 </html>

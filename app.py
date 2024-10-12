@@ -167,6 +167,27 @@ def rsvp_list():
 
     return render_template('rsvped_events.html', events=rsvped_events)
 
+@app.route('/delete_rsvp/<event_id>', methods=['POST'])
+def delete_rsvp(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    user = collection.find_one({'username': session['username']})
+    event = events_collection.find_one({'_id': ObjectId(event_id)})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('rsvp_list'))
+    
+    # Remove event from user's rsvp
+    collection.update_one({'_id': user['_id']}, {'$pull': {'rsvped_events': event_id}})
+
+    # Remove user from event's attendees
+    events_collection.update_one({'_id': event['_id']}, {'$pull': {'attendees': user['_id']}})
+
+    flash(f"RSVP for {event['title']} has been deleted.")
+    return redirect(url_for('rsvp_list'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
