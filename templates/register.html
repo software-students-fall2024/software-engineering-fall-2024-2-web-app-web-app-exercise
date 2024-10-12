@@ -18,12 +18,20 @@
                 <label for="last_name">Last Name:</label>
                 <input type="text" id="last_name" name="last_name" required><br><br>
             </div>
-    
+            <div id="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br><br>
+            </div>
+            <div id="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br><br>
+            </div>
             <input id="register-button" type="submit" value="Register">
         </form>
     
         <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
     </div>
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul>
