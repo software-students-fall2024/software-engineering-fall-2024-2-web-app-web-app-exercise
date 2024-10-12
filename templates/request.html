@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if applianceInfo is none %}
-    <form method="POST" action="/request">
+    <form method="GET" action="/request">
         <input type="text" pattern="^[0-9]{4}$" name="code" placeholder="Appliance Code">
         <input type="submit" value="search">
     </form>
@@ -14,8 +14,12 @@
 
     {% if applianceInfo is not none %} <!-- If code is found, display help form -->
         <h3>{{applianceInfo.applianceName}}</h3>
+        <p>Building:{{applianceInfo.building}}</p>
+        <p>Floor:{{applianceInfo.floor}}</p>
+
         <form>
             <input type="text" name="fullName" placeholder="Enter Full Name">
+            <br>
             <input type="text" pattern="^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$" name="email" placeholder="Email">
             <br>
             <input type="text" name="subject" placeholder="Subject Line">
