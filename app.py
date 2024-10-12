@@ -33,8 +33,16 @@ def create_app():
     @app.route("/main")
     @login_required
     def home():
-        programs = [{"p_name": "1"}, {"p_name": "2"}]
+        programs = [{"p_name": "1", "id": "1"}, {"p_name": "2", "id": "2"}]
         return render_template("main.html", programs=programs)
+        
+    # team page
+    @app.route('/program/<id>')
+    def program(id):
+        programs = [{"p_name": "1", "id": "1", "task": ["1.1", "1.2"]}, {"p_name": "2", "id": "2", "task": ["2.1", "2.2"]}]
+        for program in programs:
+            if program["id"] == id:
+                return render_template("team.html", program=program)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
@@ -42,8 +50,9 @@ def create_app():
             username = request.form['username']
             password = request.form['password']
 
+        
             user_data = users_collection.find_one({"username": username})
-            if user_data and user_data['password'] == password:  # For security, use password hashing
+            if user_data and user_data['password'] == password:  
                 user_obj = User(str(user_data['_id']), user_data['username'])
                 login_user(user_obj)
                 flash("Login successful!", "success")
@@ -52,6 +61,16 @@ def create_app():
                 flash("Invalid credentials, please try again.", "danger")
         
         return render_template("login.html")
+    
+    @app.route("/register", methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            flash("Registration successful!", "success")
+            return redirect(url_for('login'))
+        return render_template("register.html")
+    
 
     @app.route("/logout")
     @login_required
@@ -65,4 +84,5 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run(debug=True)
+
 
