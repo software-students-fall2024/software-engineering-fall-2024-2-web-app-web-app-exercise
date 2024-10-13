@@ -145,7 +145,7 @@ def create_app():
             #"$exists": True  # Field exists
             }, "user_id": current_user.id
         }
-        docs = db.records.find(query)#{"user_id": current_user.id,})
+        docs = db.records.find(query).sort("time",1)#{"user_id": current_user.id,})
         return_to = request.args.get('return_to','home')
         return render_template("index.html",docs=docs,return_to=return_to)
     
@@ -183,8 +183,8 @@ def create_app():
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
                 doc = {
                     "user_id": current_user.id,
-                    "job_title": job_title,
-                    "company": company,
+                    "job_title": " ".join(job_title.split()).strip(),#job_title,
+                    "company": " ".join(company.split()).strip(),
                     "location": location,
                     "link": link,
                     "stage": stage,
@@ -196,8 +196,8 @@ def create_app():
         
         doc = {
             "user_id": current_user.id,
-            "job_title": job_title,
-            "company": company,
+            "job_title": " ".join(job_title.split()).strip(),
+            "company": " ".join(company.split()).strip(),
             "location": location,
             "link": link,
             "stage": stage,
@@ -297,9 +297,9 @@ def create_app():
         time = request.form["time"]
         
         doc = {
-            "job_title": job_title,
-            "company": company,
-            "location": location,
+            "job_title": " ".join(job_title.split()).strip(),
+            "company": " ".join(company.split()).strip(),
+            "location": location,#" ".join(job_title.split()).strip(),
             "link": link,
             "stage": stage,
             "time": time
@@ -348,18 +348,21 @@ def create_app():
         job_title = request.form["job_title"]
         company_name = request.form["company"]
         location_name = request.form["location"]
+        stage = request.form["stage"]
         ddl_date = request.form["time"]
 
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
         if job_title and job_title.strip():  # Check if job is not empty
-            search_criteria['job_title'] = job_title
+            search_criteria['job_title'] = {"$regex": f"^{" ".join(job_title.split()).strip()}$", "$options": "i"}#job_title
         if company_name and company_name.strip():  # Check if company is not empty
-            search_criteria['company'] = company_name
+            search_criteria['company'] = {"$regex": f"^{" ".join(company_name.split()).strip()}$", "$options": "i"}#company_name
         if location_name and location_name.strip():  # Check if location is not empty
             search_criteria['location'] = location_name
-        if ddl_date and ddl_date.strip():  # Check if location is not empty
-            search_criteria['time'] = ddl_date
+        if stage and stage.strip():  # Check if stage is not empty
+            search_criteria['stage'] = stage
+        if ddl_date and ddl_date.strip():  # Check if deadline is not empty
+            search_criteria['time'] = { "$lte": ddl_date }
             if validate_date(ddl_date)== False:
             # Insert data into MongoDB
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
