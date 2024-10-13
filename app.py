@@ -156,9 +156,37 @@ def create_app():
         {"$set": {"quantity": quantity}})
 
         return redirect(url_for("book_detail", book_id=book_id))
-
-
     
+    @app.route("/edit_title/<book_id>", methods=["POST"])
+    def edit_title(book_id):
+        title = request.form.get('title')
+        if not title:
+            return "Title cannot be empty.", 400
+        db.books.update_one(
+            {"_id": ObjectId(book_id)},
+            {"$set": {"title": title}} )
+        
+        return redirect(url_for("book_detail", book_id=book_id))
+
+    def edit_author(book_id):
+        author = request.form.get('author')
+        if not author:
+            return "Author cannot be empty.", 400
+        db.books.update_one(
+            {"_id": ObjectId(book_id)}, 
+            {"$set": {"author": author}})
+        return redirect(url_for("book_detail", book_id=book_id))
+    
+    @app.route("/edit_genre/<book_id>", methods=["POST"])
+    def edit_genre(book_id):    
+        genre = request.form.get('genre')
+        if not genre:
+            return "Genre cannot be empty.", 400
+        db.books.update_one(
+            {"_id": ObjectId(book_id)},
+            {"$set": {"genre": genre}})
+        return redirect(url_for("book_detail", book_id=book_id))
+
     return app
             
     
