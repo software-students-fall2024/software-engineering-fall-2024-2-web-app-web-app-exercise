@@ -1,7 +1,9 @@
-function showLinksDropdown() {
-    alert("SHOW"); // TESt
+const linksUi = document.querySelector(".links-ui");
+
+function showLinksDropdown(event) {
+    linksUi.style.display = "block";
 }
 
-function hideLinksDropdown() {
-    alert("HIDE"); // TESt
+function hideLinksDropdown(event) {
+    linksUi.style.display = "none";
 }
