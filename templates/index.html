@@ -94,9 +94,13 @@
         </div>
         <div class="add-workout-container">
             <div class="container3">
-                <a href="{{ url_for('show_workout_plan') }}" class="add-workout-button">
+                <!-- <a href="{{ url_for('show_workout_plan') }}" class="add-workout-button">
                     <img src="{{ url_for('static', filename='add-button.png') }}" alt="Add Icon">
                     add workout
+                </a> -->
+                <a href="{{ url_for('show_workout_instruction', for_plan=True) }}" class="add-workout-button">
+                    <img src="{{ url_for('static', filename='add-button.png') }}" alt="Add Icon">
+                    Add Workout Plan
                 </a>
             </div>
         </div>

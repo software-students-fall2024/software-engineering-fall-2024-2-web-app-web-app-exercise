@@ -83,6 +83,34 @@ class User:
             f"weekly_values.0.weekly_bmi.{current_day_index}": None
         }
         self.__collection.update_many({}, {"$set": update_fields})
+    
+    def add_workout_plan(self, user_name, workout):
+        self.__collection.update_one(
+            {"user_name": user_name}
+            , {"$push": {"daily_workout_plan": workout}}
+            , upsert=True
+        )
+    
+    def get_workout_plan(self, user_name):
+        user = self.find_user(user_name)
+        if user and "daily_workout_plan" in user:
+            return user["daily_workout_plan"]
+        return []
+    
+    # let user to specifiy one exercise to delete from the his/her personal data
+    def delet_from_workout_plan(self, user_name, exercise_name):
+        self.__collection.update_one(
+            {"user_name": user_name}
+            , {"$pull": {"daily_workout_plan": {"name": exercise_name}}}
+        )
+
+    # let user to clear all his today's exercise data, or automatically clear this data when 00:00 (a new day beigns)
+    def clear_workout_plan(self, user_name):
+        self.__collection.update_one(
+            {"user_name": user_name}
+            , {"$pullAll": {"daily_workout_plan": {"name": exercise_name}}}
+        )
+        pass
 
 
 class Nutrition:

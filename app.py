@@ -49,6 +49,9 @@ def show_workout_instruction():
     sub_category_equipment = []
     selected_equipment = None
 
+    # check if the request is for adding a plan, default to be false
+    for_plan = request.args.get("for_plan", False) or request.form.get("for_plan", False)
+
     # handle post request for filtering workouts
     if request.method == "POST":
         selected_category = request.form.get("category")
@@ -85,7 +88,8 @@ def show_workout_instruction():
     ]
 
     return render_template("workout_instruction.html", categories=categories, workouts=workouts
-    , selected_category=selected_category, sub_category_equipment=sub_category_equipment, selected_equipment=selected_equipment)
+    , selected_category=selected_category, sub_category_equipment=sub_category_equipment
+    , selected_equipment=selected_equipment, for_plan=for_plan)
 
 @app.route("/workout_instruction/exercise_details/<exercise_id>")
 def exercise_details(exercise_id):
@@ -109,100 +113,37 @@ def exercise_details(exercise_id):
     except Exception as e:
         abort(500, description=str(e))
 
+
+@app.route("/add_workout_to_plan", methods=["POST"])
+def add_workout_to_plan():
+    # 'imyhalex' is for tempoary use,
+    # this function creates a workout dictionary and append it into user's daily_workout_value
+    workout = {
+        "name": request.form.get("name")
+        , "setNum": int(request.form.get("setNum"))
+        , "gif_path": request.form.get("gif_path")
+        , "target_muscle": request.form.get("target_muscle")
+    }
+
+    user_service.add_workout_plan("imyhalex", workout)
+    return redirect(url_for("show_workout_instruction", for_plan=True))
+
 @app.route("/my_weekly_report", methods=["GET"])
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
-class Plan:
-    def __init__(self, name, setNum, gif_path, target_muscle):
-        self.name = name
-        self.setNum = setNum
-        self.gif_path = gif_path
-        self.target_muscle = target_muscle
-
-    def __str__(self):
-        return f"Plan(name='{self.name}', setNum={self.setNum}, gif_path='{self.gif_path}', target_muscle='{self.target_muscle}')"
-    def to_dict(self):
-        return {
-            'name': self.name,
-            'setNum': self.setNum,
-            'gif_path': self.gif_path,
-            'target_muscle': self.target_muscle}
-
-def output_plans():
-    if not selected_plans:
-        print("No plans selected yet.")
-    else:
-        for plan in selected_plans:
-            print(plan)
-
-selected_plans = []
-
+# marked
 @app.route("/workout_plan", methods=['GET', 'POST'])
 def show_workout_plan():
     return render_template("workout_plan.html", plans=selected_plans)
 
+# marked
 @app.route("/workout_plan/select", methods=['GET','POST'])
 def show_workout_plan_select():
-    exercises = None
-    # get distinct categories from the exercise collection
-    categories = exercise_collection.distinct("categories")
-
-    sub_category_equipment = []
-    selected_equipment = None
-
-    # handle post request for filtering workouts
-    if request.method == "POST":
-        selected_category = request.form.get("category")
-        selected_equipment = request.form.get("equipment")
-
-        if selected_equipment:
-            exercises = exercise_collection.find({
-                "categories": selected_category
-                , "equipment": selected_equipment
-                })
-        # filter exercise by category
-        else:
-            exercises = exercise_collection.find({"categories": selected_category})
-        
-        # get equipment list for the selected category
-        exercises_for_equipment = exercise_collection.find({"categories": selected_category})
-        equipment_set = {e.get("equipment") for e in exercises_for_equipment}
-        sub_category_equipment = list(equipment_set) # cast it into list
-
-    # handle the initial get request (no category selected yet)
-    # display all exercises
-    else:
-        exercises = exercise_collection.find()
-        selected_category = None
-
-    workouts = [
-        {
-            "id": str(exercise["_id"]),
-            "name": exercise["name"],
-            "gif_path": exercise.get("gif_path", ""),
-            "target_muscle": exercise.get("target_muscle", "")
-        }
-        for exercise in exercises
-    ]
-
-    return render_template("workout_plan_select.html", categories=categories, workouts=workouts
-    , selected_category=selected_category, sub_category_equipment=sub_category_equipment, selected_equipment=selected_equipment)
-
-@app.route("/add_workout_to_plan", methods=["POST"])
-def add_workout_to_plan():
-    name = request.form.get("name")
-    setNum = int(request.form.get("setNum"))
-    gif_path = request.form.get("gif_path")
-    target_muscle = request.form.get("target_muscle")
-    new_plan = Plan(name, setNum, gif_path, target_muscle)
-    selected_plans.append(new_plan.to_dict())
+    pass
 
 
-    return redirect(url_for("show_workout_plan"))
-
-
-
+# marked
 @app.route("/delete_exercise_from_plan", methods=["POST"])
 def delete_exercise_from_plan():
     data = request.get_json()
@@ -216,6 +157,7 @@ def delete_exercise_from_plan():
 
 food_collection = db["food"]
 
+# marked - modified later
 @app.route("/food_instruction", methods=["GET", "POST"])
 def show_food_instruction():
     # Get distinct categories from the food collection
@@ -242,6 +184,8 @@ def show_food_instruction():
         foods=food_items,
         selected_category=selected_category,
     )
+
+# marked - modified later
 @app.route("/search_food", methods=["POST"])
 def search_food():
     query = request.form.get("query", "")
@@ -258,6 +202,16 @@ def search_food():
     else:
         return redirect(url_for("show_food_instruction"))
 
+"""-------------------------------------------------------------------------------------------------------------------"""
+# this function is for temporary use
+def seed_user():
+    if not user_service.find_user("imyhalex"):
+        user_service.register_user("imyhalex", "imyhalex")
+        print("Temporary user 'imyhalex' seeded into the database.")
+
+"""-------------------------------------End of the page render function------------------------------------------------"""
+
+
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
 
 # endpoint search exercise (workout instruction action) by name
@@ -266,6 +220,9 @@ def search_exercise():
     if request.method == "POST":
         # request.args is used to access the query parameters
         query = request.form.get("query", "")
+
+        # ensure the search endpoint also preserves the for_plan parameter
+        for_plan = request.form.get("for_plan", False)
 
         if query:
             all_exercises = list(exercise_collection.find())
@@ -283,7 +240,7 @@ def search_exercise():
 
             # return the result list of dictionaries for use
             return render_template("workout_instruction.html", categories=exercise_collection.distinct("categories")
-            , workouts=workouts, search_query=query)
+            , workouts=workouts, search_query=query, for_plan=for_plan)
     
     # return an empty form with all workouts
     return redirect(url_for("show_workout_instruction"))
@@ -397,6 +354,7 @@ scheduler.start()
 
 if __name__ == "__main__":
     try:
+        seed_user() # for tempoary use
         app.run(debug=True, use_reloader=False)  # set use_reloader=False to avoid starting the scheduler multiple times
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
