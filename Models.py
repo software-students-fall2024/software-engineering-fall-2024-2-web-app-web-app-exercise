@@ -16,9 +16,9 @@ class User:
             , "height": None
             , "weely_values": [
                 {
-                    "weekly_weight": [None] * 7,
-                    "weekly_calorie": [None] * 7,
-                    "weekly_bmi": [None] * 7                    
+                    "weekly_weight": [None] * 7
+                    , "weekly_calorie": [None] * 7
+                    , "weekly_bmi": [None] * 7                    
                 }
             ]
             , "daily_workout_plan": []
