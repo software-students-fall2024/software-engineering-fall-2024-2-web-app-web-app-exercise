@@ -304,7 +304,7 @@ def create_app():
             "stage": stage,
             "time": time
             }
-        if validate_date(time)== False:
+        if time and time.strip() and validate_date(time)== False:
             # Insert data into MongoDB
             flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
             return edit(record_id)
