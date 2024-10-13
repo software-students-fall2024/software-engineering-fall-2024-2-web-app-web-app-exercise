@@ -56,7 +56,8 @@
 }
 
 
-.select-box{
+.select-box-location,
+.select-box-stage{
     width: 100%;
     position: relative;
 }
@@ -92,7 +93,7 @@
     border-radius: 0.25rem;
     margin-top: 15px;
     width: 100%;
-    z-index: 999;
+    z-index: 99999;
     padding: 20px;
     display: none;
 }
@@ -120,10 +121,16 @@
 .options li:hover{
     background-color: #f2f2f2;
 }
-.select-box.active .content{
+.select-box-location.active .content{
     display: block;
 }
-.select-box.active .select-option:after{
+.select-box-stage.active .content{
+    display: block;
+}
+.select-box-location.active .select-option:after{
+    transform: rotate(-180deg);
+}
+.select-box-stage.active .select-option:after{
     transform: rotate(-180deg);
 }
     
