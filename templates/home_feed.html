@@ -42,6 +42,7 @@
         {% endif %}
         
         <div class="button-group">
+            <a href="{{ url_for('hosting_list') }}"><button>Your Events</button></a>
             <a href="{{ url_for('rsvp_list') }}"><button>Your RSVPs</button></a>
             <a href="{{ url_for('create_event') }}"><button>Create Event</button></a>
             <a href="{{ url_for('logout') }}"><button>Logout</button></a>

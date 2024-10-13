@@ -191,6 +191,78 @@ def delete_rsvp(event_id):
     flash(f"RSVP for {event['title']} has been deleted.")
     return redirect(url_for('rsvp_list'))
 
+@app.route('/<event_id>', methods=['GET'])
+def hosting_page(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    event = events_collection.find_one({'_id': ObjectId(event_id)})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('home_feed'))
+
+    return render_template('rsvp_page.html', event=event)
+ 
+@app.route('/hosting_events')
+def hosting_list():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    hosting_events = list(events_collection.find({"creator": session['username']}))
+
+    return render_template('hosting_events.html', events=hosting_events)
+
+
+@app.route('/delete_event/<event_id>', methods=['POST'])
+def delete_event(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    #user = collection.find_one({'username': session['username']})
+    event = events_collection.find_one({'_id': ObjectId(event_id), 'creator': session['username']})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('hosting_events'))
+    
+    events_collection.delete_one({'_id': ObjectId(event_id)})
+
+    flash("{event['title']} deleted successfully.")
+    return redirect(url_for('hosting_list'))
+
+@app.route('/edit_event/<event_id>', methods=['GET', 'POST'])
+def edit_event(event_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    event = events_collection.find_one({'_id': ObjectId(event_id), 'creator': session['username']})
+
+    if not event:
+        flash("Event not found.")
+        return redirect(url_for('hosting_list'))
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        date = request.form['date']
+        location = request.form['location']
+
+        events_collection.update_one(
+            {'_id': ObjectId(event_id)},
+            {'$set': {
+                'title': title,
+                'description': description,
+                'date': date,
+                'location': location
+            }}
+        )
+
+        flash("Event updated successfully!")
+        return redirect(url_for('hosting_list'))
+
+    return render_template('edit_page.html', event=event)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
