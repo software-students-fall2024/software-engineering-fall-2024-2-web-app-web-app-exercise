@@ -145,7 +145,7 @@ def create_app():
             #"$exists": True  # Field exists
             }, "user_id": current_user.id
         }
-        docs = db.records.find(query)#{"user_id": current_user.id,})
+        docs = db.records.find(query).sort("time",1)#{"user_id": current_user.id,})
         return_to = request.args.get('return_to','home')
         return render_template("index.html",docs=docs,return_to=return_to)
     
