@@ -105,8 +105,12 @@ def create_app():
         result = db.books.insert_one(nbook)
         book_id = result.inserted_id
         return redirect(url_for("home"))
-
-
+    
+    @app.route("/show_inventory", methods=["GET"])
+    def show_inventory():
+        books = db.books.find({}, {"title": 1, "quantity": 1})
+        list = list(books)
+        return render_template('show_inventory.html', books=list)
 
     return app
             
