@@ -32,9 +32,9 @@
         </form>
     </div>
     <div class="container" id="navigation page">
-        <!-- Correct the Home button and Search button with Flask's url_for function -->
-        <button type="button" onclick="window.location.href='{{ url_for('home') }}';">Home</button>
-        <button type="button" onclick="window.location.href='{{ url_for('search_transactions') }}';">Search Transactions</button>
+        <!--  Home Button and Search button  -->
+        <button type="button" onclick="to('{{ url_for(\'home\')}}')">Home</button>
+        <button type="button" onclick="to('{{ url_for(\'search\') }}')">Search Transactions</button>
     </div>
 </body>
 </html>
