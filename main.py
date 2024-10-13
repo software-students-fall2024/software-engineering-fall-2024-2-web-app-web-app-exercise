@@ -1,11 +1,11 @@
 import os
-from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
-from pymongo import MongoClient
-from dotenv import load_dotenv
 import pymongo
-from bson.objectid import ObjectId
+from pymongo import MongoClient
+from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+from bson.objectid import ObjectId
 
 load_dotenv()
 
@@ -18,6 +18,7 @@ def create_app():
     db = cxn[os.getenv('MONGO_DBNAME')]
     MONGO_DBNAME = os.getenv('MONGO_DBNAME')
 
+    #Connect to MongoDB
     try:
         cxn.admin.command("ping")
         print(" *", "Connected to MongoDB")
@@ -28,9 +29,12 @@ def create_app():
     manager = LoginManager()
     manager.init_app(app)
     manager.login_view = 'login'
-    #Get user info
+
+    #Get user info using Atlas
     users=db.UserData.find()
     userList=list(users)
+
+    #User class
     class User(UserMixin):
         def __init__(self, user_data):
             self.id = str(user_data['_id'])
@@ -49,11 +53,14 @@ def create_app():
     @manager.request_loader
     def request_loader(request):
         username = request.form.get('username')
+
         if username:
             user_data = db.users.find_one({'username': username})
+
             if user_data:
                 user = User(user_data)
                 password = request.form.get('password')
+
                 if check_password_hash(user_data['password'], password):
                     return user
         return None
@@ -65,32 +72,41 @@ def create_app():
             username = request.form['username']
             password = request.form['password']
             user_data = db.users.find_one({'username': username})
+
             if user_data and check_password_hash(user_data['password'], password):
                 user = User(user_data)
                 login_user(user)
-                flash('Logged in successfully.')
+                flash('Log in success!')
                 return redirect(url_for('home'))
+            
             flash('Invalid username or password')
+
         return render_template('login.html')
     
-    #Register route
-    @app.route('/register', methods=['GET', 'POST'])
-    def register():
+    #Create account route
+    @app.route('/createAccount', methods=['GET', 'POST'])
+    def createAccount():
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
             existing_user = db.users.find_one({'username': username})
+
             if existing_user is None:
                 hashed_password = generate_password_hash(password)
+
                 db.users.insert_one({
                     'username': username,
                     'password': hashed_password
                 })
-                flash('Registration successful. Please log in.')
+
+                flash('Account created! Please log in.')
                 return redirect(url_for('login'))
-            flash('Username or email already exists')
-        return render_template('register.html')
+            
+            flash('Username already exists. Please choose a different username.')
+
+        return render_template('createAccount.html')
     
+    #Log out route
     @app.route('/logout')
     @login_required
     def logout():
