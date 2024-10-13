@@ -196,10 +196,8 @@ def add_workout_to_plan():
     gif_path = request.form.get("gif_path")
     target_muscle = request.form.get("target_muscle")
     new_plan = Plan(name, setNum, gif_path, target_muscle)
-
-    selected_plans = session.get('selected_plans', [])
     selected_plans.append(new_plan.to_dict())
-    session['selected_plans'] = selected_plans
+
 
     return redirect(url_for("show_workout_plan"))
 
@@ -216,6 +214,49 @@ def delete_exercise_from_plan():
 
     return jsonify({'success': True})
 
+food_collection = db["food"]
+
+@app.route("/food_instruction", methods=["GET", "POST"])
+def show_food_instruction():
+    # Get distinct categories from the food collection
+    categories = food_collection.distinct("category")
+
+    selected_category = None
+    foods = []
+
+    if request.method == "POST":
+        selected_category = request.form.get("category")
+        if selected_category:
+            # Fetch foods based on the selected category
+            foods = food_collection.find({"category": selected_category})
+    else:
+        # Fetch all foods if no category is selected
+        foods = food_collection.find()
+
+    # Prepare the food data for rendering
+    food_items = [{"id": str(food["_id"]), "name": food["food_name"]} for food in foods]
+
+    return render_template(
+        "food_instruction.html",
+        categories=categories,
+        foods=food_items,
+        selected_category=selected_category,
+    )
+@app.route("/search_food", methods=["POST"])
+def search_food():
+    query = request.form.get("query", "")
+    if query:
+        foods = food_collection.find({"food_name": {"$regex": query, "$options": "i"}})
+        food_items = [{"id": str(food["_id"]), "name": food["food_name"]} for food in foods]
+        categories = food_collection.distinct("category")
+        return render_template(
+            "food_instruction.html",
+            categories=categories,
+            foods=food_items,
+            search_query=query,
+        )
+    else:
+        return redirect(url_for("show_food_instruction"))
 
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
 

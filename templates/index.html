@@ -31,10 +31,11 @@
                 <a class="textbox">Fats</a>
                 <a class="textbox">Water</a>   
             </div>
-            <a class="text" style="display: block; text-align: right; margin-right: 20px;"><strong>Enter your Intake Food</strong></a>
+            <a class="text" style="display: block; text-align: right; margin-right: 20px;" href="{{ url_for('show_food_instruction') }}">Enter Your Intake Food</a>
+
         </div>
         <script>
-            function calculateBMI() {
+            function calculateBMI() {   
                 const weight = document.getElementById("weight").value;
                 const heightFeet = document.getElementById("height-feet").value;
                 const heightInches = document.getElementById("height-inches").value;
