@@ -57,12 +57,15 @@
                       <div class="card-body">
                         <h5 class="card-title">{{ workout.name }}</h5>
                           <p class="card-text">Target muscles: {{ workout.target_muscle }}</p>
-                          <form action="{{ url_for('add_workout_to_plan') }}" method="POST">
+                        <form action="{{ url_for('add_workout_to_plan') }}" method="POST">
                             <input type="hidden" name="name" value="{{ workout.name }}">
-                            <input type="hidden" name="setNum" value="5">
                             <input type="hidden" name="gif_path" value="{{ workout.gif_path }}">
-                            <button type="submit" class="btn btn-primary">Select</button>
-                        </form>        
+                            <input type="hidden" name="target_muscle" value="{{ workout.target_muscle }}">
+                            <label for="setNum">Sets:</label>
+                            <input type="number" name="setNum" value="3" min="1">
+                            <button type="submit" class="btn btn-primary">Add to Plan</button>
+                        </form>
+   
                     </div>
                   </div>
               {% endfor %}

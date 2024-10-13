@@ -114,12 +114,20 @@ def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
 class Plan:
-    def __init__(self, name, setNum, gif_path):
+    def __init__(self, name, setNum, gif_path, target_muscle):
         self.name = name
         self.setNum = setNum
         self.gif_path = gif_path
+        self.target_muscle = target_muscle
+
     def __str__(self):
-        return f"Plan(name='{self.name}', setNum={self.setNum}, gif_path='{self.gif_path}')"
+        return f"Plan(name='{self.name}', setNum={self.setNum}, gif_path='{self.gif_path}', target_muscle='{self.target_muscle}')"
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'setNum': self.setNum,
+            'gif_path': self.gif_path,
+            'target_muscle': self.target_muscle}
 
 def output_plans():
     if not selected_plans:
@@ -186,9 +194,27 @@ def add_workout_to_plan():
     name = request.form.get("name")
     setNum = int(request.form.get("setNum"))
     gif_path = request.form.get("gif_path")
-    new_plan = Plan(name, setNum, gif_path)
-    selected_plans.append(new_plan)
+    target_muscle = request.form.get("target_muscle")
+    new_plan = Plan(name, setNum, gif_path, target_muscle)
+
+    selected_plans = session.get('selected_plans', [])
+    selected_plans.append(new_plan.to_dict())
+    session['selected_plans'] = selected_plans
+
     return redirect(url_for("show_workout_plan"))
+
+
+
+@app.route("/delete_exercise_from_plan", methods=["POST"])
+def delete_exercise_from_plan():
+    data = request.get_json()
+    exercise_name = data.get('exerciseName')
+
+    # Remove the exercise from selected_plans
+    global selected_plans
+    selected_plans = [plan for plan in selected_plans if plan.name != exercise_name]
+
+    return jsonify({'success': True})
 
 
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
