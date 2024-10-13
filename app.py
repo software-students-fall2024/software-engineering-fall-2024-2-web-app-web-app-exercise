@@ -161,6 +161,6 @@ def create_app():
 
 
 if __name__ == "__main__":
-    FLASK_PORT = os.gedtenv("FLASK_PORT", "5000")
+    FLASK_PORT = os.getenv("FLASK_PORT", "5000")
     app = create_app()
     app.run(port=FLASK_PORT)
