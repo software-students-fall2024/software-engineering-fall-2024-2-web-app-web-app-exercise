@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request,redirect, url_for
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import pymongo
@@ -97,9 +97,14 @@ def create_app():
         #Add recipe data to db
         db.RestaurantData.insert_one(restaurantData)
 
-        #change to a popup on screen
-        return jsonify({'message': f"Restaurant '{request.form['restaurantName']}' submitted successfully!"}), 200
-
+        #change to success page 
+        return redirect(url_for('success', restaurantName=request.form['restaurantName']))
+    
+    @app.route('/success')
+    def success():
+        restaurantName=request.args.get('restaurantName')
+        return render_template('success.html',restaurantName=restaurantName)
+        
     #Handle delete data form
     @app.route('/deleteData', methods=['POST'])
     def deleteData():
