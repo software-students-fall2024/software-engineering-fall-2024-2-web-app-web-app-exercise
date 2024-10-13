@@ -75,6 +75,39 @@ def create_app():
         db.books.delete_one({"_id": ObjectId(book_id)})
         return redirect(url_for("home"))
     
+    @app.route("/add", methods=["POST"])
+    def add():
+        title = request.form.get('title')
+        author = request.form.get('author')
+        genre = request.form.get('genre')
+        price = request.form.get('price')
+        quantity = request.form.get('quantity')
+        date_added = datetime.datetime.utcnow()
+        if not title or not author or not genre or not price or not quantity:
+            return "All fields are required.", 400
+        try:
+            price = float(price)
+            quantity = int(quantity)
+        except ValueError:
+            return "Price and quantity must be numbers.", 400
+        
+        if price <= 0 or quantity <= 0:
+            return "Price and quantity must be positive values.", 400
+
+        nbook = {
+            "title": title,
+            "author": author,
+            "genre": genre,
+            "price": price,
+            "quantity": quantity,
+            "date_added": date_added
+        }
+        result = db.books.insert_one(nbook)
+        book_id = result.inserted_id
+        return redirect(url_for("home"))
+
+
+
     return app
             
     
