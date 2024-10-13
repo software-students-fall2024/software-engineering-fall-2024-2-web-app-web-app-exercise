@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from bson.objectid import ObjectId
+import datetime
 
 load_dotenv()
 
@@ -10,6 +12,35 @@ class User(UserMixin):
     def __init__(self, user_id, username):
         self.id = user_id
         self.username = username
+
+
+################# Sample Data ################# 
+user_doc = {
+    "username": "admin",   # make usernames unique?, so that it can be searched with find_one()
+    "password": "admin",       # or add another unique user id 
+    "project_id": ["x43gbf34", "a87gkf39"],
+    "access_level": "admin",  # or "user"
+    "created_at": datetime.datetime.utcnow() # the date time now
+}
+
+project_doc = {
+    "project_name": "Project 1",
+    "project_id": "x43gbf34",     # unique id, can be searched with find_one()
+    "tasks": ["task1", "task2"],
+    "team members": ["user1", "user2"],  # all unique usernames of team members
+    "created_at": datetime.datetime.utcnow() # the date time now
+}
+
+task_doc = {
+    "task_name": "task1",
+    "task_id": "hc619c71",     # unique id, can be searched with find_one()
+    "task_description": "This is task 1",
+    "task_status": "completed",
+    "task_members":["user1", "user2"],
+    "task_deadline": "2022-12-31"
+    "created_at": datetime.datetime.utcnow() # the date time now
+}
+###############################################
 
 def create_app():
     app = Flask(__name__)
