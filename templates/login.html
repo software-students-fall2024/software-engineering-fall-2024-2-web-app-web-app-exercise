@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="/login" method="GET">
+            <input type="text" name="contact" placeholder="Search contact" id="searchBar">
+            <input type="submit" value="Search" id="search">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each allContacts}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>
+                        {{#each phoneNumbers}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <form action="/phonebook" method="POST">
+            <input type="text" name="name" placeholder="Enter Name" id="addName" required>
+            <input type="text" name="email" placeholder="Enter Email" id="addEmail" required>
+            <input type="text" name="phoneNumbers" placeholder="Enter Phone Number(s)" id="addPhone" required>
+            <input type="submit" value="Add" id="add">
+        </form>
+    </body>
+</html>

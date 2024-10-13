@@ -9,11 +9,6 @@ from pymongo.mongo_client import MongoClient
 load_dotenv()
 
 def create_app():
-    """
-    Create and configure the Flask application.
-    returns: app: the Flask application object
-    """
-    
     app = Flask(__name__)
     
     db_uri = os.getenv("DB_URI")
