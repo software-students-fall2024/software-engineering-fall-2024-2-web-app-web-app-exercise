@@ -58,7 +58,7 @@ A little exercise to build a web application following an agile development proc
                 ...
             }
         ]
-        , "workout_palns": []
+        , "daily_workout_plan": []
     },
     {
         ...
