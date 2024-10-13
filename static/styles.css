@@ -147,16 +147,24 @@ ul {
     gap: 10px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+.attendees-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: -20px;
 }
 
-button:hover {
-    background-color: #0056b3;
+.attendees-list li {
+    padding: 5px 5px;
+    margin-bottom: -5px;
+    border-radius: 5px;
+    font-size: 14px; 
+    color: #333; 
+}
+
+.attendees-list li:last-child {
+    margin-bottom: 20px; 
+}
+
+.event-item {
+    margin-bottom: 20px;
 }
