@@ -26,7 +26,9 @@ A little exercise to build a web application following an agile development proc
 │   │   ├── index_style.css
 │   │   ├── my_weekly_report_style.css
 │   │   └── style.css
-│   └── icon.svg
+│   ├── delete-button.png
+│   ├── icon.svg
+│   └── trash-fill.svg
 ├── templates
 │   ├── details.html
 │   ├── food_calories.html
@@ -44,21 +46,78 @@ A little exercise to build a web application following an agile development proc
 ```json
 [
     {
-        "user_name": ""
-        , "password": ""
-        , "height": ""
-        , "weekly_values":[ # i am planning to track multiple weeks (such as previous 2 weeks), and let user decide whether to delete it
+        "_id": {
+            "$oid": "670b2aecf9876218e79cbee3"
+        },
+        "user_name": "imyhalex",
+        "password": "imyhalex",
+        "height": null,
+        "weely_values": [
             {
-                "weekly_weight":[None] * 7
-                , "weekly_calorie":[None] * 7
-                , "weekly_bmi":[None] * 7
+            "weekly_weight": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ],
+            "weekly_calorie": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ],
+            "weekly_bmi": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
+            }
+        ],
+        "daily_workout_plan": [
+            {
+            "name": "barbell wrist curl v. 2",
+            "setNum": 2,
+            "gif_path": "images/barbell_wrist_curl_v_2.gif",
+            "target_muscle": "forearms",
+            "timer": {
+                "duration": 0,
+                "status": "stopped"
+            }
             },
             {
-                ...
-                ...
+            "name": "seated side crunch (wall)",
+            "setNum": 4,
+            "gif_path": "images/seated_side_crunch_wall.gif",
+            "target_muscle": "abs",
+            "timer": {
+                "duration": 0,
+                "status": "stopped"
             }
-        ]
-        , "daily_workout_plan": []
+            }
+        ],
+        "weekly_values": {
+            "0": {
+            "weekly_bmi": {
+                "6": null
+            },
+            "weekly_calorie": {
+                "6": null
+            },
+            "weekly_weight": {
+                "6": null
+            }
+            }
+        }
     },
     {
         ...
@@ -80,7 +139,7 @@ A little exercise to build a web application following an agile development proc
     }
 ]
 ```
-### Idead of exercise structure (db["exercuse"] collection structure)
+### Idead of exercise structure (db["exercise"] collection structure)
 ```json
 [
     {
@@ -135,7 +194,31 @@ ___Personal Progress___
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+___1. Maker sure MongodDB is installed in your computer___
+> - [link to download the mongodb](https://www.mongodb.com/try/download/community)
+> - You shold download the commity server, mongo shell, and the mongodb compass based on your computer's operation system
+
+___2. Clone this repository to your local machine___
+```text
+https://github.com/software-students-fall2024/2-web-app-garage1.git
+```
+
+___3. Start and make sure your mongodb is working in terminal(Linux/MacOS)___
+```bash
+$ sudo systemctl start mongod
+$ sudo systemctl status mongod
+```
+
+___4. Open workspace and hit these two command to seed the data respectively___
+```bash
+$ python utils/food_db.py
+$ python utils/exercise_db.py
+```
+___5. Run the application___
+```bash
+$ python app.py
+```
+
 
 ## Task boards
 
