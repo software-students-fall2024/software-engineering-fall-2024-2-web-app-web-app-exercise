@@ -7,11 +7,13 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
+#just commenting so i can redo the pr
 
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.getenv('SECRET')
 
     cxn = pymongo.MongoClient(os.getenv('MONGO_URI'))
     MONGO_URI = os.getenv('MONGO_URI')
@@ -183,7 +185,6 @@ def create_app():
         #change to success page 
         return redirect(url_for('success', restaurantName=request.form['restaurantName']))
     
-    #success page after restaurant is added
     @app.route('/success')
     def success():
         restaurantName=request.args.get('restaurantName')
