@@ -40,6 +40,7 @@ def create_app():
         author = request.args.get('author')
         genre = request.args.get('genre')
         date_added = request.args.get('date_added')
+        price = request.args.get('price')
         
         #Build the query
         #Search for containment and case-insensitive
@@ -55,7 +56,15 @@ def create_app():
                 query['date_added'] = date_obj
             except ValueError:
                 return "Invalid date format. Please use YYYY-MM-DD.", 400
-        
+       # Price filter: Search for books with price <= given value
+        if price:
+            try:
+                price_value = float(price)  # Ensure valid float input
+                query['price'] = {'$lte': price_value}
+            except ValueError:
+                return "Invalid price format. Please enter a valid number.", 400
+            
+            
         # Perform the search on the books collection
         results = db.books.find(query) if query else []
         
