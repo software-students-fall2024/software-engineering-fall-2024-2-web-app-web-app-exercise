@@ -5,14 +5,28 @@
 }
 
 body {
-    background-color: #fbf6f5;
+    background-color: #fffbfa;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    max-width: 640px;
+    margin: auto;
 }
 
-a, p, li {
-    color: rgb(25, 25, 25);
+@media screen and (max-width:480px) {
+    body {
+        min-width: 100%;
+        margin: 0;
+    }
+}
+
+.textarea {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+a, p, li, label {
+    color: #111111;
     font-size: 16px;
 }
 
@@ -22,29 +36,30 @@ a {
 
 header {
     position: sticky;
+    background-color: #fffbfa;
+    top: 0;
     z-index: 10;
     padding: 16px 24px;
+    border-bottom: 1px solid #d9d7d7;
     nav {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #d9d7d7;
     }
     ul {
         list-style: none;
         display: flex;
         flex-direction: row;
         gap: 12px;
-        font-weight: bold;
+        font-weight: 500;
     }
 }
 
 #logo {
     font-size: 24px;
     font-weight: bold;
-    color: #f5340d;
+    color: #ea3713;
 }
 
 footer {
@@ -53,7 +68,89 @@ footer {
 }
 
 .wrapper {
-    margin: 16px 24px;
+    margin: 16px 24px 24px;
     min-height: 100%;
     flex: 1;
+}
+
+.reviews {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.review {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.review-details p:last-child {
+    color: #888888;
+}
+
+.icon-buttons {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    background-color: none;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+}
+
+.icon-button:hover {
+    cursor: pointer;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.labeled-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input, textarea {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #b0b0b0;
+}
+
+button, input[type=submit] {
+    background-color: #ea3713;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    height: 36px;
+}
+
+input[type=reset] {
+    background-color: white;
+    border: none;
+    color: #111111;
+    font-size: 16px;
+    font-weight: 500;
+    height: 36px;
+}
+
+button:hover, input[type=submit]:hover, input[type=reset]:hover {
+    cursor: pointer;
 }
