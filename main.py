@@ -100,6 +100,7 @@ def create_app():
         #change to success page 
         return redirect(url_for('success', restaurantName=request.form['restaurantName']))
     
+    #success page after restaurant is added
     @app.route('/success')
     def success():
         restaurantName=request.args.get('restaurantName')
