@@ -23,6 +23,10 @@ def create_app():
     except Exception as e:
         print("MongoDB connection error:", e)
         
+    @app.route("/home", methods=["GET"])
+    def home():
+        return render_template('home.html')
+        
     @app.route("/search")
     def search():
         """
