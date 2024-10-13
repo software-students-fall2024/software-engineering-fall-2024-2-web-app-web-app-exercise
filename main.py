@@ -51,6 +51,7 @@ def create_app():
         nameSearch = request.args.get('resName')
         cuisineSearch = request.args.get('resCuisine')
         userSearch = request.args.get('resUser')
+        
         if nameSearch or cuisineSearch or userSearch:
             if nameSearch:
                 query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
@@ -58,10 +59,12 @@ def create_app():
                 query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
             if userSearch:
                 query['userName'] = {'$regex': userSearch, '$options': 'i'} 
-            restaurants = db.RestaurantCluser.find(query)
+
+            restaurants = db.MONGO_DBNAME.find(query)
             restaurantList = list(restaurants)
         else:
             restaurantList = []
+
         return render_template('search.html', restaurants=restaurantList)
 
     #Handle add data form
