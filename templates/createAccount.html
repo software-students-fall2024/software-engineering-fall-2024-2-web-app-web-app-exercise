@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 <body>
     <header>
-        <h1 style="margin-left: -20px;">Login</h1>
+        <h1 style="margin-left: -20px;">Create an account</h1>
     </header>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -31,10 +31,10 @@
             <input type="password" id="password" name="password" required>
         </div>
         <br>
-        <button type="submit" style="padding: 10px;">Login</button>
+        <button type="submit" style="padding: 10px;">Create</button>
     </form>
     <br>
-    <p>Don't have an account? <a href="{{ url_for('createAccount') }}"><u>Create one here</u></a></p>
+    <p>Already have an account? <a href="{{ url_for('login') }}"><u>Login here</u></a></p>
 </body>
 </html>
 {%endblock%}
