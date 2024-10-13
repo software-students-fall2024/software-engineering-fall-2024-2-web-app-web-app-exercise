@@ -45,9 +45,24 @@ def create_app():
         return render_template('edit.html', restaurant=restaurant)
 
     #Search data route
-    @app.route('/search')
+    @app.route('/search', methods=['GET'])
     def search():
-        return render_template('search.html')
+        query = {}
+
+        nameSearch = request.args.get('resName')
+        cuisineSearch = request.args.get('resCuisine')
+        userSearch = request.args.get('resUser')
+
+        if nameSearch:
+            query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
+        if cuisineSearch:
+            query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
+        if userSearch:
+            query['userName'] = {'$regex': userSearch, '$options': 'i'}
+        
+        restaurants = db.RestaurantCluser.find(query)
+        restaurantList = list(restaurants)
+        return render_template('search.html', restaurants=restaurantList)
 
     #Handle add data form
     @app.route('/addData', methods=['POST'])
