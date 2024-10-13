@@ -112,6 +112,13 @@ def create_app():
         list = list(books)
         return render_template('show_inventory.html', books=list)
 
+    @app.route("/book_detail/<book_id>", methods=["GET"])
+    def book_detail(book_id):
+        book = db.books.find_one({"_id": ObjectId(book_id)})
+        return render_template('book_detail.html', book=book)
+    
+    
+
     return app
             
     
