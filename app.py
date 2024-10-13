@@ -141,21 +141,20 @@ def rsvp_event(event_id):
         return redirect(url_for('home_feed'))
 
     if 'attendees' not in event:
-        event['attendees'] = []
-        events_collection.update_one({'_id': event['_id']}, {'$set': {'attendees': event['attendees']}})
+        events_collection.update_one({'_id': event['_id']}, {'$set': {'attendees': []}})
 
     if 'rsvped_events' not in user:
-        user['rsvped_events'] = []
-
-    if event_id not in user['rsvped_events']:
+        collection.update_one({'_id': user['_id']}, {'$set': {'rsvped_events': []}})
+    
+    if event_id not in user.get('rsvped_events', []):
         collection.update_one({'_id': user['_id']}, {'$push': {'rsvped_events': event_id}})
+        events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['username']}})
         flash(f"RSVP confirmed for {event['title']}.")
-    elif user['_id'] not in event['attendees']:
-        events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['_id']}})
     else:
         flash("You have already RSVP'd for this event.")
 
     return redirect(url_for('rsvp_list'))
+
 
 @app.route('/rsvped_events')
 def rsvp_list():
@@ -166,9 +165,13 @@ def rsvp_list():
 
     rsvped_event_ids = user.get('rsvped_events', [])
     
-    rsvped_events = [events_collection.find_one({'_id': ObjectId(event_id)}) for event_id in rsvped_event_ids]
+    events = list(events_collection.find({"_id": {"$in": [ObjectId(event_id) for event_id in rsvped_event_ids]}}))
+    for event in events:
+        attendee_ids = event.get('attendees', [])
+        attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1})) 
+        event['attendees_usernames'] = [attendee['username'] for attendee in attendees] 
 
-    return render_template('rsvped_events.html', events=rsvped_events)
+    return render_template('rsvped_events.html', events=events)
 
 @app.route('/delete_rsvp/<event_id>', methods=['POST'])
 def delete_rsvp(event_id):
@@ -182,10 +185,8 @@ def delete_rsvp(event_id):
         flash("Event not found.")
         return redirect(url_for('rsvp_list'))
     
-    # Remove event from user's rsvp
     collection.update_one({'_id': user['_id']}, {'$pull': {'rsvped_events': event_id}})
 
-    # Remove user from event's attendees
     events_collection.update_one({'_id': event['_id']}, {'$pull': {'attendees': user['_id']}})
 
     flash(f"RSVP for {event['title']} has been deleted.")

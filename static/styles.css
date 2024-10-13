@@ -140,3 +140,26 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+
+.attendees-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: -15px;
+}
+
+.attendees-list li {
+    padding: 5px 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 5px;
+    font-size: 14px; 
+    color: #333;
+}
+
+.attendees-list li:last-child {
+    margin-bottom: 20px; 
+}
+
+.event-item {
+    margin-bottom: 20px;
+}

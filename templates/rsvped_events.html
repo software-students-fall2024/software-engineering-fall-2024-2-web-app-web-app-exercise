@@ -13,12 +13,24 @@
         {% if events %}
             <ul>
             {% for event in events %}
-                <li>
+                <li class="event-item">
                     <h2>{{ event.title }}</h2>
                     <p>{{ event.description }}</p>
                     <p>Date: {{ event.date }}</p>
                     <p>Location: {{ event.location }}</p>
-                    <p>Creator: {{event.creator}} </p>
+                    <p>Creator: {{ event.creator }}</p>
+
+                    <h4>Attendees:</h4>
+                    <ul class="attendees-list">
+                    {% if event.attendees_usernames %}
+                        {% for attendee in event.attendees_usernames %}
+                            <li>{{ attendee }}</li> 
+                        {% endfor %}
+                    {% else %}
+                        <li>No attendees yet.</li>
+                    {% endif %}
+                    </ul>
+
                     <form action="{{ url_for('delete_rsvp', event_id=event._id) }}" method="post">
                         <button type="submit">Delete RSVP</button>
                     </form>
