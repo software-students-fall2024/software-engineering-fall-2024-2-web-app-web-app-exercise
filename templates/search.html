@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block container %}
-<form action="{{ url_for('search') }}" method="post" onsubmit="submitForm(event)">
+<form action="{{ url_for('search') }}" method="get" onsubmit="submitForm(event)">
     <table width="100%" border="1">
         <tbody>
             <tr>
@@ -33,4 +33,33 @@
         </tbody>
     </table>
 </form>
-{% endblock %}
+{%if request.args%}
+    {%if restaurants%}
+        <h3>Results:</h3>
+        <table border="1" width="100%">
+            <thead>
+                <tr>
+                    <th>Restaurant Name</th>
+                    <th>Cuisine Type</th>
+                    <th>Review User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for restaurant in restaurants%}
+                <tr>
+                    <td>{{restaurant.restauranName}}</td>
+                    <td>{{restaurant.cuisine}}</td>
+                    <td>{{restaurant.userName}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        <br>
+    {%else%}
+        <p>No restaurants found.</p>
+    {%endif%}
+{%endif%}
+{%if not request.args%} <!-- for the initial load otherwise it will show a search with all the values -->
+    <p></p>
+{%endif%}
+{%endblock%}
