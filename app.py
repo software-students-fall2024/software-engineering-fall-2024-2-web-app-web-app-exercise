@@ -7,8 +7,8 @@ from bson.objectid import ObjectId
 from fuzzywuzzy import fuzz
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory
-
+from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory,session
+from functools import wraps
 """
 Deafult root of the flask: templates
 
@@ -18,6 +18,7 @@ APScheduler reference: https://apscheduler.readthedocs.io/en/3.x/modules/schedul
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 # mongodb connection - exercise_data
 mongo_uri = os.getenv("MONGO_URI")
@@ -39,11 +40,42 @@ def serve_image(filename):
 # index means home
 @app.route("/")
 def index():
-    daily_workout_plan = user_service.get_workout_plan("imyhalex") # tempoary user
-    return render_template("index.html", daily_workout_plan=daily_workout_plan)
+    user_name = session.get('user_name')
+    if user_name:
+        daily_workout_plan = user_service.get_workout_plan(user_name)
+    else:
+        daily_workout_plan = []
+    return render_template("index.html", daily_workout_plan=daily_workout_plan, user_name=user_name)
+
+# require user login
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_name' not in session:
+            return redirect(url_for('auth', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# return authentication page
+@app.route('/auth', methods=['GET'])
+def auth():
+    return render_template('auth.html')
+@app.route('/logout')
+
+# logout and return to index page
+def logout():
+    session.pop('user_name', None)
+    return redirect(url_for('index'))
 
 @app.route("/workout_instruction", methods=["GET", "POST"])
 def show_workout_instruction():
+    user_name = session.get('user_name')
+    # Check if the request is for adding a plan, default to be False
+    for_plan = request.args.get("for_plan", "false").lower() == "true" or request.form.get("for_plan", "false").lower() == "true"
+    
+    # Only allow for_plan if the user is authenticated
+    if not user_name:
+        for_plan = False
     exercises = None
     # get distinct categories from the exercise collection
     categories = exercise_collection.distinct("categories")
@@ -146,6 +178,7 @@ def delete_workout_plan():
     return redirect(url_for("index"))
 
 @app.route("/my_weekly_report", methods=["GET"])
+@login_required
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
@@ -301,27 +334,34 @@ def get_timer_status(workout_name):
     return jsonify({"duration": workout["timer"]["duration"], "status": workout["timer"]["status"]})
     
 # user register
-@app.route("/api/user/register", methods=["POST"])
-def register():
-    data = request.json
+@app.route('/api/user/register', methods=['POST'])
+def register_api():
+    data = request.get_json()
     user_name = data.get("user_name")
     password = data.get("password")
     if not user_name or not password:
         return jsonify({"error": "Username and password are required"}), 400
-    
+
     response, status_code = user_service.register_user(user_name, password)
+    if status_code == 201:
+        # Do not log the user in automatically
+        # session['user_name'] = user_name  # Remove or comment out this line
+        pass
     return jsonify(response), status_code
 
+
 # user login
-@app.route("/api/user/login", methods=["POST"])
-def login():
-    data = request.json
+@app.route('/api/user/login', methods=['POST'])
+def login_api():
+    data = request.get_json()
     user_name = data.get("user_name")
     password = data.get("password")
     if not user_name or not password:
         return jsonify({"error": "Username and password are required"}), 400
-    
+
     response, status_code = user_service.login_user(user_name, password)
+    if status_code == 200:
+        session['user_name'] = user_name
     return jsonify(response), status_code
  
 # update user height

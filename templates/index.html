@@ -15,6 +15,7 @@
     </div>
 </header>
 <body>
+    {% if session.get('user_name') %}
     <div class="main-container">
         <h1>Daily Calories Record</h1>
         <p id="current-day">Date: Monday</p>
@@ -136,6 +137,7 @@
             <p>No workouts selected yet.</p>
         {% endif %}
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const timerContainers = document.querySelectorAll('[id^="timer-display-"]');
@@ -223,13 +225,26 @@
                 });
         }
     </script>
-    
+        </div>
+        {% else %}
+            <!-- Content for Guests (Not Logged-in Users) -->
+            <div class="container mt-5">
+                <h1>Welcome to Our Fitness App!</h1>
+                <p>Please <a href="{{ url_for('auth') }}">log in</a> to access your personalized dashboard.</p>
+                <p>You can still check out our <a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a>.</p>
+            </div>
+        {% endif %}   
     
 </body>
 <footer>
     <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
-    <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true' if for_plan else 'false') }}">Workout Instructions</a></div>
-    <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
+    {% if session.get('user_name') %}
+        <div class="footer-box"><a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
+        <div class="footer-box"><a href="{{ url_for('logout') }}">Logout</a></div>
+    {% else %}
+        <div class="footer-box"><a href="{{ url_for('auth') }}">Login / Register</a></div>
+    {% endif %}
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </html>
