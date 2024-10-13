@@ -53,7 +53,7 @@ def create_app():
     @app.route('/addData', methods=['POST'])
     def addData():
         restaurantData = {
-            'userName': request.form['userName'],
+            'username': request.form['username'],
             'restaurantName': request.form['restaurantName'],
             'cuisine': request.form['cuisine'],
             'location': request.form['location'],
@@ -69,16 +69,16 @@ def create_app():
     #Handle delete data form
     @app.route('/deleteData', methods=['POST'])
     def deleteData():
-        userName = request.form['userName']
+        username = request.form['username']
         restaurantName = request.form['restaurantName']
         cuisine = request.form['cuisine']
-        deleteRestaurant = db.MONGO_DBNAME.delete_one({'userName': userName, 'restaurantName': restaurantName, 'cuisine': cuisine})
+        deleteRestaurant = db.MONGO_DBNAME.delete_one({'username': username, 'restaurantName': restaurantName, 'cuisine': cuisine})
         
         #change to a popup on screen
         if deleteRestaurant.deleted_count == 1: #if deleted ouput result to user
-            return f"Restaurant '{restaurantName}' by '{userName}' deleted successfully!", 200
+            return f"Restaurant '{restaurantName}' by '{username}' deleted successfully!", 200
         else:
-            return f"Restaurant '{restaurantName}' by '{userName}' not found / could not be deleted", 404
+            return f"Restaurant '{restaurantName}' by '{username}' not found / could not be deleted", 404
     
     app.debug = True
     return app
