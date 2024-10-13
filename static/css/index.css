@@ -132,3 +132,17 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+/* Links dropdown */
+.links-dropdown {
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+}
+.links-dropdown > img {
+    width: 100%;
+    height: 100%;
+}
