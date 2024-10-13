@@ -14,8 +14,9 @@
                 <ul>
                     <li><a href="{{ url_for('search')}}">Search</a></li>
                     <li><a href="{{ url_for('add')}}">Add Restaurant</a></li>
-                    <li><a href="{{ url_for('login')}}">Login</a></li>
-                    <li><a href="{{ url_for('register')}}">Register</a></li>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('logout')}}">Logout</a>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
