@@ -347,9 +347,20 @@ def reset_daily_values():
     nutrition_service.reset_daily_nutrition()
     user_service.reset_body_values()
 
+# function to reset the daily workout plan
+def reset_daily_workout_plans():
+    # iterate over all users in the database to clear the daily workout plan
+    users = user_service.get_all_users()
+    for user in users:
+        user_service.clear_workout_plan(user["name"])
+
+# initialize APScheduler background job object
 scheduler = BackgroundScheduler()
 # Schedule the reset job to run at midnight every day
 scheduler.add_job(reset_daily_values, 'cron', hour=0, minute=0)
+scheduler.add_job(reset_daily_workout_plans, 'cron', hour=0, minute=0)
+
+# start the scheduler
 scheduler.start()
 
 if __name__ == "__main__":

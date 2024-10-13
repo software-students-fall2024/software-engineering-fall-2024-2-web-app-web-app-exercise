@@ -36,6 +36,9 @@ class User:
     def find_user(self, user_name):
         return self.__collection.find_one({"user_name": user_name})
     
+    def get_all_users(self):
+        return self.__collection.find()
+    
     def update_user_height(self, user_name, height):
         self.__collection.update_one(
             {"user_name": user_name}
@@ -104,14 +107,12 @@ class User:
             , {"$pull": {"daily_workout_plan": {"name": exercise_name}}}
         )
 
-    # let user to clear all his today's exercise data, or automatically clear this data when 00:00 (a new day beigns)
+    # this is the method to let user to clear all his today's exercise data, or automatically clear this data when 00:00 (a new day beigns)
     def clear_workout_plan(self, user_name):
         self.__collection.update_one(
             {"user_name": user_name}
-            , {"$pullAll": {"daily_workout_plan": {"name": exercise_name}}}
+            , {"$set": {"daily_workout_plan": []}} # set it back to empty list (remove all)
         )
-        pass
-
 
 class Nutrition:
     def __init__(self, db):
