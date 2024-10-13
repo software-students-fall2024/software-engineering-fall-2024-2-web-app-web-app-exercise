@@ -13,7 +13,8 @@
 
 {% block content %}
     <main>
-
+        <!--
+        <form method="POST" action="{{url_for('search_post')}}">-->
         <form method="POST" action="{{url_for('search_post')}}">
             <label for="titleInput">Job Title:</label>
             <input type="text" id="titleInput" name="job_title" placeholder="job title"/>
