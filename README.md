@@ -2,7 +2,7 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
-### Project structure (10/10/2024)
+### Project structure (10/12/2024)
 
 ```text
 .
@@ -21,24 +21,26 @@ A little exercise to build a web application following an agile development proc
 ├── requirements.txt
 ├── static
 │   ├── add-button.png
-│   └── css
-│       ├── index_style.css
-│       ├── my_weekly_report_style.css
-│       └── style.css
+│   ├── css
+│   │   ├── calories.css
+│   │   ├── index_style.css
+│   │   ├── my_weekly_report_style.css
+│   │   └── style.css
+│   └── icon.svg
 ├── templates
 │   ├── details.html
+│   ├── food_calories.html
+│   ├── food_instruction.html
 │   ├── index.html
 │   ├── my_weekly_report.html
 │   ├── script.js
-│   ├── workout_instruction.html
-│   └── workout_plan.html
+│   └── workout_instruction.html
 └── utils
     ├── exercise_db.py
     └── food_db.py
-
 ```
 
-### Idea of User structure
+### Idea of User structure (db["usr"] collection)
 ```json
 [
     {
@@ -47,9 +49,9 @@ A little exercise to build a web application following an agile development proc
         , "height": ""
         , "weekly_values":[ # i am planning to track multiple weeks (such as previous 2 weeks), and let user decide whether to delete it
             {
-                "weekly_weight":[]
-                , "weekly_calorie":[]
-                , "weekly_bmi":[]
+                "weekly_weight":[None] * 7
+                , "weekly_calorie":[None] * 7
+                , "weekly_bmi":[None] * 7
             },
             {
                 ...
@@ -64,13 +66,42 @@ A little exercise to build a web application following an agile development proc
     }
 ]
 ```
-### Idea of Food Nutrition structure
+### Idea of Food Nutrition structure (db["food"] collection structure)
 ```json
 [
     {
         "food_name": "Bread"
-        , "category": ""
-        , "query_name": "bread" + variable
+        , "category": "carbs"
+        , "query_name": "bread"
+    },
+    {
+        ...
+        ...
+    }
+]
+```
+### Idead of exercise structure (db["exercuse"] collection structure)
+```json
+[
+    {
+        "categories": "waist",
+        "equipment": "body weight",
+        "gif_path": "images/flag.gif",
+        "id": "3303",
+        "name": "flag",
+        "target_muscle": "abs",
+        "secondaryMuscles": [
+            "obliques",
+            "shoulders"
+        ],
+        "instructions": [
+            "Start by gripping a vertical pole with both hands, palms facing each other, and arms fully extended.",
+            "Engage your core and lift your legs off the ground, keeping them straight.",
+            "Using your core and upper body strength, raise your legs until they are parallel to the ground.",
+            "Hold this position for as long as you can, maintaining a straight body line.",
+            "Slowly lower your legs back down to the starting position.",
+            "Repeat for the desired number of repetitions."
+        ]
     },
     {
         ...
