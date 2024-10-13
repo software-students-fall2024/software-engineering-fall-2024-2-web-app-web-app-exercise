@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.todo-container, .search-container {
+    width: 320px; 
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border-radius: 10px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 14px;
+    color: gray;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.welcome-message, .recommendation-message {
+    margin-bottom: 20px;
+}
+
+.welcome-message p, .recommendation-message p {
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.todo-list, .exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-item, .exercise-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.todo-item input[type="checkbox"], .exercise-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.todo-item label, .exercise-item label {
+    flex-grow: 1;
+    font-size: 16px;
+}
+
+.delete-btn, .add-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.add-btn {
+    background-color: #4CAF50; 
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+}
+
+footer a {
+    color: gray;
+    text-decoration: none;
+}
+
+.add-todo-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.task-checkbox {
+    margin-right: 10px;
+}
+
+.task-checkbox:disabled {
+    background-color: #ddd; 
+    cursor: not-allowed;    
+}

@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-This mobile app is a comprehensive fitness tracker that empowers users at all fitness levels to create / update their personalized workout plans, log exercise details, and track their workout progress.
+This app is a comprehensive fitness tracker that empowers users at all fitness levels to create personalized workout plans, log exercise details.
 
 ## User stories
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="../css/nicole.css">
+</head>
+<body>
+
+    <div class="todo-container">
+        <header>
+            <h1>To Do List</h1>
+            <p>Date, Day of the week</p>
+            <button class="add-todo-btn">Add</button>
+        </header>
+
+        <section class="welcome-message">
+            <p>[Welcome Message & Today's Todo Message]</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.</p>
+            <p><strong>Begin Your Workout Journey!!!</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </section>
+
+        <div class="todo-list">
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox">
+                <label>Strength</label>
+                <button class="delete-btn">Delete</button>
+            </div>
+
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox">
+                <label>Cardio</label>
+                <button class="delete-btn">Delete</button>
+            </div>
+
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox">
+                <label>Interval Training</label>
+                <button class="delete-btn">Delete</button>
+            </div>
+
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox">
+                <label>Core Workouts</label>
+                <button class="delete-btn">Delete</button>
+            </div>
+
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox">
+                <label>Flexibility & Mobility</label>
+                <button class="delete-btn">Delete</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</p>
+            <p>All rights reserved. <a href="#">Privacy policy</a></p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.task-checkbox').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    this.disabled = true; 
+                }
+            });
+        });
+    </script>
+    
+</body>
+
+</html>
