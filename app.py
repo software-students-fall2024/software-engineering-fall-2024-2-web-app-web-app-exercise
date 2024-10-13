@@ -133,6 +133,24 @@ def create_app():
 
         return redirect(url_for("book_detail", book_id=book_id))
     
+    @app.route("/edit_quantity/<book_id>", methods=["POST"])
+    def edit_quantity(book_id):
+        quantity = request.form.get('quantity')
+        try:
+            quantity = int(quantity)
+        except ValueError:
+            return "Quantity must be numbers.", 400
+        if quantity <= 0:
+            return "Quantity must be a positive value.", 400
+        
+        db.books.update_one(
+        {"_id": ObjectId(book_id)},
+        {"$set": {"quantity": quantity}})
+
+        return redirect(url_for("book_detail", book_id=book_id))
+
+
+    
     return app
             
     
