@@ -96,7 +96,7 @@ def view_transactions():
     return render_template('transactions.html', transactions=transactions)
 
 # Add transaction route
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add_transaction', methods=['GET', 'POST'])
 def add_transaction():
     if request.method == 'POST':
         # Get form data
@@ -119,7 +119,7 @@ def add_transaction():
         return redirect(url_for('view_transactions'))
 
     return render_template('add.html')
-@app.route('/edit', methods=['GET', 'POST'])
+@app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
     # Fetch all transactions for the dropdown menu
     transactions = list(transactions_collection.find())
@@ -134,7 +134,7 @@ def search_and_edit_transaction():
     return render_template('search_edit.html', transactions=transactions)
 
 
-@app.route('/edit/<transaction_id>', methods=['GET', 'POST'])
+@app.route('/edit_transaction/<transaction_id>', methods=['GET', 'POST'])
 def edit_transaction(transaction_id):
     transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id)})
 
@@ -173,7 +173,7 @@ def delete_transaction(transaction_id):
     return redirect(url_for('view_transactions'))
 
 # Search route for transactions
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search_transactions', methods=['GET', 'POST'])
 def search_transactions():
     if request.method == 'POST':
         query = request.form['query']
