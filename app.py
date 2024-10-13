@@ -17,7 +17,7 @@ def get_todo(username: str):
     return []
 
 
-def update_todo(username: str, new_todo: []):
+def update_todo(username: str, new_todo):
     return
 
 
