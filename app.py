@@ -139,7 +139,13 @@ def create_app():
         Returns: 
             rendered template (str): The rendered HTML template.
         """
-        docs = db.records.find({"user_id": current_user.id})
+        query = {
+            "time": {
+            "$ne": "",   # Not equal to empty string
+            #"$exists": True  # Field exists
+            }, "user_id": current_user.id
+        }
+        docs = db.records.find(query)#{"user_id": current_user.id,})
         return_to = request.args.get('return_to','home')
         return render_template("index.html",docs=docs,return_to=return_to)
     
@@ -171,34 +177,34 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
-        
-        if validate_date(time)== False:
-            # Insert data into MongoDB
-            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
-            doc = {
-                "user_id": current_user.id,
-                "job_title": job_title,
-                "company": company,
-                "location": location,
-                "link": link,
-                "stage": stage,
-            }
+
+        if time and time.strip():  # Check if location is not empty
+            if validate_date(time)== False:
+                flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+                doc = {
+                    "user_id": current_user.id,
+                    "job_title": job_title,
+                    "company": company,
+                    "location": location,
+                    "link": link,
+                    "stage": stage,
+                }
             #return redirect(url_for("add"), doc)
-            locations = load_cities()
-            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
-            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
-        else:
-            doc = {
-                "user_id": current_user.id,
-                "job_title": job_title,
-                "company": company,
-                "location": location,
-                "link": link,
-                "stage": stage,
-                "time": time
-            }
-            db.records.insert_one(doc)
-            return redirect(url_for("home"))
+                locations = load_cities()
+                formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+                return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+        
+        doc = {
+            "user_id": current_user.id,
+            "job_title": job_title,
+            "company": company,
+            "location": location,
+            "link": link,
+            "stage": stage,
+            "time": time
+        }
+        db.records.insert_one(doc)
+        return redirect(url_for("home"))
     
 
     def validate_date(date_str):
@@ -298,7 +304,7 @@ def create_app():
             "stage": stage,
             "time": time
             }
-        if validate_date(time)== False:
+        if time and time.strip() and validate_date(time)== False:
             # Insert data into MongoDB
             flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
             return edit(record_id)

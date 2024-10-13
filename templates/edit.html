@@ -98,11 +98,11 @@
         <label for="locationInput">Location: <span class="required">*</span></label>
         <div class="select-box">
             <div class="select-option">
-                <input type="text" id="locationInput" name="location" placeholder="Select" readonly>
+                <input type="text" id="locationInput" name="location" value="{{doc.location}}" readonly>
             </div>
             <div class="content">
                 <div class="search">
-                    <input type="text" id="optionSearch" placeholder="Search" name="">
+                    <input type="text" id="optionSearch" value="{{doc.location}}" name="">
                 </div>
                 <ul class="options">
                     {% for location in locations %}
@@ -120,11 +120,11 @@
         <label for="stageInput">Stage: <span class="required">*</span></label>
         <div class="select-box">
             <div class="select-option">
-                <input type="text" id="stageInput" name="stage" placeholder="Select" readonly>
+                <input type="text" id="stageInput" name="stage" value="{{doc.stage}}" readonly>
             </div>
             <div class="content">
                 <div class="search">
-                    <input type="text" id="optionSearch" placeholder="Search" name="">
+                    <input type="text" id="optionSearch" value="{{doc.stage}}" name="">
                 </div>
                 <ul class="options">
                     <li>Job Opening</li>
