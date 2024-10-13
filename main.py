@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
+from markupsafe import escape
 from pymongo import MongoClient, server_api
 app = Flask(__name__, static_url_path="", static_folder="static", template_folder="templates")
-import datetime
+from datetime import datetime
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
@@ -12,23 +13,17 @@ mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
 client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
-client.admin.command('ping')
 db = client[db_name]
 requests_collection = db.requests
 appliance_collection = db.appliances
 
-appliance_collection.insert_one({'code': 1234, 'building':"CIWW", 'floor':2, 'applianceName':'Water Fountain'})
-
-reports = ["Vending machine", "Water fountain", "Door hinge"]
-fakeCodes = [{'code': 1234, 'building':"CIWW", 'floor':2, 'applianceName':'Water Fountain'}]
-
 # Request logging
-@app.before_request
-def log_request_info():
-    print("Request Method:", request.method)
-    print("Request URL:", request.url)
-    print("Request Headers:", request.headers)
-    print("Request Data:", request.get_data())
+# @app.before_request
+# def log_request_info():
+#     print("Request Method:", request.method)
+#     print("Request URL:", request.url)
+#     print("Request Headers:", request.headers)
+#     print("Request Data:", request.get_data())
 
 @app.route("/")
 def index():
@@ -36,7 +31,7 @@ def index():
 
 @app.route("/list")
 def list():
-    return render_template("list.html", reports=reports)
+    return render_template("list.html")
 
 @app.route("/request", methods=["GET", "POST"])
 def makeRequest(code=None):
@@ -50,8 +45,22 @@ def makeRequest(code=None):
         else:
             entry = None
     if(request.method == 'POST'):
-        # If code is not empty and is 4 numbers
-        pass
+        entry = None
+        # Retrieve post data and sanitize
+        code = request.form.get('code')
+        fullName = escape(request.form.get('fullName'))
+        email = escape(request.form.get('email'))
+        subject = escape(request.form.get('subject'))
+        description = escape(request.form.get('description'))
+        if(re.match(r'^[0-9]{4}$', code) and
+            re.match(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$', email)
+        ):
+            code = int(code)
+            date = datetime.today().strftime('%Y-%m-%d')
+
+            result = requests_collection.insert_one({'code': code, 'fullName': fullName, 'email': email, 'subject': subject, 'description': description, 'date': date})
+            if(result.inserted_id):
+                return render_template("request.html", success=True, applianceInfo=None)
 
     return render_template("request.html", applianceInfo=entry)
 

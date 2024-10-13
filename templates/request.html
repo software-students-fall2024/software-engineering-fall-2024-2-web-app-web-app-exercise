@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block body %}
+    {% if success %}
+        <h1>Request successful</h1>
+    {% endif %}
+
     {% if applianceInfo is none %}
     <form method="GET" action="/request">
         <input type="text" pattern="^[0-9]{4}$" name="code" placeholder="Appliance Code">
@@ -17,7 +21,8 @@
         <p>Building:{{applianceInfo.building}}</p>
         <p>Floor:{{applianceInfo.floor}}</p>
 
-        <form>
+        <form method="POST" action="/request">
+            <input type="hidden" name="code" value={{applianceInfo.code}}>
             <input type="text" name="fullName" placeholder="Enter Full Name">
             <br>
             <input type="text" pattern="^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$" name="email" placeholder="Email">
