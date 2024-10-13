@@ -37,7 +37,7 @@ task_doc = {
     "task_description": "This is task 1",
     "task_status": "completed",
     "task_members":["user1", "user2"],
-    "task_deadline": "2022-12-31"
+    "task_deadline": "2022-12-31",
     "created_at": datetime.datetime.utcnow() # the date time now
 }
 ###############################################
