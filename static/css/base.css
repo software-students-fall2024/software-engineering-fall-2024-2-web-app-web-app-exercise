@@ -24,9 +24,16 @@
 .back-link > button {
     color: black;
     text-decoration: none;
-    padding: 0.4rem;
     background-color: white;
     border-radius: 0.3rem;
+    padding: 0rem 0.4rem;
+}
+.back-link > button:hover {
+    opacity: 0.8;
+}
+.back-link > button > img {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 /* Flash */
