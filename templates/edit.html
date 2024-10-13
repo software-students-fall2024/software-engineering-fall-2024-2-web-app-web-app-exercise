@@ -142,42 +142,16 @@
             </div>        
         </div>
         <br/>
+        <!--
         <label for="timeInput">Time/DDL:</label>
         <input type="text" id="timeInput" name="time" value="{{doc.time}}"/>
+        -->
+        <label for="timeInput" id="timeLabel" style="display: none;">Time/DDL:<span class="required">*</span></label>
+        <input type="text" id="timeInput" name="time" value="{{doc.time}}" style="display:none;" required/>
+
+
         <br/>
         <input type="submit" value="Save"/>
     </form>
-    <script>
-        const selectBoxes = document.querySelectorAll('.select-box');
-        selectBoxes.forEach(selectBox => {
-            const selectOption = selectBox.querySelector('.select-option');
-            const inputField = selectBox.querySelector('input[readonly]');
-            const optionSearch = selectBox.querySelector('#optionSearch');
-            const optionsList = selectBox.querySelectorAll('.options li');
-            selectOption.addEventListener('click',function(){
-                selectBox.classList.toggle('active');
-            });
-            optionsList.forEach(function(optionsListSingle){
-                optionsListSingle.addEventListener('click',function(){
-                    text = this.textContent;
-                    inputField.value = text;
-                    selectBox.classList.remove('active');
-                })
-            });
-            optionSearch.addEventListener('keyup',function(){
-                var filter, li, i, textValue;
-                filter = optionSearch.value.toLowerCase();
-                li = optionsList;
-                for(i=0;i<li.length;i++){
-                    liCount = li[i];
-                    textValue = liCount.textContent || liCount.innerText;
-                    if (textValue.toLowerCase().indexOf(filter) > -1){
-                        li[i].style.display = '';
-                    }else{
-                        li[i].style.display = 'none';
-                    }
-                }
-            })
-        })
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}
