@@ -1,6 +1,4 @@
-# Web Application Exercise
-
-A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
+# Study Buns
 
 ## Product vision statement
 
@@ -8,7 +6,7 @@ Our app boosts productivity by gamifying task management, offering users fun, in
 
 ## User stories
 
-[User Stories on Issue Page](https://github.com/software-students-fall2024/2-web-app-codebuns-v2/issues/1#issue-2583524405)
+[User Stories](https://github.com/software-students-fall2024/2-web-app-codebuns-v2/issues)
 
 ## Steps necessary to run the software
 
@@ -16,4 +14,5 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-[Task Board](https://github.com/orgs/software-students-fall2024/projects/43/views/2)
+[Sprint 1 - Task Board](https://github.com/orgs/software-students-fall2024/projects/43)
+[Sprint 2 - Task Board]()
