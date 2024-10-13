@@ -9,84 +9,6 @@
 
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit.css') }}">
-    <!--
-    <style>
-        .required{
-            color: red;
-        }
-        .select-box{
-            margin-top: 10px;
-            width: 380px;
-            position: relative;
-        }
-        .select-option{
-            position: relative;
-            border: 1px solid black;
-        }
-        .select-option input{
-            width: 100%;
-            background-color: #fff;
-            color: #000;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 15px 20px;
-            border: 0 !important;
-            outline: 0 !important;
-        }
-        .select-option:after{
-            content: "";
-            border-top: 12px solid #000;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            margin-top: -8px;
-        }
-        .content{
-            background-color: #fff;
-            position: absolute;
-            color: #000;
-            border-radius: 7px;
-            margin-top: 15px;
-            width: 100%;
-            z-index: 999;
-            padding: 20px;
-            display: none;
-        }
-        .search input{
-            width: 100%;
-            font-size: 17px;
-            padding: 15px;
-            outline: 0;
-            border: 1px solid #b3b3b3;
-            border-radius: 5px;
-        }
-        .options{
-            margin-top: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-            padding: 0;
-        }
-        .options li{
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            border-bottom: 1px solid gray;
-        }
-        .options li:hover{
-            background-color: #f2f2f2;
-        }
-        .select-box.active .content{
-            display: block;
-        }
-        .select-box.active .select-option:after{
-            transform: rotate(-180deg);
-        }
-    </style>
-    -->
 {% endblock %}
 
 {% block content %}
@@ -98,7 +20,7 @@
         <input type="text" id="companyInput" name="company" value="{{doc.company}}" required/>
         <br/>
         <label for="locationInput">Location: <span class="required">*</span></label>
-        <div class="select-box">
+        <div class="select-box-location">
             <div class="select-option">
                 <input type="text" id="locationInput" name="location" value="{{doc.location}}" readonly>
             </div>
@@ -120,7 +42,7 @@
         <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
         <br/>
         <label for="stageInput">Stage: <span class="required">*</span></label>
-        <div class="select-box">
+        <div class="select-box-stage">
             <div class="select-option">
                 <input type="text" id="stageInput" name="stage" placeholder="{{Select}}" readonly>
             </div>
@@ -142,10 +64,6 @@
             </div>        
         </div>
         <br/>
-        <!--
-        <label for="timeInput">Time/DDL:</label>
-        <input type="text" id="timeInput" name="time" value="{{doc.time}}"/>
-        -->
         <label for="timeInput" id="timeLabel" style="display: none;">Time/DDL:<span class="required">*</span></label>
         <input type="text" id="timeInput" name="time" value="{{doc.time}}" style="display:none;" required/>
 

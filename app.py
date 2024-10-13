@@ -177,17 +177,33 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
-
-        if time and time.strip():  # Check if location is not empty
+        if location == "":
+            flash("Please choose the location.")
+            doc = {
+                "job_title": job_title,
+                "company": company,
+                "link": link,
+            }
+            locations = load_cities()
+            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+        elif stage == "":
+            flash("Please choose the stage.")
+            doc = {
+                "job_title": job_title,
+                "company": company,
+                "link": link,
+            }
+            locations = load_cities()
+            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+        elif time and time.strip():  # Check if time is not empty
             if validate_date(time)== False:
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
                 doc = {
-                    "user_id": current_user.id,
                     "job_title": " ".join(job_title.split()).strip(),#job_title,
                     "company": " ".join(company.split()).strip(),
-                    "location": location,
                     "link": link,
-                    "stage": stage,
                 }
             #return redirect(url_for("add"), doc)
                 locations = load_cities()
@@ -354,9 +370,9 @@ def create_app():
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
         if job_title and job_title.strip():  # Check if job is not empty
-            search_criteria['job_title'] = {"$regex": f"^{" ".join(job_title.split()).strip()}$", "$options": "i"}#job_title
+            search_criteria['job_title'] = {"$regex": f"^{' '.join(job_title.split()).strip()}$", "$options": "i"} #job_title
         if company_name and company_name.strip():  # Check if company is not empty
-            search_criteria['company'] = {"$regex": f"^{" ".join(company_name.split()).strip()}$", "$options": "i"}#company_name
+            search_criteria['company'] = {"$regex": f"^{' '.join(company_name.split()).strip()}$", "$options": "i"} #company_name
         if location_name and location_name.strip():  # Check if location is not empty
             search_criteria['location'] = location_name
         if stage and stage.strip():  # Check if stage is not empty
