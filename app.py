@@ -117,14 +117,28 @@ def create_app():
         book = db.books.find_one({"_id": ObjectId(book_id)})
         return render_template('book_detail.html', book=book)
     
-    
+    @app.route("/edit_price/<book_id>", methods=["POST"])
+    def edit_price(book_id):
+        price = request.form.get('price')
+        try:
+            price = float(price)
+        except ValueError:
+            return "Price must be numbers.", 400
+        if price <= 0:
+            return "Price must be a positive value.", 400
 
+        db.books.update_one(
+        {"_id": ObjectId(book_id)}, 
+        {"$set": {"price": price}} )  
+
+        return redirect(url_for("book_detail", book_id=book_id))
+    
     return app
             
     
 
 
 if __name__ == "__main__":
-    FLASK_PORT = os.getenv("FLASK_PORT", "5000")
+    FLASK_PORT = os.gedtenv("FLASK_PORT", "5000")
     app = create_app()
     app.run(port=FLASK_PORT)
