@@ -1,0 +1,18 @@
+TODO: MongoDB,  run python app.py and open it in localhost:5000
+
+your_project/
+│
+├── app.py               # Your main Flask app script
+├── .env                 # Environment variables (SECRET_KEY, MONGO_URI, etc.)
+├── requirements.txt     # Python dependencies (Flask, pymongo, Flask-Login, etc.)
+├── templates/           # Folder containing all HTML templates
+│   ├── login.html
+│   ├── registration.html
+│   ├── main.html
+│   ├── team.html
+│   └── profile.html
+├── static/              # Folder for static files like CSS, JS, images
+│   └── css/
+│       └── style.css    # Your main CSS file
+└── README.md            # Optional, project documentation
+
