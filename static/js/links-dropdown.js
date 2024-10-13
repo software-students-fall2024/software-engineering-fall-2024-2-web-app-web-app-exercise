@@ -1,1 +1,7 @@
-alert("DROPDOWN JS"); // TEST
+function showLinksDropdown() {
+    alert("SHOW"); // TESt
+}
+
+function hideLinksDropdown() {
+    alert("HIDE"); // TESt
+}
