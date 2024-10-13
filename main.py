@@ -1,6 +1,5 @@
 import os
 from flask import Flask, jsonify, render_template, request,redirect, url_for
-import pymongo
 from pymongo import MongoClient
 from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
