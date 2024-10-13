@@ -4,16 +4,18 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+This Project Tracker App is an intelligent task management tool that divides tasks, assigns them based on team skill sets and workload, tracks progress visually, and provides personalized to-do lists for clear accountability and efficient project completion.
 
 ## User stories
-1. As a team member, I want a personalized to-do list that automatically updates when tasks are assigned to me, so I can easily see what is expected of me and prioritize my work.
+[Issues](https://github.com/software-students-fall2024/2-web-app-n-a-j/issues)
 
-2. As an event organizer, I want a team planner that allows me to group people into specific teams and assign each team a set of tasks based on their expertise, so I can manage work distribution more efficiently.
+1. As a `[team member]`, I want a personalized to-do list that automatically updates when tasks are assigned to me, so I can easily see what is expected of me and prioritize my work.
 
-3. As an event organizer, I want a dynamic task distribution system that highlights which tasks are completed and which are pending in real-time, so I can quickly see what still needs attention and adjust the workflow if necessary.
+2. As an `[event organizer]`, I want a team planner that allows me to group people into specific teams and assign each team a set of tasks based on their expertise, so I can manage work distribution more efficiently.
 
-4. As team member, I want to be able to view what other tasks within the project my team members have completed, so that I can better collaborate with my teammates. 
+3. As an `[manager]`, I want a dynamic task distribution system that highlights which tasks are completed and which are pending in real-time, so I can quickly see what still needs attention and adjust the workflow if necessary.
+
+4. As a `[student]`, I want to be able to view what other tasks within the homework group project my team members have completed, so that I can better collaborate with my teammates and efficiently finish group assignment. 
 
 
 ## Steps necessary to run the software
