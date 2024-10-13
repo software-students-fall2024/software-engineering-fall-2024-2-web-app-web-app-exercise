@@ -32,8 +32,9 @@ python app.py
 
 ## Task boards
 
-[Task Board](https://github.com/orgs/software-students-fall2024/projects/22/views/1)
-[Task Board](https://github.com/orgs/software-students-fall2024/projects/44/views/1)
+[Task Board Sprint 1](https://github.com/orgs/software-students-fall2024/projects/22/views/1)
+
+[Task Board Sprint 2](https://github.com/orgs/software-students-fall2024/projects/44/views/1)
 
 ## Team members
 
