@@ -74,8 +74,8 @@
 
 </body>
 <footer>
-  <a href="{{ url_for('index') }}">Home</a>
-  <a href="{{ url_for('show_workout_instruction') }}">Workout instructions</a>
-  <a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a>
+  <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
+  <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true' if for_plan else 'false') }}">Workout Instructions</a></div>
+  <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
 </footer>
 </html>

@@ -6,6 +6,7 @@ from Models import User, Nutrition
 from bson.objectid import ObjectId
 from fuzzywuzzy import fuzz
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory
 
 """
@@ -38,7 +39,8 @@ def serve_image(filename):
 # index means home
 @app.route("/")
 def index():
-    return render_template("index.html")
+    daily_workout_plan = user_service.get_workout_plan("imyhalex") # tempoary user
+    return render_template("index.html", daily_workout_plan=daily_workout_plan)
 
 @app.route("/workout_instruction", methods=["GET", "POST"])
 def show_workout_instruction():
@@ -50,7 +52,7 @@ def show_workout_instruction():
     selected_equipment = None
 
     # check if the request is for adding a plan, default to be false
-    for_plan = request.args.get("for_plan", False) or request.form.get("for_plan", False)
+    for_plan = request.args.get("for_plan", "false").lower() == "true" or request.form.get("for_plan", "false").lower() == "true"
 
     # handle post request for filtering workouts
     if request.method == "POST":
@@ -126,34 +128,26 @@ def add_workout_to_plan():
     }
 
     user_service.add_workout_plan("imyhalex", workout)
-    return redirect(url_for("show_workout_instruction", for_plan=True))
+    return redirect(url_for("index"))
+
+# serve as functionality to remove all exercise card decks in the index.html
+@app.route("/clear_workout_plan", methods=["POST"])
+def clear_workout_plan():
+    user_service.clear_workout_plan("imyhalex") # tempoary user
+    return redirect(url_for("index"))
+
+# serve as functionality to delete on exercise card deck each time in index.html
+@app.route("/delete_workout_plan", methods=["POST"])
+def delete_workout_plan():
+    exercise_name = request.form.get("name")
+
+    # 'imyhalex' is for temporary use, replace it with the authenticated user's name
+    user_service.delet_from_workout_plan("imyhalex", exercise_name)
+    return redirect(url_for("index"))
 
 @app.route("/my_weekly_report", methods=["GET"])
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
-
-# marked
-@app.route("/workout_plan", methods=['GET', 'POST'])
-def show_workout_plan():
-    return render_template("workout_plan.html", plans=selected_plans)
-
-# marked
-@app.route("/workout_plan/select", methods=['GET','POST'])
-def show_workout_plan_select():
-    pass
-
-
-# marked
-@app.route("/delete_exercise_from_plan", methods=["POST"])
-def delete_exercise_from_plan():
-    data = request.get_json()
-    exercise_name = data.get('exerciseName')
-
-    # Remove the exercise from selected_plans
-    global selected_plans
-    selected_plans = [plan for plan in selected_plans if plan.name != exercise_name]
-
-    return jsonify({'success': True})
 
 food_collection = db["food"]
 
@@ -202,6 +196,25 @@ def search_food():
     else:
         return redirect(url_for("show_food_instruction"))
 
+"""some timer functionalities"""
+# all 'imyhalex' here should be changed later when login-register authentication is implemented
+@app.route("/start_timer/<workout_name>", methods=["POST"])
+def start_timer(workout_name):
+    duration_minutes = int(request.form.get("duration"))
+    duration_seconds = duration_minutes * 60
+    user_service.update_workout_timer("imyhalex", workout_name, duration_seconds, "running")
+    return make_response("", 204) # 204 means no content response in http status code
+
+@app.route("/stop_timer/<workout_name>", methods=["POST"])
+def stop_timer(workout_name):
+    user_service.update_workout_timer("imyhalex", workout_name, 0, "stopped")
+    return make_response("", 204)
+
+@app.route("/reset_timer/<workout_name>", methods=["POST"])
+def reset_timer(workout_name):
+    user_service.update_workout_timer("imyhalex", workout_name, 0, "stopped")
+    return make_response("", 204)
+
 """-------------------------------------------------------------------------------------------------------------------"""
 # this function is for temporary use
 def seed_user():
@@ -209,7 +222,7 @@ def seed_user():
         user_service.register_user("imyhalex", "imyhalex")
         print("Temporary user 'imyhalex' seeded into the database.")
 
-"""-------------------------------------End of the page render function------------------------------------------------"""
+"""-------------------------------------End of the page render functions------------------------------------------------"""
 
 
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
@@ -221,8 +234,8 @@ def search_exercise():
         # request.args is used to access the query parameters
         query = request.form.get("query", "")
 
-        # ensure the search endpoint also preserves the for_plan parameter
-        for_plan = request.form.get("for_plan", False)
+        # check if the request is for adding a plan, default to be false
+        for_plan = request.args.get("for_plan", "false").lower() == "true" or request.form.get("for_plan", "false").lower() == "true"
 
         if query:
             all_exercises = list(exercise_collection.find())
@@ -273,6 +286,19 @@ def get_exercises_by_category_and_equipment(category, equipment):
         })
     result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
     return jsonify(result)
+
+# endpoint for update flask to server timer data
+@app.route("/api/timer_status/<workout_name>", methods=["GET"])
+def get_timer_status(workout_name):
+    user = user_service.find_user("imyhalex")  # Temporary user
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    # get the specific workout details
+    workout = next((w for w in user.get("daily_workout_plan", []) if w["name"] == workout_name), None)
+    if workout is None:
+        return jsonify({"error": "Workout not found"}), 404
+    return jsonify({"duration": workout["timer"]["duration"], "status": workout["timer"]["status"]})
     
 # user register
 @app.route("/api/user/register", methods=["POST"])
@@ -337,6 +363,9 @@ def add_food(user_name):
 
 
 """-----------------------------------------APScheduler--------------------------------------------------------------"""
+# APScheduler to implement the countdown timer
+def decrement_all_timers():
+    user_service.decrement_timer()
 
 # APScheduler to reset daily nutrition at midnight
 def reset_daily_nutrition():
@@ -352,13 +381,15 @@ def reset_daily_workout_plans():
     # iterate over all users in the database to clear the daily workout plan
     users = user_service.get_all_users()
     for user in users:
-        user_service.clear_workout_plan(user["name"])
+        user_service.clear_workout_plan(user["user_name"])
 
 # initialize APScheduler background job object
 scheduler = BackgroundScheduler()
-# Schedule the reset job to run at midnight every day
+# schedule the reset job to run at midnight every day
 scheduler.add_job(reset_daily_values, 'cron', hour=0, minute=0)
 scheduler.add_job(reset_daily_workout_plans, 'cron', hour=0, minute=0)
+# this scheduler is the countdown scheduler for all users
+scheduler.add_job(decrement_all_timers, IntervalTrigger(seconds=1))
 
 # start the scheduler
 scheduler.start()

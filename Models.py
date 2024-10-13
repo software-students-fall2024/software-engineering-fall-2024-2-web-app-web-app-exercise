@@ -2,6 +2,14 @@ import os
 import requests
 from datetime import datetime
 
+"""
+for any mongodb operators, this is the reference:
+    https://www.mongodb.com/docs/manual/reference/operator
+
+for datetime.timedelta reference, please check in here:
+    https://docs.python.org/3/library/datetime.html#timedelta-objects
+"""
+
 class User:
     def __init__(self, db):
         self.__collection = db['usr']
@@ -86,13 +94,61 @@ class User:
             f"weekly_values.0.weekly_bmi.{current_day_index}": None
         }
         self.__collection.update_many({}, {"$set": update_fields})
-    
+
+    # document for $addToSet: https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
     def add_workout_plan(self, user_name, workout):
+        """
+        add a default timer field to each workout item
+        workout["timer"] = {
+            "duration": 0               # in seconds
+            , "status": "stopped"       # could be 'stopped', 'running', 'completed'
+        }
+        """
+        workout["timer"] = {
+            "duration": 0              
+            , "status": "stopped"
+        }
+
         self.__collection.update_one(
             {"user_name": user_name}
-            , {"$push": {"daily_workout_plan": workout}}
+            , {"$addToSet": {"daily_workout_plan": workout}}
             , upsert=True
         )
+    
+    # update timer details for a workout in the user's plan
+    def update_workout_timer(self, user_name, workout_name, duration_seconds, status):
+        self.__collection.update_one(
+            {"user_name": user_name, "daily_workout_plan.name": workout_name},
+            {"$set": {
+                "daily_workout_plan.$.timer.duration": duration_seconds,
+                "daily_workout_plan.$.timer.status": status
+            }}
+        )
+    
+    # implementation of the countdown logic here - this method will be called every single second
+    def decrement_timer(self):
+        users = self.__collection.find({})
+        # iterates through all users in the databse
+        for user in users:
+            # access theirs daily_workout_plan
+            for workout in user.get("daily_workout_plan", []):
+                # decrement timer duration by 1 second if two conditions are satisfied
+                if workout.get("timer", {}).get("status") == "running" and workout["timer"]["duration"] > 0:
+                    new_duration = workout["timer"]["duration"] - 1
+                    # if duration reach 0, set status to 'completed'
+                    if new_duration <= 0:
+                        status = "completed"
+                        new_duration = 0
+                    else:
+                        status = "running"
+                    
+                    self.__collection.update_one(
+                        {"user_name": user["user_name"], "daily_workout_plan.name": workout["name"]}
+                        , {"$set": {
+                            "daily_workout_plan.$.timer.duration": new_duration
+                            , "daily_workout_plan.$.timer.status": status
+                        }}
+                    )
     
     def get_workout_plan(self, user_name):
         user = self.find_user(user_name)
@@ -113,6 +169,7 @@ class User:
             {"user_name": user_name}
             , {"$set": {"daily_workout_plan": []}} # set it back to empty list (remove all)
         )
+    
 
 class Nutrition:
     def __init__(self, db):

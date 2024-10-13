@@ -18,23 +18,23 @@
     <div class="search-bar">
         <form action="{{ url_for('search_exercise') }}" method="POST">
             <input type="text" name="query" placeholder="Search for a workout..." value="{{ search_query }}">
-            <input type="hidden" name="for_plan" value="{{ for_plan }}">
+            <input type="hidden" name="for_plan" value="{{ 'true' if for_plan else 'false' }}">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
     <div class="container">
         <!-- Categories Navigation -->
         <nav class="workout-nav">
-          <ul>
-              {% for category in categories %}
-                  <li class="category-item">
-                      <button type="button" class="category-button" onclick="toggleEquipmentMenu(this, '{{ category }}')">
-                          {{ category }}
-                      </button>
-                      <!-- Equipment menu will be dynamically added here -->
-                  </li>
-              {% endfor %}
-          </ul>
+            <ul>
+                {% for category in categories %}
+                    <li class="category-item">
+                        <button type="button" class="category-button" onclick="toggleEquipmentMenu(this, '{{ category }}')">
+                            {{ category }}
+                        </button>
+                        <!-- Equipment menu will be dynamically added here -->
+                    </li>
+                {% endfor %}
+            </ul>
         </nav>
 
         <!-- Workout Instructions Section -->
@@ -81,7 +81,7 @@
 
     <footer>
         <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
-        <div class="footer-box"><a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true' if for_plan else 'false') }}">Workout Instructions</a></div>
         <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
     </footer>
     
