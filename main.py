@@ -4,11 +4,13 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import pymongo
 from bson.objectid import ObjectId
+from flask_login import LoginManager
 
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.getenv('SECRET')
 
     cxn = pymongo.MongoClient(os.getenv('MONGO_URI'))
     MONGO_URI = os.getenv('MONGO_URI')
@@ -20,11 +22,25 @@ def create_app():
         print(" *", "Connected to MongoDB")
     except Exception as e:
         print("MongoDB connection error:", e)
+    
+    #Login manager
+    #manager = LoginManager()
+    #manager.init_app(app)
+    
+    #Login route
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+    
+    #Register route
+    @app.route('/register')
+    def register():
+        return render_template('register.html')
 
     #Home route
     @app.route('/')
     def home():
-        restaurants=db.MONGO_DBNAME.find().sort('restaurantName')
+        restaurants=db.RestaurantData.find().sort('restaurantName')
         restaurant_list = list(restaurants)
         return render_template('index.html', restaurants=restaurant_list)
 
@@ -41,7 +57,7 @@ def create_app():
     #Edit data route
     @app.route("/edit/<post_id>")
     def edit(post_id):
-        restaurant=db.MONGO_DBNAME.find_one({"_id": ObjectId(post_id)})
+        restaurant=db.RestaurantData.find_one({"_id": ObjectId(post_id)})
         return render_template('edit.html', restaurant=restaurant)
 
     #Search data route
@@ -58,9 +74,9 @@ def create_app():
             if cuisineSearch:
                 query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
             if userSearch:
-                query['userName'] = {'$regex': userSearch, '$options': 'i'} 
+                query['username'] = {'$regex': userSearch, '$options': 'i'} 
 
-            restaurants = db.MONGO_DBNAME.find(query)
+            restaurants = db.RestaurantData.find(query)
             restaurantList = list(restaurants)
         else:
             restaurantList = []
@@ -79,7 +95,7 @@ def create_app():
         }
 
         #Add recipe data to db
-        db.MONGO_DBNAME.insert_one(restaurantData)
+        db.RestaurantData.insert_one(restaurantData)
 
         #change to a popup on screen
         return jsonify({'message': f"Restaurant '{request.form['restaurantName']}' submitted successfully!"}), 200
@@ -90,7 +106,7 @@ def create_app():
         username = request.form['username']
         restaurantName = request.form['restaurantName']
         cuisine = request.form['cuisine']
-        deleteRestaurant = db.MONGO_DBNAME.delete_one({'username': username, 'restaurantName': restaurantName, 'cuisine': cuisine})
+        deleteRestaurant = db.RestaurantData.delete_one({'username': username, 'restaurantName': restaurantName, 'cuisine': cuisine})
         
         #change to a popup on screen
         if deleteRestaurant.deleted_count == 1: #if deleted ouput result to user
