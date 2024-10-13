@@ -48,20 +48,20 @@ def create_app():
     @app.route('/search', methods=['GET'])
     def search():
         query = {}
-
         nameSearch = request.args.get('resName')
         cuisineSearch = request.args.get('resCuisine')
         userSearch = request.args.get('resUser')
-
-        if nameSearch:
-            query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
-        if cuisineSearch:
-            query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
-        if userSearch:
-            query['userName'] = {'$regex': userSearch, '$options': 'i'}
-        
-        restaurants = db.RestaurantCluser.find(query)
-        restaurantList = list(restaurants)
+        if nameSearch or cuisineSearch or userSearch:
+            if nameSearch:
+                query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
+            if cuisineSearch:
+                query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
+            if userSearch:
+                query['userName'] = {'$regex': userSearch, '$options': 'i'} 
+            restaurants = db.RestaurantCluser.find(query)
+            restaurantList = list(restaurants)
+        else:
+            restaurantList = []
         return render_template('search.html', restaurants=restaurantList)
 
     #Handle add data form
