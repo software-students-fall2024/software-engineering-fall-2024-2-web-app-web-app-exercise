@@ -81,14 +81,6 @@ def create_app():
         #success
         flash("User Info updated!")
         return redirect(url_for("getUserInfo"))
-
-    
-    @app.route("/news")
-    def getNews():
-        #get News headline/timestamp/image/description/author/content info using external api
-        ###TODO###
-        
-        return None
     
     
     @app.route("/contact-us")
