@@ -7,7 +7,7 @@ A little exercise to build a web application following an agile development proc
 This Project Tracker App is an intelligent task management tool that divides tasks, assigns them based on team skill sets and workload, tracks progress visually, and provides personalized to-do lists for clear accountability and efficient project completion.
 
 ## User stories
-[Issues](https://github.com/software-students-fall2024/2-web-app-n-a-j/issues)
+[Issues Link for User Stories](https://github.com/software-students-fall2024/2-web-app-n-a-j/issues)
 
 1. As a `[team member]`, I want a personalized to-do list that automatically updates when tasks are assigned to me, so I can easily see what is expected of me and prioritize my work.
 
@@ -28,4 +28,13 @@ run `python app.py` in your .venv folder
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Sprint 1 Task Boards](https://github.com/orgs/software-students-fall2024/projects/30)
+[Sprint 2 Task Boards](https://github.com/orgs/software-students-fall2024/projects/49)
+
+## Team members
+
+- **Jessica Xu** (kx2053) [GitHub Profile](https://github.com/Jessicakk0711)
+- **Terry Cao** (tc3661) [GitHub Profile](https://github.com/cao-exe)
+- **William Cao** (wc2723) [GitHub Profile](https://github.com/FriedBananaBan)
+- **Boming Zhang** (bz2196) [GitHub Profile](https://github.com/BomingZhang-coder)
+- **Hang Yin** (hy2270) [GitHub Profile](https://github.com/Popilopi168)
