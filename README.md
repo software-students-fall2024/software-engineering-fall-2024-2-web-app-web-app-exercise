@@ -54,33 +54,33 @@ A little exercise to build a web application following an agile development proc
         "height": null,
         "weely_values": [
             {
-            "weekly_weight": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            ],
-            "weekly_calorie": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            ],
-            "weekly_bmi": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            ]
+                "weekly_weight": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                "weekly_calorie": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                "weekly_bmi": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ]
             }
         ],
         "daily_workout_plan": [
@@ -89,33 +89,35 @@ A little exercise to build a web application following an agile development proc
             "setNum": 2,
             "gif_path": "images/barbell_wrist_curl_v_2.gif",
             "target_muscle": "forearms",
-            "timer": {
-                "duration": 0,
-                "status": "stopped"
-            }
+            "timer": 
+                {
+                    "duration": 0,
+                    "status": "stopped"
+                }
             },
             {
             "name": "seated side crunch (wall)",
             "setNum": 4,
             "gif_path": "images/seated_side_crunch_wall.gif",
             "target_muscle": "abs",
-            "timer": {
-                "duration": 0,
-                "status": "stopped"
-            }
+            "timer": 
+                {
+                    "duration": 0,
+                    "status": "stopped"
+                }
             }
         ],
         "weekly_values": {
             "0": {
-            "weekly_bmi": {
-                "6": null
-            },
-            "weekly_calorie": {
-                "6": null
-            },
-            "weekly_weight": {
-                "6": null
-            }
+                "weekly_bmi": {
+                    "6": null
+                },
+                "weekly_calorie": {
+                    "6": null
+                },
+                "weekly_weight": {
+                    "6": null
+                }
             }
         }
     },

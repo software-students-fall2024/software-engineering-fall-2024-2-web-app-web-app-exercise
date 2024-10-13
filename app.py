@@ -47,21 +47,12 @@ def index():
         daily_workout_plan = []
     return render_template("index.html", daily_workout_plan=daily_workout_plan, user_name=user_name)
 
-# require user login
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_name' not in session:
-            return redirect(url_for('auth', next=request.url))
-        return f(*args, **kwargs)
-    return decorated_function
-
 # return authentication page
 @app.route('/auth', methods=['GET'])
 def auth():
     return render_template('auth.html')
-@app.route('/logout')
 
+@app.route('/logout')
 # logout and return to index page
 def logout():
     session.pop('user_name', None)
@@ -177,6 +168,16 @@ def delete_workout_plan():
     user_service.delet_from_workout_plan("imyhalex", exercise_name)
     return redirect(url_for("index"))
 
+# require user login - create decorator for other functions
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_name' not in session:
+            return redirect(url_for('auth', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# render the weely report page
 @app.route("/my_weekly_report", methods=["GET"])
 @login_required
 def show_my_weekly_report():

@@ -150,3 +150,197 @@ Arepas, Venezuelan, arepas
 Chimichurri Steak, Argentine, chimichurri steak
 Tempura, Japanese, tempura
 Paneer Tikka, Indian, paneer tikka
+Avocado, fruit, avocado
+Papaya, fruit, papaya
+Kiwi, fruit, kiwi
+Dragon Fruit, fruit, dragon fruit
+Passion Fruit, fruit, passion fruit
+Cantaloupe, fruit, cantaloupe
+Honeydew, fruit, honeydew
+Pomegranate, fruit, pomegranate
+Fig, fruit, fig
+Guava, fruit, guava
+Durian, fruit, durian
+Jackfruit, fruit, jackfruit
+Raspberry, fruit, raspberry
+Blackberry, fruit, blackberry
+Cranberry, fruit, cranberry
+Clementine, fruit, clementine
+Persimmon, fruit, persimmon
+Starfruit, fruit, starfruit
+Coconut, fruit, coconut
+Lychee, fruit, lychee
+Zucchini, vegetable, zucchini
+Asparagus, vegetable, asparagus
+Artichoke, vegetable, artichoke
+Beetroot, vegetable, beetroot
+Brussels Sprouts, vegetable, brussels sprouts
+Cauliflower, vegetable, cauliflower
+Celery, vegetable, celery
+Daikon, vegetable, daikon
+Eggplant, vegetable, eggplant
+Fennel, vegetable, fennel
+Kale, vegetable, kale
+Leek, vegetable, leek
+Okra, vegetable, okra
+Parsnip, vegetable, parsnip
+Radish, vegetable, radish
+Rutabaga, vegetable, rutabaga
+Seaweed, vegetable, seaweed
+Snow Peas, vegetable, snow peas
+Swiss Chard, vegetable, swiss chard
+Turnip, vegetable, turnip
+Greek Yogurt, dairy, greek yogurt
+Cream Cheese, dairy, cream cheese
+Cottage Cheese, dairy, cottage cheese
+Sour Cream, dairy, sour cream
+Ricotta, dairy, ricotta
+Feta, dairy, feta
+Ghee, dairy, ghee
+Buttermilk, dairy, buttermilk
+Evaporated Milk, dairy, evaporated milk
+Condensed Milk, dairy, condensed milk
+Sourdough Bread, grain, sourdough bread
+Bulgur, grain, bulgur
+Barley, grain, barley
+Millet, grain, millet
+Farro, grain, farro
+Spelt, grain, spelt
+Rye, grain, rye
+Couscous, grain, couscous
+Teff, grain, teff
+Amaranth, grain, amaranth
+Turkey, meat, turkey
+Lamb Shoulder, meat, lamb shoulder
+Duck Breast, meat, duck breast
+Venison, meat, venison
+Bison, meat, bison
+Rabbit, meat, rabbit
+Goat, meat, goat
+Quail, meat, quail
+Pheasant, meat, pheasant
+Elk, meat, elk
+Mackerel, fish, mackerel
+Sardines, fish, sardines
+Haddock, fish, haddock
+Halibut, fish, halibut
+Trout, fish, trout
+Sea Bass, fish, sea bass
+Tilapia, fish, tilapia
+Snapper, fish, snapper
+Herring, fish, herring
+Barramundi, fish, barramundi
+Scallops, seafood, scallops
+Clams, seafood, clams
+Oysters, seafood, oysters
+Mussels, seafood, mussels
+Squid, seafood, squid
+Octopus, seafood, octopus
+Crayfish, seafood, crayfish
+Cuttlefish, seafood, cuttlefish
+Abalone, seafood, abalone
+Scampi, seafood, scampi
+Edamame, protein, edamame
+Seitan, protein, seitan
+Tempeh, protein, tempeh
+Black Lentils, legumes, black lentils
+Green Peas, legumes, green peas
+Red Kidney Beans, legumes, red kidney beans
+Cannellini Beans, legumes, cannellini beans
+Navy Beans, legumes, navy beans
+Pinto Beans, legumes, pinto beans
+Soy Nuts, legumes, soy nuts
+Brazil Nuts, nuts, brazil nuts
+Pistachios, nuts, pistachios
+Macadamia Nuts, nuts, macadamia nuts
+Pine Nuts, nuts, pine nuts
+Chestnuts, nuts, chestnuts
+Brazil Nuts, nuts, brazil nuts
+Pistachios, nuts, pistachios
+Macadamia Nuts, nuts, macadamia nuts
+Pine Nuts, nuts, pine nuts
+Chestnuts, nuts, chestnuts
+Tahini, spread, tahini
+Hummus, spread, hummus
+Pesto, spread, pesto
+Tapenade, spread, tapenade
+Aioli, spread, aioli
+Marmalade, spread, marmalade
+Fruit Preserves, spread, fruit preserves
+Nutella, spread, nutella
+Guacamole, spread, guacamole
+Salsa, spread, salsa
+Agave Nectar, sweetener, agave nectar
+Stevia, sweetener, stevia
+Molasses, sweetener, molasses
+Brown Sugar, sweetener, brown sugar
+Corn Syrup, sweetener, corn syrup
+Evaporated Cane Juice, sweetener, evaporated cane juice
+Rice Syrup, sweetener, rice syrup
+Date Sugar, sweetener, date sugar
+Monk Fruit Sweetener, sweetener, monk fruit sweetener
+Erythritol, sweetener, erythritol
+Vinegar, seasoning, vinegar
+Herbs de Provence, seasoning, herbs de provence
+Paprika, seasoning, paprika
+Turmeric, seasoning, turmeric
+Oregano, seasoning, oregano
+Thyme, seasoning, thyme
+Rosemary, seasoning, rosemary
+Basil, seasoning, basil
+Sage, seasoning, sage
+Dill, seasoning, dill
+Chimichurri, condiment, chimichurri
+Sriracha, condiment, sriracha
+Hot Sauce, condiment, hot sauce
+Vinaigrette, condiment, vinaigrette
+Relish, condiment, relish
+Tzatziki, condiment, tzatziki
+Barbecue Sauce, condiment, barbecue sauce
+Hoison Sauce, condiment, hoison sauce
+Fish Sauce, condiment, fish sauce
+Worcestershire Sauce, condiment, worcestershire sauce
+Dolma, Middle Eastern, dolma
+Borscht, Eastern European, borscht
+Okonomiyaki, Japanese, okonomiyaki
+Pavlova, Australian, pavlova
+Jollof Rice, West African, jollof rice
+Couscous Salad, North African, couscous salad
+Tamales, Latin American, tamales
+Gado-Gado, Indonesian, gado-gado
+Pierogi, Polish, pierogi
+Arepas, Venezuelan, arepas
+Ramen, Japanese, ramen
+Sashimi, Japanese, sashimi
+Udon, Japanese, udon
+Tonkatsu, Japanese, tonkatsu
+Mapo Tofu, Chinese, mapo tofu
+Xiaolongbao, Chinese, xiaolongbao
+Char Siu, Chinese, char siu
+Gong Bao Chicken, Chinese, gong bao chicken
+Hot Pot, Chinese, hot pot
+Bulgogi, Korean, bulgogi
+Japchae, Korean, japchae
+Tteokbokki, Korean, tteokbokki
+Kimchi Jjigae, Korean, kimchi jjigae
+Samgyeopsal, Korean, samgyeopsal
+Haemul Pajeon, Korean, haemul pajeon
+Som Tum, Thai, som tum
+Pad Krapow, Thai, pad krapow
+Massaman Curry, Thai, massaman curry
+Green Curry, Thai, green curry
+Tom Kha Gai, Thai, tom kha gai
+Laksa, Southeast Asian, laksa
+Nasi Goreng, Indonesian, nasi goreng
+Rendang, Indonesian, rendang
+Satay, Southeast Asian, satay
+Gimbap, Korean, gimbap
+Katsu Curry, Japanese, katsu curry
+Hainanese Chicken Rice, Singaporean, hainanese chicken rice
+Banh Xeo, Vietnamese, banh xeo
+Khao Soi, Thai, khao soi
+Dosa, Indian, dosa
+Samosa, Indian, samosa
+Pani Puri, Indian, pani puri
+Malpua, Indian, malpua
+Rasam, Indian, rasam
