@@ -18,13 +18,13 @@ def get_available_exercises():
 def get_todo():
     #test
     return [
-        {"id": 7, "name": "Strength", "completed": False},
-        {"id": 8, "name": "Cardio", "completed": False},
-        {"id": 9, "name": "Interval Training", "completed": False},
-        {"id": 10, "name": "Core Workouts", "completed": False},
+        {"exercise_todo_id": 1, "id": 7, "name": "Strength", "completed": False},
+        {"exercise_todo_id": 2,"id": 8, "name": "Cardio", "completed": False},
+        {"exercise_todo_id": 3,"id": 9, "name": "Interval Training", "completed": False},
+        {"exercise_todo_id": 4,"id": 10, "name": "Core Workouts", "completed": False},
     ]
 
-def add_todo_by_id(exercise_id):
+def add_todo(exercise_id):
     print(f"Adding todo with ID: {exercise_id}")
     return True
     
@@ -40,20 +40,24 @@ def todo():
     exercises = get_todo()
     return render_template('todo.html', exercises=exercises)
 
+
 @app.route('/delete_exercise')
 def delete_exercise():
     exercises = get_todo()
     return render_template('delete.html', exercises=exercises)
 
-@app.route('/delete_exercise/<int:exercise_id>', methods=['DELETE'])
-def delete_exercise_id(exercise_id):
-    success = delete_todo(exercise_id)
-    
+@app.route('/delete_exercise/<int:exercise_todo_id>', methods=['DELETE'])
+def delete_exercise_id(exercise_todo_id):
+    success = delete_todo(exercise_todo_id)
     if success:
         return jsonify({'message': 'Deleted successfully'}), 204
     else:
         return jsonify({'message': 'Failed to delete'}), 404
 
+# @app.route('/add')
+# def add():
+#     exercises = session['results']
+#     return render_template('add.html', exercises=exercises)
 @app.route('/add')
 def search():
     exercises = get_available_exercises()
@@ -61,8 +65,8 @@ def search():
 
 @app.route('/add_exercise/<int:exercise_id>', methods=['POST'])
 def add_exercise(exercise_id):
-    success = add_todo_by_id(exercise_id)
-    
+    success = add_todo(exercise_id)
+
     if success:
         return jsonify({'message': 'Added successfully'}), 200
     else:
