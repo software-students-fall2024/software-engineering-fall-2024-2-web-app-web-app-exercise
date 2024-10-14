@@ -19,7 +19,7 @@
         </div>
 
         <section class="exercise-description">
-            <p style="text-align: center;"><strong>[Exercise Name]</strong></p>
+            <p style="text-align: center;"><strong>{{ exercise.workout_name }}</strong></p>
             <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                 Ut enim ad. <a href="instructions.html">More Instruction</a>
@@ -53,29 +53,28 @@
     </div>
 
     <script>
-        document.querySelectorAll('.exercise-save-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                const exerciseTodoId = this.getAttribute('data-id');
-                const formData = new FormData(document.getElementById('exercise-form'));
+        document.querySelectorAll('.exercise-save-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            const exerciseTodoId = this.getAttribute('data-id');
+            const formData = new FormData(document.getElementById('exercise-form'));
 
-                fetch(`/edit/${exerciseTodoId}`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Exercise saved successfully!');
-                        window.location.href = '/todo'; // Redirect after saving
-                    } else {
-                        alert('Failed to save the exercise.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while saving the exercise.');
-                });
+            fetch(`/edit/${exerciseTodoId}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Exercise saved successfully!');
+                    window.location.href = '/todo'; // Redirect after saving
+                } else {
+                    alert('Failed to save the exercise.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving the exercise.');
             });
-        });
+     });
     </script>
 </body>
 </html>
