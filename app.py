@@ -19,10 +19,7 @@ exercises_collection = db['exercises']
 
 def search_exercise(query: str):
     exercises = exercises_collection.find({
-        "$or": [
-            {"workout_name": {"$regex": query, "$options": "i"}},
-            {"description": {"$regex": query, "$options": "i"}}
-        ]
+        "workout_name": {"$regex": query, "$options": "i"}  
     })
     return list(exercises)
 
@@ -144,71 +141,100 @@ def get_instruction(exercise_id: int):
         }
 
 def default_exercises():
-    exercises_id = []  
+    exercises_id = []  # add recommendation exercise id here
     exercises = []
     for i in exercises_id:
-        exercises.append(get_exercise(i))
+        exercises.append(get_exersice(i))
+
     return exercises
 
 
 @app.route('/')
 def home():
-    return '<h1>This is the home page.</h1>'
+    return redirect(url_for('todo'))
+
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
         query = request.form.get("query")
         if not query:
-            flash('Search content cannot be empty.')
-            return redirect(url_for('search'))
-        results = search_exercise(query)
+            return jsonify({'message': 'Search content cannot be empty.'}), 400
+            # return redirect(url_for('search'))
+        results = search_exersice(query)
         if len(results) == 0:
-            flash('Exercise was not found.')
-            return redirect(url_for('search'))
-        return render_template('add_exercise_page.html', query=query, results=results)
+            return jsonify({'message': 'Exercise was not found.'}), 404
+            # return redirect(url_for('search'))
+        
+        # test
+        # session['results'] = results
+        return redirect(url_for('add'))
+
     exercises = default_exercises()
     return render_template('search.html', exercises=exercises)
+
 
 @app.route('/todo')
 def todo():
     exercises = get_todo()
     return render_template('todo.html', exercises=exercises)
 
+
 @app.route('/delete_exercise')
 def delete_exercise():
     exercises = get_todo()
-    return render_template('delete_exercise.html', exercises=exercises)
+    return render_template('delete.html', exercises=exercises)
 
-@app.route('/delete_exercise/<int:exercise_todo_id>')
+
+@app.route('/delete_exercise/<int:exercise_todo_id>', methods=['DELETE'])
 def delete_exercise_id(exercise_todo_id):
-    delete_todo(exercise_todo_id)
-    flash('Deleted successfully.')
-    return redirect(url_for('delete_exercise'))
+    success = delete_todo(exercise_todo_id)
+    if success:
+        return jsonify({'message': 'Deleted successfully'}), 204
+    else:
+        return jsonify({'message': 'Failed to delete'}), 404
 
-@app.route('/add_exercise/<exercise_id>')
+
+@app.route('/add')
+def add():
+    # test
+    # exercises = session['results']
+    exercises = []
+    return render_template('add.html', exercises=exercises)
+
+
+@app.route('/add_exercise/<int:exercise_id>', methods=['POST'])
 def add_exercise(exercise_id):
-    add_todo(exercise_id)
-    flash('Added successfully.')
-    return redirect(request.referrer or url_for('search'))
+    success = add_todo(exercise_id)
 
-@app.route('/edit', methods=['GET', 'POST'])
+    if success:
+        return jsonify({'message': 'Added successfully'}), 200
+    else:
+        return jsonify({'message': 'Failed to add'}), 400
+
+
+@app.route('/edit/<int:exercise_todo_id>', methods=['GET', 'POST'])
 def edit():
     exercise_todo_id = request.args.get('exercise_todo_id')
+    exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
     if request.method == 'POST':
-        times = request.form.get('times')
+        working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        edit_exercise(exercise_todo_id, times, weight, reps)
+        edit_exercise(exercise_todo_id, working_time, weight, reps)
         flash('Updated successfully!')
         return redirect(url_for('edit'))
-    return render_template('edit.html', exercise_todo_id=exercise_todo_id)
 
-@app.route('/instructions/<exercise_id>')
+    return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
+
+
+@app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
-    exercise = get_exercise(exercise_id)
-    instruction = exercise.get('instruction', 'No instructions available.')
+    exercise = get_exersice(exercise_id)
+    instruction = exercise['instruction']
+
     return render_template('instructions.html', instruction=instruction)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
