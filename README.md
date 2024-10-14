@@ -12,23 +12,28 @@ Job Application Tracker helps users streamline their job search process by allow
 
 ## Steps necessary to run the software
 
-Start by setting up pipenv and its specified dependencies
+1. Clone this repository to the editor in your computer
+
+2. Start by setting up pipenv and its specified dependencies
 ```
 pip install pipenv
 pipenv install
-pipenv install flask_login
-pipenv install flask_bcrypt
+pipenv shell
 ```
 
-Create new file .env (will be git ignored) to hold environment variables in the following format:
+3. Create new file .env (will be git ignored) to hold environment variables in the following format (the mongo_connection_str will be provided in the messenger channel):
 ```
 MONGO_CONNECTION_URI=<mongo_connection_str>
 ```
 
-Run the flask app
+4. Run the app
 ```
 python app.py
 ```
+
+5. View the app in your browser:
+
+open a web browser and go to http://127.0.0.1:5000
 
 ## Task boards
 
