@@ -91,6 +91,13 @@ def edit_exercise(exercise_todo_id, times, weight, reps):
     )
     print(f"Exercise with ID {exercise_todo_id} updated in To-Do List.")
 
+def default_exercises():
+    exercises_id = []  # add recommendation exercise id here
+    exercises = []
+    for i in exercises_id:
+        exercises.append(get_exersice(i))
+
+    return exercises
 
 @app.route('/')
 def home():
