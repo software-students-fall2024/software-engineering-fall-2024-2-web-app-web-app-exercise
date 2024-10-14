@@ -91,6 +91,39 @@ def edit_exercise(exercise_todo_id, times, weight, reps):
     )
     print(f"Exercise with ID {exercise_todo_id} updated in To-Do List.")
 
+def get_exercise_in_todo(exercise_todo_id):
+
+    todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
+    
+    if not todo_item:
+        return None  
+
+    for item in todo_item['todo']:
+        if item['exercise_todo_id'] == exercise_todo_id:
+            exercise_id = item['exercise_id']
+            break
+
+
+    exercise = exercises_collection.find_one({"_id": exercise_id})
+
+    if exercise:
+        return exercise
+    return None
+
+
+def get_exercise_in_todo(exercise_todo_id):
+
+    todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
+    
+    if not todo_item:
+        return None  
+
+    for item in todo_item['todo']:
+        if item['exercise_todo_id'] == exercise_todo_id:
+            return item 
+
+    return None
+
 def default_exercises():
     exercises_id = []  # add recommendation exercise id here
     exercises = []
