@@ -31,11 +31,10 @@
             <button type="submit" class="button">Add Transaction</button>
         </form>
     </div>
-    <!-- Home Button and Search Button -->
-<div class="container" id="navigation-page">
-    <button type="button" onclick="window.location.href='{{ url_for('index') }}'">Home</button>
-    <button type="button" onclick="window.location.href='{{ url_for('search_transactions') }}'">Search Transactions</button>
-</div>
-
+    <div class="container" id="navigation page">
+        <!--  Home Button and Search button  -->
+        <button type="button" onclick="to('{{ url_for(\'home\')}}')">Home</button>
+        <button type="button" onclick="to('{{ url_for(\'search\') }}')">Search Transactions</button>
+    </div>
 </body>
 </html>
