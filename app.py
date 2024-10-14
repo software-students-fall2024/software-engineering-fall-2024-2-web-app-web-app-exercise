@@ -1,121 +1,140 @@
 import os
 from flask import Flask, request, json, redirect, url_for, flash, render_template, session
+from dotenv import load_dotenv
 
+from pymongo import MongoClient
+load_dotenv()  # 加载 .env 文件
+
+# 检查 MONGO_URI 是否成功加载
+mongo_uri = os.getenv('MONGO_URI')
+print(f"MONGO_URI: {mongo_uri}")
+
+# 获取 MongoDB URI
+mongo_uri = os.getenv('MONGO_URI')
+
+# 初始化 Flask 应用
 app = Flask(__name__)
 app.secret_key = os.urandom(13)
 
+# 设置 MongoDB 连接
+client = MongoClient(mongo_uri)
+db = client['fitness_db']
+todo_collection = db['todo']
+exercises_collection = db['exercises']
 
-def get_user(username: str):
-    return {}
 
+def get_todo_list():
 
-def get_exersice(query: str):
+    todo_list = todo_collection.find_one({"_id": 1})
+    if todo_list and "todo" in todo_list:
+        exercises = [item['workout_name'] for item in todo_list['todo']]
+        return exercises
     return []
 
+def get_all_exercises():
 
-def get_todo(username: str):
-    return []
+    exercises = exercises_collection.find()
+    return list(exercises)
 
+def get_filtered_exercises(query: str):
 
-def update_todo(username: str, new_todo):
-    return
+    exercises = exercises_collection.find({
+        "$or": [
+            {"workout_name": {"$regex": query, "$options": "i"}},
+            {"description": {"$regex": query, "$options": "i"}}
+        ]
+    })
+    return list(exercises)
+def get_exercise_by_id(exercise_id: int):
 
+    exercise = exercises_collection.find_one({"_id": exercise_id})
+    return exercise
 
-@app.route('/')
-def home():
-    return '<h1>This is the home page.</h1>'
+def add_exercise_to_todo(exercise_id: int, working_time: int, reps: int, weight: float):
+    """
+    向 To-Do List 中添加一个新的健身动作，包括动作名称
+    """
+    # 查找该动作的详细信息
+    exercise = exercises_collection.find_one({"_id": exercise_id})
+    
+    if exercise:
+        exercise_item = {
+            "exercise_id": exercise_id,
+            "workout_name": exercise["workout_name"],
+            "working_time": working_time,
+            "reps": reps,
+            "weight": weight
+        }
 
+        # 查找今天的 To-Do List
+        todo = todo_collection.find_one({"_id": 1})
 
-@app.route('/profile')
-def profile():
-    if 'user' not in session:
-        flash("Please Login!")
-        redirect(url_for('login'))
-    user = session['user']
-    return render_template('profile.html', user=user)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if not username or not password:
-            flash("Please enter username and password!")
-            return redirect(url_for('login'))
-
-        user = get_user(username)
-
-        if user is None:
-            flash("Please enter correct username!")
-            return redirect(url_for('login'))
-        elif user['password'] != password:
-            flash('Please enter correct password!')
-            return redirect(url_for('login'))
+        if todo:
+            # 如果 To-Do List 已存在，更新其中的动作
+            todo_collection.update_one(
+                {"_id": 1},
+                {"$push": {"todo": exercise_item}}
+            )
         else:
-            session['user'] = {'username': user['username']}
-            flash('Login successfully!')
-            return redirect(url_for('profile'))
+            # 如果 To-Do List 不存在，创建新的计划
+            todo_collection.insert_one({
+                "_id": 1,
+                "todo": [exercise_item]
+            })
+        print(f"Exercise {exercise['workout_name']} added to To-Do List.")
+    else:
+        print(f"Exercise with ID {exercise_id} not found.")
 
-    return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    flash("You are logged out!")
-    return redirect(url_for('login'))
-
-
-@app.route('/search', methods=['POST', 'GET'])
-def search():
-    if request.method == 'POST':
-        query = request.form.get("query")
-        if not query:
-            flash('Search content cannot be empty.')
-            redirect(url_for('search'))
-        results = get_exersice(query)
-        return render_template('search.html', query=query, results=results)
-
-    return render_template('search.html', results=None)
+def delete_exercise_from_todo(exercise_id: int):
+    """
+    从 To-Do List 中删除指定的健身动作
+    """
+    todo_collection.update_one(
+        {"_id": 1},
+        {"$pull": {"todo": {"exercise_id": exercise_id}}}
+    )
+    print(f"Exercise with ID {exercise_id} deleted from To-Do List.")
 
 
-@app.route('/todo')
-def todo():
-    if 'user' not in session:
-        flash("Please Login!")
-        redirect(url_for('login'))
+def update_exercise_in_todo(exercise_id: int, working_time: int, reps: int, weight: float):
+    """
+    更新 To-Do List 中某个健身动作的 reps、working_time 和 weight
+    """
+    todo_collection.update_one(
+        {"_id": 1, "todo.exercise_id": exercise_id},
+        {"$set": {
+            "todo.$.working_time": working_time,
+            "todo.$.reps": reps,
+            "todo.$.weight": weight
+        }}
+    )
+    print(f"Exercise with ID {exercise_id} updated in To-Do List.")
 
-    username = session['user']['username']
-    exercises = get_todo(username)
-    return render_template('todo.html', exercises=exercises)
+@app.route('/add_exercise', methods=['POST'])
+def add_exercise():
+    exercise_id = int(request.form.get('exercise_id'))  # 获取动作 ID
+    working_time = int(request.form.get('working_time'))
+    reps = int(request.form.get('reps'))
+    weight = float(request.form.get('weight'))
 
+    add_exercise_to_todo(exercise_id, working_time, reps, weight)
+    flash("Exercise added successfully!")
+    return redirect(url_for('todo'))  # 重定向到 To-Do 页面
 
-@app.route('/delete_exercise')
+@app.route('/delete_exercise', methods=['POST'])
 def delete_exercise():
-    username = session['user']['username']
-    exercises = get_todo(username)
-    return render_template('delete_exercise.html', exercises=exercises)
+    exercise_id = int(request.form.get('exercise_id'))  # 从表单获取 ID
+    delete_exercise_from_todo(exercise_id)
+    flash("Exercise deleted successfully!")
+    return redirect(url_for('todo'))  # 重定向到 To-Do 页面
 
+@app.route('/update_exercise', methods=['POST'])
+def update_exercise():
+    exercise_id = int(request.form.get('exercise_id'))  # 获取动作 ID
+    working_time = int(request.form.get('working_time'))
+    reps = int(request.form.get('reps'))
+    weight = float(request.form.get('weight'))
 
-@app.route('/delete_exercise/<int:exercise_id>', methods=['POST'])
-def delete_exercise_id(exercise_id):
-    username = session['user']['username']
-    exercises = get_todo(username)
-
-    new_todo = []
-    for i in exercises:
-        if i['id'] != exercise_id:
-            new_todo.append(i)
-
-    update_todo(username, new_todo)
-    flash('Delete successfully.')
-    return redirect(url_for('delete_exercise'))
-
-
-
-
-
-
-
-
+    update_exercise_in_todo(exercise_id, working_time, reps, weight)
+    flash("Exercise updated successfully!")
+    return redirect(url_for('todo'))  # 重定向到 To-Do 页面
