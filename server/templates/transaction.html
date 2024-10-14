@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{store_location}} Store Transactions</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .grid-item {
+        background-color: #4caf50;
+        color: white;
+        text-align: center;
+        padding: 40px;
+        font-size: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .grid-item:hover {
+        background-color: #45a049;
+      }
+
+      /* Styles for the transactions box */
+      .transactions-box {
+        border: 2px solid black; /* Black border */
+        padding: 20px; /* Padding inside the box */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center; /* Center the text */
+        margin-top: 40px; /* Space above the box */
+        background-color: white; /* Background color */
+      }
+
+      .button {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none; /* Remove underline for link */
+      }
+
+      .button:hover {
+        background-color: #45a049;
+      }
+
+      div.scrollmenu {
+        overflow: auto;
+        white-space: nowrap;
+        max-width: 100vw;
+      }
+
+      div.grid-item {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{store_location}} Store Transactions</h1>
+    <div class="scrollmenu">
+      <ul>
+        {% for transaction in transaction_data %}
+        <div class="grid-item">
+          {% for key, val in transaction.items() %}
+          <p>{{ key }}: {{ val }}</p>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="grid-container">
+      <a style="text-decoration: none; color: black" href="/">
+        <div class="transactions-box" href="/"><h1>Add Transaction</h1></div></a
+      >
+      <a style="text-decoration: none; color: black" href="/">
+        <div class="transactions-box" href="/">
+          <h1>Edit Purchase Method</h1>
+        </div></a
+      >
+      <a style="text-decoration: none; color: black" href="/">
+        <div class="transactions-box" href="/">
+          <h1>Delete Transaction</h1>
+        </div></a
+      >
+    </div>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Store Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .grid-item {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .grid-item:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Select Store Location</h1>
+
+    <div class="grid-container">
+        <!-- When clicking, navigate to the location route with the store name -->
+        <div class="grid-item" onclick="window.location.href='/location/Seattle'">Seattle</div>
+        <div class="grid-item" onclick="window.location.href='/location/New York'">New York</div>
+        <div class="grid-item" onclick="window.location.href='/location/London'">London</div>
+        <div class="grid-item" onclick="window.location.href='/location/Denver'">Denver</div>
+        <div class="grid-item" onclick="window.location.href='/location/Austin'">Austin</div>
+        <div class="grid-item" onclick="window.location.href='/location/San Diego'">San Diego</div>
+    </div>
+
+</body>
+</html>

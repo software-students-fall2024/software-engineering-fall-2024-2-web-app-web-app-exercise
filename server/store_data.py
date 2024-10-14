@@ -89,4 +89,4 @@ def get_store_location(store_location):
 
     return result
 
-client.close()
+# client.close()
