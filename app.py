@@ -124,8 +124,12 @@ def create_app():
         """
         username = request.form['username']
         password = request.form['password']
+        confirm_password = request.form['confirm_password']
         if db.users.find_one({"username":username}):
             flash("Username already exists.")
+            return redirect(url_for('signup'))
+        elif confirm_password != password:
+            flash("Passwords do not match. Please try again")
             return redirect(url_for('signup'))
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         db.users.insert_one({"username":username, "password": password_hash})
@@ -177,38 +181,30 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
+        doc_flash = {
+            "job_title": job_title,
+            "company": company,
+            "location": location,
+            "link": link,
+            "time": time
+        }
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
         if location == "":
-            flash("Please choose the location.")
-            doc = {
-                "job_title": job_title,
-                "company": company,
-                "link": link,
-            }
-            locations = load_cities()
-            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
-            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+            flash("Please choose the Location.")
+            return render_template("add.html", doc=doc_flash, count=1,locations=formatted_locations)
         elif stage == "":
-            flash("Please choose the stage.")
-            doc = {
-                "job_title": job_title,
-                "company": company,
-                "link": link,
-            }
-            locations = load_cities()
-            formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
-            return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+            flash("Please choose the Stage.")
+            return render_template("add.html", doc=doc_flash, count=1,locations=formatted_locations)
         elif time and time.strip():  # Check if time is not empty
             if validate_date(time)== False:
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
-                doc = {
-                    "job_title": " ".join(job_title.split()).strip(),#job_title,
-                    "company": " ".join(company.split()).strip(),
-                    "link": link,
-                }
-            #return redirect(url_for("add"), doc)
-                locations = load_cities()
-                formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
-                return render_template("add.html", doc=doc, count=1,locations=formatted_locations)
+                return render_template("add.html", doc=doc_flash, count=1,locations=formatted_locations)
+        """
+        elif stage in ['Job Opening','Phone/Video Screening Interview', 'Online Assessment', 'Interview', 'Job Offer'] and time == "":
+            flash("Please enter the Date/DDL for this Stage")
+            return render_template("add.html", doc=doc_flash, count=1,locations=formatted_locations)
+        """
         
         doc = {
             "user_id": current_user.id,
@@ -311,22 +307,34 @@ def create_app():
         link = request.form["link"]
         stage = request.form["stage"]
         time = request.form["time"]
-        
+        return_to = request.args.get('return_to')
+        doc_flash = {
+            "job_title": " ".join(job_title.split()).strip(),
+            "company": " ".join(company.split()).strip(),
+            "location": location,
+            "link": link,
+        }
+        db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc_flash})
+        locations = load_cities()
+        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        if stage == "":
+            print("stage is empty")
+            flash("Please choose the stage.")
+            return edit(record_id)
+            #return render_template("edit.html", doc=doc_flash,locations=formatted_locations,return_to=return_to)
+        elif stage in ['Job Opening','Phone/Video Screening Interview', 'Online Assessment', 'Interview', 'Job Offer'] and time and time.strip() and validate_date(time)== False:  # Check if time is not empty
+            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
+            return edit(record_id)
+            #return render_template("edit.html", doc=doc_flash,locations=formatted_locations,return_to=return_to)
         doc = {
             "job_title": " ".join(job_title.split()).strip(),
             "company": " ".join(company.split()).strip(),
-            "location": location,#" ".join(job_title.split()).strip(),
+            "location": location,
             "link": link,
             "stage": stage,
             "time": time
-            }
-        if time and time.strip() and validate_date(time)== False:
-            # Insert data into MongoDB
-            flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
-            return edit(record_id)
-
+        }
         db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
-        return_to = request.args.get('return_to')
         return redirect(url_for(return_to))
         
     @app.route("/delete/<record_id>")
@@ -374,7 +382,6 @@ def create_app():
         location_name_global = request.form["location"]
         stage_global = request.form["stage"]
         ddl_date_global = request.form["time"]
-
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
         if job_title_global and job_title_global.strip():  # Check if job is not empty
@@ -391,40 +398,16 @@ def create_app():
             # Insert data into MongoDB
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
                 return search()
-        """
-        print("herehereherehere")
-        global job_title_global 
-        job_title_global = request.form["job_title"]
-        print("job title: "+job_title_global)
-        #company_name_global = request.form["company"]
-        docs = db.records.find({"job_title":job_title_global})
-        """
+                
         docs = db.records.find(search_criteria)
         docs_list = list(docs)
-        return_to = request.form.get('return_to','home')
+        return_to = request.form.get('return_to')
         return render_template("result.html",docs=docs_list,count=len(docs_list),return_to=return_to)
 
     
     @app.route("/search_post",methods=["GET"])
     def search_post_get():
-        """
-        job_title = request.args.get('job_title')
-        company_name = request.args.get('company_name')
-        location_name = request.args.get('location_name')
-        print(type(job_title))
-        search_criteria = {}
-        search_criteria["user_id"] = current_user.id
-        if job_title and job_title.strip():
-            search_criteria['job_title'] = job_title
-        if company_name and company_name.strip():
-            search_criteria['company'] = company_name
-        if location_name and location_name.strip():
-            search_criteria['location'] = location_name
-        
-        docs = db.records.find(search_criteria)
-        """
         global job_title_global,company_name_global,location_name_global,stage_global,ddl_date_global
-        print("herehereherehere", job_title_global, company_name_global)
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
         if job_title_global and job_title_global.strip():  # Check if job is not empty
