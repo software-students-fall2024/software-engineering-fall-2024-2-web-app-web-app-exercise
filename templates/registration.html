@@ -1,133 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        /* General styles for mobile-friendly layout */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
+/* General styles for mobile-friendly layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    text-align: center; /* Ensure text is centered */
+}
 
-        /* Status bar (Time, Battery) */
-        .status-bar {
-            width: 100%;
-            background-color: #ccc;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            box-sizing: border-box;
-        }
+/* Container for login content */
+.container {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Take full height of the view */
+}
 
-        .status-bar span {
-            font-size: 14px;
-        }
 
-        /* Container for register content */
-        .login-container {
-            width: 100%;
-            max-width: 360px;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
+/* Status bar (Time, Battery) */
+.status-bar {
+    width: 100%;
+    background-color: #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+}
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #333;
-        }
+.status-bar span {
+    font-size: 14px;
+}
 
-        /* Input styles */
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: #e0e0e0;
-            box-sizing: border-box;
-        }
+/* Container for login content */
+.login-container, .signup-container {
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-        /* Register button */
-        button {
-            width: 100%; /* Make the button the same width as inputs */
-            padding: 12px;
-            font-size: 16px;
-            background-color: #e0e0e0;
-            border: 1px solid #000;
-            cursor: pointer;
-            box-sizing: border-box; /* Ensure padding doesn't exceed container width */
-        }
 
-        button:hover {
-            background-color: #d3d3d3;
-        }
 
-        /* Sign up link */
-        .signup {
-            text-align: center;
-            margin-top: 16px;
-        }
+/* App Icon */
+.app-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px auto; /* Center the icon and add bottom margin */
+    background-image: url('../css/icon.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
 
-        .signup a {
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            background-color: #ccc;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
+/* Header */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
 
-        .signup a:hover {
-            background-color: #bbb;
-        }
+/* Input styles */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+}
 
-        .signup p {
-            margin-bottom: 0;
-        }
-    </style>
-</head>
-<body>
+/* Button styles */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-sizing: border-box;
+}
 
-    <!-- Status bar -->
-    <div class="status-bar">
-        <span>Time</span>
-        <span>Battery</span>
-    </div>
+button:hover {
+    background-color: #d3d3d3;
+}
 
-    <div class="login-container">
-        <!-- Welcome text -->
-        <h1>Sign Up</h1>
+/* Link styles */
+.signup, .login {
+    text-align: center;
+    margin-top: 16px;
+}
 
-        <!-- Register form -->
-        <form action="/register" method="POST">
-            <input type="text" name="username" placeholder="Username or Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Register</button>
-        </form>
+.signup a, .login a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
 
-        <!-- Sign up link -->
-        <div class="signup">
-            <p>Already have an account? <a href="/login">Login</a></p>
-        </div>
+.signup a:hover, .login a:hover {
+    background-color: #bbb;
+}
 
-        {% if err is defined %}
-        <div class="registrationErr">
-            <p>{{err}}</p>
-        </div>
-        {% endif %}
-    </div>
-
-</body>
-</html>
+/* Ensure consistent spacing for the text */
+.signup p, .login p {
+    margin-bottom: 0;
+}
