@@ -104,11 +104,11 @@ def create_app():
         title = request.args.get('title')
         author = request.args.get('author')
         genre = request.args.get('genre')
-        date_added = request.args.get('date_added')
+        date_added = request.args.get('dateAdded')
         price = request.args.get('price')
         useRegex = request.args.get('regex')
         
-        inputDict = {'title': "", 'author': "", 'genre': "", 'price': "", 'regex': ""}
+        inputDict = {'title': "", 'author': "", 'genre': "", 'price': "", 'dateAdded': "", 'regex': ""}
         if useRegex:
             inputDict['regex'] = "checked"
         
@@ -125,12 +125,11 @@ def create_app():
             query['genre'] = {'$regex': genre, '$options':'i'} if useRegex else {'$regex': re.escape(genre), '$options':'i'}
             inputDict['genre'] = genre
         if date_added:
-            try:
-                date_obj = datetime.datetime.strptime(date_added, "%Y-%m-%d")
-                query['date_added'] = date_obj
-            except ValueError:
-                msg = "Invalid date format. Please use YYYY-MM-DD."
-                return render_template('search.html', message=msg, userInput=inputDict, books=[])
+            # query['date_added'] = {'$regex': re.escape(date_added), '$options':'i'}
+            # inputDict['dateAdded'] = date_added
+            date_obj = datetime.datetime.strptime(date_added, "%Y-%m-%d")
+            query['date_added'] = date_obj
+            inputDict['dateAdded'] = date_added
         # Price filter: Search for books with price <= given value
         if price:
             try:
@@ -141,7 +140,9 @@ def create_app():
                 msg = "Invalid price format. Please enter a valid number."
                 return render_template('search.html', message=msg, userInput=inputDict, books=[])
             
-        results = db.books.find(query) if query else []
+        results = list(db.books.find(query)) if query else []
+        for book in results:
+            book["date_added"] = book["date_added"].strftime("%Y-%m-%d")
         
         return render_template('search.html', message="", userInput=inputDict, books=results)
     
@@ -150,7 +151,7 @@ def create_app():
     def delete(book_id):
         """
         Route for POST requests to the delete page.
-        Deletes the specified book from the database, and then redirects the browser to the home page.
+        Deletes the specified book from the base, and then redirects the browser to the home page.
         Args:
             book_id (str): The ID of the book to delete.
         Returns:
@@ -171,7 +172,7 @@ def create_app():
         genre = request.form.get('genre')
         price = request.form.get('price')
         quantity = request.form.get('quantity')
-        date_added = datetime.datetime.utcnow()
+        date_added = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)  # only preserve the date
         inputDict = {'title': title, 'author': author, 'genre': genre, 'price': price, 'quantity': quantity}
         if not title or not author or not genre or not price or not quantity:
             return render_template("add.html", message="All fields are required.", userInput=inputDict)
