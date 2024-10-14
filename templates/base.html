@@ -3,6 +3,7 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         {% block singout_button%}{% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
         <!-- More Styles -->
         {% block styles %}{% endblock %}

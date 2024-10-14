@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block styles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit.css') }}">
 {% endblock %}
 
