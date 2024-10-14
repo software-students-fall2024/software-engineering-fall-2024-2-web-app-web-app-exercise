@@ -8,7 +8,7 @@
     <h1>Welcome, {{ user }}!</h1> 
     <h3>My Inventory</h3>
 
-    <table>
+    <table id="inventory">
         <thead>
             <tr>
                 <th>Book Title</th>
@@ -18,10 +18,8 @@
         <tbody>
             {% for book in books %}
             <tr>
-                <td></td>
-                <td></td>
-                <td>
-                </td>
+                <td>{{ book["title"] }}</td>
+                <td>{{ book["quantity"] }}</td>
             </tr>
             {% endfor %}
         </tbody>
