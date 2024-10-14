@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -26,6 +27,28 @@ MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['SWE_Project_2-Webstars']
 transactions_collection = db['transactions']
+
+# Homepage route
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    return render_template('account.html')
+
+
+@app.route('/save_account', methods=['POST'])
+def save_account():
+    name = request.form['name']
+    total_budget = float(request.form['total_budget'])
+    spending_budget = float(request.form['spending_budget'])
+
+    # Save the name, total budget, and spending budget to the 'budgets' collection
+    db['budgets'].update_one(
+        {}, 
+        {'$set': {'name': name, 'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
+        upsert=True
+    )
+
+    return redirect(url_for('home'))
+
 
 # Homepage route
 @app.route('/')
@@ -67,33 +90,13 @@ def index():
         name=name
     )
 
-@app.route('/account', methods=['GET', 'POST'])
-def account():
-    return render_template('account.html')
-
-
-@app.route('/save_account', methods=['POST'])
-def save_account():
-    name = request.form['name']
-    total_budget = float(request.form['total_budget'])
-    spending_budget = float(request.form['spending_budget'])
-
-    # Save the name, total budget, and spending budget to the 'budgets' collection
-    db['budgets'].update_one(
-        {}, 
-        {'$set': {'name': name, 'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
-        upsert=True
-    )
-
-    return redirect(url_for('index'))
-
-
 # View all transactions
 @app.route('/transactions')
 def view_transactions():
     transactions = list(transactions_collection.find())  # Convert cursor to list
     return render_template('transactions.html', transactions=transactions)
 
+# Add transaction route
 @app.route('/add_transaction', methods=['GET', 'POST'])
 def add_transaction():
     if request.method == 'POST':
@@ -117,8 +120,7 @@ def add_transaction():
         return redirect(url_for('view_transactions'))
 
     return render_template('add.html')
-
-@app.route('/search_and_edit_transaction', methods=['GET', 'POST'])
+@app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
     # Fetch all transactions for the dropdown menu
     transactions = list(transactions_collection.find())
@@ -131,6 +133,38 @@ def search_and_edit_transaction():
             return redirect(url_for('edit_transaction', transaction_id=selected_transaction_id))
 
     return render_template('search_edit.html', transactions=transactions)
+
+
+@app.route('/edit_transaction/<transaction_id>', methods=['GET', 'POST'])
+def edit_transaction(transaction_id):
+    transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id)})
+
+    if not transaction:
+        return "Transaction not found", 404
+
+    if request.method == 'POST':
+        # Get updated form data
+        amount = request.form['amount']
+        category = request.form['category']
+        description = request.form['description']
+        transaction_type = request.form['type']
+        date = request.form['date']
+
+        # Update transaction in MongoDB
+        transactions_collection.update_one(
+            {'_id': ObjectId(transaction_id)},
+            {'$set': {
+                'amount': float(amount),
+                'category': category,
+                'description': description,
+                'type': transaction_type,
+                'date': datetime.datetime.strptime(date, '%Y-%m-%d')
+            }}
+        )
+
+        return redirect(url_for('view_transactions'))
+
+    return render_template('edit.html', transaction=transaction)
 
 
 # Delete transaction route
@@ -154,6 +188,8 @@ def search_transactions():
         return render_template('search.html', results=results)
 
     return render_template('search.html')
+
+
 
 # Run the app
 if __name__ == '__main__':
