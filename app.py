@@ -47,6 +47,7 @@ def create_app():
 
             if user and password == user['password']:
                 session['logged_in'] = True
+                session['username'] = user
                 return redirect(url_for("home"))
             else:
                 return render_template("login.html", message="Invalid credentials.")
@@ -82,12 +83,13 @@ def create_app():
         return render_template("register.html", message="")
 
 
-    @app.route("/home")
+    @app.route("/home", methods=["GET"])
     @login_required
     def home():
+        user = session['username']
         books = db.books.find({}, {"title": 1, "quantity": 1})
         book_lst = list(books)
-        return render_template('home.html', books=book_lst)
+        return render_template('home.html', user=user, books=book_lst)
         
     @app.route("/search")
     @login_required
@@ -250,13 +252,16 @@ def create_app():
             {"_id": ObjectId(book_id)},
             {"$set": {"genre": genre}})
         return redirect(url_for("book_detail", book_id=book_id))
+    
+    @app.route('/logout', methods=["GET"])
+    def logout():
+        session.pop('logged_in', None)
+        session.pop('username', None)
+        return redirect(url_for('login'))
 
     return app
             
-    @app.route('/logout')
-    def logout():
-        session.pop('logged_in', None)
-        return redirect(url_for('login'))
+    
 
 
 
