@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
+
+{% block container %}
+    <h1>Search for a Book</h1> 
+    <form action="/search" method="GET">
+        <label for="title">Book Title:</label>
+        <textarea name="title" placeholder="e.g. Gatsby" id="title">{{ userInput.title }}</textarea>
+        <label for="genre">Genre:</label>
+        <input type="text" name="genre" placeholder="e.g. Fiction" id="genre" value={{ userInput.genre }}>
+        <label for="author">Author:</label>
+        <textarea name="author" placeholder="e.g. Scott" id="author">{{ userInput.author }}</textarea>
+        <label for="price">Price Under:</label>
+        <input type="text" name="price" placeholder="e.g. 10" id="price" value={{ userInput.price }}>
+        <label for="regex">Use regular expressions for title, genre, and author?</label>
+        <input type="checkbox" name="regex" id="regex" value="yes" {{userInput.regex}}>
+        <input type="submit" value="Search" id="searchButton">
+    </form>
+
+    <p id="errorMessage" style="color: red;"> {{ message }} </p>
+
+    <table id="searchResult">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Genre</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book["title"] }}</td>
+                <td>{{ book["genre"] }}</td>
+                <td>{{ book["author"] }}</td>
+                <td>{{ book["price"] }}</td>
+                <td>{{ book["quantity"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

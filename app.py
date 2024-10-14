@@ -5,6 +5,7 @@ import pymongo
 from bson.objectid import ObjectId
 import os
 from pymongo.mongo_client import MongoClient
+import re
 
 load_dotenv()
 
@@ -92,7 +93,7 @@ def create_app():
         book_lst = list(books)
         return render_template('home.html', user=user, books=book_lst)
         
-    @app.route("/search")
+    @app.route("/search", methods=["GET"])
     @login_required
     def search():
         """
@@ -105,30 +106,44 @@ def create_app():
         genre = request.args.get('genre')
         date_added = request.args.get('date_added')
         price = request.args.get('price')
+        useRegex = request.args.get('regex')
+        
+        inputDict = {'title': "", 'author': "", 'genre': "", 'price': "", 'regex': ""}
+        if useRegex:
+            inputDict['regex'] = "checked"
+        
+        if not(title or author or genre or date_added or price):
+            return render_template('search.html', message="", userInput=inputDict, books=[])
         
         if title:
-            query['title'] = {'$regex': title, '$options':'i'}
+            query['title'] = {'$regex': title, '$options':'i'} if useRegex else {'$regex': re.escape(title), '$options':'i'}
+            inputDict['title'] = title
         if author:
-            query['author'] = {'$regex': author, '$options':'i'}
+            query['author'] = {'$regex': author, '$options':'i'} if useRegex else {'$regex': re.escape(author), '$options':'i'}
+            inputDict['author'] =author
         if genre:
-            query['genre'] = {'$regex': genre, '$options':'i'}
+            query['genre'] = {'$regex': genre, '$options':'i'} if useRegex else {'$regex': re.escape(genre), '$options':'i'}
+            inputDict['genre'] = genre
         if date_added:
             try:
                 date_obj = datetime.datetime.strptime(date_added, "%Y-%m-%d")
                 query['date_added'] = date_obj
             except ValueError:
-                return "Invalid date format. Please use YYYY-MM-DD.", 400
+                msg = "Invalid date format. Please use YYYY-MM-DD."
+                return render_template('search.html', message=msg, userInput=inputDict, books=[])
         # Price filter: Search for books with price <= given value
         if price:
             try:
                 price_value = float(price)  # Ensure valid float input
                 query['price'] = {'$lte': price_value}
+                inputDict['price'] = price
             except ValueError:
-                return "Invalid price format. Please enter a valid number.", 400
+                msg = "Invalid price format. Please enter a valid number."
+                return render_template('search.html', message=msg, userInput=inputDict, books=[])
             
         results = db.books.find(query) if query else []
         
-        return render_template('search.html', books=results)
+        return render_template('search.html', message="", userInput=inputDict, books=results)
     
     @app.route("/delete/<book_id>", methods=["POST"])
     @login_required
