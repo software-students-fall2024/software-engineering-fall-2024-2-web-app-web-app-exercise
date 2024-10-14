@@ -157,47 +157,31 @@
     <div class="smartphone">
         <div class="screen">
             <header>
-                <button class="calendar-button" onclick="window.location.href='calendar.html'">Calendar</button>
+                <button class="calendar-button" onclick="window.location.href='{{ url_for('calendar') }}'">Calendar</button>
                 <h1>Search Books</h1>
-                <button class="logout-button" onclick="window.location.href='login.html'">Logout</button>
+                <button class="logout-button" onclick="window.location.href='{{ url_for('login') }}'">Logout</button>
             </header>
             <div class="search-container">
-                <input type="text" placeholder="Search books..." />
-                <button>Search</button>
+                <form method="POST" action="{{ url_for('test') }}">
+                    <input type="text" name="search" placeholder="Search books..." value="{{ request.form.get('search', '') }}" />
+                    <button type="submit">Search</button>
+                </form>
             </div>
             <div class="results">
                 <ul>
+                    {% for book in books %}
                     <li>
-                        <span class="book-info">The Great Gatsby by F. Scott Fitzgerald</span>
+                        <span class="book-info">{{ book['title'] }} by {{ book.get('author', 'Unknown') }}</span>
                         <div class="buttons">
-                            <button class="add" onclick="addBook('The Great Gatsby')">Add</button>
-                            <button class="edit" onclick="editBook('The Great Gatsby', 'F. Scott Fitzgerald')">Edit</button>
-                            <button class="delete" onclick="deleteBook('The Great Gatsby')">Delete</button>
+                            <button class="add" onclick="window.location.href='{{ url_for('add', title=book['title']) }}'">Add</button>
+                            <button class="edit" onclick="window.location.href='{{ url_for('edit', title=book['title'], author=book.get('author', '')) }}'">Edit</button>
+                            <button class="delete" onclick="window.location.href='{{ url_for('delete', title=book['title']) }}'">Delete</button>
                         </div>
                     </li>
-                    <script>
-                        function addBook(title) {
-                            window.location.href = `add.html?title=${encodeURIComponent(title)}`;
-                        }
-
-                        function deleteBook(title) {
-                            window.location.href = `delete.html?title=${encodeURIComponent(title)}`;
-                        }
-                    
-                        function editBook(title, author) {
-                            window.location.href = `edit.html?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`;
-                        }
-                    </script>
-                    <!-- Additional book entries here with similar button structure -->
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
-
-    <script>
-        function editBook(title, author) {
-            window.location.href = `edit.html?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`;
-        }
-    </script>
 </body>
 </html>

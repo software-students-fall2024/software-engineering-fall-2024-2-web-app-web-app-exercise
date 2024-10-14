@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <style>
-        /* Similar styles to maintain a consistent look */
+        /* Similar styles to keep a consistent design */
         body {
             display: flex;
             justify-content: center;
@@ -36,7 +36,7 @@
             text-align: center;
         }
         
-        .delete-container {
+        .add-container {
             padding: 20px;
         }
         
@@ -64,7 +64,7 @@
             margin-top: 20px;
             padding: 10px;
             width: 100%;
-            background-color: #ff5722;
+            background-color: #4caf50;
             color: white;
             border: none;
             border-radius: 5px;
@@ -72,57 +72,39 @@
         }
         
         button:hover {
-            background-color: #e64a19;
+            background-color: #388e3c;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Book</title>
+    <title>Add Book</title>
 </head>
 <body>
     <div class="smartphone">
         <div class="screen">
             <header>
-                <h1>Delete Book</h1>
+                <h1>Add Book</h1>
             </header>
-            <div class="delete-container">
-                <div class="book-title" id="book-title">Loading title...</div>
-                
-                <label for="book-quantity">Quantity:</label>
-                <select id="book-quantity">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                
-                <button id="delete-book">Delete Book</button>
+            <div class="add-container">
+                <form method="POST" action="{{ url_for('add') }}">
+                    <!-- Display book title -->
+                    <div class="book-title" id="book-title">{{ request.args.get('title', 'Book title not specified.') }}</div>
+                    
+                    <!-- Quantity selection -->
+                    <label for="book-quantity">Quantity:</label>
+                    <select name="book-quantity" id="book-quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    
+                    <!-- Submit button -->
+                    <button type="submit">Add Book</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script>
-        // Retrieve and decode the title from the query parameters
-        const params = new URLSearchParams(window.location.search);
-        const title = params.get('title');
-        
-        // Display the title if it is available, otherwise show a default message
-        if (title) {
-            document.getElementById('book-title').textContent = decodeURIComponent(title);
-        } else {
-            document.getElementById('book-title').textContent = "Book title not specified.";
-        }
-
-        document.getElementById('delete-book').addEventListener('click', () => {
-            const quantity = document.getElementById('book-quantity').value;
-            if (title) {
-                alert(`Deleted ${quantity} copy/copies of "${decodeURIComponent(title)}"!`);
-                window.history.back(); // Return to the previous page
-            } else {
-                alert("Book title not specified.");
-            }
-        });
-    </script>
 </body>
 </html>

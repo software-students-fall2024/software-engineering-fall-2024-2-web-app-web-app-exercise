@@ -98,31 +98,17 @@
     <div class="smartphone">
         <div class="screen">
             <header>
-                <button class="back-button" onclick="window.location.href='test.html'">Back</button>
-                <button class="logout-button" onclick="window.location.href='login.html'">Logout</button>
+                <button class="back-button" onclick="window.location.href='{{ url_for('test') }}'">Back</button>
+                <button class="logout-button" onclick="window.location.href='{{ url_for('login') }}'">Logout</button>
                 <h1>Due Dates</h1>
             </header>
             <div class="calendar-container">
+                {% for book in books %}
                 <div class="calendar-item">
-                    <span class="book-title">The Great Gatsby</span> 
-                    <span class="due-date">- Due: October 15, 2024</span>
+                    <span class="book-title">{{ book['title'] }}</span> 
+                    <span class="due-date">- Due: {{ book['due_date'] }}</span>
                 </div>
-                <div class="calendar-item">
-                    <span class="book-title">To Kill a Mockingbird</span> 
-                    <span class="due-date">- Due: October 20, 2024</span>
-                </div>
-                <div class="calendar-item">
-                    <span class="book-title">1984</span> 
-                    <span class="due-date">- Due: October 25, 2024</span>
-                </div>
-                <div class="calendar-item">
-                    <span class="book-title">Pride and Prejudice</span> 
-                    <span class="due-date">- Due: November 1, 2024</span>
-                </div>
-                <div class="calendar-item">
-                    <span class="book-title">The Catcher in the Rye</span> 
-                    <span class="due-date">- Due: November 5, 2024</span>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

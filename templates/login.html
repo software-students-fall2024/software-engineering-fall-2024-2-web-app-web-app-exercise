@@ -75,30 +75,18 @@
         <header>
             <h1>Login</h1>
         </header>
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Enter your username" />
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" />
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" placeholder="Enter your password" />
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" />
 
-        <button id="login-button">Login</button>
-        <div class="error-message" id="error-message"></div>
+            <button type="submit">Login</button>
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+        </form>
     </div>
-
-    <script>
-        document.getElementById('login-button').addEventListener('click', () => {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Simple authentication check
-            if (username === "user" && password === "password") {
-                // Redirect to search page on successful login
-                window.location.href = 'test.html';
-            } else {
-                // Show error message
-                document.getElementById('error-message').textContent = 'Invalid username or password';
-            }
-        });
-    </script>
 </body>
 </html>
