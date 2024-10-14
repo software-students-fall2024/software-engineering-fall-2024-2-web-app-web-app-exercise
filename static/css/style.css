@@ -189,3 +189,92 @@ button {
 .project-link {
     margin-bottom: 10px; /* Add spacing between the links */
 }
+
+/* Profile Page Specific Styles */
+
+/* Profile container */
+.profile-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile picture section */
+.profile-picture-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.profile-picture-section p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Workspaces section */
+.workspaces-section h3 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.workspace-item {
+    background-color: #e0e0e0;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.workspace-item:hover {
+    background-color: #ccc;
+}
+
+/* Account section */
+.account-section h3 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.account-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.account-section ul li {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.account-section ul li:hover {
+    background-color: #ccc;
+}
+
+.account-section ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.account-section ul li a:hover {
+    color: #000;
+    text-decoration: underline;
+}
