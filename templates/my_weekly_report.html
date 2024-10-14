@@ -1,81 +1,40 @@
+<!-- my_weekly_report.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Report</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/my_weekly_report_style.css') }}">
 </head>
 <header>
   <div class="logo">
-      <img src = "{{url_for('static', filename = 'icon.svg')}}" alt = "Icon" width="30" height="30">
+      <img src="{{ url_for('static', filename='icon.svg') }}" alt="Icon" width="30" height="30">
   </div>
- 
-  
 </header>
 <body>
-  
   <div class="container">
     <h1>My Weekly Report</h1>
     <table class="a">
       <tr>
         <th>Date</th>
-        <th>Calorie Intake(cal)</th>
-        <th>Weight(lbs)</th>
+        <th>Calorie Intake (cal)</th>
+        <th>Weight (lbs)</th>
         <th>BMI</th>
-
       </tr>
+      {% for day in week_data %}
       <tr>
-        <th>Monday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
+        <td>{{ day.day }}</td>
+        <td>{{ day.calorie_intake }}</td>
+        <td>{{ day.weight }}</td>
+        <td>{{ day.bmi }}</td>
       </tr>
-      <tr>
-        <th>Tuesday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-      <tr>
-        <th>Wednesday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-      <tr>
-        <th>Thursday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-      <tr>
-        <th>Friday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-      <tr>
-        <th>Saturday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-      <tr>
-        <th>Sunday</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-        <th>xxxx</th>
-      </tr>
-  </table>
-</div>
-
-
-
+      {% endfor %}
+    </table>
+  </div>
 </body>
 <footer>
   <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
-  <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true' if for_plan else 'false') }}">Workout Instructions</a></div>
+  <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true') }}">Workout Instructions</a></div>
   <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
 </footer>
 </html>
