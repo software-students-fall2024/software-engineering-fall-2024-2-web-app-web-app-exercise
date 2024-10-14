@@ -1,27 +1,38 @@
-import os
 from flask import Flask, request, json, redirect, url_for, flash, render_template
 
 app = Flask(__name__)
 
 
-def get_exersice(query: str):
+def search_exersice(query: str):
     return []
+
+
+def get_exersice(exercise_id: int):
+    return {}
 
 
 def get_todo():
     return []
 
 
-def delete_todo(exercise_id: int):
+def delete_todo(exercise_todo_id: int):
     return
 
 
-def add_todo(exercise_name: str):
+def add_todo(exercise_id: str):
+    return
+
+
+def edit_exercise(exercise_todo_id, times, weight, reps):
     return
 
 
 def default_exercises():
+    exercises_id = []  # add recommendation exercise id here
     exercises = []
+    for i in exercises_id:
+        exercises.append(get_exersice(i))
+
     return exercises
 
 
@@ -37,7 +48,7 @@ def search():
         if not query:
             flash('Search content cannot be empty.')
             redirect(url_for('search'))
-        results = get_exersice(query)
+        results = search_exersice(query)
         if len(results) == 0:
             flash('Exercise was not found.')
             redirect(url_for('search'))
@@ -59,24 +70,37 @@ def delete_exercise():
     return render_template('delete_exercise.html', exercises=exercises)
 
 
-@app.route('/delete_exercise/<int:exercise_id>', methods=['POST'])
-def delete_exercise_id(exercise_id):
-    delete_todo(exercise_id)
-    flash('Delete successfully.')
+@app.route('/delete_exercise/<int:exercise_todo_id>')
+def delete_exercise_id(exercise_todo_id):
+    delete_todo(exercise_todo_id)
+    flash('Deleted successfully.')
     return redirect(url_for('delete_exercise'))
 
 
-@app.route('/add_exercise/<str:exercise_name>', methods=['POST'])
-def add_exercise(exercise_name):
-    add_todo(exercise_name)
-    flash('Add successfully.')
+@app.route('/add_exercise/<str:exercise_id>')
+def add_exercise(exercise_id):
+    add_todo(exercise_id)
+    flash('Added successfully.')
     return redirect(request.referrer or url_for('search'))
 
 
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    exercise_todo_id = request.args.get('exercise_todo_id')
+    if request.method == 'POST':
+        times = request.form.get('times')
+        weight = request.form.get('weight')
+        reps = request.form.get('reps')
+        edit_exercise(exercise_todo_id, times, weight, reps)
+        flash('Updated successfully!')
+        return redirect(url_for('edit'))
+
+    return render_template('edit.html', exercise_todo_id=exercise_todo_id)
 
 
+@app.route('/instructions/<str:exercise_id>')
+def instructions(exercise_id):
+    exercise = get_exersice(exercise_id)
+    instruction = exercise['instruction']
 
-
-
-
-
+    return render_template('instructions.html', instruction=instruction)
