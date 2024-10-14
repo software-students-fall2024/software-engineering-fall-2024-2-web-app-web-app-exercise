@@ -23,8 +23,12 @@ def add_todo(exercise_id: str):
     return
 
 
-def edit_exercise(exercise_todo_id, times, weight, reps):
+def edit_exercise(exercise_todo_id, working_time, weight, reps):
     return
+
+
+def get_exercise_in_todo(exercise_todo_id):
+    return {}
 
 
 def default_exercises():
@@ -87,15 +91,16 @@ def add_exercise(exercise_id):
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     exercise_todo_id = request.args.get('exercise_todo_id')
+    exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
     if request.method == 'POST':
-        times = request.form.get('times')
+        working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        edit_exercise(exercise_todo_id, times, weight, reps)
+        edit_exercise(exercise_todo_id, working_time, weight, reps)
         flash('Updated successfully!')
         return redirect(url_for('edit'))
 
-    return render_template('edit.html', exercise_todo_id=exercise_todo_id)
+    return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
 
 @app.route('/instructions/<str:exercise_id>')
