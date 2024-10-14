@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Instruction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<header>
+    <div class="logo">
+        <img src = "{{url_for('static', filename = 'icon.svg')}}" alt = "Icon" width="30" height="30">
+    </div>
+
+</header>
+<body>
+   
+    <div class="search-bar">
+        <form action="{{ url_for('search_exercise') }}" method="POST">
+            <input type="text" name="query" placeholder="Search for a workout..." value="{{ search_query }}">
+            <input type="hidden" name="for_plan" value="{{ 'true' if for_plan else 'false' }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <div class="container">
+        <!-- Categories Navigation -->
+        <nav class="workout-nav">
+            <ul>
+                {% for category in categories %}
+                    <li class="category-item">
+                        <button type="button" class="category-button" onclick="toggleEquipmentMenu(this, '{{ category }}')">
+                            {{ category }}
+                        </button>
+                        <!-- Equipment menu will be dynamically added here -->
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Workout Instructions Section -->
+        <section class="workout-instructions">
+          <h2>
+            {% if search_query %}
+                Search results for: "{{ search_query }}"
+            {% elif selected_category %}
+                Workouts for Category: {{ selected_category }}
+                {% if selected_equipment %}
+                    (Equipment: {{ selected_equipment }})
+                {% endif %}
+            {% else %}
+                All Workouts
+            {% endif %}
+          </h2>
+          <div class="card-deck" style="max-height: 700px; overflow-y: auto;">
+            {% for workout in workouts %}
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ url_for('serve_image', filename=workout.gif_path.split('/')[-1]) }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ workout.name }}</h5>
+                        <p class="card-text">Target muscles: {{ workout.target_muscle }}</p>
+                        {% if for_plan %}
+                            <!-- Add to Workout Plan Form -->
+                            <form action="{{ url_for('add_workout_to_plan') }}" method="POST">
+                                <input type="hidden" name="name" value="{{ workout.name }}">
+                                <input type="hidden" name="gif_path" value="{{ workout.gif_path }}">
+                                <input type="hidden" name="target_muscle" value="{{ workout.target_muscle }}">
+                                <label for="setNum">Sets:</label>
+                                <input type="number" name="setNum" value="0" min="1">
+                                <button type="submit" class="btn btn-primary">Add to Plan</button>
+                            </form>
+                        {% else %}
+                            <!-- Browse Workout Details Button -->
+                            <a href="{{ url_for('exercise_details', exercise_id=workout.id) }}" class="btn btn-primary">Details</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>        
+      </section>
+    </div>
+
+    <footer>
+        <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_workout_instruction', for_plan='true' if for_plan else 'false') }}">Workout Instructions</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
+    </footer>
+    
+    <script>
+        function toggleEquipmentMenu(button, category) {
+            var categoryItem = button.parentElement;
+    
+            var existingMenu = categoryItem.querySelector('.equipment-menu');
+    
+            if (existingMenu) {
+                if (existingMenu.style.display === 'block') {
+                    existingMenu.style.display = 'none';
+                } else {
+                    existingMenu.style.display = 'block';
+                }
+            } else {
+                // Fetch equipment data via API
+                fetch(`/api/exercises/category/${encodeURIComponent(category)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        var equipmentMenu = document.createElement('ul');
+                        equipmentMenu.className = 'equipment-menu';
+    
+                        if (data.sub_category_equipment && data.sub_category_equipment.length > 0) {
+                            data.sub_category_equipment.forEach(equipment => {
+                                var equipmentItem = document.createElement('li');
+                                var form = document.createElement('form');
+                                form.method = 'POST';
+                                form.action = '/workout_instruction';
+    
+                                var categoryInput = document.createElement('input');
+                                categoryInput.type = 'hidden';
+                                categoryInput.name = 'category';
+                                categoryInput.value = category;
+    
+                                var equipmentInput = document.createElement('input');
+                                equipmentInput.type = 'hidden';
+                                equipmentInput.name = 'equipment';
+                                equipmentInput.value = equipment;
+    
+                                var forPlanInput = document.createElement('input');
+                                forPlanInput.type = 'hidden';
+                                forPlanInput.name = 'for_plan';
+                                forPlanInput.value = "{{ for_plan }}";
+    
+                                var equipButton = document.createElement('button');
+                                equipButton.type = 'submit';
+                                equipButton.className = 'equipment-button';
+                                equipButton.textContent = equipment;
+    
+                                form.appendChild(categoryInput);
+                                form.appendChild(equipmentInput);
+                                form.appendChild(forPlanInput);
+                                form.appendChild(equipButton);
+                                equipmentItem.appendChild(form);
+                                equipmentMenu.appendChild(equipmentItem);
+                            });
+                        } else {
+                            var noEquipmentItem = document.createElement('li');
+                            noEquipmentItem.textContent = 'No equipment available';
+                            equipmentMenu.appendChild(noEquipmentItem);
+                        }
+    
+                        categoryItem.appendChild(equipmentMenu);
+                    })
+                    .catch(error => console.error('Error fetching equipment:', error));
+            }
+        }
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
