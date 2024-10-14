@@ -51,23 +51,24 @@
     <div class="section-title">YOUR WORKSPACES</div>
 
     <div class="section-title">As a manager...</div>
-    {% if programs is defined %}
-      {% for program in programs %}
-      <li><a href="{{ url_for('program', id=program.id) }}">{{ program.id }}</li>
+    {% if docs is defined %}
+      {% for doc in docs %}
+      <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
       {% endfor %}
     {% else %}
       <p>No projects. Try adding some!</p>
     {% endif %}
 
     <div class="section-title">As a member...</div>
-    {% if programs is defined %}
-      {% for program in programs %}
-      <li><a href="{{ url_for('program', id=program.id) }}">{{ program.id }}</li>
+    {% if docs2 is defined %}
+      {% for doc in docs2 %}
+      <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
       {% endfor %}
     {% else %}
       <p>No projects. Try adding some!</p>
     {% endif %}
+
   </div>
 
-  {% endblock %}
 </body>
+{% endblock %}

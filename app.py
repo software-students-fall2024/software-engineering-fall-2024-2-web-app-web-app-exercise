@@ -42,7 +42,7 @@ def create_app():
         if (projects == None):
             return render_template("main.html")
 
-        return render_template("main.html", docs=projects)
+        return render_template("main.html", docs=projects, docs2=projects)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
@@ -52,9 +52,12 @@ def create_app():
             
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
-                if (project_collection.find({'name': username}) != None):
-                    global projects
+                global projects
+                if (project_collection.find_one({'name': username}) != None):
+                    doc = project_collection.find({'name': username})
                     projects = project_collection.find({'name': username})
+                else:
+                    projects = None
                 # redirect to main, logged_in is true
                 global logged_in 
                 logged_in = True
