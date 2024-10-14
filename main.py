@@ -3,15 +3,17 @@ from flask import Flask, jsonify, render_template, request,redirect, url_for
 import pymongo
 from pymongo import MongoClient
 from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user,current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from bson.objectid import ObjectId
+#just commenting so i can redo the pr
 
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.getenv('SECRET')
 
     cxn = pymongo.MongoClient(os.getenv('MONGO_URI'))
     MONGO_URI = os.getenv('MONGO_URI')
@@ -183,7 +185,6 @@ def create_app():
         #change to success page 
         return redirect(url_for('success', restaurantName=request.form['restaurantName']))
     
-    #success page after restaurant is added
     @app.route('/success')
     def success():
         restaurantName=request.args.get('restaurantName')
@@ -193,19 +194,32 @@ def create_app():
     @app.route('/deleteData', methods=['POST'])
     @login_required
     def deleteData():
-        username = request.form['username']
         restaurantName = request.form['restaurantName']
-        cuisine = request.form['cuisine']
-        deleteRestaurant = db.RestaurantData.delete_one({'username': username, 'restaurantName': restaurantName, 'cuisine': cuisine})
+        if not restaurantName:
+            return "Please Enter a Restaurant Name in order to Delete",400
+        deleteRestaurant = db.RestaurantData.delete_one({'username': current_user.username, 'restaurantName': restaurantName})
         
         #change to a popup on screen
         if deleteRestaurant.deleted_count == 1: #if deleted ouput result to user
-            return f"Restaurant '{restaurantName}' by '{username}' deleted successfully!", 200
+             #change to delete success page 
+             return redirect(url_for('deleteSuccess', restaurantName=restaurantName))
         else:
-            return f"Restaurant '{restaurantName}' by '{username}' not found / could not be deleted", 404
+             #change to not delete success page 
+            return redirect(url_for('deleteFail', restaurantName=restaurantName))
+    @app.route('/deleteSuccess')
+    def deleteSuccess():
+        restaurantName = request.args.get('restaurantName')
+        return render_template('delete_success.html', restaurantName=restaurantName)
+
+    @app.route('/deleteFail')
+    def deleteFail():
+        restaurantName = request.args.get('restaurantName')
+        return render_template('delete_fail.html', restaurantName=restaurantName)
     
     app.debug = True
     return app
+
+    
 
 #run
 if __name__ == '__main__':
