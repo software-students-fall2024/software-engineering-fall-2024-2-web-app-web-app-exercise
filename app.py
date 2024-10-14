@@ -113,13 +113,29 @@ def create_app():
     def create_project():
         if request.method == 'POST':
             project_name = request.form['project_name']
-            # project_description = request.form['project_description']
+            project_description = request.form['project_description']
             project_members = request.form['project_members'].split(",")
-            project_collection.insert_one({'projectName': project_name, 'managers': ["Terry"], 'members': project_members, 'tasks': []})
-            flash("Project created!", "success")
-            return redirect(url_for('main'))
+            project_manager = "Terry" 
+            start_date = request.form.get('start_date', '')
+            due_date = request.form.get('due_date', '')
+        
+            # Save the project into MongoDB
+            project_collection.insert_one({
+                'projectName': project_name,
+                'description': project_description,
+                'managers': [project_manager],
+                'members': project_members,
+                'start_date': start_date,
+                'due_date': due_date,
+                'tasks': []
+            })
+            
+            flash("Project created successfully!", "success")
+            return redirect(url_for('home'))
+
         return render_template("create_project.html")
-    
+
+
     return app 
 
 if __name__ == "__main__":
