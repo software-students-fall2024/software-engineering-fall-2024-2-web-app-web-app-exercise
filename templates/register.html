@@ -1,24 +1,27 @@
-{% extends 'base.html' %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="/register" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" placeholder="ex. myUsername" id="username" minlength="6" required>
+            <label for="password1">Password:</label>
+            <input type="password" name="password1" placeholder="ex. 12345678" id="password1" minlength="8" required>
+            <label for="password2">Confirm password:</label>
+            <input type="password" name="password2" placeholder="ex. 12345678" id="password2" minlength="8" required>
+            <input type="submit" value="Register" id="register">
+        </form>
 
-{% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-{% endblock %}
+        <p id="errorMessage" style="color: red;"></p>
+        <script>
+            const message = {{ message|tojson }};
+            if (message) {
+                document.getElementById('errorMessage').innerText = message;
+            }
+        </script>
 
-{% block container %}
-    <form action="/register" method="POST">
-        <input type="text" name="username" placeholder="Enter username" id="username" minlength="6" required>
-        <input type="password" name="password1" placeholder="Enter password" id="password1" minlength="8" required>
-        <input type="password" name="password2" placeholder="Confirm password" id="password2" minlength="8" required>
-        <input type="submit" value="Register" id="register">
-    </form>
-
-    <p id="errorMessage" style="color: red;"></p>
-    <script>
-        const message = {{ message|tojson }};
-        if (message) {
-            document.getElementById('errorMessage').innerText = message;
-        }
-    </script>
-
-    <a href="/login" id="login">Log in</a>
-{% endblock %}
+        <a href="/login" id="login">Log in</a>
+    </body>
+</html>

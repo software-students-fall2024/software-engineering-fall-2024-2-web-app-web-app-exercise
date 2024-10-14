@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pymongo
 from bson.objectid import ObjectId
 import os
@@ -10,6 +10,8 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    
+    app.secret_key = "1Aaoo6C4ghz4aGTRqZV5AA3wzQ0cRjkv"
     
     db_uri = os.getenv("DB_URI")
     # Create a new client and connect to the server
@@ -24,6 +26,14 @@ def create_app():
         print("MongoDB connection error:", e)
     
     
+    def login_required(f):
+        def wrapper(*args, **kwargs):
+            if not session.get('logged_in'):
+                return redirect(url_for('login'))
+            return f(*args, **kwargs)
+        wrapper.__name__ = f.__name__ 
+        return wrapper
+    
     @app.route("/login", methods=["GET", "POST"])
     def login():
         usersDB = db['users']
@@ -36,6 +46,7 @@ def create_app():
             user = usersDB.find_one({"username": username})
 
             if user and password == user['password']:
+                session['logged_in'] = True
                 return redirect(url_for("home"))
             else:
                 return render_template("login.html", message="Invalid credentials.")
@@ -68,16 +79,18 @@ def create_app():
                 else:
                     return render_template("register.html", message="Passwords don't match.")
         # Render the register page for GET requests
-        return render_template("register.html")
+        return render_template("register.html", message="")
 
 
     @app.route("/home")
+    @login_required
     def home():
         books = db.books.find({}, {"title": 1, "quantity": 1})
         book_lst = list(books)
         return render_template('home.html', books=book_lst)
         
     @app.route("/search")
+    @login_required
     def search():
         """
         Search function to filter books based on title, author, genre, or date added.
@@ -121,6 +134,7 @@ def create_app():
         return render_template('search.html', books=results)
     
     @app.route("/delete/<book_id>", methods=["POST"])
+    @login_required
     def delete(book_id):
         """
         Route for POST requests to the delete page.
@@ -134,6 +148,7 @@ def create_app():
         return redirect(url_for("home"))
     
     @app.route("/add", methods=["POST"])
+    @login_required
     def add():
         title = request.form.get('title')
         author = request.form.get('author')
@@ -165,11 +180,13 @@ def create_app():
         return redirect(url_for("home"))
 
     @app.route("/book_detail/<book_id>", methods=["GET"])
+    @login_required
     def book_detail(book_id):
         book = db.books.find_one({"_id": ObjectId(book_id)})
         return render_template('book_detail.html', book=book)
     
     @app.route("/edit_price/<book_id>", methods=["POST"])
+    @login_required
     def edit_price(book_id):
         price = request.form.get('price')
         try:
@@ -186,6 +203,7 @@ def create_app():
         return redirect(url_for("book_detail", book_id=book_id))
     
     @app.route("/edit_quantity/<book_id>", methods=["POST"])
+    @login_required
     def edit_quantity(book_id):
         quantity = request.form.get('quantity')
         try:
@@ -202,6 +220,7 @@ def create_app():
         return redirect(url_for("book_detail", book_id=book_id))
     
     @app.route("/edit_title/<book_id>", methods=["POST"])
+    @login_required
     def edit_title(book_id):
         title = request.form.get('title')
         if not title:
@@ -222,6 +241,7 @@ def create_app():
         return redirect(url_for("book_detail", book_id=book_id))
     
     @app.route("/edit_genre/<book_id>", methods=["POST"])
+    @login_required
     def edit_genre(book_id):    
         genre = request.form.get('genre')
         if not genre:
@@ -233,7 +253,11 @@ def create_app():
 
     return app
             
-    
+    @app.route('/logout')
+    def logout():
+        session.pop('logged_in', None)
+        return redirect(url_for('login'))
+
 
 
 if __name__ == "__main__":
