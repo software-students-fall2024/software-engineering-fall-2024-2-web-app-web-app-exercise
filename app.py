@@ -33,19 +33,10 @@ def create_app():
     except Exception as e:
         print(f"Hello, Flask! MongoDB connection failed: {e}")
     
-    #df = pd.read_csv('uscities.csv')
-    #df_selected = df[["city","state_id"]]
-    #df_selected.to_csv('uscities.csv',index=False);
-    
     # handle the CSV file
     def load_cities():
         df = pd.read_csv('uscities.csv')
         return df.to_dict(orient='records')
-    
-    #@app.route('/cities')
-    #def cities():
-        #city_list = load_cities()
-        #return jsonify(city_list)
     
     # User class for Flask-login
     class User(UserMixin):
@@ -149,7 +140,7 @@ def create_app():
             #"$exists": True  # Field exists
             }, "user_id": current_user.id
         }
-        docs = db.records.find(query).sort("time",1)#{"user_id": current_user.id,})
+        docs = db.records.find(query).sort("time",1)
         return_to = request.args.get('return_to','home')
         return render_template("index.html",docs=docs,return_to=return_to)
     
@@ -321,11 +312,10 @@ def create_app():
             print("stage is empty")
             flash("Please choose the stage.")
             return edit(record_id)
-            #return render_template("edit.html", doc=doc_flash,locations=formatted_locations,return_to=return_to)
+            
         elif stage in ['Job Opening','Phone/Video Screening Interview', 'Online Assessment', 'Interview', 'Job Offer'] and time and time.strip() and validate_date(time)== False:  # Check if time is not empty
             flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
             return edit(record_id)
-            #return render_template("edit.html", doc=doc_flash,locations=formatted_locations,return_to=return_to)
         doc = {
             "job_title": " ".join(job_title.split()).strip(),
             "company": " ".join(company.split()).strip(),
