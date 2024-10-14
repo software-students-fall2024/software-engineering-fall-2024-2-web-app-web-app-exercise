@@ -42,12 +42,12 @@ A little exercise to build a web application following an agile development proc
     └── food_db.py
 ```
 
-### Idea of User structure (db["usr"] collection)
+### Idea of User structure (db["usr"] collection) - updated in 10/13/2024, test day on Sat
 ```json
 [
     {
         "_id": {
-            "$oid": "670b2aecf9876218e79cbee3"
+            "$oid": "670c941221e2684be29679f6"
         },
         "user_name": "imyhalex",
         "password": "imyhalex",
@@ -55,71 +55,71 @@ A little exercise to build a web application following an agile development proc
         "weekly_values": [
             {
                 "weekly_weight": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    133
                 ],
                 "weekly_calorie": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    105.9
                 ],
                 "weekly_bmi": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    20.8
+                ],
+                "weekly_protein": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.5
+                ],
+                "weekly_carbs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    28.1
+                ],
+                "weekly_fats": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.3
+                ],
+                "weekly_sugar": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    20.6
                 ]
             }
         ],
-        "daily_workout_plan": [
-            {
-            "name": "barbell wrist curl v. 2",
-            "setNum": 2,
-            "gif_path": "images/barbell_wrist_curl_v_2.gif",
-            "target_muscle": "forearms",
-            "timer": 
-                {
-                    "duration": 0,
-                    "status": "stopped"
-                }
-            },
-            {
-            "name": "seated side crunch (wall)",
-            "setNum": 4,
-            "gif_path": "images/seated_side_crunch_wall.gif",
-            "target_muscle": "abs",
-            "timer": 
-                {
-                    "duration": 0,
-                    "status": "stopped"
-                }
-            }
-        ],
-        "weekly_values": {
-            "0": {
-                "weekly_bmi": {
-                    "6": null
-                },
-                "weekly_calorie": {
-                    "6": null
-                },
-                "weekly_weight": {
-                    "6": null
-                }
-            }
-        }
+        "daily_workout_plan": []
     },
     {
         ...
