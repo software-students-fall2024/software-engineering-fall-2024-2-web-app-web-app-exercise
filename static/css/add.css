@@ -1,5 +1,6 @@
 /* add.css */
 
+
 .required {
     color: red;
 }
@@ -45,7 +46,7 @@ input[type="text"] {
 }
 
 input[type="submit"] {
-    background-color: #007BFF;
+    background-color: purple;
     color: white;
     border: none;
     padding: 0.75rem;
@@ -54,6 +55,7 @@ input[type="submit"] {
     font-size: 1rem;
 }
 
+
 input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: darkmagenta;
 }
