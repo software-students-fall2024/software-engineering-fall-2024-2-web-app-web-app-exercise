@@ -193,28 +193,32 @@ def create_app():
             "quantity": quantity,
             "date_added": date_added
         }
-        result = db.books.insert_one(nbook)
+        userdb = session['username']
+        result = db.userdb.insert_one(nbook)
         book_id = result.inserted_id
         return redirect(url_for("home"))
 
     @app.route("/book_detail/<book_id>", methods=["GET"])
     @login_required
     def book_detail(book_id):
-        book = db.books.find_one({"_id": ObjectId(book_id)})
+        userdb = session['username']
+        book = db.userdb.find_one({"_id": ObjectId(book_id)})
         return render_template('book_detail.html', book=book)
     
     @app.route("/edit_price/<book_id>", methods=["POST"])
     @login_required
     def edit_price(book_id):
         price = request.form.get('price')
+        inputDict = {"price": price}
         try:
             price = float(price)
         except ValueError:
-            return "Price must be numbers.", 400
+            return render_template("edit.html", message="Price must be a number.", userInput=inputDict)
         if price <= 0:
-            return "Price must be a positive value.", 400
+            return render_template("edit.html", message="Price must be a positive value.", userInput=inputDict)
 
-        db.books.update_one(
+        userdb = session['username']
+        db.userdb.update_one(
         {"_id": ObjectId(book_id)}, 
         {"$set": {"price": price}} )  
 
@@ -224,14 +228,17 @@ def create_app():
     @login_required
     def edit_quantity(book_id):
         quantity = request.form.get('quantity')
+        inputDict = {"quantity": quantity}
         try:
             quantity = int(quantity)
         except ValueError:
-            return "Quantity must be numbers.", 400
+            return render_template("edit.html", message="Quantity must be a number.", userInput=inputDict)
         if quantity <= 0:
-            return "Quantity must be a positive value.", 400
+            return render_template("edit.html", message="Quantity must be a positive value.", userInput=inputDict)
+
         
-        db.books.update_one(
+        userdb = session['username']
+        db.userdb.update_one(
         {"_id": ObjectId(book_id)},
         {"$set": {"quantity": quantity}})
 
@@ -241,19 +248,23 @@ def create_app():
     @login_required
     def edit_title(book_id):
         title = request.form.get('title')
+        inputDict = {"title": title}
         if not title:
-            return "Title cannot be empty.", 400
-        db.books.update_one(
+            return render_template("edit.html", message="Title cannot be empty.", userInput=inputDict)
+        userdb = session['username']
+        db.userdb.update_one(
             {"_id": ObjectId(book_id)},
             {"$set": {"title": title}} )
         
         return redirect(url_for("book_detail", book_id=book_id))
 
     def edit_author(book_id):
-        author = request.form.get('author')
+        author = request.form.get('author') 
+        inputDict = {"author": author}
         if not author:
-            return "Author cannot be empty.", 400
-        db.books.update_one(
+            return render_template("edit.html", message="Author cannot be empty.", userInput=inputDict)
+        userdb = session['username']
+        db.userdb.update_one(
             {"_id": ObjectId(book_id)}, 
             {"$set": {"author": author}})
         return redirect(url_for("book_detail", book_id=book_id))
@@ -262,9 +273,11 @@ def create_app():
     @login_required
     def edit_genre(book_id):    
         genre = request.form.get('genre')
+        inputDict = {"genre": genre}
         if not genre:
-            return "Genre cannot be empty.", 400
-        db.books.update_one(
+            return render_template("edit.html", message="Genre cannot be empty.", userInput=inputDict)
+        userdb = session['username']
+        db.userdb.update_one(
             {"_id": ObjectId(book_id)},
             {"$set": {"genre": genre}})
         return redirect(url_for("book_detail", book_id=book_id))
