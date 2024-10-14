@@ -17,7 +17,11 @@ def get_todo(username: str):
     return []
 
 
-def update_todo(username: str, new_todo):
+def delete_todo(exercise_id: int):
+    return
+
+
+def add_todo(exercise: str):
     return
 
 
@@ -101,14 +105,8 @@ def delete_exercise():
 @app.route('/delete_exercise/<int:exercise_id>', methods=['POST'])
 def delete_exercise_id(exercise_id):
     username = session['user']['username']
-    exercises = get_todo(username)
 
-    new_todo = []
-    for i in exercises:
-        if i['id'] != exercise_id:
-            new_todo.append(i)
-
-    update_todo(username, new_todo)
+    delete_todo(exercise_id)
     flash('Delete successfully.')
     return redirect(url_for('delete_exercise'))
 
