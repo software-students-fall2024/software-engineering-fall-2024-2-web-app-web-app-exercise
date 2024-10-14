@@ -59,7 +59,7 @@ To run the software, follow these steps:
      MONGO_URI=mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2
      FLASK_APP=app.py
      FLASK_ENV=development
-     FLASK_PORT=5000
+     FLASK_PORT=3000
      ```
 
 6. **Run the application**:
