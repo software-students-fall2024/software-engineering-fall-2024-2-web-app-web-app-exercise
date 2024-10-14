@@ -1,1 +1,58 @@
 /* Specific info page */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+p {
+    color: #555;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+footer nav a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 1rem;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons for Edit and Delete */
+footer nav a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid #007BFF;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+footer nav a:hover {
+    background-color: darkmagenta;
+    color: white;
+}
