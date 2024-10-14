@@ -113,7 +113,7 @@ def add_exercise(exercise_id):
         return jsonify({'message': 'Failed to add'}), 400
 
 
-@app.route('/edit', methods=['GET', 'POST'])
+@app.route('/edit/<int:exercise_todo_id>', methods=['GET', 'POST'])
 def edit():
     exercise_todo_id = request.args.get('exercise_todo_id')
     exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
