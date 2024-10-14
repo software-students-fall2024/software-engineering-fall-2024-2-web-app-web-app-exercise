@@ -2,10 +2,6 @@
 {% block container %}
 <form class="form" action="{{ url_for('edit', post_id=restaurant._id) }}" method="post" onsubmit="submitForm(event)">
     <div class="labeled-input">
-        <label>Username</label>
-        <input type="text" id="username" name="username" value="{{ restaurant.username }}" placeholder="Username">
-    </div>
-    <div class="labeled-input">
         <label>Restaurant Name</label>
         <input type="text" id="restaurantName" name="restaurantName" value="{{ restaurant.restaurantName }}" placeholder="Restaurant Name">
     </div>

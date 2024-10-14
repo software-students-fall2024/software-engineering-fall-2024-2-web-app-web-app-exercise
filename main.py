@@ -136,12 +136,37 @@ def create_app():
     def delete():
         return render_template('delete.html')
 
-    #Edit data route
+    #Edit data route (get)
     @app.route("/edit/<post_id>")
     @login_required
     def edit(post_id):
         restaurant=db.RestaurantData.find_one({"_id": ObjectId(post_id)})
         return render_template('edit.html', restaurant=restaurant)
+    
+    #Edit data route (post)
+    @app.route("/edit/<post_id>", methods=["POST"])
+    def edit_post(post_id):
+        restaurant=db.RestaurantData.find_one({"_id": ObjectId(post_id)})
+
+        restaurantData = {
+            'username': current_user.username,
+            'restaurantName': request.form['restaurantName'],
+            'cuisine': request.form['cuisine'],
+            'location': request.form['location'],
+            'review': request.form['review']
+        }
+
+        result = db.RestaurantData.update_one({"_id": ObjectId(post_id), "username": current_user.username}, {"$set": restaurantData})
+
+        if (result.matched_count != 1):
+            return redirect(url_for('editFail', restaurantName=restaurant['restaurantName']))
+
+        return redirect(url_for('home'))
+    
+    @app.route('/editFail')
+    def editFail():
+        restaurantName = request.args.get('restaurantName')
+        return render_template('edit_fail.html', restaurantName=restaurantName)
 
     #Search data route
     @app.route('/search', methods=['GET'])
