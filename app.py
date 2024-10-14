@@ -52,9 +52,14 @@ def create_app():
     @app.route("/main")
     def home():
         global username
+    
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
+        
+        global projects_as_manager, projects_as_member
+        projects_as_manager = project_collection.find({'managers': username})
+        projects_as_member = project_collection.find({'members': username})
         
         # no matching projects
         if (projects_as_manager == None and projects_as_member == None):
