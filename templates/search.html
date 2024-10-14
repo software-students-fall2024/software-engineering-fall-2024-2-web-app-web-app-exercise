@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link
+          rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}"
+        />
+      </head>
+    <body>
+        <form method="POST" action="{{ url_for('post_search') }}">
+            <input type="text" name="user">Search for a friend to view their profile
+            <input type="submit" value="Save" />
+        </form>
+    </body>
+</html>

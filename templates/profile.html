@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ user }}'s Profile{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>{{ user }}'s TuneTasks</h1>
+        
+        {% if collection %}
+            {% for tunetask in collection %}
+            <section class="tunetask">
+                <article>
+                    <h2>{{ tunetask['title'] }}</h2>
+                    
+                    <h3>Task List</h3>
+                    {% if tunetask['task_list'] %}
+                        <ul>
+                            {% for task in tunetask['task_list'] %}
+                            <li>{{ task }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No tasks in this list.</p>
+                    {% endif %}
+                    
+                    <h3>Playlist</h3>
+                    {% if tunetask['play_list'] %}
+                        <ul>
+                            {% for song in tunetask['play_list'] %}
+                            <li>{{ song }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No songs in this playlist.</p>
+                    {% endif %}
+                </article>
+            </section>
+            {% endfor %}
+        {% else %}
+            <p>No TuneTasks found for {{ user }}. Create your first TuneTask!</p>
+        {% endif %}
+    </section>
+{% endblock %}
