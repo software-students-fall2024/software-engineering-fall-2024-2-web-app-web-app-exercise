@@ -1,23 +1,42 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
-
-<h1>Create Project</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Create Project</title>
+</head>
 <body>
-    <form action="/create_project" method="post">
+    <div class="status-bar">
+        <span>Time</span>
+        <span>Battery</span>
+    </div>
+
+    <header>
+    <h1>Create Project</h1>
+    </header>
+    
+    <form class="project-form">
+        <input type="text" placeholder="Your project name">
+        <textarea placeholder="Write your description here..."></textarea>
+
+        <label>Quick Action</label>
         <div>
-            <label for="projectName">Project Name</label>
-            <input type="text" id="projectName" name="project_name" required>
+            <input type="radio" name="action" id="add-to-do">
+            <label for="add-to-do">Add to-do list</label>
         </div>
         <div>
-            <label for="description">Write Description</label>
-            <textarea id="description" name="project_description" rows="3" required></textarea>
+            <input type="radio" name="action" id="add-members">
+            <label for="add-members">Members</label>
         </div>
-        <div>
-            <label for="teamMembers">Add Team Members</label>
-            <input type="text"  id="teamMembers" name="project_members" required>
-        </div>
-        <button type="submit" >Create</button>
+
+        <input type="text" placeholder="Start date...">
+        <input type="text" placeholder="Due date...">
+        <input type="text" placeholder="Members...">
+
+        <button type="submit">Create Project</button>
     </form>
+
 </body>
 </html>
