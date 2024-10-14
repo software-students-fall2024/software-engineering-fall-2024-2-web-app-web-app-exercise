@@ -28,6 +28,12 @@
             <div class="signup">
                 <p>Don't have an account? <a href="{{ url_for('register') }}">Sign Up</a></p>
             </div>
+            
+            {% if err is defined %}
+            <div class="loginErr">
+                <p>{{err}}</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 </body>
