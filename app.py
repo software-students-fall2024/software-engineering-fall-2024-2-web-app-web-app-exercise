@@ -452,11 +452,11 @@ def get_nutrition_values():
     # Ensure "weekly_values" contains the correct keys
     values = user.get("weekly_values", [{}])[0]
     return jsonify({
-        "calories": values.get("weekly_calorie", [0] * 7)[current_day_index] or 0
-        , "protein": values.get("weekly_protein", [0] * 7)[current_day_index] or 0
-        , "carbs": values.get("weekly_carbs", [0] * 7)[current_day_index] or 0
-        , "fats": values.get("weekly_fats", [0] * 7)[current_day_index] or 0
-        , "sugar": values.get("weekly_sugar", [0] * 7)[current_day_index] or 0
+        "calories": round(values.get("weekly_calorie", [0] * 7)[current_day_index] or 0, 1),
+        "protein": round(values.get("weekly_protein", [0] * 7)[current_day_index] or 0, 1),
+        "carbs": round(values.get("weekly_carbs", [0] * 7)[current_day_index] or 0, 1),
+        "fats": round(values.get("weekly_fats", [0] * 7)[current_day_index] or 0, 1),
+        "sugar": round(values.get("weekly_sugar", [0] * 7)[current_day_index] or 0, 1)
     })
 
 # enpoint for updating the value from bmi calculater in index

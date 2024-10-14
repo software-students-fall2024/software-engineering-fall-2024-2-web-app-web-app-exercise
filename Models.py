@@ -260,12 +260,13 @@ class Nutrition:
 
         # Update fields with new values
         update_fields = {
-            f"weekly_values.0.weekly_calorie.{current_day_index}": current_calories + nutrition_info[0].get("calories", 0),
-            f"weekly_values.0.weekly_protein.{current_day_index}": current_protein + nutrition_info[0].get("protein_g", 0),
-            f"weekly_values.0.weekly_carbs.{current_day_index}": current_carbs + nutrition_info[0].get("carbohydrates_total_g", 0),
-            f"weekly_values.0.weekly_fats.{current_day_index}": current_fats + nutrition_info[0].get("fat_total_g", 0),
-            f"weekly_values.0.weekly_sugar.{current_day_index}": current_sugar + nutrition_info[0].get("sugar_g", 0)
+            f"weekly_values.0.weekly_calorie.{current_day_index}": round(current_calories + nutrition_info[0].get("calories", 0), 1),
+            f"weekly_values.0.weekly_protein.{current_day_index}": round(current_protein + nutrition_info[0].get("protein_g", 0), 1),
+            f"weekly_values.0.weekly_carbs.{current_day_index}": round(current_carbs + nutrition_info[0].get("carbohydrates_total_g", 0), 1),
+            f"weekly_values.0.weekly_fats.{current_day_index}": round(current_fats + nutrition_info[0].get("fat_total_g", 0), 1),
+            f"weekly_values.0.weekly_sugar.{current_day_index}": round(current_sugar + nutrition_info[0].get("sugar_g", 0), 1)
         }
+
 
         # Update in the database
         self.__collection.update_one({"user_name": user_name}, {"$set": update_fields}, upsert=True)
