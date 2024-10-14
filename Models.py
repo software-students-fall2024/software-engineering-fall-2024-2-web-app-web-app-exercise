@@ -17,7 +17,7 @@ class User:
         new_user = {
             "user_name": user_name
             , "password": password
-            , "height": None
+            , "height": {"feet": 0, "inches": 0}
             , "weekly_values": [
                 {
                     "weekly_weight": [0] * 7

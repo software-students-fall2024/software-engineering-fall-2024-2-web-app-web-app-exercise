@@ -51,7 +51,10 @@ A little exercise to build a web application following an agile development proc
         },
         "user_name": "imyhalex",
         "password": "imyhalex",
-        "height": null,
+        "height": {
+            "feet": 5,
+            "inches": 7
+        },
         "weekly_values": [
             {
                 "weekly_weight": [
