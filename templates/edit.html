@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises Page</title>
+    <link rel="stylesheet" href="../css/alex.css">
+</head>
+<body>
+    <div class="exercise-container">
+        <header class="header-container">
+            <button class="back-btn">Back</button>
+            <h1 class="exercise-title">Exercise</h1>
+            <!-- <input type="text" placeholder="Search Exercises" class="search-box"> -->
+        </header>
+
+        <div class="exercise-image">
+            <img src="images/exercise-image.jpg" alt="Exercise Illustration">
+        </div>
+
+        <section class="exercise-description">
+            <p style="text-align: center;"><strong>[Exercise Name]</strong></p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad. <a href="instructions.html">More Instruction</a>
+            </p>  
+        </section>
+
+        <!-- <a href="/add_exercise/{{ exercise_id }}" class="add-todo-btn">Add to My ToDo List</a> -->
+
+        <button class="add-todo-btn">Add to My ToDo List</button>
+
+        <form method="POST" action="/edit?exercise_todo_id={{exercise_todo_id}}">
+            <div class="exercise-data">
+                <div class="exercise-time">
+                    <label for="timer">Timer:</label>
+                    <input type="text" id="minutes" placeholder="Min" style="display: inline-block; width: 50px;">
+                    <input type="text" id="seconds" placeholder="Sec" style="display: inline-block; width: 50px;">
+                </div>
+
+                <label for="reps">Reps/Group:</label>
+                <input type="text" id="reps" placeholder="_">
+
+                <label for="weight">Weight:</label>
+                <input type="text" id="weight" placeholder="_ Kg">
+
+                <div class="exercise-save">
+                    <button class="exercise-save-btn">Save</button>
+                </div>
+            </div>
+        </form>
+
+        <footer>
+            <p>All rights reserved. <a href="#">Privacy policy</a></p>
+        </footer>
+    </div>
+</body>
+</html>
