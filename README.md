@@ -4,11 +4,11 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+A mobile-friendly web application that helps users manage their budget by tracking, searching, and organizing their spending through transaction records and balance views.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[Link to User Stories in the Issues Page](https://github.com/software-students-fall2024/2-web-app-webstars/issues)
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,6 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Task Board](https://github.com/orgs/software-students-fall2024/projects/7)
+
+

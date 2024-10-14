@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+            <i class="bx bx-menu" id="menu-icon"></i>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('account') }}">Account</a></li> 
+                <li><a href="{{ url_for('index') }}">Home</a></li> 
+                <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
+                <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
+                <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
+                <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
+            </ul>
+    </header>
+    
+    <div class="container">
+        {% if name %}
+            <h1>Hi, {{ name }}, this is your Personal Budget Tracker</h1>
+        {% else %}
+            <h1>Personal Budget Tracker</h1>
+        {% endif %}
+        <h2>Financial Overview</h2>
+        <div class="summary">
+            <div class="budget">
+                <h3>Current Balance: ${{ balance }}</h3>
+            </div>
+            <p>Spending Budget for the Month: ${{ spending_budget }}</p>
+            <p>Spending Budget Left for the Month: ${{ budget_left }}</p>
+        </div>
+    </div>
+    
+</body>
+</html>
