@@ -353,6 +353,13 @@ def create_app():
         locations = load_cities()
         formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
         return render_template("search.html",locations=formatted_locations)
+    
+    job_title_global = ""
+    company_name_global = ""
+    location_name_global = ""
+    stage_global = ""
+    ddl_date_global = ""
+    
     @app.route("/search_post",methods=["POST"])
     def search_post():
         """
@@ -361,41 +368,50 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        job_title = request.form["job_title"]
-        company_name = request.form["company"]
-        location_name = request.form["location"]
-        stage = request.form["stage"]
-        ddl_date = request.form["time"]
+        global job_title_global,company_name_global,location_name_global,stage_global,ddl_date_global
+        job_title_global = request.form["job_title"]
+        company_name_global = request.form["company"]
+        location_name_global = request.form["location"]
+        stage_global = request.form["stage"]
+        ddl_date_global = request.form["time"]
 
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
-        if job_title and job_title.strip():  # Check if job is not empty
-            search_criteria['job_title'] = {"$regex": f"^{' '.join(job_title.split()).strip()}$", "$options": "i"} #job_title
-        if company_name and company_name.strip():  # Check if company is not empty
-            search_criteria['company'] = {"$regex": f"^{' '.join(company_name.split()).strip()}$", "$options": "i"} #company_name
-        if location_name and location_name.strip():  # Check if location is not empty
-            search_criteria['location'] = location_name
-        if stage and stage.strip():  # Check if stage is not empty
-            search_criteria['stage'] = stage
-        if ddl_date and ddl_date.strip():  # Check if deadline is not empty
-            search_criteria['time'] = { "$lte": ddl_date }
-            if validate_date(ddl_date)== False:
+        if job_title_global and job_title_global.strip():  # Check if job is not empty
+            search_criteria['job_title'] = {"$regex": f"^{' '.join(job_title_global.split()).strip()}$", "$options": "i"} #job_title
+        if company_name_global and company_name_global.strip():  # Check if company is not empty
+            search_criteria['company'] = {"$regex": f"^{' '.join(company_name_global.split()).strip()}$", "$options": "i"} #company_name
+        if location_name_global and location_name_global.strip():  # Check if location is not empty
+            search_criteria['location'] = location_name_global
+        if stage_global and stage_global.strip():  # Check if stage is not empty
+            search_criteria['stage'] = stage_global
+        if ddl_date_global and ddl_date_global.strip():  # Check if deadline is not empty
+            search_criteria['time'] = { "$lte": ddl_date_global }
+            if validate_date(ddl_date_global)== False:
             # Insert data into MongoDB
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
                 return search()
-        
-     #   docs = db.records.find({"job_title":job_title, "company":company_name})#
+        """
+        print("herehereherehere")
+        global job_title_global 
+        job_title_global = request.form["job_title"]
+        print("job title: "+job_title_global)
+        #company_name_global = request.form["company"]
+        docs = db.records.find({"job_title":job_title_global})
+        """
         docs = db.records.find(search_criteria)
         docs_list = list(docs)
         return_to = request.form.get('return_to','home')
         return render_template("result.html",docs=docs_list,count=len(docs_list),return_to=return_to)
+
     
     @app.route("/search_post",methods=["GET"])
     def search_post_get():
+        """
         job_title = request.args.get('job_title')
         company_name = request.args.get('company_name')
         location_name = request.args.get('location_name')
-
+        print(type(job_title))
         search_criteria = {}
         search_criteria["user_id"] = current_user.id
         if job_title and job_title.strip():
@@ -404,6 +420,23 @@ def create_app():
             search_criteria['company'] = company_name
         if location_name and location_name.strip():
             search_criteria['location'] = location_name
+        
+        docs = db.records.find(search_criteria)
+        """
+        global job_title_global,company_name_global,location_name_global,stage_global,ddl_date_global
+        print("herehereherehere", job_title_global, company_name_global)
+        search_criteria = {}
+        search_criteria["user_id"] = current_user.id
+        if job_title_global and job_title_global.strip():  # Check if job is not empty
+            search_criteria['job_title'] = {"$regex": f"^{' '.join(job_title_global.split()).strip()}$", "$options": "i"} #job_title
+        if company_name_global and company_name_global.strip():  # Check if company is not empty
+            search_criteria['company'] = {"$regex": f"^{' '.join(company_name_global.split()).strip()}$", "$options": "i"} #company_name
+        if location_name_global and location_name_global.strip():  # Check if location is not empty
+            search_criteria['location'] = location_name_global
+        if stage_global and stage_global.strip():  # Check if stage is not empty
+            search_criteria['stage'] = stage_global
+        if ddl_date_global and ddl_date_global.strip():  # Check if deadline is not empty
+            search_criteria['time'] = { "$lte": ddl_date_global }
         docs = db.records.find(search_criteria)
         docs_list = list(docs)
         return render_template("result.html",docs=docs_list,count=len(docs_list))
