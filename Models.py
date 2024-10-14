@@ -6,7 +6,6 @@ from datetime import datetime
 for any mongodb operators, this is the reference:
     https://www.mongodb.com/docs/manual/reference/operator
 """
-
 class User:
     def __init__(self, db):
         self.__collection = db['usr']
@@ -55,15 +54,24 @@ class User:
             , upsert=True
         )
     
-    def update_user_data(self, user_name, date, weight=None, calorie_intake=None):
+    # this method is for update the user's body data
+    def update_user_data(self, user_name, weight_pounds, height_feet, height_inches):
         current_day_index = datetime.now().weekday()
 
-        update_fields = {}
-        if weight is not None:
-            update_fields[f"weekly_values.0.weekly_weight.{current_day_index}"] = weight
+        user = self.find_user(user_name)
+        if user.get("height") is None:
+            # initialize height if it doesn't exist
+            self.__collection.update_one(
+                {"user_name": user_name}
+                , {"$set": {"height": {}}}
+            )
         
-        if calorie_intake is not None:
-            update_fields[f"weekly_values.0.weekly_calorie.{current_day_index}"] = calorie_intake
+        # prepare the update fields
+        update_fields = {
+            "height.feet": height_feet
+            , "height.inches": height_inches
+            , f"weekly_values.0.weekly_weight.{current_day_index}": weight_pounds
+        }
         
         self.__collection.update_one(
             {"user_name": user_name}
@@ -99,6 +107,10 @@ class User:
 
     def reset_body_values(self):
         # Resets only today's values
+        """
+        Resets today's values for weekly calorie, weight, BMI, protein, carbs, fats, and sugar to 0.
+        Height values are persisted.
+        """
         current_day_index = datetime.now().weekday()
         update_fields = {
             f"weekly_values.0.weekly_calorie.{current_day_index}": 0,
@@ -113,6 +125,10 @@ class User:
     
     # this method resets the entire week values to zero atht beginning of a new week
     def reset_weekly_values(self):
+        """
+        Resets all values for the entire week (weekly calories, weight, BMI, protein, carbs, fats, sugar) to 0.
+        This is useful for the end of each week.
+        """
         update_fields = {
             "weekly_values.0.weekly_weight": [0] * 7
             , "weekly_values.0.weekly_calorie": [0] * 7

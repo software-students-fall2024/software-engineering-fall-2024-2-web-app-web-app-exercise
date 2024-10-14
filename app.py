@@ -299,7 +299,6 @@ def reset_timer(workout_name):
 """-------------------------------------End of the page render functions------------------------------------------------"""
 
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
-
 # endpoint search exercise (workout instruction action) by name
 @app.route("/api/exercises/search", methods=["GET", "POST"])
 def search_exercise():
@@ -464,14 +463,20 @@ def update_body_values():
     if weight is None or height is None:
         return jsonify({"error": "Weight and height are required"}), 400
     
-    # extract height details
-    height_feet = height.feet("feet")
+    # Extract height details
+    height_feet = height.get("feet")
     height_inches = height.get("inches")
 
     if height_feet is None or height_inches is None:
         return jsonify({"error": "Both height feet and inches are required"}), 400
 
-    # use the calculate_bmi from the Nutrition() object
+    # Use the calculate_bmi from the User() object
+    bmi = user_service.calculate_bmi(user_name, weight, height_feet, height_inches)
+
+    # Update weight and height in the database
+    user_service.update_user_data(user_name, weight, height_feet, height_inches)
+
+    return jsonify({"message": "User body values updated successfully", "bmi": bmi}), 200
 """-----------------------------------------APScheduler--------------------------------------------------------------"""
 # APScheduler to implement the countdown timer
 def decrement_all_timers():
@@ -485,7 +490,7 @@ def reset_daily_nutrition():
 def reset_daily_values():
     user_service.reset_body_values()
 
-# APscheduler to reset weekly values (weekly nutrition and body values)
+# APScheduler to reset weekly values (weekly nutrition and body values)
 def reset_weekly_values():
     user_service.reset_weekly_values()
 
