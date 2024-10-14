@@ -6,21 +6,15 @@
     <body>
         <form action="/register" method="POST">
             <label for="username">Username:</label>
-            <input type="text" name="username" placeholder="ex. myUsername" id="username" minlength="6" required>
+            <input type="text" name="username" placeholder="e.g. myUsername" id="username" minlength="6" required>
             <label for="password1">Password:</label>
-            <input type="password" name="password1" placeholder="ex. 12345678" id="password1" minlength="8" required>
+            <input type="password" name="password1" placeholder="e.g. 12345678" id="password1" minlength="8" required>
             <label for="password2">Confirm password:</label>
-            <input type="password" name="password2" placeholder="ex. 12345678" id="password2" minlength="8" required>
+            <input type="password" name="password2" placeholder="e.g. 12345678" id="password2" minlength="8" required>
             <input type="submit" value="Register" id="register">
         </form>
 
-        <p id="errorMessage" style="color: red;"></p>
-        <script>
-            const msg = {{ message|tojson }};
-            if (msg) {
-                document.getElementById('errorMessage').innerText = msg;
-            }
-        </script>
+        <p id="errorMessage" style="color: red;"> {{ message }} </p>
 
         <a href="/login" id="login">Log in</a>
     </body>

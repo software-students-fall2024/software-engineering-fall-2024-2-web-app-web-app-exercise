@@ -8,17 +8,17 @@
     <h1>Add a Book</h1> 
     <form action="/add" method="POST">
         <label for="title">Book Title:</label>
-        <textarea name="title" placeholder="ex. The Great Gatsby" id="title" required>
+        <textarea name="title" placeholder="e.g. The Great Gatsby" id="title" required>{{ userInput.title }}</textarea>
         <label for="genre">Genre:</label>
-        <input type="text" name="genre" placeholder="ex. Fiction" id="genre" required>
+        <input type="text" name="genre" placeholder="e.g. Fiction" id="genre" required value={{ userInput.genre }}>
         <label for="price">Price:</label>
-        <input type="text" name="price" placeholder="ex. 9.99" id="price" required>
+        <input type="text" name="price" placeholder="e.g. 9.99" id="price" required value={{ userInput.price }}>
         <label for="author">Author:</label>
-        <textarea name="author" placeholder="ex. F. Scott Fitzgerald" id="author" required>
+        <textarea name="author" placeholder="e.g. F. Scott Fitzgerald" id="author" required>{{ userInput.author }}</textarea>
         <label for="quantity">Quantity:</label>
-        <textarea name="quantity" placeholder="ex. F. Scott Fitzgerald" id="author" required>
-        <input type="submit" value="Log In" id="login">
+        <input type="number" name="quantity" id="quantity" required value={{ userInput.quantity }}>
+        <input type="submit" value="Add" id="addButton">
     </form>
 
-    
+    <p id="errorMessage" style="color: red;"> {{ message }} </p>
 {% endblock %}

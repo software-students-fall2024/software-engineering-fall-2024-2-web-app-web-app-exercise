@@ -6,19 +6,13 @@
     <body>
         <form action="/login" method="POST">
             <label for="username">Username:</label>
-            <input type="text" name="username" placeholder="ex. myUsername" id="username" minlength="6" required>
+            <input type="text" name="username" placeholder="e.g. myUsername" id="username" minlength="6" required>
             <label for="password">Password:</label>
-            <input type="password" name="password" placeholder="ex. 12345678" id="password" minlength="8" required>
+            <input type="password" name="password" placeholder="e.g. 12345678" id="password" minlength="8" required>
             <input type="submit" value="Log In" id="login">
         </form>
 
-        <p id="errorMessage" style="color: red;"></p>
-        <script>
-            const message = "{{ message }}";
-            if (message) {
-                document.getElementById('errorMessage').innerText = message;
-            }
-        </script>
+        <p id="errorMessage" style="color: red;"> {{ message }} </p>
 
         <a href="/register" id="register">Register</a>
     </body>

@@ -50,7 +50,7 @@ def create_app():
             else:
                 return render_template("login.html", message="Invalid credentials.")
 
-        return render_template("login.html")
+        return render_template("login.html", message="")
     
     @app.route("/register", methods = ["GET", "POST"])
     def register():
@@ -144,25 +144,30 @@ def create_app():
         db.books.delete_one({"_id": ObjectId(book_id)})
         return redirect(url_for("home"))
     
-    @app.route("/add", methods=["POST"])
+    @app.route("/add", methods=["GET", "POST"])
     @login_required
     def add():
+        if request.method == "GET":
+            inputDict = {'title': "", 'author': "", 'genre': "", 'price': "", 'quantity': ""}
+            return render_template('add.html', message="", userInput=inputDict)
+        
         title = request.form.get('title')
         author = request.form.get('author')
         genre = request.form.get('genre')
         price = request.form.get('price')
         quantity = request.form.get('quantity')
         date_added = datetime.datetime.utcnow()
+        inputDict = {'title': title, 'author': author, 'genre': genre, 'price': price, 'quantity': quantity}
         if not title or not author or not genre or not price or not quantity:
-            return "All fields are required.", 400
+            return render_template("add.html", message="All fields are required.", userInput=inputDict)
         try:
             price = float(price)
             quantity = int(quantity)
         except ValueError:
-            return "Price and quantity must be numbers.", 400
+            return render_template("add.html", message="Price and quantity must be numbers.", userInput=inputDict)
         
-        if price <= 0 or quantity <= 0:
-            return "Price and quantity must be positive values.", 400
+        if price < 0 or quantity < 0:
+            return render_template("add.html", message="Price and quantity must be non-negative values.", userInput=inputDict)
 
         nbook = {
             "title": title,
