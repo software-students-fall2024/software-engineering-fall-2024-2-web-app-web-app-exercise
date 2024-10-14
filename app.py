@@ -73,6 +73,19 @@ def create_app():
                         "password": password1
                     }
                     usersDB.insert_one(user)
+                    
+                    db.create_collection(username)
+                    
+                    samplebook = {
+                        "title": "Lorem ipsum",
+                        "author": "Lorem ipsum",
+                        "genre": "Lorem ipsum",
+                        "price": "0",
+                        "quantity": 1,
+                        "date_added": datetime.datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+                    }
+                    
+                    db[username].insert_one(samplebook)
                     return redirect(url_for("login"))
                 else:
                     return render_template("register.html", message="Passwords don't match.")
@@ -89,7 +102,7 @@ def create_app():
     @login_required
     def home():
         user = session['username']
-        books = db.books.find({}, {"title": 1, "quantity": 1})
+        books = db[user].find({}, {"title": 1, "quantity": 1})
         book_lst = list(books)
         return render_template('home.html', user=user, books=book_lst)
         
@@ -140,7 +153,7 @@ def create_app():
                 msg = "Invalid price format. Please enter a valid number."
                 return render_template('search.html', message=msg, userInput=inputDict, books=[])
             
-        results = list(db.books.find(query)) if query else []
+        results = list(db[session['username']].find(query)) if query else []
         for book in results:
             book["date_added"] = book["date_added"].strftime("%Y-%m-%d")
         
@@ -157,7 +170,7 @@ def create_app():
         Returns:
             redirect (Response): A redirect response to the home page.
         """
-        db.books.delete_one({"_id": ObjectId(book_id)})
+        db[session['username']].delete_one({"_id": ObjectId(book_id)})
         return redirect(url_for("home"))
     
     @app.route("/add", methods=["GET", "POST"])
@@ -194,7 +207,7 @@ def create_app():
             "date_added": date_added
         }
         userdb = session['username']
-        result = db.userdb.insert_one(nbook)
+        result = db[userdb].insert_one(nbook)
         book_id = result.inserted_id
         return redirect(url_for("home"))
 
@@ -202,7 +215,7 @@ def create_app():
     @login_required
     def book_detail(book_id):
         userdb = session['username']
-        book = db.userdb.find_one({"_id": ObjectId(book_id)})
+        book = db[userdb].find_one({"_id": ObjectId(book_id)})
         return render_template('book_detail.html', book=book)
     
     @app.route("/edit_price/<book_id>", methods=["POST"])
@@ -218,7 +231,7 @@ def create_app():
             return render_template("edit.html", message="Price must be a positive value.", userInput=inputDict)
 
         userdb = session['username']
-        db.userdb.update_one(
+        db[userdb].update_one(
         {"_id": ObjectId(book_id)}, 
         {"$set": {"price": price}} )  
 
@@ -238,7 +251,7 @@ def create_app():
 
         
         userdb = session['username']
-        db.userdb.update_one(
+        db[userdb].update_one(
         {"_id": ObjectId(book_id)},
         {"$set": {"quantity": quantity}})
 
@@ -252,7 +265,7 @@ def create_app():
         if not title:
             return render_template("edit.html", message="Title cannot be empty.", userInput=inputDict)
         userdb = session['username']
-        db.userdb.update_one(
+        db[userdb].update_one(
             {"_id": ObjectId(book_id)},
             {"$set": {"title": title}} )
         
@@ -264,7 +277,7 @@ def create_app():
         if not author:
             return render_template("edit.html", message="Author cannot be empty.", userInput=inputDict)
         userdb = session['username']
-        db.userdb.update_one(
+        db[userdb].update_one(
             {"_id": ObjectId(book_id)}, 
             {"$set": {"author": author}})
         return redirect(url_for("book_detail", book_id=book_id))
@@ -277,7 +290,7 @@ def create_app():
         if not genre:
             return render_template("edit.html", message="Genre cannot be empty.", userInput=inputDict)
         userdb = session['username']
-        db.userdb.update_one(
+        db[userdb].update_one(
             {"_id": ObjectId(book_id)},
             {"$set": {"genre": genre}})
         return redirect(url_for("book_detail", book_id=book_id))
