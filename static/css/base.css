@@ -27,11 +27,17 @@
     color: black;
     font-weight: bold;
     text-decoration: none;
-    padding-right: 1rem;
     font-size: 1.25rem;
+
+    width: 2.5rem;
+    height: 2.5rem;
 }
 .signout-link > button:hover{
     text-decoration: underline;
+}
+.signout-link > button > img {
+    width: 100%;
+    height: 100%;
 }
 
 /* Components */
