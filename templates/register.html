@@ -16,9 +16,9 @@
 
         <p id="errorMessage" style="color: red;"></p>
         <script>
-            const message = {{ message|tojson }};
-            if (message) {
-                document.getElementById('errorMessage').innerText = message;
+            const msg = {{ message|tojson }};
+            if (msg) {
+                document.getElementById('errorMessage').innerText = msg;
             }
         </script>
 
