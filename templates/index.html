@@ -237,7 +237,6 @@
     
 </body>
 <footer>
-    <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
     {% if session.get('user_name') %}
         <div class="footer-box"><a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a></div>
         <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
