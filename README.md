@@ -35,7 +35,7 @@ A little exercise to build a web application following an agile development proc
 │   ├── food_instruction.html
 │   ├── index.html
 │   ├── my_weekly_report.html
-│   ├── script.js
+│   ├── script.js (this file should be moved to /static)
 │   └── workout_instruction.html
 └── utils
     ├── exercise_db.py
@@ -64,7 +64,7 @@ A little exercise to build a web application following an agile development proc
                     0,
                     0,
                     0,
-                    133
+                    133  // number added to here because test date was Sunday
                 ],
                 "weekly_calorie": [
                     0,
@@ -234,25 +234,30 @@ ___3. Start and make sure your mongodb is working in terminal(Linux/MacOS)___
 $ sudo systemctl start mongod
 $ sudo systemctl status mongod
 ```
+___4. Open the workspace, create a new virtual with the name `.venv`___
+```shell
+$ python3 -m venv .venv
+```
 
-___4. Open the workspace, ensure your `.env` contains your localhost databse and API keys___
+___5. Ensure your `.venv` and `.env` is included within the `.gitignore`___
+
+___6. Ensure your `.env` contains your localhost databse and API keys___
 ```text
 # MongoDB Configuration
 MONGO_URI=YOUR_MONGODB_URI
 
+# Api Key
 API_NINJAS_KEY=3/8OcZmswlIcnvOJgeDsig==wroCzK0qvIl8W7XM (copy this directly to the file)
 ```
-
-___5. In the terminal, enter these two command to seed the data respectively___
+___7. In the terminal, enter these two command to seed the data respectively___
 ```bash
 $ python utils/food_db.py
 $ python utils/exercise_db.py
 ```
-___6. Run the application___
+___8. Run the application___
 ```bash
 $ python app.py
 ```
-
 
 ## Task boards
 
