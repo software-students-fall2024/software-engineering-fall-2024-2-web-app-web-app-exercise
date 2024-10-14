@@ -21,21 +21,21 @@
         <p id="current-day">Date: Monday</p>
     </div>
     <div class="container p-5 mb-5 rounded bg-light shadow-sm">
-        <h2 class="content-in-box mb-4">Daily value: <span>0</span> / --cal</h2>
+        <h2 class="content-in-box mb-4">Daily value: <span id="calories-value">0</span> / --cal</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4 justify-content-center p-3">
             <div class="col">
-                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Protein</a>
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Protein: <span id="protein-value">0</span>g</a>
             </div>
             <div class="col">
-                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Carbs</a>
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Carbs: <span id="carbs-value">0</span>g</a>
             </div>
             <div class="col">
-                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Fats</a>
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Fats: <span id="fats-value">0</span>g</a>
             </div>
             <div class="col">
-                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Water</a>
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Sugar: <span id="sugar-value">0</span>g</a>
             </div>
-        </div>
+        </div>        
         <a class="text btn btn-link mt-4" href="{{ url_for('show_food_instruction') }}">Enter Your Intake Food</a>
     </div>
     
@@ -224,6 +224,25 @@
                     container.textContent = 'Unable to fetch timer status';
                 });
         }
+
+        function updateNutritionValues() {
+            fetch("/api/user/nutrition_values")
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById("calories-value").textContent = data.calories;
+                        document.getElementById("protein-value").textContent = data.protein;
+                        document.getElementById("carbs-value").textContent = data.carbs;
+                        document.getElementById("fats-value").textContent = data.fats;
+                        document.getElementById("sugar-value").textContent = data.sugar;
+                    }
+                })
+                .catch(error => console.error("Error fetching nutrition values:", error));
+        }
+        
+        // Update every 10 seconds or after food intake is added
+        setInterval(updateNutritionValues, 10000);
+        updateNutritionValues();
     </script>
         </div>
         {% else %}

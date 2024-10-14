@@ -183,7 +183,6 @@ def login_required(f):
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
-# marked - modified later
 @app.route("/food_instruction", methods=["GET", "POST"])
 def show_food_instruction():
     # Get distinct categories from the food collection
@@ -211,7 +210,6 @@ def show_food_instruction():
         selected_category=selected_category,
     )
 
-# marked - modified later
 @app.route("/search_food", methods=["POST"])
 def search_food():
     query = request.form.get("query", "")
@@ -233,6 +231,23 @@ def search_food():
     else:
         return redirect(url_for("show_food_instruction"))
 
+@app.route("/add_food/<food_id>", methods=["POST"])
+def add_food(food_id):
+    user_name = session.get('user_name')
+    if not user_name:
+        return jsonify({"error": "User not logged in"}), 401
+
+    data = request.get_json()
+    amount = round(float(data.get('amount')), 2)
+
+    # Fetch food details from database
+    food = nutrition_service.get_food_collection().find_one({"_id": ObjectId(food_id)})
+    if not food:
+        return jsonify({"error": "Food not found"}), 404
+
+    response, status_code = nutrition_service.add_food_intake(user_name, food["food_name"], amount)
+    return jsonify(response), status_code
+
 """some timer functionalities"""
 @app.route("/start_timer/<workout_name>", methods=["POST"])
 def start_timer(workout_name):
@@ -253,7 +268,6 @@ def reset_timer(workout_name):
     user_name = session.get("user_name")
     user_service.update_workout_timer(user_name, workout_name, 0, "stopped")
     return make_response("", 204)
-
 """-------------------------------------End of the page render functions------------------------------------------------"""
 
 
@@ -388,20 +402,27 @@ def update_user_data(user_name):
     user_service.update_user_data(user_name, date, weight, calorie_intake)
     return jsonify({"message": "User data updated successfully"}), 200
 
-# endpoint to add food intake for a user
-@app.route("/api/user/<user_name>/add_food", methods=["POST"])
-def add_food(user_name):
-    data = request.json
-    food_name = data.get("food_name")
-    amount = data.get("amount")
+@app.route("/api/user/nutrition_values", methods=["GET"])
+def get_nutrition_values():
+    user_name = session.get("user_name")
+    if not user_name:
+        return jsonify({"error": "User not logged in"}), 401
 
-    if not food_name or not amount:
-        return jsonify({"error": "Food name and amount are required"}), 400
+    user = user_service.find_user(user_name)
+    current_day_index = datetime.now().weekday()
 
-    response, status_code = nutrition_service.add_food_intake(user_name, food_name, amount)
-    return jsonify(response), status_code
+    if not user or "weekly_values" not in user:
+        return jsonify({"calories": 0, "protein": 0, "carbs": 0, "fats": 0, "sugar": 0})
 
-
+    # Ensure "weekly_values" contains the correct keys
+    values = user.get("weekly_values", [{}])[0]
+    return jsonify({
+        "calories": values.get("weekly_calorie", [0] * 7)[current_day_index] or 0
+        , "protein": values.get("weekly_protein", [0] * 7)[current_day_index] or 0
+        , "carbs": values.get("weekly_carbs", [0] * 7)[current_day_index] or 0
+        , "fats": values.get("weekly_fats", [0] * 7)[current_day_index] or 0
+        , "sugar": values.get("weekly_sugar", [0] * 7)[current_day_index] or 0
+    })
 """-----------------------------------------APScheduler--------------------------------------------------------------"""
 # APScheduler to implement the countdown timer
 def decrement_all_timers():

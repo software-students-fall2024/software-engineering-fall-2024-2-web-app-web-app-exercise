@@ -52,7 +52,7 @@ A little exercise to build a web application following an agile development proc
         "user_name": "imyhalex",
         "password": "imyhalex",
         "height": null,
-        "weely_values": [
+        "weekly_values": [
             {
                 "weekly_weight": [
                     null,

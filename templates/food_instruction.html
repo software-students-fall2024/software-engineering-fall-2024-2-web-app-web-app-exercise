@@ -55,6 +55,10 @@
                         <!-- No image since we don't have one -->
                         <div class="card-body">
                             <h5 class="card-title">{{ food.name }}</h5>
+                            <form action="{{ url_for('add_food', food_id=food.id) }}" method="POST" onsubmit="addFoodIntake(event, '{{ food.id }}')">
+                                <input type="number" name="amount" placeholder="Amount (grams)" min="1" required class="form-control mb-2">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
                         </div>
                     </div>
                 {% endfor %}
@@ -83,6 +87,33 @@
             form.appendChild(categoryInput);
             document.body.appendChild(form);
             form.submit();
+        }
+
+        function addFoodIntake(event, foodId) {
+            event.preventDefault();
+            const form = event.target;
+            const amount = form.querySelector('input[name="amount"]').value;
+
+            fetch(`/add_food/${foodId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ amount: amount })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert('Food added successfully!');
+                    // Optionally, you can also redirect or update the page.
+                } else {
+                    alert('Failed to add food.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding food.');
+            });
         }
     </script>
 

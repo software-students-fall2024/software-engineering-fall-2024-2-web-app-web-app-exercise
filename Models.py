@@ -22,11 +22,15 @@ class User:
             "user_name": user_name
             , "password": password
             , "height": None
-            , "weely_values": [
+            , "weekly_values": [
                 {
-                    "weekly_weight": [None] * 7
-                    , "weekly_calorie": [None] * 7
-                    , "weekly_bmi": [None] * 7                    
+                    "weekly_weight": [0] * 7
+                    , "weekly_calorie": [0] * 7
+                    , "weekly_bmi": [0] * 7   
+                    , "weekly_protein": [0] * 7
+                    , "weekly_carbs": [0] * 7
+                    , "weekly_fats": [0] * 7
+                    , "weekly_sugar": [0] * 7              
                 }
             ]
             , "daily_workout_plan": []
@@ -207,28 +211,35 @@ class Nutrition:
         if not food:
             return {"error": "Food not found in database"}, 404
 
-        query_name = food.get("query_name")    
-        # fetch food nutrtion info
-        nutrition_info = self.fetch_nutrition_info(f"{amount} {query_name}")
+        nutrition_info = self.fetch_nutrition_info(f"{amount}g {food['query_name']}")
         if not nutrition_info:
             return {"error": "Unable to fetch nutrition info"}, 500
-        
-        for n in nutrition_info:
-            self.__daily_calorie += n.get("calories", 0)
-            self.__daily_protein += n.get("protein_g", 0)
-            self.__daily_carbs += n.get("carbohydrates_total_g", 0)
-            self.__daily_fats += n.get("fat_total_g", 0)
-        
-        # update the user's weekly calorie data in the databse
-        current_day_index = datetime.now().weekday()
-        self.__collection.update_one(
-            {"user_name": user_name}
-            , {"$set": {f"weekly_values.0.weekly_calorie.{current_day_index}": self.__daily_calorie}}
-            , upsert=True
-        )
 
+        # Update daily values in user's profile
+        user = self.__collection.find_one({"user_name": user_name})
+        current_day_index = datetime.now().weekday()
+
+        # Get current values, if None, default to 0
+        weekly_values = user.get("weekly_values", [{}])[0]
+        current_calories = weekly_values.get("weekly_calorie", [0] * 7)[current_day_index] or 0
+        current_protein = weekly_values.get("weekly_protein", [0] * 7)[current_day_index] or 0
+        current_carbs = weekly_values.get("weekly_carbs", [0] * 7)[current_day_index] or 0
+        current_fats = weekly_values.get("weekly_fats", [0] * 7)[current_day_index] or 0
+        current_sugar = weekly_values.get("weekly_sugar", [0] * 7)[current_day_index] or 0
+
+        # Update fields with new values
+        update_fields = {
+            f"weekly_values.0.weekly_calorie.{current_day_index}": current_calories + nutrition_info[0].get("calories", 0),
+            f"weekly_values.0.weekly_protein.{current_day_index}": current_protein + nutrition_info[0].get("protein_g", 0),
+            f"weekly_values.0.weekly_carbs.{current_day_index}": current_carbs + nutrition_info[0].get("carbohydrates_total_g", 0),
+            f"weekly_values.0.weekly_fats.{current_day_index}": current_fats + nutrition_info[0].get("fat_total_g", 0),
+            f"weekly_values.0.weekly_sugar.{current_day_index}": current_sugar + nutrition_info[0].get("sugar_g", 0)
+        }
+
+        # Update in the database
+        self.__collection.update_one({"user_name": user_name}, {"$set": update_fields}, upsert=True)
         return {"message": "Food intake updated successfully"}, 200
-    
+
     def reset_daily_nutrition(self):
         self.__daily_calorie = 0
         self.__daily_protein = 0
