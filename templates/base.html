@@ -24,7 +24,7 @@
         <div class="navbar">
           <a href="{{ url_for('home')}}">Home</a>
           <a href="{{ url_for('create_project')}}">Project</a>
-          <a href="{{ url_for('home')}}">Profile</a>
+          <a href="{{ url_for('profile', username=username) }}">Profile</a>
         </div>
       </footer>
     </div>
