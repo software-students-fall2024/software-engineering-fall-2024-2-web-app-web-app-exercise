@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -48,7 +49,7 @@ def save_account():
 
     return redirect(url_for('home'))
 
-
+# Homepage route
 @app.route('/')
 def home():
     # Fetch budget data from the 'budgets' collection
@@ -87,7 +88,6 @@ def home():
         budget_left=budget_left,  # spending budget minus expenses
         name=name
     )
-
 
 # View all transactions
 @app.route('/transactions')
