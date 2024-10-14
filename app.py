@@ -40,12 +40,23 @@ def serve_image(filename):
 # index means home
 @app.route("/")
 def index():
+    # pre-fill the height input box
     user_name = session.get('user_name')
     if user_name:
-        daily_workout_plan = user_service.get_workout_plan(user_name)
+        user = user_service.find_user(user_name)
+        daily_workout_plan = user.get("daily_workout_plan", [])
+
+        # extract the height information if available
+        height = user.get("height", {"feet": 0, "inches": 0})
+        height_feet = height.get("feet", 0)
+        height_inches = height.get("inches", 0)
     else:
         daily_workout_plan = []
-    return render_template("index.html", daily_workout_plan=daily_workout_plan, user_name=user_name)
+        height_feet = 0
+        height_inches = 0
+
+    return render_template("index.html", daily_workout_plan=daily_workout_plan
+    , user_name=user_name, height_feet=height_feet, height_inches=height_inches)
 
 # return authentication page
 @app.route('/auth', methods=['GET'])

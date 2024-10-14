@@ -52,22 +52,23 @@
         
         <div class="form-row mb-3">
             <label for="height-feet">Enter your Height:</label>
-            <input type="number" id="height-feet" class="form-control d-inline w-25 mx-2" placeholder="ft" min="0">
+            <input type="number" id="height-feet" class="form-control d-inline w-25 mx-2" placeholder="ft" min="0" value="{{ height_feet }}">
             <span class="unit">ft</span>
-            <input type="number" id="height-inches" class="form-control d-inline w-25 mx-2" placeholder="in" min="0">
+            <input type="number" id="height-inches" class="form-control d-inline w-25 mx-2" placeholder="in" min="0" value="{{ height_inches }}">
             <span class="unit">in</span>
         </div>
-
+    
         <div class="form-row mb-3">
             <span class="equals">=</span>
             <input type="number" id="bmi" class="form-control d-inline w-25 mx-2" placeholder="BMI" readonly>
             <span class="unit">BMI</span>
         </div>
-
+    
         <div class="bmi-output mt-3">
             <button onclick="validateInputs()" class="btn btn-primary">Calculate BMI</button>
         </div>
     </div>
+    
 
     <div class="add-workout-container d-flex justify-content-center align-items-center mb-4">
         <div class="me-3">
