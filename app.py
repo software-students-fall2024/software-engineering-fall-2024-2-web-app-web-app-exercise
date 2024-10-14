@@ -129,6 +129,7 @@ def create_app():
     #       need to assign project manager
     @app.route('/create_project', methods=['GET', 'POST'])
     def create_project():
+        global username
         if request.method == 'POST':
             # Get managers and members as comma-separated strings from the form
             managers = request.form['managers'].split(',')
@@ -148,7 +149,7 @@ def create_app():
             # Insert the project into the database
             project_collection.insert_one(project_data)
             flash("Project created successfully!", "success")
-            return redirect(url_for('home'))
+            return redirect(url_for('home', username=username))
 
         return render_template('create_project.html')
     
@@ -159,10 +160,7 @@ def create_app():
         if not logged_in:
             return redirect(url_for('login'))
 
-        # Since you're not using session, retrieve the current username from the login process
-        username = request.args.get('username', None)
-
-        # Make sure we have a valid username, otherwise redirect to login
+        # Ensure that the global username is set
         if not username:
             return redirect(url_for('login'))
 
