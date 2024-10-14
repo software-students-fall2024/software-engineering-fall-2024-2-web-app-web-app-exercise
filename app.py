@@ -12,7 +12,14 @@ def get_exersice(exercise_id: int):
 
 
 def get_todo():
-    return []
+    #test
+    return [
+        {"name": "Strength", "completed": False},
+        {"name": "Cardio", "completed": True},
+        {"name": "Interval Training", "completed": False},
+        {"name": "Core Workouts", "completed": False},
+        {"name": "Flexibility & Mobility", "completed": True}
+    ]
 
 
 def delete_todo(exercise_todo_id: int):
@@ -67,7 +74,7 @@ def todo():
 @app.route('/delete_exercise')
 def delete_exercise():
     exercises = get_todo()
-    return render_template('delete_exercise.html', exercises=exercises)
+    return render_template('delete.html', exercises=exercises)
 
 
 @app.route('/delete_exercise/<int:exercise_todo_id>')
