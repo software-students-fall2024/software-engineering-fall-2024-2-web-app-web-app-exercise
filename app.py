@@ -30,10 +30,6 @@ def create_app():
     @app.route('/profile/<user>')
     def show_profile(user):
         tune_tasks = list(db.tune_tasks.find({"created_by":user}))
-        if len(tune_tasks) == 0:
-            return make_response("no tunetasks yet, make your first tunetask!", 200)
-
-        # return make_response("all good", 200)
         return render_template('profile.html', user=user, collection=tune_tasks)
     
     @app.route('/search')
@@ -48,7 +44,30 @@ def create_app():
         if len(tune_tasks) == 0:
             return make_response("user not found", 200)
         return render_template('profile.html', user=user, collection=tune_tasks)
+    
+    @app.route('/login', methods=["GET", "POST"])
+    def login():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            
+            # checking mongodb to find user
+            user_data = db.users.find_one({"username": username})
+
+            if user_data:
+                # password is only plain text, not hashed so comparing as such
+                if user_data["password"] == password:
+                    return redirect(url_for('show_profile', user=username))
+                else:
+                    return "Invalid password, please try again.", 403
+            else:
+                return "User not found", 404
+
+
+        return render_template('login.html')
+    
     return app
+
 
 if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "3000")
