@@ -34,7 +34,6 @@
         padding: 40px;
         font-size: 20px;
         border-radius: 10px;
-        cursor: pointer;
         transition: background-color 0.3s ease;
       }
 
@@ -42,14 +41,13 @@
         background-color: #45a049;
       }
 
-      /* Styles for the transactions box */
-      .transactions-box {
-        border: 2px solid black; /* Black border */
-        padding: 20px; /* Padding inside the box */
-        border-radius: 10px; /* Rounded corners */
-        text-align: center; /* Center the text */
-        margin-top: 40px; /* Space above the box */
-        background-color: white; /* Background color */
+      .box {
+        border: 2px solid black;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 40px;
+        background-color: white;
       }
 
       .button {
@@ -61,7 +59,7 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        text-decoration: none; /* Remove underline for link */
+        text-decoration: none;
       }
 
       .button:hover {
@@ -99,15 +97,15 @@
 
     <div class="grid-container">
       <a style="text-decoration: none; color: black" href="/">
-        <div class="transactions-box" href="/"><h1>Add Transaction</h1></div></a
+        <div class="box" href="/"><h1>Add Transaction</h1></div></a
       >
       <a style="text-decoration: none; color: black" href="/">
-        <div class="transactions-box" href="/">
+        <div class="box" href="/">
           <h1>Edit Purchase Method</h1>
         </div></a
       >
       <a style="text-decoration: none; color: black" href="/">
-        <div class="transactions-box" href="/">
+        <div class="box" href="/">
           <h1>Delete Transaction</h1>
         </div></a
       >
