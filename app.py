@@ -65,7 +65,7 @@ def search():
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
             # return redirect(url_for('search'))
-        session['results'] = results
+        # session['results'] = results
         return redirect(url_for('add'))
 
     exercises = default_exercises()
@@ -95,7 +95,8 @@ def delete_exercise_id(exercise_todo_id):
 
 @app.route('/add')
 def add():
-    exercises = session['results']
+    # exercises = session['results']
+    exercises = []
     return render_template('add.html', exercises=exercises)
 
 
@@ -124,7 +125,7 @@ def edit():
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
 
-@app.route('/instructions/<str:exercise_id>')
+@app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
     exercise = get_exersice(exercise_id)
     instruction = exercise['instruction']
