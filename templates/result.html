@@ -36,6 +36,8 @@
         {% endif %}
     </main>
     <footer>
-        <a href="{{url_for('search')}}"><button>Back to Search Page</button></a>
+        <nav>
+            <a href="{{url_for('search')}}" class="back-button">Back to Search Page</a>
+        </nav>
     </footer>
 {% endblock %}

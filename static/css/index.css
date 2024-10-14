@@ -187,3 +187,19 @@ footer a:hover {
 .links-ui > div > a:hover {
     background-color: #bbb;
 }
+
+/* Style for the Back to Search Page button in result page */
+.back-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: purple;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: darkmagenta;
+    color: white;
+}
