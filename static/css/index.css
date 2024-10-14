@@ -93,22 +93,6 @@ a:hover {
 }
 */
 
-.signout-link {
-    position: absolute;
-    font-size: 1.25rem;
-    top: 20px;
-    right: 15px;
-    z-index: 999;
-}
-.signout-link > button {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-    padding-right: 1rem;
-}
-.signout-link > button:hover{
-    text-decoration: underline;
-}
 /*
 .title {
     margin: 0;
