@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.exercise-title {
+    display: inline-block;
+    text-align: center;
+    font-size: 22px;
+}
+
+.exercise-container {
+    max-width: 320px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+}
+
+.exercise-image {
+    width: 100%;
+    height: 180px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+button, input {
+    display: inline-block;
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.exercise-description {
+    margin-bottom: 5px;
+}
+
+.exercise-description p {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.exercise-description a {
+    font-size: 12px;
+    color: #4CAF50;
+}
+
+.exercise-data {
+    margin-bottom: 5px;
+}
+
+.back-btn, .add-todo-btn, .exercise-save-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    text-align: center;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.back-btn {
+    display: inline-block;
+    width: 20%;
+    margin-bottom: 5px;
+    margin-right: 13%;
+}
+
+.add-todo-btn {
+    margin-bottom: 5px;
+}
+
+.exercise-data label {
+    flex-grow: 1;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+}
+
+footer a {
+    color: gray;
+    text-decoration: none;
+}
