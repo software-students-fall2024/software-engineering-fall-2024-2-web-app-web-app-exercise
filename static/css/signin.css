@@ -2,13 +2,15 @@
 
 
 body {
-    background-color: rgb(163, 56, 163);
-    color: white;
+    background-color: #f9f9f9;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
+p {
+    color: black;
+}
 
 form {
     background-color: white;

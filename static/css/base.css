@@ -5,7 +5,7 @@
 }
 
 .base-header {
-    background-color: rgb(52, 186, 231);
+    background-color: rgb(52, 186, 231);  /* Don't don't this file if you can, senestive */
     border: 2px solid black;
     display: flex;
     justify-content: center;
