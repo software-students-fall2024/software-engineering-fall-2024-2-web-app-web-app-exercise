@@ -65,6 +65,8 @@ def search():
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
             # return redirect(url_for('search'))
+        
+        # test
         # session['results'] = results
         return redirect(url_for('add'))
 
@@ -95,6 +97,7 @@ def delete_exercise_id(exercise_todo_id):
 
 @app.route('/add')
 def add():
+    # test
     # exercises = session['results']
     exercises = []
     return render_template('add.html', exercises=exercises)
