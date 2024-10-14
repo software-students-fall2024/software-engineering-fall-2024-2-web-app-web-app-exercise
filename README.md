@@ -12,7 +12,16 @@ GoodEats: share and discover restaurants with your community.
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+1. Clone this repository to your computer
+
+2. Create a .env to store key-value pairs (provided in the discord channel).
+
+3. Run the app using the following command:
+```
+python main.py
+```
+
+4. View the app in your browser at this link: http://127.0.0.1:5000
 
 ## Task boards
 
