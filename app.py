@@ -181,7 +181,35 @@ def login_required(f):
 @app.route("/my_weekly_report", methods=["GET"])
 @login_required
 def show_my_weekly_report():
-    return render_template("my_weekly_report.html")
+    user_name = session.get('user_name')
+    user = user_service.find_user(user_name)
+
+    if not user:
+        # Handle the case where user is not found
+        return redirect(url_for('logout'))
+
+    # Get the weekly values
+    weekly_values = user.get('weekly_values', [{}])[0]
+
+    # Prepare data for the template
+    week_data = []
+
+    # Days of the week
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+    # For each day, get the data
+    for i in range(7):
+        day_data = {
+            'day': days[i],
+            'calorie_intake': round(weekly_values.get('weekly_calorie', [0]*7)[i] or 0, 2),
+            'weight': round(weekly_values.get('weekly_weight', [0]*7)[i] or 0, 2),
+            'bmi': round(weekly_values.get('weekly_bmi', [0]*7)[i] or 0, 2),
+            # Add other fields if needed
+        }
+        week_data.append(day_data)
+
+    return render_template("my_weekly_report.html", week_data=week_data)
+
 
 @app.route("/food_instruction", methods=["GET", "POST"])
 def show_food_instruction():
