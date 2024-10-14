@@ -28,12 +28,16 @@
     font-weight: bold;
     text-decoration: none;
     font-size: 1.25rem;
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+    border: 2px solid black;
+    background-color: white;
 
     width: 2.5rem;
     height: 2.5rem;
 }
 .signout-link > button:hover{
-    text-decoration: underline;
+    opacity: 0.8;
 }
 .signout-link > button > img {
     width: 100%;
