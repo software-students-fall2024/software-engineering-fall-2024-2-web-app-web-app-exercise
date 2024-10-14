@@ -64,7 +64,7 @@ A little exercise to build a web application following an agile development proc
                     0,
                     0,
                     0,
-                    133
+                    133  // number added to here because test date was Sunday
                 ],
                 "weekly_calorie": [
                     0,
