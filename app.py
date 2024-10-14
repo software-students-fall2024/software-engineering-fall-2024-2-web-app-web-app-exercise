@@ -1,14 +1,14 @@
 import os
+from functools import wraps
+from fuzzywuzzy import fuzz
 from datetime import datetime
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from Models import User, Nutrition
 from bson.objectid import ObjectId
-from fuzzywuzzy import fuzz
-from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, render_template, request, redirect, abort, url_for, make_response, send_from_directory,session
-from functools import wraps
 """
 Deafult root of the flask: templates
 
@@ -141,7 +141,7 @@ def exercise_details(exercise_id):
 
 @app.route("/add_workout_to_plan", methods=["POST"])
 def add_workout_to_plan():
-    # 'imyhalex' is for tempoary use,
+    user_name = session.get("user_name")
     # this function creates a workout dictionary and append it into user's daily_workout_value
     workout = {
         "name": request.form.get("name")
@@ -150,22 +150,22 @@ def add_workout_to_plan():
         , "target_muscle": request.form.get("target_muscle")
     }
 
-    user_service.add_workout_plan("imyhalex", workout)
+    user_service.add_workout_plan(user_name, workout)
     return redirect(url_for("index"))
 
 # serve as functionality to remove all exercise card decks in the index.html
 @app.route("/clear_workout_plan", methods=["POST"])
 def clear_workout_plan():
-    user_service.clear_workout_plan("imyhalex") # tempoary user
+    user_name = session.get("user_name")
+    user_service.clear_workout_plan(user_name) # tempoary user
     return redirect(url_for("index"))
 
 # serve as functionality to delete on exercise card deck each time in index.html
 @app.route("/delete_workout_plan", methods=["POST"])
 def delete_workout_plan():
+    user_name = session.get("user_name")
     exercise_name = request.form.get("name")
-
-    # 'imyhalex' is for temporary use, replace it with the authenticated user's name
-    user_service.delet_from_workout_plan("imyhalex", exercise_name)
+    user_service.delet_from_workout_plan(user_name, exercise_name)
     return redirect(url_for("index"))
 
 # require user login - create decorator for other functions
@@ -183,13 +183,11 @@ def login_required(f):
 def show_my_weekly_report():
     return render_template("my_weekly_report.html")
 
-food_collection = db["food"]
-
 # marked - modified later
 @app.route("/food_instruction", methods=["GET", "POST"])
 def show_food_instruction():
     # Get distinct categories from the food collection
-    categories = food_collection.distinct("category")
+    categories = nutrition_service.get_food_collection().distinct("category")
 
     selected_category = None
     foods = []
@@ -198,10 +196,10 @@ def show_food_instruction():
         selected_category = request.form.get("category")
         if selected_category:
             # Fetch foods based on the selected category
-            foods = food_collection.find({"category": selected_category})
+            foods = nutrition_service.get_food_collection().find({"category": selected_category})
     else:
         # Fetch all foods if no category is selected
-        foods = food_collection.find()
+        foods = nutrition_service.get_food_collection().find()
 
     # Prepare the food data for rendering
     food_items = [{"id": str(food["_id"]), "name": food["food_name"]} for food in foods]
@@ -218,9 +216,14 @@ def show_food_instruction():
 def search_food():
     query = request.form.get("query", "")
     if query:
-        foods = food_collection.find({"food_name": {"$regex": query, "$options": "i"}})
-        food_items = [{"id": str(food["_id"]), "name": food["food_name"]} for food in foods]
-        categories = food_collection.distinct("category")
+        # get all foods
+        foods = nutrition_service.get_food_collection().find({"food_name": {"$regex": query, "$options": "i"}})
+
+        # use fuzzy matching to find relevant foods
+        matching_foods = [food for food in foods if fuzz.partial_ratio(query.lower(), food["food_name"].lower()) > 70]
+
+        food_items = [{"id": str(food["_id"]), "name": food["food_name"]} for food in matching_foods]
+        categories = nutrition_service.get_food_collection().distinct("category")
         return render_template(
             "food_instruction.html",
             categories=categories,
@@ -231,30 +234,25 @@ def search_food():
         return redirect(url_for("show_food_instruction"))
 
 """some timer functionalities"""
-# all 'imyhalex' here should be changed later when login-register authentication is implemented
 @app.route("/start_timer/<workout_name>", methods=["POST"])
 def start_timer(workout_name):
+    user_name = session.get("user_name")
     duration_minutes = int(request.form.get("duration"))
     duration_seconds = duration_minutes * 60
-    user_service.update_workout_timer("imyhalex", workout_name, duration_seconds, "running")
+    user_service.update_workout_timer(user_name, workout_name, duration_seconds, "running")
     return make_response("", 204) # 204 means no content response in http status code
 
 @app.route("/stop_timer/<workout_name>", methods=["POST"])
 def stop_timer(workout_name):
-    user_service.update_workout_timer("imyhalex", workout_name, 0, "stopped")
+    user_name = session.get("user_name")
+    user_service.update_workout_timer(user_name, workout_name, 0, "stopped")
     return make_response("", 204)
 
 @app.route("/reset_timer/<workout_name>", methods=["POST"])
 def reset_timer(workout_name):
-    user_service.update_workout_timer("imyhalex", workout_name, 0, "stopped")
+    user_name = session.get("user_name")
+    user_service.update_workout_timer(user_name, workout_name, 0, "stopped")
     return make_response("", 204)
-
-"""-------------------------------------------------------------------------------------------------------------------"""
-# this function is for temporary use
-def seed_user():
-    if not user_service.find_user("imyhalex"):
-        user_service.register_user("imyhalex", "imyhalex")
-        print("Temporary user 'imyhalex' seeded into the database.")
 
 """-------------------------------------End of the page render functions------------------------------------------------"""
 
@@ -324,7 +322,8 @@ def get_exercises_by_category_and_equipment(category, equipment):
 # endpoint for update flask to server timer data
 @app.route("/api/timer_status/<workout_name>", methods=["GET"])
 def get_timer_status(workout_name):
-    user = user_service.find_user("imyhalex")  # Temporary user
+    user_name = session.get("user_name")
+    user = user_service.find_user(user_name)  # Temporary user
     if not user:
         return jsonify({"error": "User not found"}), 404
     
@@ -437,7 +436,6 @@ scheduler.start()
 
 if __name__ == "__main__":
     try:
-        seed_user() # for tempoary use
         app.run(debug=True, use_reloader=False)  # set use_reloader=False to avoid starting the scheduler multiple times
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()

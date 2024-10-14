@@ -70,20 +70,30 @@ class User:
             , upsert=True
         )
 
-    # only accept metrics units (cm, m, g, kg etc)
-    def cacluate_bmi(self, user_name, weight):
+    # only accept imperial units (feet, inches, pounds)
+    def calculate_bmi(self, user_name, weight_pounds, height_feet, height_inches):
         user = self.find_user(user_name)
-        height = user.get("height")
+        
+        if weight_pounds is not None and (height_feet is not None or height_inches is not None):
+            # Convert height to meters
+            total_height_inches = height_feet * 12 + height_inches
+            height_m = total_height_inches * 0.0254
 
-        if height and weight:
-            height_m = height / 100
-            bmi = round(weight / (height_m ** 2), 2)
-            current_day_index = datetime.now().weekday()
-            self.__collection.update_one(
-                {"user_name": user_name}
-                , {"$set": {f"weekly_values.0.weekly_bmi.{current_day_index}": bmi}}
-            )
-            return bmi
+            # Convert weight to kg
+            weight_kg = weight_pounds * 0.453592
+
+            # Calculate BMI
+            if height_m > 0:
+                bmi = round(weight_kg / (height_m ** 2), 2)
+                current_day_index = datetime.now().weekday()
+                
+                # Update user's weekly BMI in the database
+                self.__collection.update_one(
+                    {"user_name": user_name}
+                    , {"$set": {f"weekly_values.0.weekly_bmi.{current_day_index}": bmi}}
+                )
+                return bmi
+
         return None
 
     def reset_body_values(self):
@@ -236,3 +246,6 @@ class Nutrition:
     
     def get_my_fats(self):
         return self.__daily_fats
+        
+    def get_food_collection(self):
+        return self.__food_collection
