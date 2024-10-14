@@ -49,10 +49,9 @@ def save_account():
 
     return redirect(url_for('home'))
 
-
 # Homepage route
 @app.route('/')
-def index():
+def home():
     # Fetch budget data from the 'budgets' collection
     budget_data = db['budgets'].find_one()
 
@@ -82,7 +81,7 @@ def index():
     )
 
     return render_template(
-        'index.html', 
+        'home.html', 
         transactions=transactions, 
         balance=balance,  # total budget - expenses
         spending_budget=spending_budget,  # user gives - stays constant
