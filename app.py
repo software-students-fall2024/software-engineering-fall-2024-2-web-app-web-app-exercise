@@ -84,7 +84,7 @@ def delete_exercise():
     return render_template('delete.html', exercises=exercises)
 
 
-@app.route('/delete_exercise/<int:exercise_id>', methods=['DELETE'])
+@app.route('/delete_exercise/<int:exercise_todo_id>', methods=['DELETE'])
 def delete_exercise_id(exercise_todo_id):
     success = delete_todo(exercise_todo_id)
     if success:
@@ -124,7 +124,7 @@ def edit():
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
 
-@app.route('/instructions/<str:exercise_id>')
+@app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
     exercise = get_exersice(exercise_id)
     instruction = exercise['instruction']
