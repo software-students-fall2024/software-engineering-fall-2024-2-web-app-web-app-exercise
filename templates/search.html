@@ -18,17 +18,18 @@
             <p>You can search the exercises here.</p>
         </section>
 
-        <form method="POST">
+        <form id="search-form">
             <label for="query">Search:</label>
             <input type="text" id="query" name="query" required>
-            <button type="submit" class="search-btn">Search</button>
+            <button type="button" class="search-btn" id="search-btn">Search</button>
         </form>
 
         <div class="exercise-list">
+            <p> Below are some exercises you may want to search.</p>
             {% for exercise in exercises %} 
-            <div class="exercise-item" id="exercise-{{ exercise.exercise_todo_id }}">
-                <label>{{ exercise.name }}</label>
-                <button class="add-btn">Add</button>
+            <div class="exercise-item" id="exercise-{{ exercise.exercise_id }}">
+                <label>{{ exercise.workout_name }}</label>
+                <button class="add-btn" data-id="{{ exercise.exercise_id }}">Add</button>
             </div>
             {% endfor %}
         </div>
@@ -37,5 +38,49 @@
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
         </footer>
     </div>
+
+    <script>
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const query = document.getElementById('query').value;
+
+            // Submit search query using fetch
+            fetch('/search', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'query': query
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    // If the response is valid, redirect to /add or dynamically update the list
+                    window.location.href = '/add'; // Or dynamically update the exercise list here
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while searching for the exercises.');
+            });
+        });
+
+        document.querySelectorAll('.add-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const exerciseId = this.getAttribute('data-id');
+
+                fetch(`/add_exercise/${exerciseId}`, {
+                    method: 'POST',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Exercise added successfully!');
+                    } else {
+                        alert('Failed to add the exercise.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
