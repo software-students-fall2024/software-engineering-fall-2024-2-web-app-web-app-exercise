@@ -63,8 +63,8 @@
     <div class="section-title">YOUR WORKSPACES</div>
 
     <div class="section-title">As a manager...</div>
-    {% if docs is defined %}
-      {% for doc in docs %}
+    {% if docs_as_manager is defined %}
+      {% for doc in docs_as_manager %}
       <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
       {% endfor %}
     {% else %}
@@ -72,8 +72,8 @@
     {% endif %}
 
     <div class="section-title">As a member...</div>
-    {% if docs2 is defined %}
-      {% for doc in docs2 %}
+    {% if docs_as_member is defined %}
+      {% for doc in docs_as_member %}
       <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
       {% endfor %}
     {% else %}

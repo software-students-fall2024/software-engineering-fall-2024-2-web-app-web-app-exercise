@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from pymongo.server_api import ServerApi
 
 logged_in = False
-projects = None
-
+projects_as_manager = None
+projects_as_member = None
 
 ############## Database Organization ###############
 
@@ -57,10 +57,17 @@ def create_app():
             return redirect(url_for('login'))
         
         # no matching projects
-        if (projects == None):
+        if (projects_as_manager == None and project_members == None):
             return render_template("main.html")
-
-        return render_template("main.html", docs=projects, docs2=projects)
+        # only have projects as a member
+        elif (projects_as_manager == None):
+            return render_template("main.html", docs_as_member=projects_as_member)
+        # only have projects as manager
+        elif (projects_as_member == None):
+            return render_template("main.html", docs_as_manager=projects_as_manager)
+        # have both manager and member roles in projects
+        else:
+            return render_template("main.html", docs_as_manager=projects_as_manager, docs_as_member=projects_as_member)
 
     # route to login page
     # if POST, check if username and password match
@@ -74,12 +81,16 @@ def create_app():
             
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
-                global projects
-                if (project_collection.find_one({'name': username}) != None):
-                    doc = project_collection.find({'name': username})
-                    projects = project_collection.find({'name': username})
-                else:
-                    projects = None
+                global projects_as_manager
+                global projects_as_member
+
+                # check if any projects contain the username as a manager
+                if (project_collection.find_one({'managers': username}) != None):
+                    projects_as_manager = project_collection.find({'managers': username})
+                # check if any projects contain the username as a member
+                if (project_collection.find_one({'members': username}) != None):
+                    projects_as_member = project_collection.find({'members': username})
+
                 # redirect to main, logged_in is true
                 global logged_in 
                 logged_in = True
