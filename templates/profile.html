@@ -4,139 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
-    <style>
-        /* Reset default browser styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .profile-container {
-            width: 320px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Header */
-        .header {
-            background-color: #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        /* Profile picture section */
-        .profile-picture-section {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            background-color: #ddd;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-        }
-
-        .username {
-            font-size: 16px;
-            color: #666;
-        }
-
-        /* Workspaces section */
-        .workspaces-section {
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            background-color: #f9f9f9;
-        }
-
-        .workspaces-section h3 {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 10px;
-        }
-
-        .workspace-item {
-            background-color: #e0e0e0;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        /* Account section */
-        .account-section {
-            padding: 15px;
-            background-color: #fff;
-        }
-
-        .account-section h3 {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 10px;
-        }
-
-        .account-section ul {
-            list-style-type: none;
-        }
-
-        .account-section ul li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .account-section ul li:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
 </head>
 <body>
     <div class="profile-container">
         <div class="header">
-            <span class="time">Time</span>
-            <span class="name">YOUR NAME</span>
-            <span class="battery">Battery</span>
+            <span>Time</span>
+            <span>YOUR NAME</span>
+            <span>Battery</span>
         </div>
         
         <div class="profile-picture-section">
             <div class="profile-picture"></div>
-            <p class="username">@Username</p>
+            <p>@Username</p>
         </div>
 
         <div class="workspaces-section">
             <h3>YOUR WORKSPACES</h3>
-            <div class="workspace-item">Workspace</div>
+            <div class="workspace-item">
+                <a href="home.html">Workspace</a> 
+            </div>
         </div>
 
         <div class="account-section">
             <h3>ACCOUNT</h3>
             <ul>
-                <li>Add Friends</li>
-                <li>Profile and Visibility</li>
-                <li>Switch Accounts</li>
-                <li>Log Out</li>
-                <li>Help</li>
+                <li><a href="#">Add Friends</a></li>
+                <li><a href="#">Profile and Visibility</a></li>
+                <li><a href="#">Switch Accounts</a></li>
+                <li><a href="#">Log Out</a></li>
+                <li><a href="#">Help</a></li>
             </ul>
         </div>
     </div>
 </body>
 </html>
-
 
