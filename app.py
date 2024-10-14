@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from pymongo.server_api import ServerApi
 
 logged_in = False
+projects = None
 
 def create_app():
     app = Flask(__name__)
@@ -22,12 +23,16 @@ def create_app():
     except Exception as e:
         print(e)
 
-    projects = None
 
+
+    @app.route("/")
+    def base():
+        return redirect(url_for('login'))
 
     @app.route("/main")
     def home():
         global logged_in  
+        global projects
 
         # not logged in yet, return to login
         if (logged_in == False):
@@ -37,7 +42,7 @@ def create_app():
         if (projects == None):
             return render_template("main.html")
 
-        return render_template("main.html", docs=pro)
+        return render_template("main.html", docs=projects)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
@@ -48,6 +53,7 @@ def create_app():
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
                 if (project_collection.find({'name': username}) != None):
+                    global projects
                     projects = project_collection.find({'name': username})
                 # redirect to main, logged_in is true
                 global logged_in 
