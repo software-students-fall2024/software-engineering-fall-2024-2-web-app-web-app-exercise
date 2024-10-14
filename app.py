@@ -18,7 +18,6 @@ APScheduler reference: https://apscheduler.readthedocs.io/en/3.x/modules/schedul
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
 
 # mongodb connection - exercise_data
 mongo_uri = os.getenv("MONGO_URI")
