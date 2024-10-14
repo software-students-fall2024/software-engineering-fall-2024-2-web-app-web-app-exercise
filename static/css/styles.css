@@ -60,7 +60,7 @@ header {
     width: 60%;
     position: absolute;
     top: 30%;
-    left: 80%; 
+    left: 90%; 
     transform: translateX(-50%); 
     overflow: hidden;
 }
@@ -68,6 +68,7 @@ header {
 .record img {
     width: 100%;
     animation: rotate 5s linear infinite;
+    overflow: hidden;
 }
 
 .record-player {
