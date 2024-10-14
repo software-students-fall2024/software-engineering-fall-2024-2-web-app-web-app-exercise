@@ -22,8 +22,56 @@ def create_app():
         print("Pinged your deployment. You successfully connected to MongoDB!")
     except Exception as e:
         print("MongoDB connection error:", e)
-        
-    @app.route("/home", methods=["GET"])
+    
+    
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        usersDB = db['users']
+
+        if request.method == "POST": 
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+            # Check if the user exists in the collection
+            user = usersDB.find_one({"username": username})
+
+            if user and password == user['password']:
+                return redirect(url_for("home"))
+            else:
+                return render_template("login.html", message="Invalid credentials.")
+
+        # Render the login page for GET requests
+        return render_template("login.html")
+    
+    @app.route("/register", methods = ["GET", "POST"])
+    def register():
+        usersDB = db['users']
+
+        if request.method == "POST":
+            username = request.form.get('username')
+            password1 = request.form.get('password1')
+            password2 = request.form.get('password2')
+            
+            # Check if the user exists in the collection
+            user = usersDB.find_one({"username": username})
+
+            if user:
+                return render_template("register.html", message="Username already exists.")
+            else:
+                if password1 == password2:
+                    user = {
+                        "username": username,
+                        "password": password1
+                    }
+                    usersDB.insert_one(user)
+                    return redirect(url_for("login"))
+                else:
+                    return render_template("register.html", message="Passwords don't match")
+        # Render the register page for GET requests
+        return render_template("register.html")
+
+
+    @app.route("/home")
     def home():
         return render_template('home.html')
         
