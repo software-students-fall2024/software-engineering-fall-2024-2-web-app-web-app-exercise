@@ -59,13 +59,13 @@ def search():
     if request.method == 'POST':
         query = request.form.get("query")
         if not query:
-            flash('Search content cannot be empty.')
-            redirect(url_for('search'))
+            return jsonify({'message': 'Search content cannot be empty.'}), 400
+            # return redirect(url_for('search'))
         results = search_exersice(query)
         if len(results) == 0:
-            flash('Exercise was not found.')
-            redirect(url_for('search'))
-        session['results'] = results
+            return jsonify({'message': 'Exercise was not found.'}), 404
+            # return redirect(url_for('search'))
+        # session['results'] = results
         return redirect(url_for('add'))
 
     exercises = default_exercises()
@@ -95,7 +95,8 @@ def delete_exercise_id(exercise_todo_id):
 
 @app.route('/add')
 def add():
-    exercises = session['results']
+    # exercises = session['results']
+    exercises = []
     return render_template('add.html', exercises=exercises)
 
 
