@@ -17,8 +17,8 @@
     <div class="account-section">
       <h3>ACCOUNT</h3>
       <ul>
-        <li><a href="#">Profile and Visibility</a></li>
-        <li><a href="#">Switch Accounts</a></li>
+        <!-- Removed Profile and Visibility -->
+        <li><a href="{{ url_for('logout') }}">Switch Accounts</a></li>
         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
         <li><a href="#">Help</a></li>
       </ul>
