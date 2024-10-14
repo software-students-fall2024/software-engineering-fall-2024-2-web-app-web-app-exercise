@@ -150,15 +150,20 @@ def create_app():
         query = {}
         nameSearch = request.args.get('resName')
         cuisineSearch = request.args.get('resCuisine')
+        locationSearch = request.args.get('resLocation')
         userSearch = request.args.get('resUser')
         
-        if nameSearch or cuisineSearch or userSearch:
+        if nameSearch or cuisineSearch  or locationSearch or userSearch:
             if nameSearch:
                 query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
             if cuisineSearch:
                 query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
+            if locationSearch:
+                query['location'] = {'$regex': locationSearch, '$options': 'i'}
             if userSearch:
                 query['username'] = {'$regex': userSearch, '$options': 'i'} 
+            
+            print(f"Location Search: {locationSearch}")
 
             restaurants = db.RestaurantData.find(query)
             restaurantList = list(restaurants)

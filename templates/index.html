@@ -3,6 +3,7 @@
 <ul class="reviews">
     {% for restaurant in restaurants %}
     <li class="review">
+        {% if restaurant.username == current_user.username %}
         <div class="icon-buttons">
             <a href="/delete" class="icon-button">
                 <img src="static/images/trash.svg" alt="delete"/>
@@ -11,6 +12,8 @@
                 <img src="static/images/edit.svg" alt="edit"/>
             </a>
         </div>
+        {% endif %}
+
         <div class="review-details">
             <p>{{ restaurant.username }}</p>
             <h2>{{ restaurant.restaurantName }}</h2>
