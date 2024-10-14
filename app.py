@@ -1,4 +1,5 @@
 import os
+import certifi
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymongo 
 from dotenv import load_dotenv
@@ -28,7 +29,7 @@ def create_app():
     app.secret_key = "KEY"
 
     uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
-    client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
+    client = pymongo.MongoClient(uri, server_api=ServerApi('1'),tlsCAFile=certifi.where())
     db = client['tasks']
     
     project_collection = db['projects']

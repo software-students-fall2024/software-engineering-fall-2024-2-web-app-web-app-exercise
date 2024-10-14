@@ -188,6 +188,7 @@ button {
 /* Optional: Style for the container of each project link */
 .project-link {
     margin-bottom: 10px; /* Add spacing between the links */
+<<<<<<< HEAD
 }
 
 /* Profile Page Specific Styles */
@@ -278,3 +279,6 @@ button {
     color: #000;
     text-decoration: underline;
 }
+=======
+}
+>>>>>>> 4703cc3906449edde5c659dbccce2e8d28d94819
