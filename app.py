@@ -104,9 +104,24 @@ def create_app():
                 return render_template("registration.html", err="Username taken, please try again.")
         return render_template("registration.html")
     
+
+    # route to create project page
+    # WIP - need to add project description
+    #       need to assign project manager
+    @app.route("/create_project", methods=['GET', 'POST'])
+    def create_project():
+        if request.method == 'POST':
+            project_name = request.form['project_name']
+            # project_description = request.form['project_description']
+            project_members = request.form['project_members'].split(",")
+            project_collection.insert_one({'projectName': project_name, 'managers': ["Terry"], 'members': project_members, 'tasks': []})
+            flash("Project created!", "success")
+            return redirect(url_for('main'))
+        return render_template("create_project.html")
+    
     return app 
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(port="5000")
+    app.run(port="3000")
 
