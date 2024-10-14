@@ -1,6 +1,8 @@
-from flask import Flask, request, json, redirect, url_for, flash, render_template
+from flask import Flask, request, jsonify, redirect, url_for, flash, render_template, session
+import secrets
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
 
 
 def search_exersice(query: str):
@@ -16,11 +18,11 @@ def get_todo():
 
 
 def delete_todo(exercise_todo_id: int):
-    return
+    return True
 
 
 def add_todo(exercise_id: str):
-    return
+    return True
 
 
 def edit_exercise(exercise_todo_id, working_time, weight, reps):
@@ -42,7 +44,7 @@ def default_exercises():
 
 @app.route('/')
 def home():
-    return '<h1>This is the home page.</h1>'
+    return redirect(url_for('todo'))
 
 
 @app.route('/search', methods=['POST', 'GET'])
@@ -56,7 +58,8 @@ def search():
         if len(results) == 0:
             flash('Exercise was not found.')
             redirect(url_for('search'))
-        return render_template('add_exercise_page.html', query=query, results=results)
+        session['results'] = results
+        return redirect(url_for('add'))
 
     exercises = default_exercises()
     return render_template('search.html', exercises=exercises)
@@ -71,21 +74,32 @@ def todo():
 @app.route('/delete_exercise')
 def delete_exercise():
     exercises = get_todo()
-    return render_template('delete_exercise.html', exercises=exercises)
+    return render_template('delete.html', exercises=exercises)
 
 
-@app.route('/delete_exercise/<int:exercise_todo_id>')
+@app.route('/delete_exercise/<int:exercise_id>', methods=['DELETE'])
 def delete_exercise_id(exercise_todo_id):
-    delete_todo(exercise_todo_id)
-    flash('Deleted successfully.')
-    return redirect(url_for('delete_exercise'))
+    success = delete_todo(exercise_todo_id)
+    if success:
+        return jsonify({'message': 'Deleted successfully'}), 204
+    else:
+        return jsonify({'message': 'Failed to delete'}), 404
 
 
-@app.route('/add_exercise/<str:exercise_id>')
+@app.route('/add')
+def add():
+    exercises = session['results']
+    return render_template('add.html', exercises=exercises)
+
+
+@app.route('/add_exercise/<int:exercise_id>', methods=['POST'])
 def add_exercise(exercise_id):
-    add_todo(exercise_id)
-    flash('Added successfully.')
-    return redirect(request.referrer or url_for('search'))
+    success = add_todo(exercise_id)
+
+    if success:
+        return jsonify({'message': 'Added successfully'}), 200
+    else:
+        return jsonify({'message': 'Failed to add'}), 400
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -109,3 +123,7 @@ def instructions(exercise_id):
     instruction = exercise['instruction']
 
     return render_template('instructions.html', instruction=instruction)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
