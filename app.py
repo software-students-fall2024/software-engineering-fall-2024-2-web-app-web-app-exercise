@@ -14,7 +14,9 @@ def create_app():
     uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
     client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
     db = client['tasks']
+    
     project_collection = db['projects']
+
     user_list = db['users']
 
     try:
@@ -32,8 +34,8 @@ def create_app():
     @app.route("/main")
     def home():
         global logged_in  
-        global projects
-
+        global projects       
+                          
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
@@ -80,18 +82,6 @@ def create_app():
             else:
                 return render_template("registration.html", err="Username taken, please try again.")
         return render_template("registration.html")
-    
-
-    @app.route("/logout")
-    def logout():
-        global logged_in  
-
-        # not logged in yet, return to login
-        if (logged_in == False):
-            return redirect(url_for('login'))
-        logout_user()
-        flash("Logged out successfully.", "info")
-        return redirect(url_for('login'))
 
     return app 
 
