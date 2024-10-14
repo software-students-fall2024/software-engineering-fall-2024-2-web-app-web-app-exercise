@@ -11,6 +11,7 @@
         <i class="bx bx-menu" id="menu-icon"></i>
         <ul class="nav-links">
             <li><a href="{{ url_for('account') }}">Account</a></li> 
+            <li><a href="{{ url_for('index') }}">Home</a></li> 
             <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
             <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
             <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
@@ -50,10 +51,6 @@
             </tbody>
         </table>
         {% endif %}
-    </div>
-    <div class="container" id="navigation page">
-        <!--  home page button -->
-        <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ url_for('index') }}';">Home</button>
     </div>
     <script>
         function to(url){

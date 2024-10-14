@@ -90,6 +90,7 @@ def index():
         name=name
     )
 
+
 # View all transactions
 @app.route('/transactions')
 def view_transactions():
@@ -120,6 +121,7 @@ def add_transaction():
         return redirect(url_for('view_transactions'))
 
     return render_template('add.html')
+
 @app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
     # Fetch all transactions for the dropdown menu
