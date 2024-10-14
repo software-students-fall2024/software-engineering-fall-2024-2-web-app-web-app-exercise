@@ -12,6 +12,23 @@ body {
     text-align: center;
 }
 
+/* Status bar (Time, Battery) */
+.status-bar {
+    width: 100%;
+    background-color: #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+}
+
+.status-bar span {
+    font-size: 14px;
+}
+
+
 h1, h2 {
     color: #333;
     margin-bottom: 20px;

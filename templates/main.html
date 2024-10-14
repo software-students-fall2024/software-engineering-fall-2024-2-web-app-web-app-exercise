@@ -43,7 +43,19 @@
 
   li a:hover {
     background-color: #d3d3d3;
-    }
+  }
+
+  /* Create button */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
 </style>
 
 <body>
@@ -67,7 +79,9 @@
     {% else %}
       <p>No projects. Try adding some!</p>
     {% endif %}
-
+    <form action="/create_project", method="GET">
+      <button type="submit">Create new project</button>
+    </form>
   </div>
 
 </body>

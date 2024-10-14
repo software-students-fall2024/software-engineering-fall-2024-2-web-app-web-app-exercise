@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<h1>Create Project</h1>
+<body>
+    <form action="/create_project" method="post">
+        <div>
+            <label for="projectName">Project Name</label>
+            <input type="text" id="projectName" name="project_name" required>
+        </div>
+        <div>
+            <label for="description">Write Description</label>
+            <textarea id="description" name="project_description" rows="3" required></textarea>
+        </div>
+        <div>
+            <label for="teamMembers">Add Team Members</label>
+            <input type="text"  id="teamMembers" name="project_members" required>
+        </div>
+        <button type="submit" >Create</button>
+    </form>
+</body>
+</html>
