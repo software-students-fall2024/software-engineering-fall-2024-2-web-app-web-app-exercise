@@ -16,8 +16,8 @@ def login():
     if flask.request.method == 'GET':
         return flask.render_template('login.html')
     email = flask.request.form['email']
-    password = flask.request.form['email']
-    result = users.find_one({}, {"email":email, "password":password})
+    password = flask.request.form['password']
+    result = users.find_one({"email":email, "password":password})
     if result:
         user = User()
         user.id = email
