@@ -172,7 +172,7 @@ def create_app():
     @login_required
     def addData():
         restaurantData = {
-            'username': request.form['username'],
+            'username': current_user.username,
             'restaurantName': request.form['restaurantName'],
             'cuisine': request.form['cuisine'],
             'location': request.form['location'],
@@ -183,12 +183,12 @@ def create_app():
         db.RestaurantData.insert_one(restaurantData)
 
         #change to success page 
-        return redirect(url_for('success', restaurantName=request.form['restaurantName']))
+        return redirect(url_for('add_success', restaurantName=request.form['restaurantName']))
     
-    @app.route('/success')
-    def success():
+    @app.route('/add_success')
+    def add_success():
         restaurantName=request.args.get('restaurantName')
-        return render_template('success.html',restaurantName=restaurantName)
+        return render_template('add_success.html',restaurantName=restaurantName)
         
     #Handle delete data form
     @app.route('/deleteData', methods=['POST'])
