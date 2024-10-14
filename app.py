@@ -124,7 +124,7 @@ def edit():
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
 
-@app.route('/instructions/<str:exercise_id>')
+@app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
     exercise = get_exersice(exercise_id)
     instruction = exercise['instruction']
