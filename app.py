@@ -8,6 +8,7 @@ from pymongo.server_api import ServerApi
 logged_in = False
 projects_as_manager = None
 projects_as_member = None
+username = None
 
 ############## Database Organization ###############
 
@@ -50,8 +51,7 @@ def create_app():
     # main route displays home screen with all projects
     @app.route("/main")
     def home():
-        username = request.args.get('username')
-
+        global username
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
@@ -75,6 +75,7 @@ def create_app():
     # if not, return to login with error message
     @app.route("/login", methods=['GET', 'POST'])
     def login():
+        global username
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
@@ -148,6 +149,7 @@ def create_app():
     
     @app.route('/profile')
     def profile():
+        global username
         # Check if the user is logged in
         if not logged_in:
             return redirect(url_for('login'))
@@ -175,12 +177,13 @@ def create_app():
         
     @app.route('/logout')
     def logout():
-        global logged_in, projects_as_manager, projects_as_member
+        global logged_in, projects_as_manager, projects_as_member, username
             
         # Reset the logged_in flag and project variables
         logged_in = False
         projects_as_manager = None
         projects_as_member = None
+        username = None
             
         # Flash a message to inform the user of successful logout
         flash("You have been logged out successfully.", "info")
