@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Exercises Page</title>
-    <link rel="stylesheet" href="../css/alex.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alex.css') }}">
 </head>
 <body>
 
@@ -18,14 +18,15 @@
             <p>You can search the exercises here.</p>
         </section>
 
-        <form method="POST" action="b.html">
-            <input type="text" name="query" placeholder="Search Exercises...">
+        <form method="POST">
+            <label for="query">Search:</label>
+            <input type="text" id="query" name="query" required>
             <button type="submit" class="search-btn">Search</button>
         </form>
 
         <div class="exercise-list">
-            {% for exercise in exercises %}
-            <div class="exercise-item">
+            {% for exercise in exercises %} 
+            <div class="exercise-item" id="exercise-{{ exercise.exercise_todo_id }}">
                 <label>{{ exercise.name }}</label>
                 <button class="add-btn">Add</button>
             </div>

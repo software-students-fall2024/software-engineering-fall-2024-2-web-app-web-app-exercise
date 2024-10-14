@@ -35,7 +35,6 @@
             button.addEventListener('click', function() {
                 const exerciseId = this.getAttribute('data-id');
 
-                // 发送 POST 请求到后端添加锻炼
                 fetch(`/add_exercise/${exerciseId}`, {
                     method: 'POST',
                 })

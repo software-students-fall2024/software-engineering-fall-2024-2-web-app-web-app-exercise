@@ -84,7 +84,7 @@ def delete_exercise():
     return render_template('delete.html', exercises=exercises)
 
 
-@app.route('/delete_exercise/<int:exercise_id>', methods=['DELETE'])
+@app.route('/delete_exercise/<int:exercise_todo_id>', methods=['DELETE'])
 def delete_exercise_id(exercise_todo_id):
     success = delete_todo(exercise_todo_id)
     if success:

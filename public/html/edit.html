@@ -22,29 +22,33 @@
             <p style="text-align: center;"><strong>[Exercise Name]</strong></p>
             <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad. <a href="instruction.html">More Instruction</a>
+                Ut enim ad. <a href="instructions.html">More Instruction</a>
             </p>  
         </section>
 
+        <!-- <a href="/add_exercise/{{ exercise_id }}" class="add-todo-btn">Add to My ToDo List</a> -->
+
         <button class="add-todo-btn">Add to My ToDo List</button>
 
-        <div class="exercise-data">
-            <div class="exercise-time">
-                <label for="timer">Timer:</label>
-                <input type="text" id="minutes" placeholder="Min" style="display: inline-block; width: 50px;">
-                <input type="text" id="seconds" placeholder="Sec" style="display: inline-block; width: 50px;">
+        <form method="POST" action="/edit?exercise_todo_id={{exercise_todo_id}}">
+            <div class="exercise-data">
+                <div class="exercise-time">
+                    <label for="timer">Timer:</label>
+                    <input type="text" id="minutes" placeholder="Min" style="display: inline-block; width: 50px;">
+                    <input type="text" id="seconds" placeholder="Sec" style="display: inline-block; width: 50px;">
+                </div>
+
+                <label for="reps">Reps/Group:</label>
+                <input type="text" id="reps" placeholder="_">
+
+                <label for="weight">Weight:</label>
+                <input type="text" id="weight" placeholder="_ Kg">
+
+                <div class="exercise-save">
+                    <button class="exercise-save-btn">Save</button>
+                </div>
             </div>
-
-            <label for="reps">Reps/Group:</label>
-            <input type="text" id="reps" placeholder="_">
-
-            <label for="weight">Weight:</label>
-            <input type="text" id="weight" placeholder="_ Kg">
-        </div>
-
-        <div class="exercise-save">
-            <button class="exercise-save-btn">Save</button>
-        </div>
+        </form>
 
         <footer>
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
