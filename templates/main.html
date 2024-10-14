@@ -1,64 +1,7 @@
 {% extends 'base.html' %}{% block container %}
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f2f2;
-  }
-
-  .header div {
-    font-size: 14px;
-  }
-
-  .nav {
-    background-color: #d3d3d3;
-    text-align: center;
-    padding: 10px;
-    font-size: 18px;
-  }
-
-  .main-content {
-    padding: 20px;
-  }
-
-  .section-title {
-    margin: 20px 0;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .box {
-    background-color: #d3d3d3;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  .box input[type="checkbox"] {
-    margin-right: 10px;
-  }
-
-  li a:hover {
-    background-color: #d3d3d3;
-  }
-
-  /* Create button */
-  button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background-color: #e0e0e0;
-    border: 1px solid #000;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-</style>
-
 <body>
+  <h1>Welcome, {{ username }}!</h1>
+
   <div class="main-content">
     <div class="section-title">YOUR WORKSPACES</div>
 
