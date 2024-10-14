@@ -115,35 +115,34 @@ def create_app():
                 return render_template("registration.html", err="Username taken, please try again.")
         return render_template("registration.html")
 
+    
     # route to create project page
     # WIP - need to add project description
     #       need to assign project manager
-    @app.route("/create_project", methods=['GET', 'POST'])
+    @app.route('/create_project', methods=['GET', 'POST'])
     def create_project():
         if request.method == 'POST':
-            project_name = request.form['project_name']
-            project_description = request.form['project_description']
-            project_members = request.form['project_members'].split(",")
-            project_manager = "Terry" 
-            start_date = request.form.get('start_date', '')
-            due_date = request.form.get('due_date', '')
-        
-            # Save the project into MongoDB
-            project_collection.insert_one({
-                'projectName': project_name,
-                'description': project_description,
-                'managers': [project_manager],
-                'members': project_members,
-                'start_date': start_date,
-                'due_date': due_date,
-                'tasks': []
-            })
-            
+            # Get managers and members as comma-separated strings from the form
+            managers = request.form['managers'].split(',')
+            members = request.form['members'].split(',')
+
+            # Create the project data
+            project_data = {
+                'projectName': request.form['project_name'],
+                'description': request.form['description'],
+                'start_date': request.form['start_date'],
+                'due_date': request.form['due_date'],
+                'managers': managers,  # Store managers as an array
+                'members': members,    # Store members as an array
+                'tasks': []  # Initially no tasks
+            }
+
+            # Insert the project into the database
+            project_collection.insert_one(project_data)
             flash("Project created successfully!", "success")
             return redirect(url_for('home'))
 
-        return render_template("create_project.html")
-
+        return render_template('create_project.html')
 
     return app 
 
