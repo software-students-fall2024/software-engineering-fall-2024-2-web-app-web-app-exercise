@@ -1,16 +1,39 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
 .navBar{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
     overflow: hidden;
     width: 100%;
     background-color:bisque;
     margin-bottom: 5vh;
-    padding: 5px;
+    padding: 0px;
+    height: 100px;
 }
 .navBar h1{
-    margin:0;
-    padding-left: 5px;
-    float:left;
+    margin: 20px;
 }
+
 .navBar a{
     float: right;
-    padding: 5px 10px;
+    padding: 5px 5px;
+    text-decoration: none;
+}
+
+.navLinks {
+    display: flex;
+    padding: 20px;
+    gap: 40px;
+}
+.link{
+    border: 5px solid gray;
+}
+
+.welcome{
+    margin-left: 40px;
 }
