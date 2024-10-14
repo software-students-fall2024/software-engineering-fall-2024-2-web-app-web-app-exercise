@@ -10,9 +10,9 @@
 {% endblock %}
 
 {% block singout_button%}
-    <p class="signout-link">
-        <a href="{{url_for('signin')}}">Sign out</a>
-    </p>
+    <a class="signout-link" href="{{url_for('signin')}}">
+        <button> Sign out </button>
+    </a>
 {% endblock %}
 
 {% block styles %}
