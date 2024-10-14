@@ -38,7 +38,23 @@ Our vision is to create a user-friendly library catalogue app that empowers user
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+make sure to pip install flask
+
+type the following commands into the console:
+
+export FLASK_APP=app.py 
+export FLASK_ENV=development
+flask run
+
+you should see something like this displayed to your console:
+
+peterdangelo@Peters-MBP 2-web-app-superteam % flask run
+ * Serving Flask app 'app.py'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+
+ Go to the given URL, and use "user" and the username and "password" as the password.
 
 ## Task boards
 
