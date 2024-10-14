@@ -2,7 +2,7 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
-### Project structure (10/12/2024)
+### Project structure (10/14/2024)
 
 ```text
 .
@@ -30,8 +30,8 @@ A little exercise to build a web application following an agile development proc
 │   ├── icon.svg
 │   └── trash-fill.svg
 ├── templates
+│   ├── auth.html
 │   ├── details.html
-│   ├── food_calories.html
 │   ├── food_instruction.html
 │   ├── index.html
 │   ├── my_weekly_report.html
@@ -235,12 +235,20 @@ $ sudo systemctl start mongod
 $ sudo systemctl status mongod
 ```
 
-___4. Open workspace and hit these two command to seed the data respectively___
+___4. Open the workspace, ensure your `.env` contains your localhost databse and API keys___
+```text
+# MongoDB Configuration
+MONGO_URI=YOUR_MONGODB_URI
+
+API_NINJAS_KEY=3/8OcZmswlIcnvOJgeDsig==wroCzK0qvIl8W7XM (copy this directly to the file)
+```
+
+___5. In the terminal, enter these two command to seed the data respectively___
 ```bash
 $ python utils/food_db.py
 $ python utils/exercise_db.py
 ```
-___5. Run the application___
+___6. Run the application___
 ```bash
 $ python app.py
 ```
