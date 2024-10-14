@@ -1,0 +1,280 @@
+/* Shared styles for main and create_project pages */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Nav Bar */
+.status-bar {
+    width: 100%;
+    background-color: #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative; /* Change this to relative */
+    top: 0;
+    z-index: 10; /* Ensure the bar stays above the content */
+}
+
+.status-bar span {
+    font-size: 14px;
+}
+
+header {
+    text-align: center;
+    margin: 60px 0 20px 0; /* Add some top margin to push it below the status bar */
+    padding-top: 20px;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+/* Card styles */
+.card {
+    background-color: #e0e0e0;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #d3d3d3;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: gray;
+}
+
+/* Program checkboxes */
+.program-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.program-item {
+    margin-bottom: 10px;
+}
+
+/* Project form styles */
+.project-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.project-form input,
+.project-form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.project-form button {
+    padding: 10px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.project-form button:hover {
+    background-color: #d3d3d3;
+}
+
+/* New Merged Styles */
+.header div {
+    font-size: 14px;
+}
+
+.nav {
+    background-color: #d3d3d3;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.section-title {
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.box {
+    background-color: #d3d3d3;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.box input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+li a:hover {
+    background-color: #d3d3d3;
+}
+
+/* Create button */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+
+.projects {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 1px solid #000;
+}
+
+
+/* Style for the project links to look like buttons */
+.button-link {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #ffffff; /* Green background */
+    color: rgb(0, 0, 0); /* White text */
+    border: 1px solid #000;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.button-link:hover {
+    background-color: #2a2c2a; /* Darker on hover */
+}
+
+/* Optional: Style for the container of each project link */
+.project-link {
+    margin-bottom: 10px; /* Add spacing between the links */
+}
+
+/* Profile Page Specific Styles */
+
+/* Profile container */
+.profile-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile picture section */
+.profile-picture-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.profile-picture-section p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Workspaces section */
+.workspaces-section h3 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.workspace-item {
+    background-color: #e0e0e0;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.workspace-item:hover {
+    background-color: #ccc;
+}
+
+/* Account section */
+.account-section h3 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.account-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.account-section ul li {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.account-section ul li:hover {
+    background-color: #ccc;
+}
+
+.account-section ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.account-section ul li a:hover {
+    color: #000;
+    text-decoration: underline;
+}

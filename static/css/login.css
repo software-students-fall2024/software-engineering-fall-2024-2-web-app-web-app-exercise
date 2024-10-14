@@ -1,0 +1,129 @@
+/* General styles for mobile-friendly layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    text-align: center; /* Ensure text is centered */
+}
+
+/* Container for login content */
+.container {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Take full height of the view */
+}
+
+
+/* Status bar (Time, Battery) */
+.status-bar {
+    width: 100%;
+    background-color: #ccc;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+}
+
+.status-bar span {
+    font-size: 14px;
+}
+
+/* Container for login content */
+.login-container, .signup-container {
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/* App Icon */
+.app-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px auto; /* Center the icon and add bottom margin */
+    background-image: url('../css/icon.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+/* Header */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Input styles */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+}
+
+/* Button styles */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #d3d3d3;
+}
+
+/* Link styles */
+.signup, .login {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.signup a, .login a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.signup a:hover, .login a:hover {
+    background-color: #bbb;
+}
+
+/* Ensure consistent spacing for the text */
+.signup p, .login p {
+    margin-bottom: 0;
+}

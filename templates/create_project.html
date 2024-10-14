@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Create Project</title>
+</head>
+{% extends 'base.html' %}{% block container %}
+<body>
+
+    <header>
+    <h1>Create Project</h1>
+    </header>
+    
+    <form class="project-form" action="{{ url_for('create_project') }}" method="POST">
+        <input type="text" name="project_name" placeholder="Your project name" required>
+        <textarea name="description" placeholder="Write your description here..." required></textarea>
+    
+        <input type="text" name="start_date" placeholder="Start date..." required>
+        <input type="text" name="due_date" placeholder="Due date..." required>
+        <input type="text" name="managers" placeholder="Managers..." required>
+        <input type="text" name="members" placeholder="Members..." required>
+    
+        <button type="submit">Create Project</button>
+    </form>
+    
+
+</body>
+{% endblock %}
+</html>

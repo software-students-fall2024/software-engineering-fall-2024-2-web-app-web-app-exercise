@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <div class="profile-container">
+    <div class="profile-picture-section">
+      <div class="profile-picture"></div>
+      <p>@{{ username }}</p>
+    </div>
+
+    <div class="workspaces-section">
+      <h3>YOUR WORKSPACES</h3>
+      <div class="workspace-item">
+        <a href="{{ url_for('home') }}">Workspace</a>
+      </div>
+    </div>
+
+    <div class="account-section">
+      <h3>ACCOUNT</h3>
+      <ul>
+        <!-- Removed Profile and Visibility -->
+        <li><a href="{{ url_for('logout') }}">Switch Accounts</a></li>
+        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+
