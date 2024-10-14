@@ -17,7 +17,7 @@ def login():
         return flask.render_template('login.html')
     email = flask.request.form['email']
     password = flask.request.form['email']
-    result = users.find_one( {"email":email, "password":password}, {})
+    result = users.find_one({}, {"email":email, "password":password})
     if result:
         user = User()
         user.id = email
