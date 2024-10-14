@@ -66,7 +66,7 @@ def create_app():
                     usersDB.insert_one(user)
                     return redirect(url_for("login"))
                 else:
-                    return render_template("register.html", message="Passwords don\'t match")
+                    return render_template("register.html", message="Passwords don't match")
         # Render the register page for GET requests
         return render_template("register.html")
 
