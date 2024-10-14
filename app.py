@@ -29,100 +29,94 @@ def search_exercise(query: str):
     })
     return list(exercises)
 
+
 def get_exercise(exercise_id: int):
+
     exercise = exercises_collection.find_one({"_id": exercise_id})
     return exercise
+
+
 def get_todo():
-    todo_list = todo_collection.find_one({"_id": 1})  
+
+    todo_list = todo_collection.find_one({"_id": 1})
     if todo_list and "todo" in todo_list:
-        return todo_list['todo']  
+        return todo_list['todo']
     return []
 
+
 def delete_todo(exercise_todo_id: int):
+
     todo_collection.update_one(
         {"_id": 1},
-        {"$pull": {"todo": {"exercise_id": exercise_todo_id}}}
+        {"$pull": {"todo": {"exercise_todo_id": exercise_todo_id}}}  # 修正为使用 exercise_todo_id
     )
-    print(f"Exercise with ID {exercise_todo_id} deleted from To-Do List.")
-
+    print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
 
 
 def add_todo(exercise_id: str):
+
     exercise = exercises_collection.find_one({"_id": int(exercise_id)})
-    
+
     if exercise:
-        exercise_item = {
-            "exercise_id": exercise['_id'],  
-            "workout_name": exercise["workout_name"],
-            "working_time": exercise.get("working_time", 0),  
-            "reps": exercise.get("reps", 0), 
-            "weight": exercise.get("weight", 0)  
-        }
-
-
         todo = todo_collection.find_one({"_id": 1})
 
+        if todo and "todo" in todo:
+            max_id = max([item.get("exercise_todo_id", 999) for item in todo["todo"]], default=999)
+            next_exercise_todo_id = max_id + 1
+        else:
+            next_exercise_todo_id = 1000
+
+        exercise_item = {
+            "exercise_todo_id": next_exercise_todo_id,
+            "exercise_id": exercise['_id'],
+            "workout_name": exercise["workout_name"],
+            "working_time": exercise.get("working_time", 0),
+            "reps": exercise.get("reps", 0),
+            "weight": exercise.get("weight", 0)
+        }
+
         if todo:
-            
             todo_collection.update_one(
                 {"_id": 1},
                 {"$push": {"todo": exercise_item}}
             )
         else:
- 
             todo_collection.insert_one({
                 "_id": 1,
                 "todo": [exercise_item]
             })
-        print(f"Exercise {exercise['workout_name']} added to To-Do List.")
+
+        print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
     else:
         print(f"Exercise with ID {exercise_id} not found.")
 
 
-
 def edit_exercise(exercise_todo_id, times, weight, reps):
+
     todo_collection.update_one(
-        {"_id": 1, "todo.exercise_id": exercise_todo_id},
+        {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
         {"$set": {
             "todo.$.working_time": times,
             "todo.$.reps": reps,
             "todo.$.weight": weight
         }}
     )
-    print(f"Exercise with ID {exercise_todo_id} updated in To-Do List.")
+    print(f"Exercise with To-Do ID {exercise_todo_id} updated in To-Do List.")
 
-def get_exercise_in_todo(exercise_todo_id):
+
+def get_exercise_in_todo(exercise_todo_id: int):
 
     todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
-    
+
     if not todo_item:
-        return None  
+        return None
 
     for item in todo_item['todo']:
         if item['exercise_todo_id'] == exercise_todo_id:
-            exercise_id = item['exercise_id']
-            break
-
-
-    exercise = exercises_collection.find_one({"_id": exercise_id})
-
-    if exercise:
-        return exercise
-    return None
-
-
-def get_exercise_in_todo(exercise_todo_id):
-
-    todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
-    
-    if not todo_item:
-        return None  
-
-    for item in todo_item['todo']:
-        if item['exercise_todo_id'] == exercise_todo_id:
-            return item 
+            return item
 
     return None
+
 
 def default_exercises():
     exercises_id = []  # add recommendation exercise id here
