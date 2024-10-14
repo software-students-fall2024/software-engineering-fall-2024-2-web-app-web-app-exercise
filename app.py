@@ -1,64 +1,70 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from pymongo import MongoClient
+import pymongo 
 from dotenv import load_dotenv
+from pymongo.server_api import ServerApi
 
-load_dotenv()
-
-class User(UserMixin):
-    def __init__(self, user_id, username):
-        self.id = user_id
-        self.username = username
+logged_in = False
+projects = None
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = os.getenv('SECRET_KEY')
+    app.secret_key = "KEY"
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'login'
-    login_manager.init_app(app)
+    uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
+    client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
+    db = client['tasks']
+    project_collection = db['projects']
+    user_list = db['users']
 
-    client = MongoClient(os.getenv('MONGO_URI'))
-    db = client.get_database("your_database_name")
-    users_collection = db["users"]
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        user_data = users_collection.find_one({"_id": ObjectId(user_id)})
-        if user_data:
-            return User(str(user_data['_id']), user_data['username'])
-        return None
+
+
+    @app.route("/")
+    def base():
+        return redirect(url_for('login'))
 
     @app.route("/main")
-    @login_required
     def home():
-        programs = [{"p_name": "1", "id": "1"}, {"p_name": "2", "id": "2"}]
-        return render_template("main.html", programs=programs)
+        global logged_in  
+        global projects
+
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
         
-    # team page
-    @app.route('/program/<id>')
-    def program(id):
-        programs = [{"p_name": "1", "id": "1", "task": ["1.1", "1.2"]}, {"p_name": "2", "id": "2", "task": ["2.1", "2.2"]}]
-        for program in programs:
-            if program["id"] == id:
-                return render_template("team.html", program=program)
+        # no matching projects
+        if (projects == None):
+            return render_template("main.html")
+
+        return render_template("main.html", docs=projects, docs2=projects)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
-
-        
-            user_data = users_collection.find_one({"username": username})
-            if user_data and user_data['password'] == password:  
-                user_obj = User(str(user_data['_id']), user_data['username'])
-                login_user(user_obj)
+            
+            # username within database, find matching projects then redirect
+            if (user_list.find_one({'username': username, 'password': password}) != None):
+                global projects
+                if (project_collection.find_one({'name': username}) != None):
+                    doc = project_collection.find({'name': username})
+                    projects = project_collection.find({'name': username})
+                else:
+                    projects = None
+                # redirect to main, logged_in is true
+                global logged_in 
+                logged_in = True
                 flash("Login successful!", "success")
                 return redirect(url_for('home'))
             else:
-                flash("Invalid credentials, please try again.", "danger")
+                return render_template("login.html", err="Invalid credentials, please try again.")
         
         return render_template("login.html")
     
@@ -67,14 +73,22 @@ def create_app():
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
-            flash("Registration successful!", "success")
-            return redirect(url_for('login'))
-        return render_template("register.html")
+            if (user_list.find_one({'username': username}) == None):
+                user_list.insert_one({'username': username, 'password': password})
+                flash("Registration successful!", "success")
+                return redirect(url_for('login'))
+            else:
+                return render_template("registration.html", err="Username taken, please try again.")
+        return render_template("registration.html")
     
 
     @app.route("/logout")
-    @login_required
     def logout():
+        global logged_in  
+
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
         logout_user()
         flash("Logged out successfully.", "info")
         return redirect(url_for('login'))
@@ -83,5 +97,5 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(port="5000")
 
