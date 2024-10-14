@@ -1,4 +1,4 @@
-N-A-J_Project/
+N-A-J_Project/Group Project Grinder
 │
 ├── app.py
 ├── .env
@@ -14,8 +14,7 @@ N-A-J_Project/
 │   └── team.html
 │
 ├── static/
-│   ├── images/
-│   │   └── icon.png
+│   ├── icon.png
 │   └── css/
 │       ├── login.css
 │       └── style.css

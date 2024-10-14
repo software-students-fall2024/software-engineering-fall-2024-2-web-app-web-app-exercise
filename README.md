@@ -69,7 +69,7 @@ To run the software, follow these steps:
      ```
 
 7. **Access the application**:
-   - Open a web browser and go to `http://127.0.0.1:5000/` to access the application interface.
+   - Open a web browser and go to `http://127.0.0.1:3000/` to access the application interface.
 
 8. **Deactivating the virtual environment**:
    - When finished, deactivate the virtual environment by typing:
