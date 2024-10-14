@@ -172,6 +172,22 @@ def create_app():
             )
         else:
             return redirect(url_for('login'))
+        
+    @app.route('/logout')
+    def logout():
+        global logged_in, projects_as_manager, projects_as_member
+            
+        # Reset the logged_in flag and project variables
+        logged_in = False
+        projects_as_manager = None
+        projects_as_member = None
+            
+        # Flash a message to inform the user of successful logout
+        flash("You have been logged out successfully.", "info")
+            
+        # Redirect the user to the login page
+        return redirect(url_for('login'))
+
     return app
     
 if __name__ == "__main__":
