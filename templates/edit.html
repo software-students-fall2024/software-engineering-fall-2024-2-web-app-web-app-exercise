@@ -56,16 +56,23 @@
         document.querySelectorAll('.exercise-save-btn').forEach(function(button) {
             button.addEventListener('click', function() {
                 const exerciseTodoId = this.getAttribute('data-id');
+                const formData = new FormData(document.getElementById('exercise-form'));
 
                 fetch(`/edit/${exerciseTodoId}`, {
                     method: 'POST',
+                    body: formData
                 })
                 .then(response => {
                     if (response.ok) {
-                        alert('Exercise Saved successfully!');
+                        alert('Exercise saved successfully!');
+                        window.location.href = '/todo'; // Redirect after saving
                     } else {
-                        alert('Failed to save the exercise data.');
+                        alert('Failed to save the exercise.');
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the exercise.');
                 });
             });
         });
