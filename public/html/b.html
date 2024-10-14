@@ -22,35 +22,58 @@
         <div class="exercise-list">
             <div class="exercise-item">
                 <label>Burpees</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Burpees">Add</button>
             </div>
 
             <div class="exercise-item">
                 <label>Push-ups</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Push-ups">Add</button>
             </div>
 
             <div class="exercise-item">
                 <label>Squat</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Squat">Add</button>
             </div>
 
             <div class="exercise-item">
                 <label>Deadlift</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Deadlift">Add</button>
             </div>
 
             <div class="exercise-item">
                 <label>Pilates</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Pilates">Add</button>
             </div>
 
             <div class="exercise-item">
                 <label>Box Jumps</label>
-                <button class="add-btn">Add</button>
+                <button class="add-btn" data-name="Box Jumps">Add</button>
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.add-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const exerciseName = this.getAttribute('data-name');
+
+                fetch('/add_exercise', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: exerciseName })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Exercise "${exerciseName}" added successfully!`);
+                    } else {
+                        alert('Failed to add the exercise');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
