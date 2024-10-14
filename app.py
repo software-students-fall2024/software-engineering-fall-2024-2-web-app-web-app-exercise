@@ -11,14 +11,13 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     
-    app.secret_key = "1Aaoo6C4ghz4aGTRqZV5AA3wzQ0cRjkv"
+    app.secret_key = "1Aaoo6C4ghz4aGTRqZV5AA3wzQ0cRjkv"  # actually, this is supposed to go into .env, but leave it for now
     
     db_uri = os.getenv("DB_URI")
-    # Create a new client and connect to the server
+    
     client = MongoClient(db_uri)
     db = client['bookstore']
     
-    # Send a ping to confirm a successful connection
     try:
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
@@ -42,7 +41,6 @@ def create_app():
             username = request.form.get('username')
             password = request.form.get('password')
 
-            # Check if the user exists in the collection
             user = usersDB.find_one({"username": username})
 
             if user and password == user['password']:
@@ -52,7 +50,6 @@ def create_app():
             else:
                 return render_template("login.html", message="Invalid credentials.")
 
-        # Render the login page for GET requests
         return render_template("login.html")
     
     @app.route("/register", methods = ["GET", "POST"])
@@ -64,7 +61,6 @@ def create_app():
             password1 = request.form.get('password1')
             password2 = request.form.get('password2')
             
-            # Check if the user exists in the collection
             user = usersDB.find_one({"username": username})
 
             if user:
@@ -79,7 +75,7 @@ def create_app():
                     return redirect(url_for("login"))
                 else:
                     return render_template("register.html", message="Passwords don't match.")
-        # Render the register page for GET requests
+                
         return render_template("register.html", message="")
 
 
@@ -99,15 +95,12 @@ def create_app():
         """
         query = {}
         
-        #Get the query parameters from the request's query string
         title = request.args.get('title')
         author = request.args.get('author')
         genre = request.args.get('genre')
         date_added = request.args.get('date_added')
         price = request.args.get('price')
         
-        #Build the query
-        #Search for containment and case-insensitive
         if title:
             query['title'] = {'$regex': title, '$options':'i'}
         if author:
@@ -120,7 +113,7 @@ def create_app():
                 query['date_added'] = date_obj
             except ValueError:
                 return "Invalid date format. Please use YYYY-MM-DD.", 400
-       # Price filter: Search for books with price <= given value
+        # Price filter: Search for books with price <= given value
         if price:
             try:
                 price_value = float(price)  # Ensure valid float input
@@ -128,11 +121,8 @@ def create_app():
             except ValueError:
                 return "Invalid price format. Please enter a valid number.", 400
             
-            
-        # Perform the search on the books collection
         results = db.books.find(query) if query else []
         
-        #Render the search results
         return render_template('search.html', books=results)
     
     @app.route("/delete/<book_id>", methods=["POST"])
