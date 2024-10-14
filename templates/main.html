@@ -1,3 +1,12 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome!</title>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+  />
+</head>
 {% extends 'base.html' %}{% block container %}
 <body>
   <h1>Welcome, {{ username }}!</h1>
@@ -8,7 +17,9 @@
     <div class="section-title">As a manager...</div>
     {% if docs_as_manager is defined %}
       {% for doc in docs_as_manager %}
-      <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
+      <div class="project-link">
+        <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+      </div>
       {% endfor %}
     {% else %}
       <p>No projects. Try adding some!</p>
@@ -17,7 +28,9 @@
     <div class="section-title">As a member...</div>
     {% if docs_as_member is defined %}
       {% for doc in docs_as_member %}
-      <li><a href="{{ url_for('home') }}">{{ doc.projectName }}</a></li>
+      <div class="project-link">
+        <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+      </div>
       {% endfor %}
     {% else %}
       <p>No projects. Try adding some!</p>

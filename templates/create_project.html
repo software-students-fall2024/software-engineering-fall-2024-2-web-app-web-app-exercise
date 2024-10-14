@@ -6,11 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Create Project</title>
 </head>
+{% extends 'base.html' %}{% block container %}
 <body>
-    <div class="status-bar">
-        <span>Time</span>
-        <span>Battery</span>
-    </div>
 
     <header>
     <h1>Create Project</h1>
@@ -30,4 +27,5 @@
     
 
 </body>
+{% endblock %}
 </html>
