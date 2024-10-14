@@ -121,6 +121,12 @@
         <div class="signup">
             <p>Already have an account? <a href="/login">Login</a></p>
         </div>
+
+        {% if err is defined %}
+        <div class="registrationErr">
+            <p>{{err}}</p>
+        </div>
+        {% endif %}
     </div>
 
 </body>
