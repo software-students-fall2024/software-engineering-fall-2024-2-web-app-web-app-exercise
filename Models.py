@@ -5,9 +5,6 @@ from datetime import datetime
 """
 for any mongodb operators, this is the reference:
     https://www.mongodb.com/docs/manual/reference/operator
-
-for datetime.timedelta reference, please check in here:
-    https://docs.python.org/3/library/datetime.html#timedelta-objects
 """
 
 class User:
@@ -101,11 +98,29 @@ class User:
         return None
 
     def reset_body_values(self):
+        # Resets only today's values
         current_day_index = datetime.now().weekday()
         update_fields = {
-            f"weekly_values.0.weekly_calorie.{current_day_index}": None,
-            f"weekly_values.0.weekly_weight.{current_day_index}": None,
-            f"weekly_values.0.weekly_bmi.{current_day_index}": None
+            f"weekly_values.0.weekly_calorie.{current_day_index}": 0,
+            f"weekly_values.0.weekly_weight.{current_day_index}": 0,
+            f"weekly_values.0.weekly_bmi.{current_day_index}": 0,
+            f"weekly_values.0.weekly_protein.{current_day_index}": 0,
+            f"weekly_values.0.weekly_carbs.{current_day_index}": 0,
+            f"weekly_values.0.weekly_fats.{current_day_index}": 0,
+            f"weekly_values.0.weekly_sugar.{current_day_index}": 0
+        }
+        self.__collection.update_many({}, {"$set": update_fields})
+    
+    # this method resets the entire week values to zero atht beginning of a new week
+    def reset_weekly_values(self):
+        update_fields = {
+            "weekly_values.0.weekly_weight": [0] * 7
+            , "weekly_values.0.weekly_calorie": [0] * 7
+            , "weekly_values.0.weekly_bmi": [0] * 7
+            , "weekly_values.0.weekly_protein": [0] * 7
+            , "weekly_values.0.weekly_carbs": [0] * 7
+            , "weekly_values.0.weekly_fats": [0] * 7
+            , "weekly_values.0.weekly_sugar": [0] * 7
         }
         self.__collection.update_many({}, {"$set": update_fields})
 

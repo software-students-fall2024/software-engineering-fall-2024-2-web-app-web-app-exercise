@@ -270,7 +270,6 @@ def reset_timer(workout_name):
     return make_response("", 204)
 """-------------------------------------End of the page render functions------------------------------------------------"""
 
-
 """-----------------------------------------API Endpoints--------------------------------------------------------------"""
 
 # endpoint search exercise (workout instruction action) by name
@@ -363,7 +362,6 @@ def register_api():
         pass
     return jsonify(response), status_code
 
-
 # user login
 @app.route('/api/user/login', methods=['POST'])
 def login_api():
@@ -423,6 +421,29 @@ def get_nutrition_values():
         , "fats": values.get("weekly_fats", [0] * 7)[current_day_index] or 0
         , "sugar": values.get("weekly_sugar", [0] * 7)[current_day_index] or 0
     })
+
+# enpoint for updating the value from bmi calculater in index
+@app.route("/api/user/update_body_values", methods=["PUT"])
+def update_body_values():
+    user_name = session.get("user_name")
+    if not user_name:
+        return jsonify({"error": "User not logged in"}), 401
+    
+    data = request.json
+    weight = data.get("weight")
+    height = data.get("height")
+
+    if weight is None or height is None:
+        return jsonify({"error": "Weight and height are required"}), 400
+    
+    # extract height details
+    height_feet = height.feet("feet")
+    height_inches = height.get("inches")
+
+    if height_feet is None or height_inches is None:
+        return jsonify({"error": "Both height feet and inches are required"}), 400
+
+    # use the calculate_bmi from the Nutrition() object
 """-----------------------------------------APScheduler--------------------------------------------------------------"""
 # APScheduler to implement the countdown timer
 def decrement_all_timers():
@@ -434,8 +455,11 @@ def reset_daily_nutrition():
 
 # APScheduler to reset daily values (weight and bmi)
 def reset_daily_values():
-    nutrition_service.reset_daily_nutrition()
     user_service.reset_body_values()
+
+# APscheduler to reset weekly values (weekly nutrition and body values)
+def reset_weekly_values():
+    user_service.reset_weekly_values()
 
 # function to reset the daily workout plan
 def reset_daily_workout_plans():
@@ -446,9 +470,12 @@ def reset_daily_workout_plans():
 
 # initialize APScheduler background job object
 scheduler = BackgroundScheduler()
+
 # schedule the reset job to run at midnight every day
 scheduler.add_job(reset_daily_values, 'cron', hour=0, minute=0)
 scheduler.add_job(reset_daily_workout_plans, 'cron', hour=0, minute=0)
+# reset weekly values every at the beginning of the Monday (00:00)
+scheduler.add_job(reset_weekly_values, 'cron', day_of_week='mon', hour=0, minute=0)
 # this scheduler is the countdown scheduler for all users
 scheduler.add_job(decrement_all_timers, IntervalTrigger(seconds=1))
 

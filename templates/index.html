@@ -18,7 +18,7 @@
     {% if session.get('user_name') %}
     <div class="main-container">
         <h1>Daily Calories Record</h1>
-        <p id="current-day">Date: Monday</p>
+        <p id="current-day"></p>
     </div>
     <div class="container p-5 mb-5 rounded bg-light shadow-sm">
         <h2 class="content-in-box mb-4">Daily value: <span id="calories-value">0</span> / --cal</h2>
@@ -140,6 +140,15 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Get the current day of the week and set it in the #current-day element
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const currentDate = new Date();
+            const currentDay = daysOfWeek[currentDate.getDay()];
+
+            document.getElementById("current-day").textContent = `Date: ${currentDay}`;
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
             const timerContainers = document.querySelectorAll('[id^="timer-display-"]');
     
             // Update timer displays every second
@@ -196,6 +205,48 @@
                 });
             });
         });
+
+        function validateInputs() {
+            const weight = parseFloat(document.getElementById("weight").value);
+            const heightFeet = parseFloat(document.getElementById("height-feet").value);
+            const heightInches = parseFloat(document.getElementById("height-inches").value);
+
+            if (isNaN(weight) || isNaN(heightFeet) || isNaN(heightInches)) {
+                alert("Please enter valid values for weight and height.");
+                return;
+            }
+
+            // Update the database
+            const data = {
+                weight: weight,
+                height: {
+                    feet: heightFeet,
+                    inches: heightInches
+                }
+            };
+
+            fetch(`/api/user/update_body_values`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.ok) {
+                    alert("BMI and Weight updated successfully!");
+                    return response.json();
+                } else {
+                    throw new Error("Error updating values.");
+                }
+            }).then(data => {
+                if (data.bmi !== undefined) {
+                    document.getElementById("bmi").value = data.bmi;
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert("Error updating values. Please try again.");
+            });
+        }
     
         function updateTimerDisplay(workoutName, container) {
             fetch(`/api/timer_status/${workoutName}`)

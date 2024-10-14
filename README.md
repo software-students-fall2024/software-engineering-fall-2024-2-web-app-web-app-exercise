@@ -42,7 +42,7 @@ A little exercise to build a web application following an agile development proc
     └── food_db.py
 ```
 
-### Idea of User structure (db["usr"] collection) - updated in 10/13/2024, test day on Sat
+### Idea of User structure (db["usr"] collection) - updated in 10/13/2024, test day on Sun
 ```json
 [
     {
@@ -119,7 +119,28 @@ A little exercise to build a web application following an agile development proc
                 ]
             }
         ],
-        "daily_workout_plan": []
+        "daily_workout_plan": [
+            {
+            "name": "seated side crunch (wall)",
+            "setNum": 2,
+            "gif_path": "images/seated_side_crunch_wall.gif",
+            "target_muscle": "abs",
+                "timer": {
+                    "duration": 0,
+                    "status": "stopped"
+                }
+            },
+            {
+            "name": "band vertical pallof press",
+            "setNum": 5,
+            "gif_path": "images/band_vertical_pallof_press.gif",
+            "target_muscle": "abs",
+                "timer": {
+                    "duration": 0,
+                    "status": "stopped"
+                }
+            }
+        ]
     },
     {
         ...
