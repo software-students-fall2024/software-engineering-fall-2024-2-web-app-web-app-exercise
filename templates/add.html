@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <header class="header">
+        <i class="bx bx-menu" id="menu-icon"></i>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('account') }}">Account</a></li> 
+            <li><a href="{{ url_for('index') }}">Home</a></li> 
+            <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
+            <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
+            <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
+            <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
+        </ul>
+</header>
     <div class="container">
         <h1>Add Transaction</h1>
         <form method="POST">
@@ -31,10 +42,6 @@
             <button type="submit" class="button">Add Transaction</button>
         </form>
     </div>
-    <div class="container" id="navigation page">
-        <!--  Home Button and Search button  -->
-        <button type="button" onclick="to('{{ url_for(\'home\')}}')">Home</button>
-        <button type="button" onclick="to('{{ url_for(\'search\') }}')">Search Transactions</button>
-    </div>
+
 </body>
 </html>

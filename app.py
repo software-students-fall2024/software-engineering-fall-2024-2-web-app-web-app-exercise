@@ -49,9 +49,10 @@ def save_account():
 
     return redirect(url_for('home'))
 
+
 # Homepage route
 @app.route('/')
-def home():
+def index():
     # Fetch budget data from the 'budgets' collection
     budget_data = db['budgets'].find_one()
 
@@ -81,13 +82,14 @@ def home():
     )
 
     return render_template(
-        'home.html', 
+        'index.html', 
         transactions=transactions, 
         balance=balance,  # total budget - expenses
         spending_budget=spending_budget,  # user gives - stays constant
         budget_left=budget_left,  # spending budget minus expenses
         name=name
     )
+
 
 # View all transactions
 @app.route('/transactions')
@@ -119,6 +121,7 @@ def add_transaction():
         return redirect(url_for('view_transactions'))
 
     return render_template('add.html')
+
 @app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
     # Fetch all transactions for the dropdown menu

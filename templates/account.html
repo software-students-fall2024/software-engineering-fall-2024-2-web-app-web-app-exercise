@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <header class="header">
+        <i class="bx bx-menu" id="menu-icon"></i>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('account') }}">Account</a></li> 
+            <li><a href="{{ url_for('index') }}">Home</a></li> 
+            <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
+            <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
+            <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
+            <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
+        </ul>
+</header>
     <!-- setting up account, only one time use in beginning -->
     <div id="account-page">
         <h2>Set up your account</h2>
@@ -25,9 +36,7 @@
                 <input type="number" id="spending_budget" name="spending_budget" class="form-control" required>
             </div>
             <!-- button to redirect -->
-            <div class="button-group">
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ url_for('home') }}';">Back to Home</button>
-                
+            <div class="button-group">                
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
