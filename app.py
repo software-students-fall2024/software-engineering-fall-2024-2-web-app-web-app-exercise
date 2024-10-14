@@ -49,15 +49,13 @@ def create_app():
     # main route displays home screen with all projects
     @app.route("/main")
     def home():
-        global logged_in  
-        global projects       
-                          
+
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
         
         # no matching projects
-        if (projects_as_manager == None and project_members == None):
+        if (projects_as_manager == None and projects_as_member == None):
             return render_template("main.html")
         # only have projects as a member
         elif (projects_as_manager == None):
@@ -81,14 +79,14 @@ def create_app():
             
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
-                global projects_as_manager
-                global projects_as_member
-
+                
                 # check if any projects contain the username as a manager
                 if (project_collection.find_one({'managers': username}) != None):
+                    global projects_as_manager
                     projects_as_manager = project_collection.find({'managers': username})
                 # check if any projects contain the username as a member
                 if (project_collection.find_one({'members': username}) != None):
+                    global projects_as_member
                     projects_as_member = project_collection.find({'members': username})
 
                 # redirect to main, logged_in is true
