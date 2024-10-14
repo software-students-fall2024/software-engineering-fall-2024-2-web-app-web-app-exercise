@@ -47,7 +47,7 @@ def create_app():
 
             if user and password == user['password']:
                 session['logged_in'] = True
-                session['username'] = user
+                session['username'] = user['username']
                 return redirect(url_for("home"))
             else:
                 return render_template("login.html", message="Invalid credentials.")
