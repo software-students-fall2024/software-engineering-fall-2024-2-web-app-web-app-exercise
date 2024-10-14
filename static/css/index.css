@@ -93,13 +93,6 @@ a:hover {
 }
 */
 
-.signout-link {
-    position: absolute;
-    font-size: 1.25rem;
-    top: 20px;
-    right: 15px;
-    z-index: 999;
-}
 /*
 .title {
     margin: 0;
@@ -107,15 +100,6 @@ a:hover {
     flex-grow: 1;
 }
 */
-.signout-link a {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-    padding-right: 1rem;
-}
-.signout-link a:hover{
-    text-decoration: underline;
-}
 /*
 footer {
     text-align: center;
