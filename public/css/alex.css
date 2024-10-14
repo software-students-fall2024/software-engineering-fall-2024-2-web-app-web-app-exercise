@@ -20,6 +20,13 @@ body {
     font-size: 22px;
 }
 
+.instruction-title {
+    flex: 1;
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
 .exercise-container, .search-container, .exercise-instruct-container, .progress-container {
     width: 320px; 
     background-color: white;
