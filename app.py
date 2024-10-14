@@ -24,7 +24,7 @@ def create_app():
     except Exception as e:
         print("MongoDB connection error:", e)
     
-    
+    # Decorator to check if user is logged in
     def login_required(f):
         def wrapper(*args, **kwargs):
             if not session.get('logged_in'):
@@ -77,8 +77,13 @@ def create_app():
                     return render_template("register.html", message="Passwords don't match.")
                 
         return render_template("register.html", message="")
+    
 
-
+    @app.route("/", methods=["GET"])
+    @login_required
+    def root():
+        return redirect(url_for("home"))
+        
     @app.route("/home", methods=["GET"])
     @login_required
     def home():
