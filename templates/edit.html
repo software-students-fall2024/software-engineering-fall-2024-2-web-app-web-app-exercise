@@ -28,24 +28,21 @@
 
         <!-- <a href="/add_exercise/{{ exercise_id }}" class="add-todo-btn">Add to My ToDo List</a> -->
 
-        <button class="add-todo-btn">Add to My ToDo List</button>
-
-        <form method="POST" action="/edit?exercise_todo_id={{exercise_todo_id}}">
+        <form id="exercise-form" method="POST" action="/edit/{{ exercise.exercise_todo_id }}">
             <div class="exercise-data">
                 <div class="exercise-time">
-                    <label for="timer">Timer:</label>
-                    <input type="text" id="minutes" placeholder="Min" style="display: inline-block; width: 50px;">
-                    <input type="text" id="seconds" placeholder="Sec" style="display: inline-block; width: 50px;">
+                    <label for="working_time">Timer:</label>
+                    <input type="text" id="working_time" placeholder="Min" value="{{ exercise.working_time }}" style="display: inline-block; width: 50px;">
                 </div>
 
                 <label for="reps">Reps/Group:</label>
-                <input type="text" id="reps" placeholder="_">
+                <input type="text" id="reps" placeholder="_" value="{{ exercise.reps }}">
 
                 <label for="weight">Weight:</label>
-                <input type="text" id="weight" placeholder="_ Kg">
+                <input type="text" id="weight" placeholder="_ Kg" value="{{ exercise.weight }}">
 
                 <div class="exercise-save">
-                    <button class="exercise-save-btn">Save</button>
+                    <button class="exercise-save-btn" data-id="{{ exercise.exercise_todo_id }}">Save</button>
                 </div>
             </div>
         </form>
@@ -54,5 +51,31 @@
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
         </footer>
     </div>
+
+    <script>
+        document.querySelectorAll('.exercise-save-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const exerciseTodoId = this.getAttribute('data-id');
+                const formData = new FormData(document.getElementById('exercise-form'));
+
+                fetch(`/edit/${exerciseTodoId}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Exercise saved successfully!');
+                        window.location.href = '/todo'; // Redirect after saving
+                    } else {
+                        alert('Failed to save the exercise.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the exercise.');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
