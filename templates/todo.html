@@ -12,7 +12,7 @@
         <header>
             <h1>To Do List</h1>
             <p>Date, Day of the week</p>
-            <button class="add-todo-btn" onclick="window.location.href='/add';">Add</button>
+            <button class="add-todo-btn" onclick="window.location.href='/search';">Add</button>
             <button class="delete-all-btn" onclick="window.location.href='/delete_exercise';">Delete All</button>
         </header>
 
@@ -23,35 +23,13 @@
         </section>
 
         <div class="todo-list">
-            <!--<div class="todo-item">
-                <input type="checkbox" class="task-checkbox">
-                <label>Strength</label>
-            </div>
-
-            <div class="todo-item">
-                <input type="checkbox" class="task-checkbox">
-                <label>Cardio</label>
-            </div>
-
-            <div class="todo-item">
-                <input type="checkbox" class="task-checkbox">
-                <label>Interval Training</label>
-            </div>
-
-            <div class="todo-item">
-                <input type="checkbox" class="task-checkbox">
-                <label>Core Workouts</label>
-            </div>
-
-            <div class="todo-item">
-                <input type="checkbox" class="task-checkbox">
-                <label>Flexibility & Mobility</label>
-            </div>-->
             <div class="todo-list">
                 {% for exercise in exercises %}
                 <div class="todo-item">
                     <input type="checkbox" class="task-checkbox" {% if exercise.completed %}checked disabled{% endif %}>
-                    <label>{{ exercise.name }}</label>
+                    <button onclick="window.location.href='/edit?exercise_todo_id={{ exercise.exercise_todo_id }}'">
+                        {{ exercise.name }}
+                    </button>
                 </div>
                 {% endfor %}
             </div>
