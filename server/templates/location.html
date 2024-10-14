@@ -44,29 +44,29 @@
 
       /* Styles for the transactions box */
       .transactions-box {
-            border: 2px solid black; /* Black border */
-            padding: 20px; /* Padding inside the box */
-            border-radius: 10px; /* Rounded corners */
-            text-align: center; /* Center the text */
-            margin-top: 40px; /* Space above the box */
-            background-color: white; /* Background color */
-        }
+        border: 2px solid black; /* Black border */
+        padding: 20px; /* Padding inside the box */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center; /* Center the text */
+        margin-top: 40px; /* Space above the box */
+        background-color: white; /* Background color */
+      }
 
-        .button {
-            padding: 15px 30px;
-            font-size: 18px;
-            color: white;
-            background-color: #4caf50;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none; /* Remove underline for link */
-        }
+      .button {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none; /* Remove underline for link */
+      }
 
-        .button:hover {
-            background-color: #45a049;
-        }
+      .button:hover {
+        background-color: #45a049;
+      }
     </style>
   </head>
   <body>
@@ -105,9 +105,10 @@
         </ul>
       </div>
     </div>
-    <div class="transactions-box">
-      <h1>See Transactions</h1>
-      <a href="/transactions/{{ store_location }}" class="button">View Transactions</a>
-  </div>
+    <a style="text-decoration: none; color: black" href="/transactions/{{ store_location }}">
+      <div class="transactions-box">
+        <h1>View Transactions</h1>
+      </div></a
+    >
   </body>
 </html>
