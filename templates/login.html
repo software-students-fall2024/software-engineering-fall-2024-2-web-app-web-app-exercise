@@ -1,23 +1,23 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form action="/login" method="POST">
-            <input type="text" name="username" placeholder="Enter username" id="username" minlength="6" required>
-            <input type="password" name="password" placeholder="Enter password" id="password" minlength="8" required>
-            <input type="submit" value="Log In" id="login">
-        </form>
+{% extends 'base.html' %}
 
-        <p id="errorMessage" style="color: red;"></p>
-        <script>
-            const message = "{{ message }}";
-            if (message) {
-                document.getElementById('errorMessage').innerText = message;
-            }
-        </script>
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 
-        <a href="/register" id="register">Register</a>
-    </body>
-</html>
+{% block container %}
+    <form action="/login" method="POST">
+        <input type="text" name="username" placeholder="Enter username" id="username" minlength="6" required>
+        <input type="password" name="password" placeholder="Enter password" id="password" minlength="8" required>
+        <input type="submit" value="Log In" id="login">
+    </form>
+
+    <p id="errorMessage" style="color: red;"></p>
+    <script>
+        const message = "{{ message }}";
+        if (message) {
+            document.getElementById('errorMessage').innerText = message;
+        }
+    </script>
+
+    <a href="/register" id="register">Register</a>
+{% endblock %}

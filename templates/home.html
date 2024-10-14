@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block container %}
     <h1>Welcome!</h1> 
     <h3>My Inventory</h3>
@@ -7,13 +11,12 @@
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone Number(s)</th>
+                <th>Book Title</th>
+                <th>Quantity</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in inventory %}
+            {% for book in books %}
             <tr>
                 <td></td>
                 <td></td>
@@ -23,6 +26,4 @@
             {% endfor %}
         </tbody>
     </table>
-
-
 {% endblock %}

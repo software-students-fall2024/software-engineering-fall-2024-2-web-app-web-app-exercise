@@ -66,14 +66,16 @@ def create_app():
                     usersDB.insert_one(user)
                     return redirect(url_for("login"))
                 else:
-                    return render_template("register.html", message="Passwords don't match")
+                    return render_template("register.html", message="Passwords don't match.")
         # Render the register page for GET requests
         return render_template("register.html")
 
 
     @app.route("/home")
     def home():
-        return render_template('home.html')
+        books = db.books.find({}, {"title": 1, "quantity": 1})
+        book_lst = list(books)
+        return render_template('home.html', books=book_lst)
         
     @app.route("/search")
     def search():
@@ -161,12 +163,6 @@ def create_app():
         result = db.books.insert_one(nbook)
         book_id = result.inserted_id
         return redirect(url_for("home"))
-    
-    @app.route("/show_inventory", methods=["GET"])
-    def show_inventory():
-        books = db.books.find({}, {"title": 1, "quantity": 1})
-        list = list(books)
-        return render_template('show_inventory.html', books=list)
 
     @app.route("/book_detail/<book_id>", methods=["GET"])
     def book_detail(book_id):
