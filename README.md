@@ -26,8 +26,6 @@ Our vision is to create a user-friendly library catalogue app that empowers user
 
 “As a person who often forgets to return books, I want an easy way to keep track of my book due dates so that I don’t rack up late fees”
 
-“As a person who often forgets to return books, I want an easy way to keep track of my book due dates so that I don’t rack up late fees”
-
 "As someone with difficulty with reading small screens, I want to search for books by image so that I can quickly find the books I'm looking for."
 
 "As someone who checks out a lot of books, I want to view a list of all the books I’ve currently checked out so that I can keep track of what I need to return and their due dates."
