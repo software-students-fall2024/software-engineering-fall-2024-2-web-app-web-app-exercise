@@ -7,7 +7,21 @@ from pymongo.server_api import ServerApi
 logged_in = False
 projects = None
 
+
+############## Database Organization ###############
+
+''' Project Document Structure
+{"_id": ObjectId('________'),
+"projectName": "projectName",
+"managers": ["manager1", "manager2"],
+"members": ["member1", "member2"],
+"tasks": [{"taskName": "xxx", "date", "yyy", "status": "not-complete"}, ...]
+
+'''
+#####################################################
+
 def create_app():
+    # APP SETUP
     app = Flask(__name__)
     app.secret_key = "KEY"
 
@@ -24,11 +38,13 @@ def create_app():
         print(e)
 
 
-
+    ############# ROUTES #############
+    # base route redirects to login
     @app.route("/")
     def base():
         return redirect(url_for('login'))
 
+    # main route displays home screen with all projects
     @app.route("/main")
     def home():
         global logged_in  
@@ -44,6 +60,10 @@ def create_app():
 
         return render_template("main.html", docs=projects, docs2=projects)
 
+    # route to login page
+    # if POST, check if username and password match
+    # if match, redirect to main
+    # if not, return to login with error message
     @app.route("/login", methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
@@ -68,6 +88,9 @@ def create_app():
         
         return render_template("login.html")
     
+    # route to register page
+    # if POST, check if username is taken
+    # if not, add to database and redirect to login
     @app.route("/register", methods=['GET', 'POST'])
     def register():
         if request.method == 'POST':
@@ -81,18 +104,6 @@ def create_app():
                 return render_template("registration.html", err="Username taken, please try again.")
         return render_template("registration.html")
     
-
-    @app.route("/logout")
-    def logout():
-        global logged_in  
-
-        # not logged in yet, return to login
-        if (logged_in == False):
-            return redirect(url_for('login'))
-        logout_user()
-        flash("Logged out successfully.", "info")
-        return redirect(url_for('login'))
-
     return app 
 
 if __name__ == "__main__":
