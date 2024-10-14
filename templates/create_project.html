@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,26 +16,18 @@
     <h1>Create Project</h1>
     </header>
     
-    <form class="project-form">
-        <input type="text" placeholder="Your project name">
-        <textarea placeholder="Write your description here..."></textarea>
-
-        <label>Quick Action</label>
-        <div>
-            <input type="radio" name="action" id="add-to-do">
-            <label for="add-to-do">Add to-do list</label>
-        </div>
-        <div>
-            <input type="radio" name="action" id="add-members">
-            <label for="add-members">Members</label>
-        </div>
-
-        <input type="text" placeholder="Start date...">
-        <input type="text" placeholder="Due date...">
-        <input type="text" placeholder="Members...">
-
+    <form class="project-form" action="{{ url_for('create_project') }}" method="POST">
+        <input type="text" name="project_name" placeholder="Your project name" required>
+        <textarea name="description" placeholder="Write your description here..." required></textarea>
+    
+        <input type="text" name="start_date" placeholder="Start date..." required>
+        <input type="text" name="due_date" placeholder="Due date..." required>
+        <input type="text" name="managers" placeholder="Managers..." required>
+        <input type="text" name="members" placeholder="Members..." required>
+    
         <button type="submit">Create Project</button>
     </form>
+    
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* Shared styles for main and creat_project pages */
+/* Shared styles for main and create_project pages */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -26,7 +26,6 @@ body {
     z-index: 10; /* Ensure the bar stays above the content */
 }
 
-
 .status-bar span {
     font-size: 14px;
 }
@@ -36,7 +35,6 @@ header {
     margin: 60px 0 20px 0; /* Add some top margin to push it below the status bar */
     padding-top: 20px;
 }
-
 
 h1 {
     font-size: 24px;
@@ -108,4 +106,53 @@ h1 {
 
 .project-form button:hover {
     background-color: #d3d3d3;
+}
+
+/* New Merged Styles */
+.header div {
+    font-size: 14px;
+}
+
+.nav {
+    background-color: #d3d3d3;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.section-title {
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.box {
+    background-color: #d3d3d3;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.box input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+li a:hover {
+    background-color: #d3d3d3;
+}
+
+/* Create button */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-sizing: border-box;
 }
