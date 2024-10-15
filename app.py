@@ -97,11 +97,9 @@ def create_app():
         focus_time = request.form['focus']
         subject = request.form['subject']
 
-        # add session info to database
-
         session_data = {
         "username": current_user.id,
-        "focus_time": int(focus_time),
+        "focus_time": focus_time,
         "subject": subject,
         "created_at": datetime.now(timezone.utc)
         }
@@ -113,13 +111,17 @@ def create_app():
     @app.route("/counter")
     def counter():
         """
-        Route for POST requests to the create page.
-        Accepts the form submission data for a new document and saves the document to the database.
-        Returns:
-            redirect (Response): A redirect response to the home page.
+        Route to display the counter with the focus time.
+        Retrieves the latest session from the database and passes the data to the template.
         """
+        latest = db.sessions.find_one(sort=[("created_at", -1)])
 
-        return render_template("counter.html")
+        focus_time = int(latest['focus_time'])
+
+        if focus_time == 0 or focus_time == None:
+            focus_time = 0
+
+        return render_template("counter.html", focus_time=focus_time)
 
     return app
 
