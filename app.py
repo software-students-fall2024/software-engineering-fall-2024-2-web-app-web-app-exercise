@@ -115,6 +115,11 @@ def create_app():
         logout_user() 
         return redirect(url_for('home'))
     
+    @app.route("/delete-acct")
+    @login_required 
+    def delete_acct():
+        logout_user() 
+        return render_template("delete-acct.html")
     
     @app.route("/user-info",methods=["POST"])
     @login_required
