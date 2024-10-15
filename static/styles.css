@@ -10,6 +10,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 600px;
 }
 
 form {
@@ -42,6 +43,20 @@ label {
 .container {
     max-width: 600px;
     margin: 0 auto;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.container button {
+    display: block
+}
+
+.center-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .welcome {
@@ -143,8 +158,7 @@ ul {
 
 .button-container {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: space-evenly;
 }
 
 .attendees-list {
