@@ -167,4 +167,7 @@ footer a {
  .add-workout-container{
   max-width: 80%;
  }
+ .timer-controls .btn{
+  padding: 5px 10px;
+ }
 }
