@@ -9,20 +9,9 @@ import os
 # Initialize Flask application
 app = Flask(__name__)
 
-''' MongoDB Remote Server connection
-client = MongoClient('mongodb://localhost:27017/')
-db = client['bankingSystem']
-transactions_collection = db['transactions']'''
 
-# client = MongoClient('mongodb://localhost:27017/')
-# db = client['bankingSystem']
-# transactions_collection = db['transactions']
-
-# MongoDB Atlas connection 
-# client = MongoClient('mongodb+srv://nsb8225:<webstars>@cluster0.i1yb0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-# db = client['SWE_Project_2-Webstars']
-# transactions_collection = db['transactions']
 app.secret_key = os.getenv('SECRET_KEY')
+
 MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['SWE_Project_2-Webstars']
