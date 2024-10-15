@@ -37,3 +37,33 @@ body{
 .welcome{
     margin-left: 40px;
 }
+
+.code-box{
+    background: lightgray;
+    padding: 10px 20px;
+    width: 250px;
+}
+
+.request-row{
+    border: 1px solid black;
+    padding: 10px 20px;
+}
+
+.track-request{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.track-request-left{
+    flex-grow: 5;
+}
+
+.track-request-right{
+    flex-grow: 1;
+    border: 2px solid gray;
+    padding: 10px 20px;
+    min-width: 200px;
+}
