@@ -28,7 +28,11 @@ def get_transactions(store_location):
         sale_amount = 0
         for item in sale.get('items', []):
             # Assuming 'price' is stored as a decimal.Decimal type; convert it to float
-            addition = float(item["price"].to_decimal()) * float(item["quantity"])
+            try:
+                addition = float(item["price"].to_decimal()) * float(item["quantity"])
+            except:
+                addition = float(item["price"]) * float(item["quantity"])
+                
             sale_amount += addition
         
         sale_amount = round(sale_amount, 2)  # Round to 2 decimal places
