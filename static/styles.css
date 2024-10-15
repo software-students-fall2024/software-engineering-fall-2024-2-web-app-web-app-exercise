@@ -199,7 +199,7 @@ h2 {
     100% { opacity: 1; transform: translateY(0); }
 }
 
-.session-container {
+.session-container, .focus-container {
     width: 95%;
     padding: 20px;
     height:fit-content;
@@ -210,4 +210,72 @@ h2 {
     align-items: center;
     border-style: none;
     border-radius: 15px;
+}
+
+/* Timer container styles */
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+}
+
+/* Circle with two halves to create the doughnut effect */
+.circle {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip: rect(0px, 200px, 200px, 100px);
+}
+
+.fill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #9288D0;
+    clip: rect(0px, 100px, 200px, 0px);
+    transform: rotate(0deg);
+    transition: transform 0.1s linear;
+}
+
+/* Inner circle for the time display */
+.inner-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3a383d;
+}
+
+/* Animate the doughnut's two halves */
+.mask.full, .mask.half .fill {
+    animation: rotate 60s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
