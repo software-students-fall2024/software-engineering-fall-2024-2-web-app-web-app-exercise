@@ -36,7 +36,7 @@ def transactions(store_location):
 
 @app.route('/add_transaction_page/<store_location>')
 def add_transaction_page(store_location):
-    return render_template('create2.html', store_location=store_location)
+    return render_template('create.html', store_location=store_location)
 
 @app.route('/submit/<store_location>', methods=['POST'])
 def submit_form(store_location):
