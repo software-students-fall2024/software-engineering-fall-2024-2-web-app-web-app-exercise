@@ -9,13 +9,19 @@ This Project Tracker App is an intelligent task management tool that divides tas
 ## User stories
 [Issues Link for User Stories](https://github.com/software-students-fall2024/2-web-app-n-a-j/issues)
 
-1. As a `team member`, I want a personalized to-do list that automatically updates when tasks are assigned to me, so I can easily see what is expected of me and prioritize my work.
+1. As a `team member`, I want to view the projects I am part of so that I can see the tasks assigned to me.
 
-2. As an `event organizer`, I want a team planner that allows me to group people into specific teams and assign each team a set of tasks based on their expertise, so I can manage work distribution more efficiently.
+2. As an `event organizer`, I want to create new projects so that I can organize and track the tasks my team needs to complete.
 
-3. As an `manager`, I want a dynamic task distribution system that highlights which tasks are completed and which are pending in real-time, so I can quickly see what still needs attention and adjust the workflow if necessary.
+3. As a `user`, I want to update my profile so that I can keep my account information current.
 
-4. As a `student`, I want to be able to view what other tasks within the homework group project my team members have completed, so that I can better collaborate with my teammates and efficiently finish group assignment. 
+4. As a `team member`, I want to be able to view what other tasks within the project my team members have completed, so that I can better collaborate with my teammates.
+
+5. As a `user`, I want to log out of the system so that I can secure my account when I'm done using it.
+
+6. As a `manager`, I want to edit project details and task assignment so that I can keep the information up-to-date as things change.
+
+7. As a `user`, I want to search for specific tasks so that I can quickly find the information I need.
 
 ## Steps Necessary to Run the Software
 
