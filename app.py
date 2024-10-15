@@ -46,7 +46,6 @@ def create_app():
             return user
         return None
 
-
     @app.route('/', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
@@ -63,6 +62,32 @@ def create_app():
                 flash('Invalid username or password.')
 
         return render_template('login.html')
+
+    @app.route('/signup', methods=['GET', 'POST'])
+    def signup():
+        """
+        Route for the sign-up page.
+        Allows new users to create an account and saves their information to the database.
+        """
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            
+            existing_user = db.users.find_one({"username": username})
+            if existing_user:
+                flash('Username already exists. Please choose a different one.')
+                return redirect(url_for('signup'))
+            
+            new_user = {
+                "username": username,
+                "password": password 
+            }
+            db.users.insert_one(new_user)
+
+            flash('Account created successfully! Please log in.')
+            return redirect(url_for('login'))
+
+        return render_template('signup.html')
 
     @app.route("/home_screen")
     @login_required
@@ -107,6 +132,7 @@ def create_app():
         db.sessions.insert_one(session_data)
 
         return redirect(url_for("counter"))
+    
     @app.route("/counter")
     def counter():
         """
@@ -167,8 +193,6 @@ def create_app():
         return redirect(url_for("counter"))
     
     return app
-
-
 
 if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "5000")
