@@ -6,7 +6,7 @@ import flask
 import flask_login
 from src.models.user import user_loader, request_loader
 from src.models.user import User
-from src.models.boards import get_boards_by_user, delete_board, duplicate_board, create_board, get_board, update_board
+from src.models.boards import *
 from src.app import get_db
 
 
@@ -58,12 +58,19 @@ def update_account():
     user = get_db().users.find_one({'email': current_user_id})
 
     update_fields = {}
+    if email:
+        if email != current_user_id:
+            existing_user = get_db().users.find_one({'email': email})
+            if existing_user:
+                flash(
+                    "Email already in use. Please select different email", "error")
+                return redirect(url_for('routes.account_settings'))
+
+            else:
+                change_board_email(current_user_id, email)
+                needLogin = True
     if username:
         update_fields['username'] = username
-    if email:
-        update_fields['email'] = email
-        if email != current_user_id:
-            needLogin = True
     if privacy:
         update_fields['privacy'] = privacy
     if theme:
