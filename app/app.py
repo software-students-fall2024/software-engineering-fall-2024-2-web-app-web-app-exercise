@@ -23,11 +23,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/location/<store_location>')
-def location(store_location):
-
-    store_data = get_store_data(store_location)
-    store_data['total_revenue'] = "{:,.2f}".format(store_data['total_revenue'])
-    
+def location(store_location):    
     store_data = get_store_location(store_location)
     store_data['total_revenue'] = "{:,.2f}".format(store_data['total_revenue'])
     
