@@ -247,6 +247,11 @@ def delete_event(event_id):
     
     events_collection.delete_one({'_id': ObjectId(event_id)})
 
+    collection.update_one(
+        {'username': session['username']},
+        {'$pull': {'created_events': ObjectId(event_id)}}
+    )
+
     flash("{event['title']} deleted successfully.")
     return redirect(url_for('hosting_list'))
 
