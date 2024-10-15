@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block container %}
+    <h1>Failed to edit!</h1>
+    <br>
+    <p>Restaurant "{{ restaurantName }}" could not be edited!</p>
+    <br>
+
+    <a href="{{ url_for('home')}}"><button>Return home</button></a>
+
+{% endblock %}

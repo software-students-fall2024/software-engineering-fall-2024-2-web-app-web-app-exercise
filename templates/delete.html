@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block container %}
+<form action="{{ url_for('deleteData') }}" method="post">
+    <table width="100%" border="1">
+        <tbody>
+            <tr><td colspan="2"><b>Enter all information</b></td></tr>
+            <tr>
+                <td colspan="2">Please re-enter your username for verification purposes. You are still logged in.</td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td><input class="textarea" type="text" placeholder="Enter username..." name="username"></td>
+            </tr>
+            <tr>
+                <td>Restaurant Name</td>
+                <td><input class="textarea" type="text" placeholder="Enter restaurant name..." name="restaurantName"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="reset" value="CLEAR">
+                    <input type="submit" value="DELETE">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
