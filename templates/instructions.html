@@ -27,13 +27,13 @@
 
         <div class="exercise-instruct">
             <p><Strong>Instruction:</Strong></p>
-            <p> {{ instruction }}
+            <p> {{ exercise.instruction }}
             </p>
         </div>
 
         <div>
-            <button class="back-btn" onclick="window.location.href='/edit';">Back</button>
-        </div>
+            <button class="back-btn" onclick="window.history.back();">Back</button>
+        </div>        
 
         <footer>
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
