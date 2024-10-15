@@ -9,14 +9,13 @@
 <body>
     <div class="navBar">
         <div>
-        <h1>NYU Maintenance Request Portal</h1>
+        <h1><a href="/">NYU Maintenance Request Portal</a></h1>
         </div>
         <div class="navLinks">
-            <a class="link" href="/login">Login</a>
+            <a class="link" href="/track">Track A Request</a>
             <a class="link" href="/list">Requests</a>
-            <a class="link" href="/request">Request Maintenance</a>
-            <a class="link" href="{{url_for('new_app', update = 0)}}">Add Appliance</a>
-            <a class="link" href="{{url_for('delete_app')}}">Remove Appliance</a>
+            <a class="link" href="/request">Make A Request</a>
+            <a class="link" href="/login">Login</a>
         </div>
         {% block homelink %}{% endblock %}
     </div>
