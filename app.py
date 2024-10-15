@@ -26,6 +26,7 @@ username = None
 #####################################################
 
 def create_app():
+    # APP SETUP
     app = Flask(__name__)
     app.secret_key = "KEY"
 
@@ -104,6 +105,7 @@ def create_app():
                 flash("Login successful!", "success")
                 return redirect(url_for('home'))
             else:
+                return render_template("login.html", err="Invalid credentials, please try again.")
                 return render_template("login.html", err="Invalid credentials, please try again.")
         
         return render_template("login.html")
@@ -285,5 +287,5 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(port="5000")
 
