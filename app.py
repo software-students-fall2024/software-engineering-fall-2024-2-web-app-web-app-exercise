@@ -1,15 +1,15 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask import request, jsonify
-import pymongo
+from bson.objectid import ObjectId
+import certifi
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+import pymongo 
 from dotenv import load_dotenv
 from pymongo.server_api import ServerApi
-from flask import session
-from bson.objectid import ObjectId
-from flask_cors import CORS
 
 logged_in = False
-projects = None
+projects_projects_as_manager = None
+projects_projects_as_member = None
+username = None
 
 
 ############## Database Organization ###############
@@ -26,13 +26,14 @@ projects = None
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
     app.secret_key = "KEY"
 
     uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
-    client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
+    client = pymongo.MongoClient(uri, server_api=ServerApi('1'),tlsCAFile=certifi.where())
     db = client['tasks']
+    
     project_collection = db['projects']
+    
     user_list = db['users']
 
     try:
@@ -51,29 +52,29 @@ def create_app():
     # main route displays home screen with all projects
     @app.route("/main")
     def home():
-        global logged_in  
-        global projects
-        as_manager = []
-        as_member = []
+        global username
 
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
         
         # no matching projects
-        if (projects == None):
-            return render_template("main.html")
+        global projects_as_manager, projects_as_member
+        projects_as_manager = project_collection.find({'managers': username})
+        projects_as_member = project_collection.find({'members': username})
         
-        for project in project_collection.find({}):
-            managers = project.get("managers", []) 
-            members = project.get("members", []) 
-
-            # Check if the logged-in user is one of the managers
-            if session["username"] in managers:
-                as_manager.append(project)            
-            if session["username"] in members:
-                as_member.append(project)            
-        return render_template("main.html", docs=as_manager, docs2=as_member)
+        # no matching projects
+        if (projects_as_manager == None and projects_as_member == None):
+            return render_template("main.html", username=username)
+        # only have projects as a member
+        elif (projects_as_manager == None):
+            return render_template("main.html", username=username, docs_as_member=projects_as_member)
+        # only have projects as manager
+        elif (projects_as_member == None):
+            return render_template("main.html", username=username, docs_as_manager=projects_as_manager)
+        # have both manager and member roles in projects
+        else:
+            return render_template("main.html", username=username, docs_as_manager=projects_as_manager, docs_as_member=projects_as_member)
     
     # route to login page
     # if POST, check if username and password match
@@ -87,13 +88,15 @@ def create_app():
             
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
-                global projects
-                #store session
-                session['username'] = username
-                if (project_collection.find_one({'name': username}) != None):
-                    projects = project_collection.find({'name': username})
-                else:
-                    projects = None
+                # check if any projects contain the username as a manager
+                if (project_collection.find_one({'managers': username}) != None):
+                    global projects_as_manager
+                    projects_as_manager = project_collection.find({'managers': username})
+                # check if any projects contain the username as a member
+                if (project_collection.find_one({'members': username}) != None):
+                    global projects_as_member
+                    projects_as_member = project_collection.find({'members': username})
+
                 # redirect to main, logged_in is true
                 global logged_in 
                 logged_in = True
@@ -121,20 +124,76 @@ def create_app():
         return render_template("registration.html")
     
 
+
     # route to create project page
     # WIP - need to add project description
     #       need to assign project manager
-    @app.route("/create_project", methods=['GET', 'POST'])
+    @app.route('/create_project', methods=['GET', 'POST'])
     def create_project():
+        global username
         if request.method == 'POST':
-            project_name = request.form['project_name']
-            # project_description = request.form['project_description']
-            project_members = request.form['project_members'].split(",")
-            project_collection.insert_one({'projectName': project_name, 'managers': ["Terry"], 'members': project_members, 'tasks': []})
-            flash("Project created!", "success")
-            return redirect(url_for('main'))
-        return render_template("create_project.html")      
+            # Get managers and members as comma-separated strings from the form
+            managers = request.form['managers'].split(',')
+            members = request.form['members'].split(',')
+
+            # Create the project data
+            project_data = {
+                'projectName': request.form['project_name'],
+                'description': request.form['description'],
+                'start_date': request.form['start_date'],
+                'due_date': request.form['due_date'],
+                'managers': managers,  # Store managers as an array
+                'members': members,    # Store members as an array
+                'tasks': []  # Initially no tasks
+            }    
+            # Insert the project into the database
+            project_collection.insert_one(project_data)
+            flash("Project created successfully!", "success")
+            return redirect(url_for('home', username=username))
+
+        return render_template('create_project.html')
+    
+    @app.route('/profile')
+    def profile():
+        global username
+        # Check if the user is logged in
+        if not logged_in:
+            return redirect(url_for('login'))
+
+        # Ensure that the global username is set
+        if not username:
+            return redirect(url_for('login'))
+
+        # Find the user in the database using the username passed during login
+        user = user_list.find_one({'username': username})
+
+        # If the user is found, render the profile page
+        if user:
+            return render_template(
+                "profile.html", 
+                username=user['username'], 
+                docs_as_manager=projects_as_manager, 
+                docs_as_member=projects_as_member
+            )
+        else:
+            return redirect(url_for('login'))
         
+    @app.route('/logout')
+    def logout():
+        global logged_in, projects_as_manager, projects_as_member, username
+            
+        # Reset the logged_in flag and project variables
+        logged_in = False
+        projects_as_manager = None
+        projects_as_member = None
+        username = None
+            
+        # Flash a message to inform the user of successful logout
+        flash("You have been logged out successfully.", "info")
+            
+        # Redirect the user to the login page
+        return redirect(url_for('login'))      
+      
     # team page
     @app.route('/project/<id>')
     def project(id):
