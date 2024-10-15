@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Counter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+        <div class="focus-container">
+            <h1>Focusing</h1>
+            <div class="timer-container">
+                <div class="circle">
+                  <div class="mask full">
+                    <div class="fill"></div>
+                  </div>
+                  <div class="mask half">
+                    <div class="fill"></div>
+                  </div>
+                  <div class="inner-circle">
+                    <span id="timer"></span>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <script>
+    //reference: https://www.youtube.com/watch?v=x7WJEmxNlEs
+      const counter = document.getElementById('timer')
+      setInterval(countDown, 1000)
+      const time = "{{focus_time}}"
+      let timeNo = Number(time) * 60
+      function countDown(){
+        if(timeNo<=0){
+          window.location.href = '/congrats';
+        }
+        let min = Math.floor(timeNo/60)
+        min = (min<10) ?  '0' + min : min
+        let seconds = timeNo % 60
+        seconds = (seconds<10) ? '0' + seconds : seconds
+        counter.innerHTML = `${min}:${seconds}`
+        timeNo--
+      }
+      window.onload = countDown
+    </script>
+</body>
+</html>

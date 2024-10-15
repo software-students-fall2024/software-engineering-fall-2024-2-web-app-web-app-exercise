@@ -219,7 +219,12 @@ h2 {
     align-items: center;
     height: max-content;
 }
-
+#timer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+}
 /* Circle with two halves to create the doughnut effect */
 .circle {
     position: relative;
@@ -279,3 +284,45 @@ h2 {
         transform: rotate(360deg);
     }
 }
+
+/* Congrats Screen */
+.congratsscreen {
+    background-color: powderblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* This ensures that the text and image stack vertically */
+    height: 100vh;
+    margin: 0;
+}
+.congrats {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px; /* Adds space between text and image */
+} 
+
+.header {
+    color: darkblue;
+    font-size: 3rem;
+}
+.image {
+    max-width: 300px; /* Adjust the size of the bunny */
+    width: 100%; /* Makes it responsive */
+    height: auto;
+}
+.session-info {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+.home-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: darkblue;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.home-button:hover {
+    background-color: navy;
+}
+
