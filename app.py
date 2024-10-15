@@ -81,6 +81,27 @@ def create_app():
 
         return render_template("counter.html", focus_time=focus_time)
 
+    @app.route("/search", methods=["POST"])
+    def search():
+        """
+        Route for POST requests to the create page.
+        Accepts the form submission data for a new document and saves the document to the database.
+        Returns:
+            redirect (Response): A redirect response to the home page.
+        """
+        focus_time = request.form['focus']
+        subject = request.form['subject']
+
+        session_data = {
+        "focus_time": focus_time,
+        "subject": subject,
+        "created_at": datetime.now(timezone.utc)
+        }
+
+        db.sessions.insert_one(session_data)
+
+        return redirect(url_for("counter"))
+    
     return app
 
 if __name__ == "__main__":
