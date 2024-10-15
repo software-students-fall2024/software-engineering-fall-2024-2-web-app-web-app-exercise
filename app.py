@@ -47,7 +47,11 @@ def create_app():
     
     @app.route("/")
     def home():
-        return render_template("home.html")
+        # redirect to news page if the user is logged in, otherwise to login
+        if current_user.is_authenticated:
+            return redirect(url_for("getNews"))
+        else:
+            return redirect(url_for("login"))
     
     @app.route("/login", methods=["GET", "POST"])
     def login():
