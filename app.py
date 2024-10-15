@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from models import User
 import os
 
 
@@ -10,6 +11,8 @@ def create_app():
 
     # Load environment variables from .env file
     load_dotenv()
+    
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
 
     connection_string = os.getenv("MONGO_URI")  # Corrected to use "MONGO_URI" instead of MONGO_URI
 
@@ -19,47 +22,37 @@ def create_app():
     # # Create a MongoDB client with the correct connection string
     client = MongoClient(connection_string)
     db = client["test_db"]
-    collection = db["test_collection"]
-    sample_data = {"name": "John Doe", "age": 30, "city": "New York"}
-    collection.insert_one(sample_data)
-
-    print("Document inserted successfully!")
     
     @app.route("/")
-    def login():
+    def home():
         return render_template("home.html")
     
-    @app.route("/login",methods=["POST"])
-    def login_post():
-        ### login Logic ###
-        ###TODO###
-        
-        #if invalid, display error message on the same page
-        error = False
-        if error:
-            return render_template('home.html', error="Error occurred!")
-        
-        # if valid, load signup success page
-        return render_template("")
-    
-    
-    @app.route("/signup")
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        if request.method == "POST":
+            # Login Logic
+            username = request.form["username"]
+            password = request.form["password"]
+            user = User.validate_login(db, username, password)
+            if user:
+                return redirect(url_for("contact_us")) ## change this for when news page gets implemented 
+            else:
+                flash("Invalid username or password. Try again.")
+                return render_template('home.html', error="Error occurred!")
+        return render_template("home.html")
+
+    @app.route("/signup", methods=["GET", "POST"])
     def signup():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            if User.find_by_username(db, username):
+                flash("Username with that email already exists!")
+                return render_template('signup.html', error="Error occurred!")
+            User.create_user(db, username, password)
+            flash("User created successfully!")
+            return redirect(url_for("login"))
         return render_template("signup.html")
-    
-    
-    @app.route("/signup",methods=["POST"])
-    def signup_post():
-        #signup logic
-        ###TODO###
-        
-        #if invalid, display error message on the same page
-        error = False
-        if error:
-            return render_template('signup.html', error="Error occurred!")
-        
-        # if valid, load signup success page
-        return render_template("signup-success.html")
     
     
     @app.route("/user-info")
@@ -83,12 +76,12 @@ def create_app():
         return redirect(url_for("getUserInfo"))
     
     
-    @app.route("/contact-us")
-    def contactUs():
+    @app.route("/contact_us")
+    def contact_us():
         #get contact-us page
-        return render_template("contact-us.html")
+        return render_template("Contact_us.html")
     
-    @app.route("/contact-us",methods=["POST"])
+    @app.route("/contact_us",methods=["POST"])
     def sendMessage():
         #get the message title and content from form and email it to a specific address
         title = request.form["title"]
@@ -97,7 +90,7 @@ def create_app():
         
         
         flash("Message Sent!")
-        return redirect(url_for("contactUs"))
+        return redirect(url_for("contact_us"))
     
     
     @app.route("/vocab")
@@ -130,7 +123,6 @@ def create_app():
     
 
     return app
-
 
 
 
