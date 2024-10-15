@@ -1,5 +1,12 @@
 import os
+import datetime
 from flask import Flask, render_template, request, redirect, url_for
+import pymongo
+import certifi
+from bson.objectid import ObjectId
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_app():
     """
@@ -9,6 +16,15 @@ def create_app():
 
     app = Flask(__name__)
 
+    cxn = pymongo.MongoClient(os.getenv("MONGO_URI"), tlsCAFile=certifi.where())
+    db = cxn[os.getenv("MONGO_DBNAME")]
+
+    try:
+        cxn.admin.command("ping")
+        print(" *", "Connected to MongoDB!")
+    except Exception as e:
+        print(" * MongoDB connection error:", e)
+
     @app.route("/")
     def home_screen():
         """
@@ -16,7 +32,7 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-                
+        # past_sessions = db.sessions.find({}).sort("created_at", -1)
         return render_template("home.html")
     
     @app.route("/start-session")
