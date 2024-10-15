@@ -159,9 +159,9 @@ def create_app():
         
         return render_template('search.html', message="", userInput=inputDict, books=results)
     
-    @app.route("/delete/<book_id>", methods=["POST"])
+    @app.route("/delete_book/<book_id>", methods=["POST"])
     @login_required
-    def delete(book_id):
+    def delete_book(book_id):
         """
         Route for POST requests to the delete page.
         Deletes the specified book from the base, and then redirects the browser to the home page.
@@ -218,6 +218,52 @@ def create_app():
         book = db[userdb].find_one({"_id": ObjectId(book_id)})
         return render_template('book_detail.html', book=book)
     
+    @app.route("/edit/<book_id>", methods=["GET", "POST"])
+    @login_required
+    def edit(book_id):
+        userdb = session['username']
+        if request.method == "POST":  
+            title = request.form.get('title')
+            author = request.form.get('author')
+            genre = request.form.get('genre')
+            price = request.form.get('price')
+            quantity = request.form.get('quantity')
+
+            if price:
+                try:
+                    price = float(price)
+                    if price < 0:
+                        raise ValueError("Price must be a non-negative number.")
+                except ValueError as e:
+                    flash(str(e), "error")
+                    return render_template("edit.html", book={'_id': book_id, 'title': title, 'author': author, 'genre': genre, 'price': price, 'quantity': quantity})
+
+            if quantity:
+                try:
+                    quantity = int(quantity)
+                    if quantity < 0:
+                        raise ValueError("Quantity must be a non-negative integer.")
+                except ValueError as e:
+                    flash(str(e), "error")
+                    return render_template("edit.html", book={'_id': book_id, 'title': title, 'author': author, 'genre': genre, 'price': price, 'quantity': quantity})
+
+
+            db[userdb].update_one(
+                {"_id": ObjectId(book_id)},
+                {"$set": {
+                    "title": title,
+                    "author": author,
+                    "genre": genre,
+                    "price": price,
+                    "quantity": quantity
+                }}
+            )
+            return redirect(url_for("book_detail", book_id=book_id))
+
+        book = db[userdb].find_one({"_id": ObjectId(book_id)})
+        return render_template('edit.html', book=book)
+
+
     @app.route("/edit_price/<book_id>", methods=["POST"])
     @login_required
     def edit_price(book_id):
@@ -271,6 +317,7 @@ def create_app():
         
         return redirect(url_for("book_detail", book_id=book_id))
 
+    @app.route("/edit_author/<book_id>", methods=["POST"])
     def edit_author(book_id):
         author = request.form.get('author') 
         inputDict = {"author": author}
@@ -301,6 +348,7 @@ def create_app():
         session.pop('username', None)
         return redirect(url_for('login'))
 
+    
     return app
             
     
