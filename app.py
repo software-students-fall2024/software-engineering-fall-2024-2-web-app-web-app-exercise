@@ -1,7 +1,8 @@
 import os
-from flask import Flask, request, redirect, url_for, flash, render_template
+from flask import Flask, request, redirect, url_for, flash, render_template, jsonify
 from dotenv import load_dotenv
 from pymongo import MongoClient
+from bson import ObjectId
 
 load_dotenv()
 
@@ -36,11 +37,13 @@ def search_exercise(query: str):
 def get_exercise(exercise_id: str):
     return exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
+
 def get_todo():
     todo_list = todo_collection.find_one({"_id": 1})
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
+
 
 def delete_todo(exercise_todo_id: int):
     result = todo_collection.update_one(
@@ -100,6 +103,7 @@ def add_todo(exercise_id: str, working_time, reps, weight):
         print(f"Exercise with ID {exercise_id} not found.")
         return False
 
+
 def edit_exercise(exercise_todo_id, working_time, weight, reps):
     """Edit the todo item in the collection by its unique exercise_todo_id."""
     result = todo_collection.update_one(
@@ -117,6 +121,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
     else:
         print(f"Failed to update exercise with To-Do ID {exercise_todo_id}.")
         return False
+
 
 def get_exercise_in_todo(exercise_todo_id: int):
     todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
