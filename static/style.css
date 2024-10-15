@@ -154,11 +154,11 @@ button{
 }
 @media (max-width: 768px) {
     html, body {
-        font-size: 14px; /* Decrease the overall font size for mobile */
+        font-size: 14px;
     }
 
     .container {
-        width: 90%; /* Increase width to fit content on smaller screens */
+        width: 90%; 
         margin-top: 100px; /* Adjust top margin for smaller screens */
     }
 
@@ -172,6 +172,7 @@ button{
         gap: 5px; /* Reduce gap between navigation items */
         justify-content: space-around; /* Spread out the items evenly */
         flex-wrap: nowrap; /* Prevent the buttons from wrapping to a new line */
+        width: 100%;
     }
 
     .nav-links li {
@@ -184,6 +185,7 @@ button{
         font-size: 0.8rem; /* Reduce font size for navigation links */
         text-align: center; /* Ensure text is centered inside the button */
         display: block;
+        width: 100%
     }
 
     /* Reduce font size and padding for summary section */

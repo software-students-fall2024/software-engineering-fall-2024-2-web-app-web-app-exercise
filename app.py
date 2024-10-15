@@ -10,6 +10,7 @@ import os
 app = Flask(__name__)
 
 
+app.secret_key = os.getenv('SECRET_KEY')
 
 MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
@@ -21,26 +22,32 @@ users_collection = db['users']
 # Homepage route
 @app.route('/account', methods=['GET', 'POST'])
 def account():
-    return render_template('account.html')
+    # Render the account creation page if it's a GET request
+    if request.method == 'GET':
+        return render_template('account.html')
+    # Handle form submission here when it's a POST request
+    return redirect(url_for('save_account'))
 
+# Login route
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        print(f"Username: {username}, Password: {password}")
 
-        user = users_collection.find_one({'username': 'testuser'})
+        user = users_collection.find_one({'username': username})
 
         if user:
-            if (user['pasword']==password):
+            if (user['password']==password):
                 session['username'] = username
-                return redirect(url_for('index'))
+                return redirect(url_for('index', username=username))
         else:
              flash('Incorrect Username or Password', 'danger')
 
     return render_template('login.html')
 
-
+# Save account route from Create an account 
 @app.route('/save_account', methods=['POST'])
 def save_account():
     name = request.form['name']
@@ -49,29 +56,48 @@ def save_account():
     total_budget = float(request.form['total_budget'])
     spending_budget = float(request.form['spending_budget'])
 
-    # Save the name, total budget, and spending budget to the 'budgets' collection
-    existing_user = users_collection.find_one({'$or': [{'username': username}, {'password': password}]})
-    if not existing_user:
-        new_user = {'name':name,'username': username,'password': password}
+    # Save the username, name, total budget, and spending budget to the 'budgets' collection
+    existing_user = users_collection.find_one({'username': username, 'password': password})
+    if existing_user is None:
+        new_user = {'name': name, 'username': username, 'password': password}
         users_collection.insert_one(new_user)
-        db['budgets'].update_one(
-            {}, 
-            {'$set': {'name': name,'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
-            upsert=True
-        )
+
+        # Insert user's budget
+        db['budgets'].insert_one({
+            'username': username,
+            'name': name,
+            'total_budget': total_budget,
+            'spending_budget': spending_budget,
+            'budget_left': total_budget
+        })
+
+        return redirect(url_for('index',username=username))
     else: 
         flash("Username already exists.")
-        
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
+    
+@app.route('/')
+def home():
+    # Redirect to login if no session exists
+    if 'username' not in session:
+        # No session exists, redirect to account creation page
+        return redirect(url_for('account'))
+    else:
+        # If logged in, redirect to the user's homepage
+        return redirect(url_for('index', username=session['username']))
 
 
 # Homepage route
-@app.route('/')
-def index():
+@app.route('/index/<username>')
+def index(username):
+    # Check whether the user is logged in
+    if session.get('username') != username:
+        return redirect(url_for('login'))
+    
     # Fetch budget data from the 'budgets' collection
-    budget_data = db['budgets'].find_one()
+    budget_data = db['budgets'].find_one({'username': username})
 
-    if not budget_data:
+    if budget_data is None:
         return redirect(url_for('account'))
 
     # Set the budget and spending budget values
@@ -79,42 +105,56 @@ def index():
     total_budget = budget_data.get('total_budget', 0)
     spending_budget = budget_data.get('spending_budget', 0)
 
-    # Fetch all transactions and calculate total expenses
-    transactions = list(transactions_collection.find())  # Convert cursor to list
+    # Fetch all transactions for the logged-in user
+    transactions = list(transactions_collection.find({'username': username}))
+
+    # Calculate total income and total expenses
+    total_income = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'income')
     total_expenses = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
 
     # Corrected calculations:
-    # Balance should be total_budget minus expenses
-    balance = total_budget - total_expenses
+    # Balance should be total_budget (initial budget) + income - expenses
+    balance = total_budget + total_income - total_expenses
 
-    # Spending Budget Left should be spending_budget minus expenses
+    # Spending Budget Left should be spending_budget - expenses
     budget_left = spending_budget - total_expenses
 
     # Update the remaining budget in the database
     db['budgets'].update_one(
-        {}, 
+        {'username': username},  # Ensure to update the current user's budget
         {'$set': {'budget_left': budget_left}}
     )
 
     return render_template(
         'index.html', 
         transactions=transactions, 
-        balance=balance,  # total budget - expenses
-        spending_budget=spending_budget,  # user gives - stays constant
-        budget_left=budget_left,  # spending budget minus expenses
-        name=name
+        balance=balance,  # total budget + income - expenses
+        spending_budget=spending_budget,  # User-specified spending budget
+        budget_left=budget_left,  # Remaining spending budget after expenses
+        name=name,
+        username=username
     )
 
 
 # View all transactions
 @app.route('/transactions')
 def view_transactions():
-    transactions = list(transactions_collection.find())  # Convert cursor to list
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Fetch transactions for the current user only
+    transactions = list(transactions_collection.find({'username': username}))
+    
     return render_template('transactions.html', transactions=transactions)
 
 # Add transaction route
 @app.route('/add_transaction', methods=['GET', 'POST'])
 def add_transaction():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+    
     if request.method == 'POST':
         # Get form data
         amount = request.form['amount']
@@ -125,6 +165,7 @@ def add_transaction():
 
         # Insert transaction into MongoDB
         transactions_collection.insert_one({
+            'username': username,
             'amount': float(amount),
             'category': category,
             'description': description,
@@ -139,9 +180,13 @@ def add_transaction():
 
 @app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
-    # Fetch all transactions for the dropdown menu
-    transactions = list(transactions_collection.find())
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
 
+    # Fetch transactions for the logged-in user only
+    transactions = list(transactions_collection.find({'username': username}))  # Filter by username
+ 
     if request.method == 'POST':
         selected_transaction_id = request.form['transaction_id']
 
@@ -154,10 +199,16 @@ def search_and_edit_transaction():
 
 @app.route('/edit_transaction/<transaction_id>', methods=['GET', 'POST'])
 def edit_transaction(transaction_id):
-    transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id)})
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Fetch the transaction for the logged-in user only
+    transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id), 'username': username})  # Ensure the transaction belongs to the user
 
     if not transaction:
-        return "Transaction not found", 404
+        return "Transaction not found or you don't have permission to edit this transaction", 404
+ 
 
     if request.method == 'POST':
         # Get updated form data
@@ -169,7 +220,7 @@ def edit_transaction(transaction_id):
 
         # Update transaction in MongoDB
         transactions_collection.update_one(
-            {'_id': ObjectId(transaction_id)},
+            {'_id': ObjectId(transaction_id),'username': username},  
             {'$set': {
                 'amount': float(amount),
                 'category': category,
@@ -187,16 +238,25 @@ def edit_transaction(transaction_id):
 # Delete transaction route
 @app.route('/delete/<transaction_id>', methods=['POST'])
 def delete_transaction(transaction_id):
-    transactions_collection.delete_one({'_id': ObjectId(transaction_id)})
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Ensure the transaction belongs to the logged-in user
+    transactions_collection.delete_one({'_id': ObjectId(transaction_id), 'username': username})  # Delete only the user's transaction
     return redirect(url_for('view_transactions'))
 
 # Search route for transactions
 @app.route('/search_transactions', methods=['GET', 'POST'])
 def search_transactions():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         query = request.form['query']
 
         results = transactions_collection.find({
+            'username': username,
             '$or': [
                 {'category': {'$regex': query, '$options': 'i'}},
                 {'description': {'$regex': query, '$options': 'i'}}
@@ -206,7 +266,13 @@ def search_transactions():
 
     return render_template('search.html')
 
-
+#log out page
+@app.route('/logout')
+def logout():
+    # clear session
+    session.clear()
+    #go to login
+    return redirect(url_for('login'))
 
 # Run the app
 if __name__ == '__main__':
