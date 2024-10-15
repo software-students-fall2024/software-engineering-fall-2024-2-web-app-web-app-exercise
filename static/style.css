@@ -135,6 +135,13 @@ button{
     background-color: #333;
 }
 
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    color: red;
+}
+
 #account-page {
     font-size: 18px; 
     display: flex;

@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import datetime
@@ -27,26 +27,53 @@ MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['SWE_Project_2-Webstars']
 transactions_collection = db['transactions']
+users_collection = db['users']
+
 
 # Homepage route
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     return render_template('account.html')
 
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = users_collection.find_one({'username': 'testuser'})
+
+        if user:
+            if (user['pasword']==password):
+                session['username'] = username
+                return redirect(url_for('index'))
+        else:
+             flash('Incorrect Username or Password', 'danger')
+
+    return render_template('login.html')
+
 
 @app.route('/save_account', methods=['POST'])
 def save_account():
     name = request.form['name']
+    username = request.form['username']
+    password = request.form['password']
     total_budget = float(request.form['total_budget'])
     spending_budget = float(request.form['spending_budget'])
 
     # Save the name, total budget, and spending budget to the 'budgets' collection
-    db['budgets'].update_one(
-        {}, 
-        {'$set': {'name': name, 'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
-        upsert=True
-    )
-
+    existing_user = users_collection.find_one({'$or': [{'username': username}, {'password': password}]})
+    if not existing_user:
+        new_user = {'name':name,'username': username,'password': password}
+        users_collection.insert_one(new_user)
+        db['budgets'].update_one(
+            {}, 
+            {'$set': {'name': name,'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
+            upsert=True
+        )
+    else: 
+        flash("Username already exists.")
+        
     return redirect(url_for('home'))
 
 
