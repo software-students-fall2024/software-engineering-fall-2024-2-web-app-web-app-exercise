@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search & Edit Transaction</title>
+    <title>Logout</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -18,29 +18,13 @@
             <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
-    </header>
-    
+</header>
     <div class="container">
-        <h1>Select a Transaction to Edit</h1>
-
-        <!-- Dropdown Form to select a transaction to edit -->
-        <form method="POST">
-            <label for="transaction_id">Choose a transaction:</label>
-            <select name="transaction_id" id="transaction_id" required>
-                <option value="">-- Select a Transaction --</option>
-                {% for transaction in transactions %}
-                    <option value="{{ transaction._id }}">{{ transaction.description }} - {{ transaction.category }} - ${{ transaction.amount }}</option>
-                {% endfor %}
-            </select>
-
-            <button type="submit" class="button">Edit Transaction</button>
+        <h2>Are you sure you want to logout?</h2>
+        <!-- Logout button -->
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="btn btn-primary">Logout</button>
         </form>
     </div>
-    <script>
-        function to(url){
-            window.location.href = url; 
-        }
-    </script>
-    
 </body>
 </html>

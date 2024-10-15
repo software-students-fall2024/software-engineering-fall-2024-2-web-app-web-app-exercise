@@ -98,49 +98,50 @@ def home():
         return redirect(url_for('index', username=session['username']))
 
 
+# Homepage route
 @app.route('/index/<username>')
+#@app.route('/')
 def index(username):
-    # Debugging statement
-    print(f"Session Username: {session.get('username')}, URL Username: {username}")
-
-    # Check whether the user is logged in
+    #check whether or not the user is logged in 
     if session.get('username') != username:
-        print("User is not logged in or session username doesn't match.")
         return redirect(url_for('login'))
     
     # Fetch budget data from the 'budgets' collection
-    budget_data = db['budgets'].find_one({'username': username})
+    budget_data = db['budgets'].find_one({'username':username})
 
     if budget_data is None:
-        print("No budget data found, redirecting to account setup.")
         return redirect(url_for('account'))
 
-    # Fetch transactions for the logged-in user
-    transactions = list(transactions_collection.find({'username': username}))
+    # Set the budget and spending budget values
+    name = budget_data.get('name', 'User')
+    total_budget = budget_data.get('total_budget', 0)
+    spending_budget = budget_data.get('spending_budget', 0)
 
-    # Debugging statements for transactions
-    print(f"Transactions for {username}: {transactions}")
-
-    # Calculate balance and remaining budget
+    # Fetch all transactions and calculate total expenses
+    transactions = list(transactions_collection.find())  # Convert cursor to list
     total_expenses = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
-    balance = budget_data.get('total_budget', 0) - total_expenses
-    budget_left = budget_data.get('spending_budget', 0) - total_expenses
 
-    # Debugging statements for balance and budget
-    print(f"Balance: {balance}, Budget Left: {budget_left}")
+    # Corrected calculations:
+    # Balance should be total_budget minus expenses
+    balance = total_budget - total_expenses
+
+    # Spending Budget Left should be spending_budget minus expenses
+    budget_left = spending_budget - total_expenses
 
     # Update the remaining budget in the database
-    db['budgets'].update_one({'username': username}, {'$set': {'budget_left': budget_left}})
+    db['budgets'].update_one(
+        {}, 
+        {'$set': {'budget_left': budget_left}}
+    )
 
-    # Pass the data to the template
     return render_template(
         'index.html', 
         transactions=transactions, 
-        balance=balance,  
-        spending_budget=budget_data.get('spending_budget', 0),  
-        budget_left=budget_left,  
-        name=budget_data.get('name', 'User'),
-        username=username  # Pass the username to the template
+        balance=balance,  # total budget - expenses
+        spending_budget=spending_budget,  # user gives - stays constant
+        budget_left=budget_left,  # spending budget minus expenses
+        name=name,
+        username=username
     )
 
 
@@ -248,6 +249,13 @@ def search_transactions():
 
     return render_template('search.html')
 
+#log out page
+@app.route('/logout')
+def logout():
+    # clear session
+    session.clear()
+    #go to login
+    return redirect(url_for('login'))
 
 # Run the app
 if __name__ == '__main__':
