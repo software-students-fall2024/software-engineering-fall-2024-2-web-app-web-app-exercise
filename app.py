@@ -12,19 +12,30 @@ app = Flask(__name__)
 app.secret_key = os.urandom(13)
 
 client = MongoClient(mongo_uri)
+try:
+    client.admin.command('ping')  # 测试连接
+    print("Successfully connected to MongoDB!")
+except Exception as e:
+    print(f"Failed to connect to MongoDB: {e}")
 db = client['fitness_db']
 todo_collection = db['todo']
 exercises_collection = db['exercises']
 
 
 def search_exercise(query: str):
+    normalized_query = query.replace(" ", "")
+    
     exercises = exercises_collection.find({
-        "workout_name": {"$regex": query, "$options": "i"}  
+        "workout_name": {
+            "$regex": normalized_query, 
+            "$options": "i" 
+        }
     })
     return list(exercises)
 
-def get_exercise(exercise_id: int):
-    return exercises_collection.find_one({"_id": exercise_id})
+
+def get_exercise(exercise_id: str):
+    return exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
 def get_todo():
     todo_list = todo_collection.find_one({"_id": 1})
@@ -46,25 +57,27 @@ def delete_todo(exercise_todo_id: int):
         return False
 
 
-def add_todo(exercise_id: str):
-    exercise = exercises_collection.find_one({"_id": int(exercise_id)})
-    
+def add_todo(exercise_id: str, working_time, reps, weight):
+    """Add a to-do item using ObjectId for exercise and generate a unique exercise_todo_id."""
+    exercise = exercises_collection.find_one({"_id": ObjectId(exercise_id)})
+
     if exercise:
+
         todo = todo_collection.find_one({"_id": 1})
-        
+
         if todo and "todo" in todo:
             max_id = max([item.get("exercise_todo_id", 999) for item in todo["todo"]], default=999)
-            next_exercise_todo_id = max_id + 1
+            next_exercise_todo_id = max_id + 1  
         else:
-            next_exercise_todo_id = 1000
+            next_exercise_todo_id = 1000  
 
         exercise_item = {
-            "exercise_todo_id": next_exercise_todo_id,
-            "exercise_id": exercise['_id'],
+            "exercise_todo_id": next_exercise_todo_id,  
+            "exercise_id": exercise['_id'], 
             "workout_name": exercise["workout_name"],
-            "working_time": exercise.get("working_time", 0),
-            "reps": exercise.get("reps", 0),
-            "weight": exercise.get("weight", 0)
+            "working_time": working_time,
+            "reps": reps,
+            "weight": weight
         }
 
         if todo:
@@ -88,11 +101,12 @@ def add_todo(exercise_id: str):
         print(f"Exercise with ID {exercise_id} not found.")
         return False
 
-def edit_exercise(exercise_todo_id, times, weight, reps):
+def edit_exercise(exercise_todo_id, working_time, weight, reps):
+    """Edit the todo item in the collection by its unique exercise_todo_id."""
     result = todo_collection.update_one(
         {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
         {"$set": {
-            "todo.$.working_time": times,
+            "todo.$.working_time": working_time,
             "todo.$.reps": reps,
             "todo.$.weight": weight
         }}
@@ -120,9 +134,9 @@ def get_exercise_in_todo(exercise_todo_id: int):
     return None
 
 
-def get_instruction(exercise_id: int):
+def get_instruction(exercise_id: str):
 
-    exercise = exercises_collection.find_one({"_id": exercise_id}, {"instruction": 1, "workout_name": 1})
+    exercise = exercises_collection.find_one({"_id": ObjectId(exercise_id)}, {"instruction": 1, "workout_name": 1})
     
     if exercise:
         if "instruction" in exercise:
@@ -141,12 +155,8 @@ def get_instruction(exercise_id: int):
         }
 
 def default_exercises():
-    exercises_id = []  # add recommendation exercise id here
-    exercises = []
-    for i in exercises_id:
-        exercises.append(get_exercise(i))
-
-    return exercises
+    exercises = exercises_collection.find().limit(5)  
+    return list(exercises)  
 
 
 @app.route('/')
