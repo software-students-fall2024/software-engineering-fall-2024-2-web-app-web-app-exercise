@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login / Register</title>
     <!-- Include Bootstrap CSS and your custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -9,19 +10,20 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header class="text-center py-4 bg-light">
         <div class="logo">
-            <img src="{{ url_for('static', filename='icon.svg') }}" alt="Icon" width="30" height="30">
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="Icon" width="40" height="40">
         </div>
     </header>
 
-    <div class="container mt-5">
-        <h1>Login / Register</h1>
+    <div class="container d-flex justify-content-center align-items-center flex-column mt-5" style="min-height: 80vh;">
+        <h1 class="mb-4">Login / Register</h1>
+
         <div id="error-message" class="alert alert-danger" style="display: none;"></div>
         <div id="success-message" class="alert alert-success" style="display: none;"></div>
 
         <!-- Tabs for Login and Register -->
-        <ul class="nav nav-tabs" id="authTab" role="tablist">
+        <ul class="nav nav-tabs mb-3" id="authTab" role="tablist">
             <li class="nav-item">
                 <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
             </li>
@@ -29,10 +31,11 @@
                 <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
             </li>
         </ul>
-        <div class="tab-content" id="authTabContent">
+
+        <div class="tab-content w-100" id="authTabContent">
             <!-- Login Form -->
             <div class="tab-pane fade show active" id="login" role="tabpanel">
-                <form id="login-form" class="mt-3">
+                <form id="login-form" class="mb-3">
                     <div class="mb-3">
                         <label for="login-username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="login-username" name="username" required>
@@ -41,12 +44,13 @@
                         <label for="login-password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="login-password" name="password" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
             </div>
+
             <!-- Register Form -->
             <div class="tab-pane fade" id="register" role="tabpanel">
-                <form id="register-form" class="mt-3">
+                <form id="register-form" class="mb-3">
                     <div class="mb-3">
                         <label for="register-username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="register-username" name="username" required>
@@ -55,15 +59,14 @@
                         <label for="register-password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="register-password" name="password" required>
                     </div>
-                    <!-- Optionally, add a password confirmation field -->
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="submit" class="btn btn-secondary w-100">Register</button>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="text-center py-4 bg-light">
         <div class="footer-box"><a href="{{ url_for('index') }}">Home</a></div>
     </footer>
 
@@ -106,13 +109,8 @@
         .then(response => response.json().then(data => ({ status: response.status, body: data })))
         .then(({ status, body }) => {
             if (status === 201) {
-                // Registration successful
                 alert('Registration successful. Please log in.');
-                // Optionally, reset the registration form
                 document.getElementById('register-form').reset();
-                // Optionally, switch to the login tab (if your auth.html supports it)
-                // var loginTab = new bootstrap.Tab(document.querySelector('#login-tab'));
-                // loginTab.show();
             } else {
                 alert(body.error || 'Registration failed.');
             }
