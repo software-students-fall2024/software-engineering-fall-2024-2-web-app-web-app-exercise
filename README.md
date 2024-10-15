@@ -8,7 +8,7 @@ This app is a comprehensive fitness tracker that empowers users at all fitness l
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[User Stories](https://github.com/software-students-fall2024/2-web-app-code-crafters/issues/5)
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,4 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Task Boards](https://github.com/software-students-fall2024/2-web-app-code-crafters/projects?query=is%3Aopen)
