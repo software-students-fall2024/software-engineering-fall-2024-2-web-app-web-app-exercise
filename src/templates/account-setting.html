@@ -94,49 +94,48 @@
             <a href="profile" class="back-button">&larr;</a>
             <h1>Account Settings</h1>
         </div>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" value="">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" value="">
-        </div>
-        <div class="form-group">
-            <label for="privacy">Account Privacy</label>
-            <select id="privacy">
-                <option> </option>
-                <option>Public</option>
-                <option>Private</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="theme">Account Theme</label>
-            <select id="theme">
-                <option> </option>
-                <option>Light</option>
-                <option>Dark</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="language">Language</label>
-            <select id="language">
-                <option> </option>
-                <option>English (US)</option>
-                <option>Spanish</option>
-                <option>French</option>
-                <option>German</option>
-                <option>Chinese</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="password">Set New Password</label>
-            <input type="password" id="password" placeholder="Enter new password">
-        </div>
-        <div class="buttons">
-            <a href="profile" class="delete-btn">Delete Account</a>
-            <button class="save-btn">Save Settings</button>
-        </div>
+        <form action="update_account" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ current_user.username }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ current_user.email }}">
+            </div>
+            <div class="form-group">
+                <label for="privacy">Account Privacy</label>
+                <select id="privacy" name="privacy">
+                    <option value="Public" {{ 'selected' if current_user.privacy == 'Public' else '' }}>Public</option>
+                    <option value="Private" {{ 'selected' if current_user.privacy == 'Private' else '' }}>Private</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="theme">Account Theme</label>
+                <select id="theme" name="theme">
+                    <option value="light" {{ 'selected' if current_user.theme == 'light' else '' }}>Light</option>
+                    <option value="dark" {{ 'selected' if current_user.theme == 'dark' else '' }}>Dark</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="language">Language</label>
+                <select id="language" name="language">
+                    <option value="English (US)" {{ 'selected' if current_user.language == 'English (US)' else '' }}>English (US)</option>
+                    <option value="Spanish" {{ 'selected' if current_user.language == 'Spanish' else '' }}>Spanish</option>
+                    <option value="French" {{ 'selected' if current_user.language == 'French' else '' }}>French</option>
+                    <option value="German" {{ 'selected' if current_user.language == 'German' else '' }}>German</option>
+                    <option value="Chinese" {{ 'selected' if current_user.language == 'Chinese' else '' }}>Chinese</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="password">Set New Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password">
+            </div>
+            <div class="buttons">
+                <a href="profile" class="delete-btn">Delete Account</a>
+                <button type="submit" class="save-btn">Save Settings</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>
