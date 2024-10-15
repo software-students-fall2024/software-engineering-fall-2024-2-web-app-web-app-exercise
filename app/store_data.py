@@ -48,9 +48,13 @@ def get_store_location(store_location):
 
         for item in sale.get('items', []):
             # Calculate revenue
-            addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
-            if isinstance(item["price"], Decimal128) 
-            else float(item["price"]) * float(item["quantity"]))
+            # addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
+            # if isinstance(item["price"], Decimal128) 
+            # else float(item["price"]) * float(item["quantity"]))
+            try:
+                addition = float(item["price"].to_decimal()) * float(item["quantity"])
+            except:
+                addition = float(item["price"]) * float(item["quantity"])
             total_revenue += addition
 
             # Track quantities for each item
@@ -75,7 +79,9 @@ def get_store_location(store_location):
 
     # Find the top three best-selling items by quantity
     top_three_best_sellers = sorted(best_sellers.items(), key=lambda x: x[1], reverse=True)[:3]
-    best_sellers_dict = {item[0]: item[1] for item in top_three_best_sellers}
+    best_sellers_dict = {item[0]: "{:,}".format(item[1]) for item in top_three_best_sellers}
+
+    purchase_method_dict = {method: "{:,}".format(count) for method, count in purchase_method_dict.items()}
 
     # Prepare the output dictionary
     result = {
