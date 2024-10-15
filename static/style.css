@@ -10,22 +10,12 @@ html, body {
     height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-}
-
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 1rem 8%; /* HEADER padding */
-    background: rgba(100, 100, 100, 0.8); /* HEADER background color */
-    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 5;
-}
+    text-align: center;
 
+}
 
 body {
     display: flex;
@@ -42,6 +32,7 @@ body {
     text-align: center;
     margin-top: 150px; /* Adjust this margin to fit below the menu */
 }
+
 #desktop-nav {
     width: 85%;
     display: flex;
@@ -51,36 +42,63 @@ body {
     background-color: rgba(58, 58, 58, 0.8); /* Match the background color of the header */
 }
 
-.navbar {
+/* Navbar Styling */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 8%;
+    background: rgba(100, 100, 100, 0.8); /* HEADER background color */
+    backdrop-filter: blur(10px);
     display: flex;
-    justify-content: flex-start;
-    padding: 0.5 2%; 
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
+    z-index: 5;
+}
+.navbar {
+    display: flex;  /* Display the navbar by default on larger screens */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(58, 58, 58, 0.8); /* Match the background color of the header */
 }
 
 .nav-links {
-    display: flex;
     list-style: none;
-    gap: 8px; /* Add a little spacing between items */
+    display: flex;
+    gap: 18px;
 }
 
 .nav-links li {
-    margin: 0; /* Remove extra margins to keep links tight */
+    display: inline-block;
 }
 
 .nav-links li a {
     font-size: 1.8rem;
     color: white;
+    padding: 10px;
     text-decoration: none;
-    padding: 10px 20px;
-    background-color: #555; 
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
 }
 
-.nav-links li a:hover,
+.nav-links li a:hover, 
 .nav-links li a.active {
-    background-color: rgba(70, 117, 246, 0.2); 
-    color: #7f94f2;
+    color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    border-bottom: 3px solid var(--icon-color);
+}
+/* Menu icon visibility for mobile */
+#menu-icon {                    /* Dropdown menu icon */
+    font-size: 3.6rem; 
+    color: var(--icon-color);
+    display: none;              /* Doesn't display yet */
+    cursor: pointer;
+}
+.navbar.active {display: block;}
+section {
+    min-height: 100vh;
+    padding: 10rem 12%;
 }
 
 /* Summary styling for balance */
@@ -120,7 +138,7 @@ button{
     text-align: center;
     text-decoration: none;
     color: white;
-    background-color: #007bff; /* Bootstrap primary button color */
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -152,45 +170,75 @@ button{
     width: 100%;
     height: 80%;
 }
+
 @media (max-width: 768px) {
     html, body {
         font-size: 14px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow-y: auto;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto; /* Always allow vertical scrolling */
+    }
+    .header {
+        justify-content: space-between;
+        padding: 1rem;
     }
 
-    .container {
-        width: 90%; 
-        margin-top: 100px; /* Adjust top margin for smaller screens */
+    #menu-icon {
+        display: block;
+        font-size: 2.5rem;
+        color: white;
+        cursor: pointer;
     }
 
-    /* Adjust navigation bar for mobile */
-    nav {
-        padding: 6px; /* Reduce padding */
+    .navbar {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: rgba(58, 58, 58, 0.95);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .navbar.active {
+        max-height: 300px; /* Adjust this value based on your menu's height */
     }
 
     .nav-links {
-        display: flex; /* Ensure the items are flexed */
-        gap: 5px; /* Reduce gap between navigation items */
-        justify-content: space-around; /* Spread out the items evenly */
-        flex-wrap: nowrap; /* Prevent the buttons from wrapping to a new line */
-        width: 100%;
+        flex-direction: column;
+        padding: 1rem;
     }
 
     .nav-links li {
-        flex: 1; /* Distribute available space evenly */
-        text-align: center;
+        margin: 1rem 0;
     }
 
     .nav-links li a {
-        padding: 5px 8px; /* Smaller padding for navigation links */
-        font-size: 0.8rem; /* Reduce font size for navigation links */
-        text-align: center; /* Ensure text is centered inside the button */
         display: block;
-        width: 100%
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .container {
+        width: 90%; 
+        margin-top: 100px;
+        overflow-y: auto;
     }
 
     /* Reduce font size and padding for summary section */
     .summary {
         padding: 10px;
+        overflow-x: auto;
     }
 
     .budget {
@@ -200,17 +248,41 @@ button{
 
     p {
         font-size: 1rem; /* Reduce font size for paragraph text */
+        overflow-x: auto;
     }
 
     /* Reduce button size */
     .button {
-        padding: 6px 12px; /* Further reduce button padding */
-        font-size: 12px; /* Smaller font size */
+        padding: 6px 12px; 
+        font-size: 12px;
     }
 
     /* Adjust account page styling */
     #account-page {
-        font-size: 16px; /* Smaller font size on mobile */
+        font-size: 15px;
         padding: 20px;
+        overflow-x: auto;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column; /* Stack form elements vertically */
+        gap: 15px; /* Add space between each form element */
+        overflow-x: auto;
+    }
+
+    form label, form input, form select, form button {
+        width: 100%; /* Make sure each form element takes up full width */
+    }
+
+    form input, form select, form button {
+        padding: 10px; /* Add some padding to the inputs and button */
+    }
+
+    /* Make sure the button takes full width */
+    form button {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
     }
 }
