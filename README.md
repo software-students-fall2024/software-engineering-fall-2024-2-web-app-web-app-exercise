@@ -1,7 +1,5 @@
 # Web Application Exercise
 
-A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
-
 ## Product vision statement
 
 A mobile-friendly web application that helps users manage their budget by tracking, searching, and organizing their spending through transaction records and balance views.
@@ -82,6 +80,7 @@ python app.py
 
 ## Task boards
 
-[Task Board](https://github.com/orgs/software-students-fall2024/projects/7)
+[Task Board Sprint 1](https://github.com/orgs/software-students-fall2024/projects/7)
+[Task Board Sprint 2](https://github.com/orgs/software-students-fall2024/projects/78)
 
 
