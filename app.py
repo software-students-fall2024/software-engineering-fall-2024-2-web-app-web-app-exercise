@@ -1,18 +1,31 @@
 from dotenv import load_dotenv
 from flask import Flask, make_response, request, redirect, url_for, render_template
-from flask_login import login_manager, login_user, UserMixin
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 import os
 import pymongo
 
 load_dotenv('./.env')
 class User(UserMixin):
-    pass
+    def __init__(self, username):
+        self.id = username
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.getenv('SECRET_KEY', 'supersecretkey')
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+
     connection = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = connection[os.getenv("MONGO_DBNAME")]
 
+    @login_manager.user_loader
+    def load_user(username):
+        user_data = db.users.find_one({"username": username})
+        if user_data:
+            return User(username=user_data["username"])
+        return None
+    
     @app.route('/')
     def show_home():
         
@@ -28,6 +41,7 @@ def create_app():
         return render_template('home.html')
     
     @app.route('/profile/<user>')
+    @login_required
     def show_profile(user):
         tune_tasks = list(db.tune_tasks.find({"created_by":user}))
         return render_template('profile.html', user=user, collection=tune_tasks)
@@ -52,6 +66,7 @@ def create_app():
     
     @app.route('/login', methods=["GET", "POST"])
     def login():
+        error = None
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
@@ -59,17 +74,49 @@ def create_app():
             # checking mongodb to find user
             user_data = db.users.find_one({"username": username})
 
-            if user_data:
-                # password is only plain text, not hashed so comparing as such
-                if user_data["password"] == password:
-                    return redirect(url_for('show_profile', user=username))
-                else:
-                    return "Invalid password, please try again.", 403
+            if user_data and user_data["password"] == password:
+                user = User(username)
+                login_user(user)
+                return redirect(url_for('show_profile', user=username))
             else:
-                return "User not found", 404
+                error = "Invalid username or password."
+
+        return render_template('login.html', error=error)
 
 
-        return render_template('login.html')
+
+        return render_template('login.html', error=error)
+    
+    @app.route('/register', methods=["GET", "POST"])
+    def register():
+        error = None
+        if request.method == "POST":
+            name = request.form["name"]
+            username = request.form["username"]
+            password = request.form["password"]
+            confirm_password = request.form["confirm_password"]
+
+            if password != confirm_password:
+                error = "Passwords do not match. Please try again."
+            # check if the user already exists
+            elif db.users.find_one({"username": username}):
+                error = "Username already exists. Please choose a different one."
+            else:
+                # add new user into database
+                db.users.insert_one({
+                    "name": name,
+                    "username": username,
+                    "password": password
+                })
+                return redirect(url_for('login'))
+
+        return render_template('register.html', error=error)
+
+    @app.route('/logout')
+    @login_required
+    def logout():
+        logout_user()
+        return redirect(url_for('login'))
     
     return app
 
