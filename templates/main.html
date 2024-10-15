@@ -1,0 +1,83 @@
+{% extends 'base.html' %}{% block container %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
+
+  .header div {
+    font-size: 14px;
+  }
+
+  .nav {
+    background-color: #d3d3d3;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .section-title {
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .box {
+    background-color: #d3d3d3;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .box input[type="checkbox"] {
+    margin-right: 10px;
+  }
+
+  li a:hover {
+    background-color: #d3d3d3;
+    }
+</style>
+
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+
+    <div class="main-content">
+        <div class="section-title">YOUR WORKSPACES</div>
+
+        <div class="section-title">As a manager...</div>
+        {% if docs_as_manager is defined %}
+        {% for doc in docs_as_manager %}
+        <div class="project-link">
+            <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No projects. Try adding some!</p>
+        {% endif %}
+
+        <div class="section-title">As a member...</div>
+        {% if docs_as_member is defined %}
+        {% for doc in docs_as_member %}
+        <div class="project-link">
+            <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No projects. Try adding some!</p>
+        {% endif %}
+        <form action="/create_project", method="GET">
+        <button type="submit">Create new project</button>
+        </form>
+    </div>
+  
+</body>
+{% endblock %}
+

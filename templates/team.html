@@ -1,0 +1,164 @@
+{% extends 'base.html' %}{% block container %}
+
+<style>
+    .modal-content { background-color: white; padding: 20px; border-radius: 5px; }
+    .close { cursor: pointer; }
+</style>
+
+<script>
+    //search function
+    function searchTasks() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const tasks = document.getElementsByClassName('task');
+
+        Array.from(tasks).forEach(task => {
+            const taskName = task.getAttribute("data-task-name");
+            console.log(taskName);
+            if (taskName.includes(searchTerm)) {
+                task.style.display = 'block';  
+            } else {
+                task.style.display = 'none'; 
+            }
+        });
+    }
+
+    //delete member
+    async function deleteMember(projectId, member) {
+        try {
+            const response = await fetch(`/${projectId}/delete-member/${member}`, {
+                method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                location.reload();  // Reload the page after successful deletion
+            } else {
+                alert('Failed to delete member');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while trying to delete the member');
+        }
+    }    
+    //delete task
+    async function deleteTask(projectId, taskName) {
+        try {
+            // Encode the taskName to handle spaces and special characters
+            const encodedTaskName = encodeURIComponent(taskName);
+            console.log(`Sending DELETE request for task: ${encodedTaskName}`);
+            
+            const response = await fetch(`/${projectId}/delete-task/${encodedTaskName}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Response status:', response.status);
+            
+            if (response.ok) {
+                location.reload();  
+            } else {
+                alert('Failed to delete task');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while trying to delete the task');
+        }
+    }
+
+
+    function openAssignTaskModal() {
+        document.getElementById('assignTaskModal').style.display = 'block';
+    }
+
+    function closeAssignTaskModal() {
+        document.getElementById('assignTaskModal').style.display = 'none';
+    }
+
+    //add task
+    document.addEventListener('DOMContentLoaded', async function () {
+        const assignTaskForm = document.getElementById('assignTaskForm');
+        assignTaskForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            const taskName = document.getElementById('taskName').value;
+            const taskDate = document.getElementById('taskDate').value;
+            const taskStatus = document.getElementById('taskStatus').value;
+            console.log('Task Date:', taskDate);
+            const projectId = "{{ project._id }}";  
+
+            await fetch(`/${projectId}/assign-task`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ taskName: taskName, taskDate: taskDate, taskStatus: taskStatus }),
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Failed to assign task');
+                }
+            });
+        });
+    });
+    
+</script>
+
+<body>
+  <div class="main-content">
+    <div class="section-title">{{ project.projectName }}</div>
+    <!-- Search -->
+    <div>
+        <input type="text" id="searchInput" placeholder="Search tasks by name" />
+        <button id="searchButton" onclick="searchTasks()">Search</button>
+    </div>
+
+    <!-- Show member -->
+    <div class="section-title">Member List</div>
+        {% for member in project.members %}
+        <li class="member" data-member-id="{{ member._id }}" >
+            {{ member }} 
+            <button onclick="deleteMember('{{ project._id }}', '{{ member }}')">Delete</button>        
+        </li>
+        {% endfor %}
+
+    <!-- Show task -->
+    <div class="section-title">Task List</div>
+        {% for task in project.tasks %}
+        <li class="task" data-task-name="{{ task.taskName }}" >
+            {{ task.taskName }} 
+            <button onclick="deleteTask('{{ project._id }}', '{{ task.taskName }}')">Delete</button>   
+        </li>
+        
+        {% endfor %}
+    </div>
+
+    <!-- Assign Task Button -->
+    <button onclick="openAssignTaskModal()">+ Assign Task</button>
+
+    <!-- Modal -->
+    <div id="assignTaskModal" style="display:none;">
+        <div class="modal-content">
+            <span onclick="closeAssignTaskModal()" class="close">&times;</span>
+            <p>Assign Task</p>
+            <form id="assignTaskForm">
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" name="taskName" required>
+                
+                <label for="taskDate">Start Date:</label>
+                <input type="text" id="taskDate" name="taskDate" required>
+                
+                <label for="taskStatus">Task Status:</label>
+                <select name="taskStatus" id="taskStatus">
+                    <option value="not-complete">Not Complete</option>
+                    <option value="complete">Complete</option>
+                </select>
+                
+                <button type="submit">Assign</button>
+            </form>
+        </div>
+    </div>
+
+
+
+  {% endblock %}
+</body>
