@@ -26,6 +26,7 @@
         }
 
         
+        
         function selectPedal(name, imageUrl) {
         const boardId = "{{ board_id }}"; 
         if (!boardId) {
@@ -56,7 +57,7 @@
     <ul class="pedal-list">
         {% for pedal in pedals %}
         <li class="pedal-item" onclick="selectPedal('{{ pedal['name'] }}', '{{ pedal['image_url'] }}')">
-            <img src="{{ pedal['image_url'] }}" alt="Pedal Image">
+            <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
             <div class="pedal-info">
                 <p class="pedal-name">{{ pedal['name'] }}</p>
                 <p class="pedal-description">{{ pedal['description'] }}</p>

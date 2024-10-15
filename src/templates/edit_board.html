@@ -48,7 +48,6 @@
             const params = new URLSearchParams(window.location.search);
             const pedalName = params.get("pedal_name");
             const pedalImage = params.get("pedal_image");
-            
             if (pedalName && pedalImage) {
                 addPedalToBoard(pedalName, pedalImage);
             }
@@ -60,7 +59,7 @@
             for (let slot of slots) {
                 if (!slot.hasChildNodes()) {
                     const img = document.createElement('img');
-                    img.src = imageUrl;
+                    img.src = "/static" + imageUrl;
                     img.alt = name;
                     slot.appendChild(img);
                     break;
@@ -88,7 +87,7 @@
             <div class="board">
                 {% for pedal in board['pedals'] %}
                 <div class="slot" onclick="goToSearch('{{ url_for('routes.search', board_id=board['name']) }}')">
-                    <img src="{{ pedal['image_url'] }}" alt="Pedal Image">
+                    <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
                     <input type="hidden" name="pedals" value="{{ pedal['id'] }}">
                 </div>
                 {% endfor %}
