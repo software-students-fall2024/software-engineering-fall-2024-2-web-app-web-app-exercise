@@ -29,11 +29,12 @@ def profile():
 
     try:
         boards = list(get_boards_by_user(flask_login.current_user.email))
+        privacy = flask_login.current_user.privacy
     except Exception as e:
         flash(f'Error fetching boards: {str(e)}', 'error')
         return redirect(url_for('routes.login'))
 
-    return render_template('profile.html', username=flask_login.current_user.username, boards=boards)
+    return render_template('profile.html', username=flask_login.current_user.username, boards=boards, privacy=privacy)
 
 
 @routes.route('/account_settings', methods=['GET', 'POST'])
@@ -49,8 +50,6 @@ def update_account():
     username = request.form.get('username')
     email = request.form.get('email')
     privacy = request.form.get('privacy')
-    theme = request.form.get('theme')
-    language = request.form.get('language')
     password = request.form.get('password')
     needLogin = False
 
@@ -63,7 +62,7 @@ def update_account():
             existing_user = get_db().users.find_one({'email': email})
             if existing_user:
                 flash(
-                    "Email already in use. Please select different email", "error")
+                    "Email already in use. Please select a different email", "error")
                 return redirect(url_for('routes.account_settings'))
 
             else:
@@ -73,10 +72,6 @@ def update_account():
         update_fields['username'] = username
     if privacy:
         update_fields['privacy'] = privacy
-    if theme:
-        update_fields['theme'] = theme
-    if language:
-        update_fields['language'] = language
     if password:
         update_fields['password'] = password
         if password != user.get('password'):
