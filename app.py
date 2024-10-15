@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from models import User
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 import os
 
 
@@ -23,6 +24,19 @@ def create_app():
     client = MongoClient(connection_string)
     db = client["test_db"]
     
+    # user auth stuff
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "login"
+    
+    # user loader for flask login
+    @login_manager.user_loader
+    def load_user(user_id):
+        user = db.users.find_one({"_id": user_id})
+        if user:
+            return User(str(user["_id"]), user["username"])
+        return None
+    
     @app.route("/")
     def home():
         return render_template("home.html")
@@ -35,6 +49,7 @@ def create_app():
             password = request.form["password"]
             user = User.validate_login(db, username, password)
             if user:
+                login_user(user)
                 return redirect(url_for("contact_us")) ## change this for when news page gets implemented 
             else:
                 flash("Invalid username or password. Try again.")
@@ -56,6 +71,7 @@ def create_app():
     
     
     @app.route("/user-info")
+    @login_required # this decorator makes it so you can only be logged in to view this page.... put this on any new routes you make pls
     def getUserInfo():
         #retrieve user info and return with template
         ###TODO###
@@ -64,6 +80,7 @@ def create_app():
     
     
     @app.route("/user-info",methods=["PUT"])
+    @login_required
     def updateUserInfo():
         #get the new user info and update the db
         title = request.form["title"]
@@ -77,6 +94,7 @@ def create_app():
     
     
     @app.route("/contact_us")
+    @login_required
     def contact_us():
         #get contact-us page
         return render_template("Contact_us.html")
@@ -94,6 +112,7 @@ def create_app():
     
     
     @app.route("/vocab")
+    @login_required
     def getVocab():
         #retrieve vocab list of the user and return with template
         ###TODO###
