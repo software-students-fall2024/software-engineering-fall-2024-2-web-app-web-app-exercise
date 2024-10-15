@@ -11,16 +11,21 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow-y: auto; 
+    height: 100vh;
 }
 
 .todo-container, .search-container, .delete-container {
     width: 320px; 
+    height: 600px;
     background-color: white;
     border: 1px solid #ddd;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     border-radius: 10px;
+    overflow-y: auto; 
+
 }
 
 header {
@@ -157,7 +162,8 @@ footer a {
     border-radius: 5px;
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
+    margin-bottom: 20px;
 }
 
 .delete-btn {
@@ -168,4 +174,36 @@ footer a {
     cursor: pointer;
     font-size: 12px;
     border-radius: 5px;
+}
+.search-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.exercise-btn {
+    background: none;
+    border: none;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline; 
+}
+
+.exercise-btn:hover {
+    color: #0056b3; 
+    text-decoration: none;
+}
+
+.warning-message, .recommendation-message{
+    margin-top: 40px;
+    margin-bottom: 20px; 
 }
