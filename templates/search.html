@@ -29,7 +29,6 @@
             {% for exercise in exercises %} 
             <div class="exercise-item" id="exercise-{{ exercise.exercise_id }}">
                 <label>{{ exercise.workout_name }}</label>
-                <button class="add-btn" data-id="{{ exercise.exercise_id }}">Add</button>
             </div>
             {% endfor %}
         </div>
@@ -64,24 +63,6 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('An error occurred while searching for the exercises.');
-            });
-        });
-
-
-        document.querySelectorAll('.add-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                const exerciseId = this.getAttribute('data-id');
-
-                fetch(`/add_exercise/${exerciseId}`, {
-                    method: 'POST',
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Exercise added successfully!');
-                    } else {
-                        alert('Failed to add the exercise.');
-                    }
-                });
             });
         });
     </script>

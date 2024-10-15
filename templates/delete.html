@@ -23,7 +23,7 @@
             <div class="exercise-list">
                 {% for exercise in exercises %}
                 <div class="exercise-item" id="exercise-{{ exercise.exercise_todo_id }}">
-                    <label>{{ exercise.name }}</label>
+                    <label>{{ exercise.workout_name }}</label>
                     <button class="delete-btn" data-id="{{ exercise.exercise_todo_id }}">Delete</button>
                 </div>
                 {% endfor %}

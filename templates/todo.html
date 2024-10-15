@@ -13,7 +13,7 @@
             <h1>To Do List</h1>
             <p>Date, Day of the week</p>
             <button class="add-todo-btn" onclick="window.location.href='/search';">Add</button>
-            <button class="delete-all-btn" onclick="window.location.href='/delete_exercise';">Delete All</button>
+            <button class="delete-all-btn" onclick="window.location.href='/delete_exercise';">Delete</button>
         </header>
 
         <section class="welcome-message">
@@ -26,7 +26,7 @@
             <div class="todo-list">
                 {% for exercise in exercises %}
                 <div class="todo-item">
-                    <input type="checkbox" class="task-checkbox" {% if exercise.completed %}checked disabled{% endif %}>
+                    <input type="checkbox" class="task-checkbox" >
                     <button onclick="window.location.href='/edit?exercise_todo_id={{ exercise.exercise_todo_id }}'">
                         {{ exercise.workout_name }}
                     </button>
@@ -43,12 +43,9 @@
 
     <script>
         document.querySelectorAll('.task-checkbox').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    this.disabled = true; 
-                }
+        checkbox.addEventListener('change', function() {
             });
-        });
+    });
     </script>
     
 </body>
