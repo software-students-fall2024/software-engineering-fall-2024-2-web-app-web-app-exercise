@@ -104,6 +104,7 @@ def add_todo(exercise_id: str, working_time, reps, weight):
         print(f"Exercise with ID {exercise_id} not found.")
         return False
 
+
 def edit_exercise(exercise_todo_id, working_time, weight, reps):
     """Edit the todo item in the collection by its unique exercise_todo_id."""
     result = todo_collection.update_one(
@@ -121,6 +122,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
     else:
         print(f"Failed to update exercise with To-Do ID {exercise_todo_id}.")
         return False
+
 
 def get_exercise_in_todo(exercise_todo_id: int):
     todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
