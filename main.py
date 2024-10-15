@@ -37,7 +37,7 @@ def list():
 def makeRequest(requestID=None):
     return render_template("request.html", requestID=requestID)
 
-@app.route("/newAppliance", methods=["POST"])
+@app.route("/newApp")
 def add_app():
     """
     Route for POST requests to new appliances page.
