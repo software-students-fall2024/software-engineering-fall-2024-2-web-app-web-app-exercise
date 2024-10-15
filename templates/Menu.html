@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #000; /* Black background */
+        }
+        .container {
+            width: 291px;
+            height: 537px;
+            background-color: #000; /* Black background for the menu */
+            border-radius: 20px; /* Adjust as needed */
+            color: #6CB873; /* Green color for the text */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute space between items */
+            padding: 20px; /* Add padding for spacing */
+            font-family: Arial, sans-serif; /* Font style */
+            position: relative; /* Positioning for logo */
+            margin: auto;
+        }
+        #top-bar {
+            display: flex;
+            align-items: center;
+            width: 90vw;
+            margin: 0rem auto;
+        }
+        .logo {
+            color: #6CB873; /* Green color for the logo text */
+            font-size: 24px;
+            top: 20px; /* Distance from the top */
+            left: 20px; /* Distance from the left */
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center the menu items vertically */
+            flex-grow: 1; /* Allow the menu to take available space */
+            align-items: center; /* Center align menu items */
+        }
+        .menu-item {
+            font-size: 40px; /* Increased font size */
+            margin: 10px 0; /* Spacing between menu items */
+            text-align: center; /* Center align text */
+            text-decoration: none; /* Remove underline from links */
+            color: #6CB873; /* Green color */
+        }
+        .menu-item:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .close-icon {
+            align-self: flex-end; /* Keep close icon at the top right */
+            font-size: 1.5rem;
+            color: #6CB873; /* Color for the close icon */
+            background-color: transparent; /* No background */
+            border: none; /* Remove any border */
+            padding: 0; /* Remove padding */
+            margin: auto 0rem;
+            margin-left: auto;
+            cursor: pointer; /* Optional: Show pointer on hover */
+            outline: none; /* Remove focus outline */
+        }
+        #log-out{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div id="top-bar">
+    <h1 class="logo">FHUB.</h1> 
+    <button onclick="goBack()" class="close-icon">X</button>
+</div>
+<div class="container">
+    <div class="menu">
+        <a href="/news" class="menu-item">News</a>
+        <a href="" class="menu-item">Vocabulary</a>
+        <a href="" class="menu-item">Quiz</a>
+        <a href="/user-info" class="menu-item">Settings</a>
+        <a href="/contact_us" class="menu-item">Contact Us</a>
+        <a href="/log-out" class="menu-item" id="log-out">Log out</a>
+    </div>
+</div>
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
+</body>
+</html>
