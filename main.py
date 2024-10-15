@@ -43,6 +43,10 @@ def makeRequest(requestID=None):
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)
 
+@app.route("/removeApp")
+def delete_app():
+    return render_template("deleteApp.html", results = None)
+
 @app.route("/newApp/make", methods=["POST"])
 def add_app():
     """
@@ -136,8 +140,29 @@ def update_app():
         )
         return redirect(url_for("new_app", update =3))
 
-    
+@app.route("/removeApp/find/<code>", methods=["GET"])
+def get_app(code): #can potentially also be used for making requests?
+    if(code == 'code'):
+        result=appliance_collection.find_one({
+            "code":code
+        })
+    else:
+        result = appliance_collection.find_one({
+            "building": request.form["bname"],
+            "floor": request.form["floor"],
+            "applianceName":request.form["appName"]
+        })
+    if(result == None):
+        #doesn't exist
+        return redirect(url_for(delete_app, done = 2))
+    return redirect(url_for(delete_app, results=result))
 
+@app.route("/removeApp/remove/<code>", methods=["POST"])
+def remove_appliance(code):
+    appliance_collection.delete_one({
+        "code": code
+    })
+    return redirect(url_for(delete_app, done = 1))
 
 if __name__ == "__main__":
     app.run( host="127.0.0.1", port=3000)

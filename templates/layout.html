@@ -16,7 +16,7 @@
             <a class="link" href="/list">Requests</a>
             <a class="link" href="/request">Request Maintenance</a>
             <a class="link" href="{{url_for('new_app', update = 0)}}">Add Appliance</a>
-            <a class="link" href="/deleteApp">Remove Appliance</a>
+            <a class="link" href="{{url_for('delete_app')}}">Remove Appliance</a>
         </div>
         {% block homelink %}{% endblock %}
     </div>
