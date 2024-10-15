@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In Page{% endblock %}
+
+{% block header %}
+    <h1>Sign In</h1>
+{% endblock %}
+
+
+{% block styles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
+{% block content %}
+    <p>New User? <a href="{{url_for("signup")}}">Register Now!</a></p>
+    <form method="POST" action="{{url_for('signin_post')}}">
+        <label for="usernameInput">Username:</label>
+        <input type="text" id="usernameInput" name="username" required/>
+        <br/>
+        <label for="passwordInput">Password:</label>
+        <input type="password" id="passwordInput" name="password" required/>
+        <br/>
+        <input type="submit" value="Sign In"/>
+    </form>
+{% endblock %}

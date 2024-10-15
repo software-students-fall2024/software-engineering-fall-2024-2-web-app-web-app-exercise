@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Result Page{% endblock %}
+
+{% block header %}
+    <h1>Result</h1>
+    {% include "components/back-link.html" %}
+{% endblock %}
+
+{% block styles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> <!--Was here before don't chnage this-->
+{% endblock %}
+
+{% block singout_button%}
+    <a class="signout-link" href="{{url_for('signin')}}">
+        <button>
+            <img src="{{ url_for('static', filename='images/signout-icon.png') }}" />
+        </button>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <main>
+        {% if count==0 %}
+            <p>No records found.</p>
+        {% else %}
+        <section className="job-list">
+            {% for doc in docs%}
+                <article class="job-entry">
+                    <div class="job-text">
+                        <p>Job Title: {{doc.job_title}}</p>
+                        <p>Company: {{doc.company}}</p>
+                    </div>
+    
+                    <nav class="info-link">
+                        <a href="{{url_for('info',record_id=doc._id,return_to='search_post')}}">
+                            <img src="{{ url_for('static', filename='images/arrow.svg') }}" alt="Arrow Icon" />
+                        </a>
+                    </nav>
+                </article>
+            {%endfor%}
+        </section>
+            
+        {% endif %}
+    </main>
+    <footer>
+        <nav>
+            <a href="{{url_for('search')}}" class="back-button">Back to Search Page</a>
+        </nav>
+    </footer>
+{% endblock %}

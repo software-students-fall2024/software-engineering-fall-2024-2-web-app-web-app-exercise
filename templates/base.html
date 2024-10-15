@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+        <!-- More Styles -->
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+        <!-- Flash message container -->
+        {% with messages = get_flashed_messages()%}
+            {% if messages %}
+                <div id="flash-message-overlay">
+                    <div>
+                        {% for message in messages %}
+                            {{message}}</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <header class="base-header">
+            {% block header %}{% endblock %}
+            {% block singout_button%}{% endblock %}
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <!-- Add Javascript to hide the flash message after 3 seconds -->
+        <script>
+            window.setTimeout(function() {
+                var flashBox = document.getElementById('flash-message-overlay');
+                if (flashBox){
+                    flashBox.style.display = 'none';
+                }
+            }, 3000);
+        </script>
+    </body>
+</html>

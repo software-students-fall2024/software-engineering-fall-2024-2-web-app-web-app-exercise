@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Page{% endblock %}
+
+{% block header %}
+    <h1>Edit Job Information</h1>
+    {% include "components/back-link.html" %}
+{% endblock %}
+
+{% block styles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit.css') }}">
+{% endblock %}
+
+{% block singout_button%}
+    <a class="signout-link" href="{{url_for('signin')}}">
+        <button>
+            <img src="{{ url_for('static', filename='images/signout-icon.png') }}" />
+        </button>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{{url_for('edit_post',record_id=doc._id,return_to=return_to)}}">
+        <label for="titleInput">Job Title: <span class="required">*</span></label>
+        <input type="text" id="titleInput" name="job_title" value="{{doc.job_title}}" required/>
+        <br/>
+        <label for="companyInput">Company: <span class="required">*</span></label>
+        <input type="text" id="companyInput" name="company" value="{{doc.company}}" required/>
+        <br/>
+        <label for="locationInput">Location: <span class="required">*</span></label>
+        <div class="select-box-location">
+            <div class="select-option">
+                <input type="text" id="locationInput" name="location" value="{{doc.location}}"" readonly>
+            </div>
+            <div class="content">
+                <div class="search">
+                    <input type="text" id="optionSearch" placeholder="{{Search}}" name="">
+                </div>
+                <ul class="options">
+                    {% for location in locations %}
+                        <li>{{location}}</li>
+                    {% endfor %}
+                    <li>Remote</li>
+                    <li>Other Countries</li>
+                </ul>
+            </div>        
+        </div>
+        <br/>
+        <label for="linkInput">Link (to the job description):</label>
+        <input type="text" id="linkInput" name="link" value="{{doc.link}}"/>
+        <br/>
+        <label for="stageInput">Stage: <span class="required">*</span></label>
+        <div class="select-box-stage">
+            <div class="select-option">
+                <input type="text" id="stageInput" name="stage" placeholder="{{Select}}" readonly>
+            </div>
+            <div class="content">
+                <div class="search">
+                    <input type="text" id="optionSearch" placeholder="{{Search}}" name="">
+                </div>
+                <ul class="options">
+                    <li>Job Opening</li>
+                    <li>Applied</li>
+                    <li>Phone/Video Screening Interview</li>
+                    <li>Online Assessment</li>
+                    <li>Interview</li>
+                    <li>Job Offer</li>
+                    <li>Offer Accepted</li>
+                    <li>Offer Declined</li>
+                    <li>Rejection</li>
+                </ul>
+            </div>        
+        </div>
+        <br/>
+        <label for="timeInput" id="timeLabel" style="display: none;">Date/DDL:<span class="required">*</span></label>
+        <input type="text" id="timeInput" name="time" value="{{doc.time}}" style="display:none;"/>
+
+
+        <br/>
+        <input type="submit" value="Save"/>
+    </form>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

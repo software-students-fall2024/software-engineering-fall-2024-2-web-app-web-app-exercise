@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Info Page{% endblock %}
+
+{% block header %}
+    <h1>Specific Information</h1>
+    {% include "components/back-link.html" %}
+{% endblock %}
+
+{% block styles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Need this in order for media query in css file to work-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/info.css') }}">
+{% endblock %}
+
+{% block singout_button%}
+    <a class="signout-link" href="{{url_for('signin')}}">
+        <button>
+            <img src="{{ url_for('static', filename='images/signout-icon.png') }}" />
+        </button>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <p>Job Title: {{doc.job_title}}</p>
+        <p>Company: {{doc.company}}</p>
+        <p>Location: {{doc.location}}</p>
+        <p>Link: {{doc.link}}</p>
+        <p>Stage: {{doc.stage}}</p>
+        <p>Date/DDL: {{doc.time}}</p>
+    </main>
+    <footer>
+        <nav>
+            <a href="{{url_for('edit',record_id=doc._id,return_to=return_to)}}">Edit</a> | <a href="{{url_for('delete',record_id=doc._id,return_to=return_to)}}">Delete</a>
+        </nav>
+    </footer>
+{% endblock %}

@@ -1,0 +1,191 @@
+/* This is the home page css */
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #444;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.job-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.job-entry {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    transition: box-shadow 0.2s ease;
+}
+
+.job-entry:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.job-text p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.info-link a {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #007BFF;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.info-link a:hover {
+    background-color: #0056b3;
+}
+
+.info-link a img {
+    width: 100%;
+    height: 100%;
+}
+/*
+.header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(52, 186, 231);
+    padding: 0.5rem;
+    position: relative;
+}
+*/
+
+/*
+.title {
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+}
+*/
+/*
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+*/
+
+/* Links dropdown button */
+.links-dropdown {
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+}
+.links-dropdown > img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Links dropdown interface */
+.links-ui {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    display: none;
+}
+
+.links-ui > div {
+    position: absolute;
+    background-color: lightgray;
+    top: 4rem;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.links-ui > div > a {
+    display: block;
+    border: 2px solid black;
+    margin: 0;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.links-ui > div > a:hover {
+    background-color: #bbb;
+}
+
+/* Style for the Back to Search Page button in result page */
+.back-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: purple;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: darkmagenta;
+    color: white;
+}
