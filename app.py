@@ -25,7 +25,7 @@ exercises_collection = db['exercises']
 
 
 def search_exercise(query: str):
-    print('query ', query)
+    #print('query ', query)
     exercises = exercises_collection.find({
         "workout_name": {
             "$regex": query, 
@@ -55,15 +55,14 @@ def delete_todo(exercise_todo_id: int):
     )
     
     if result.modified_count > 0:
-        print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
+        #print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
         return True
     else:
-        print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        #print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
         return False
 
 
-def add_todo(exercise_id: str, working_time, reps, weight):
-    """Add a to-do item using ObjectId for exercise and generate a unique exercise_todo_id."""
+def add_todo(exercise_id: str, working_time=None, reps=None, weight=None):
     exercise = exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
     if exercise:
@@ -97,13 +96,13 @@ def add_todo(exercise_id: str, working_time, reps, weight):
             })
 
         if result.modified_count > 0 or result.inserted_id:
-            print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
+            #print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
             return True
         else:
-            print(f"Failed to add exercise {exercise['workout_name']} to To-Do List.")
+            #print(f"Failed to add exercise {exercise['workout_name']} to To-Do List.")
             return False
     else:
-        print(f"Exercise with ID {exercise_id} not found.")
+        #print(f"Exercise with ID {exercise_id} not found.")
         return False
 
 
@@ -235,14 +234,25 @@ def add():
     return render_template('add.html', exercises=exercises)
 
 
-@app.route('/add_exercise/<int:exercise_id>', methods=['POST'])
-def add_exercise(exercise_id):
-    success = add_todo(exercise_id)
+@app.route('/add_exercise', methods=['POST'])
+def add_exercise():
+    exercise_id = request.args.get('exercise_id')
+    
+    print(f"Received request to add exercise with ID: {exercise_id}")
+    
+    if not exercise_id:
+        print("No exercise ID provided")
+        return jsonify({'message': 'Exercise ID is required'}), 400
+
+    success = add_todo(exercise_id)  
 
     if success:
+        print(f"Successfully added exercise with ID: {exercise_id}")
         return jsonify({'message': 'Added successfully'}), 200
     else:
+        print(f"Failed to add exercise with ID: {exercise_id}")
         return jsonify({'message': 'Failed to add'}), 400
+
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -254,10 +264,10 @@ def edit():
         working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        print('working_time', working_time)
-        print('weight', weight)
-        print('reps', reps)
-        print('exercise_todo_id ',exercise_todo_id)
+        #print('working_time', working_time)
+        #print('weight', weight)
+        #print('reps', reps)
+        #print('exercise_todo_id ',exercise_todo_id)
         success = edit_exercise(exercise_todo_id, working_time, weight, reps)
         if success:
             return jsonify({'message': 'Edited successfully'}), 200

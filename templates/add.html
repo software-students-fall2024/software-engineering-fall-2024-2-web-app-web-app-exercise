@@ -24,7 +24,7 @@
             {% for exercise in exercises %}
             <div class="exercise-item">
                 <label>{{ exercise.workout_name }}</label>
-                <button class="add-btn" data-id="{{ exercise.exercise_id }}">Add</button>
+                <button class="add-btn" data-id="{{ exercise._id }}">Add</button>
             </div>
             {% endfor %}
         </div>
@@ -35,7 +35,7 @@
             button.addEventListener('click', function() {
                 const exerciseId = this.getAttribute('data-id');
 
-                fetch(`/add_exercise/${exerciseId}`, {
+                fetch(`/add_exercise?exercise_id=${exerciseId}`, {
                     method: 'POST',
                 })
                 .then(response => {
@@ -45,8 +45,9 @@
                         alert('Failed to add the exercise.');
                     }
                 });
-            });
-        });
+    });
+});
+
     </script>
 
 </body>
