@@ -55,7 +55,7 @@ def update_account():
     needLogin = False
 
     current_user_id = flask_login.current_user.get_id()
-    user = get_db.users.find_one({'email': current_user_id})
+    user = get_db().users.find_one({'email': current_user_id})
 
     update_fields = {}
     if username:
