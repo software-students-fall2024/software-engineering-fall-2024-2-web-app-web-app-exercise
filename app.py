@@ -143,35 +143,33 @@ def create_app():
     
     # team page / Assign task
     @app.route('/<id>/assign-task', methods=['POST'])
-    def addTask(id):
+    def add_task(id):
+        project = project_collection.find_one({"_id": ObjectId(id)})
+        task_list = project.get("tasks", [])
         data = request.get_json()
+        print(data)
         task_name = data.get('taskName')
         task_date = data.get('taskDate')
         task_status = data.get('taskStatus')
         
         if task_name and task_date and task_status:
-            project = project_collection.find_one({"_id": ObjectId(id)})
-            project.project["tasks"].append({"taskName": taskName, "taskDate": taskDate, "taskStatus": taskStatus})
-            return jsonify({"error": "project not found"}), 404
+            task_list.append({"taskName": task_name, "date": task_date, "status": task_status})
+            project_collection.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"tasks": task_list}}
+        )
+            return jsonify({"success": True}), 200 
         else:
             return jsonify({"error": "Task name is required"}), 400
         
+        
     # team page / Edit task
-    @app.route('/<id>/edit-task/<task_id>', methods=['POST'])
+    @app.route('/<id>/edit-task/<task_name>', methods=['POST'])
     def edit_task(id, task_id):
-        data = request.get_json()
-        new_task_name = data.get('taskName')
-        if new_task_name:
-            for project in projects:
-                if project["id"] == id:
-                    for task in project["tasks"]:
-                        if task["id"] == task_id:
-                            task["id"] = new_task_name
-                            return jsonify({"success": True, "task": {"id": task_id, "name": new_task_name}}), 200
-            return jsonify({"error": "project or Task not found"}), 404
-        else:
-            return jsonify({"error": "Task name is required"}), 400    
-             
+        return jsonify({"error": "Task name is required"}), 400    
+    
+                 
+     # team page / Delete task
     @app.route('/<id>/delete-task/<taskName>', methods=['GET'])
     def delete_task(id, taskName):
         print(f"Deleting task {taskName} from project {id}")  # Add logging to debug

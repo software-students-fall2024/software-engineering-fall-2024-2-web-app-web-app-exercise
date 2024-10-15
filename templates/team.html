@@ -6,7 +6,22 @@
 </style>
 
 <script>
-    console.log("Script loaded!");
+    //search function
+    function searchTasks() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const tasks = document.getElementsByClassName('task');
+
+        Array.from(tasks).forEach(task => {
+            const taskName = task.getAttribute("data-task-name");
+            console.log(taskName);
+            if (taskName.includes(searchTerm)) {
+                task.style.display = 'block';  
+            } else {
+                task.style.display = 'none'; 
+            }
+        });
+    }
+
     //delete member
     async function deleteMember(projectId, member) {
         try {
@@ -37,11 +52,10 @@
                     'Content-Type': 'application/json',
                 },
             });
-            
             console.log('Response status:', response.status);
             
             if (response.ok) {
-                location.reload();  // Reload the page after successful deletion
+                location.reload();  
             } else {
                 alert('Failed to delete task');
             }
@@ -51,17 +65,6 @@
         }
     }
 
-    //edit task
-    document.addEventListener('DOMContentLoaded', function () {
-        const tasks = document.getElementsByClassName('task');
-        
-        // loop through the tasks
-        Array.from(tasks).forEach(function(task) {
-            task.addEventListener('click', function (event) {
-                document.getElementById('editTaskModal').style.display = 'block';
-            });
-        });
-    });
 
     function openAssignTaskModal() {
         document.getElementById('assignTaskModal').style.display = 'block';
@@ -72,14 +75,15 @@
     }
 
     //add task
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
         const assignTaskForm = document.getElementById('assignTaskForm');
         assignTaskForm.addEventListener('submit', async function(e) {
             e.preventDefault(); 
             const taskName = document.getElementById('taskName').value;
             const taskDate = document.getElementById('taskDate').value;
             const taskStatus = document.getElementById('taskStatus').value;
-            const projectId = "{{ project.id }}";  
+            console.log('Task Date:', taskDate);
+            const projectId = "{{ project._id }}";  
 
             await fetch(`/${projectId}/assign-task`, {
                 method: 'POST',
@@ -102,7 +106,13 @@
 <body>
   <div class="main-content">
     <div class="section-title">{{ project.projectName }}</div>
+    <!-- Search -->
+    <div>
+        <input type="text" id="searchInput" placeholder="Search tasks by name" />
+        <button id="searchButton" onclick="searchTasks()">Search</button>
+    </div>
 
+    <!-- Show member -->
     <div class="section-title">Member List</div>
         {% for member in project.members %}
         <li class="member" data-member-id="{{ member._id }}" >
@@ -111,28 +121,13 @@
         </li>
         {% endfor %}
 
+    <!-- Show task -->
     <div class="section-title">Task List</div>
         {% for task in project.tasks %}
         <li class="task" data-task-name="{{ task.taskName }}" >
             {{ task.taskName }} 
-            <button onclick="deleteTask('{{ project._id }}', '{{ task.taskName }}')">Delete</button>        
+            <button onclick="deleteTask('{{ project._id }}', '{{ task.taskName }}')">Delete</button>   
         </li>
-        <!-- edit Task Modal -->
-        <div id="editTaskModal" style="display:none;">
-            <div class="modal-content">
-                <span onclick="closeAssignTaskModal()" class="close">&times;</span>
-                <p>Edit Task</p>
-                <form id="editTaskForm">
-                    <label for="taskName">Task Name:</label>
-                    <input type="text" id="taskName" name="taskName" required>
-                    <label for="taskDate">Start Date:</label>
-                    <input type="text" id="taskDate" name="taskDate" required>
-                    <label for="taskStatus">Task Status:</label>
-                    <input type="text" id="taskStatus" name="taskStatus" required>
-                    <button type="submit">Assign</button>
-                </form>
-            </div>
-        </div>
         
         {% endfor %}
     </div>
@@ -148,13 +143,16 @@
             <form id="assignTaskForm">
                 <label for="taskName">Task Name:</label>
                 <input type="text" id="taskName" name="taskName" required>
+                
                 <label for="taskDate">Start Date:</label>
-                <input type="text" id="date" name="taskDate" required>
+                <input type="text" id="taskDate" name="taskDate" required>
+                
                 <label for="taskStatus">Task Status:</label>
                 <select name="taskStatus" id="taskStatus">
                     <option value="not-complete">Not Complete</option>
                     <option value="complete">Complete</option>
-                  </select>
+                </select>
+                
                 <button type="submit">Assign</button>
             </form>
         </div>
