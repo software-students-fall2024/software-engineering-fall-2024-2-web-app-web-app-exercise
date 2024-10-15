@@ -18,7 +18,7 @@
         <tbody>
             {% for book in books %}
             <tr>
-                <td>{{ book["title"] }}</td>
+                <td><a href="{{ url_for('book_detail', book_id=book['_id']) }}">{{ book["title"] }}</a></td>
                 <td>{{ book["quantity"] }}</td>
             </tr>
             {% endfor %}
