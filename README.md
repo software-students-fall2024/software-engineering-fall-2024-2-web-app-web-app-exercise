@@ -18,4 +18,5 @@ Follow the example.env file to create a .env file in the local repository. If us
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Sprint 1] (https://github.com/orgs/software-students-fall2024/projects/14)
+[Spring 2] (https://github.com/orgs/software-students-fall2024/projects/63)

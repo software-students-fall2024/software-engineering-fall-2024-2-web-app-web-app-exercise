@@ -93,6 +93,7 @@ def create_event():
         title = request.form['title']
         description = request.form['description']
         date = request.form['date']
+        time = request.form['time']
         location = request.form['location']
         creator = session['username']  
 
@@ -100,6 +101,7 @@ def create_event():
             "title": title,
             "description": description,
             "date": date,
+            "time": time,
             "location": location,
             "creator": creator, 
             "attendees": []  
@@ -212,6 +214,15 @@ def hosting_list():
 
     hosting_events = list(events_collection.find({"creator": session['username']}))
 
+    for event in hosting_events:
+        attendee_ids = event.get('attendees', [])
+
+        valid_attendee_ids = [ObjectId(attendee_id) for attendee_id in attendee_ids if ObjectId.is_valid(attendee_id)]
+        
+        attendees = list(collection.find({"_id": {"$in": valid_attendee_ids}}, {"username": 1}))
+        
+        event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
+
     return render_template('hosting_events.html', events=hosting_events)
 
 
@@ -246,6 +257,7 @@ def edit_event(event_id):
         title = request.form['title']
         description = request.form['description']
         date = request.form['date']
+        time = request.form['time']
         location = request.form['location']
 
         events_collection.update_one(
@@ -254,6 +266,7 @@ def edit_event(event_id):
                 'title': title,
                 'description': description,
                 'date': date,
+                'time': time,
                 'location': location
             }}
         )
