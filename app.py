@@ -58,11 +58,20 @@ def create_app():
     @app.route('/search', methods=["POST"])
     def post_search():
         user = request.form["user"]
-        tune_tasks= list(db.tune_tasks.find({"created_by":user}))
-        # return make_response("hello", 200)
-        if len(tune_tasks) == 0:
-            return make_response("user not found", 200)
+
+        user_data = db.users.find_one({"username": user})
+        if not user_data:
+            return render_template('search.html', error="User not found")
+
+        tune_tasks = list(db.tune_tasks.find({"created_by": user}))
         return render_template('profile.html', user=user, collection=tune_tasks)
+
+    @app.route('/search_suggestions', methods=["GET"])
+    def search_suggestions():
+        query = request.args.get("q", "")
+        users = list(db.users.find({"username": {"$regex": query, "$options": "i"}}))
+        suggestions = [user['username'] for user in users]
+        return {"suggestions": suggestions}
     
     @app.route('/login', methods=["GET", "POST"])
     def login():

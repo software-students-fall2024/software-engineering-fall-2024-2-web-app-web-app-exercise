@@ -13,6 +13,7 @@ main {
     height: 80vh;
     overflow: auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -34,7 +35,6 @@ nav a {
     color: white;
 }
 
-
 header {
     height: 10vh;
     display: flex;
@@ -44,6 +44,7 @@ header {
     text-align: center;
 }
 
+/* HOME CSS */
 .website-title {
     margin-left: 5%;
     font-size: 7rem;
@@ -51,13 +52,13 @@ header {
     line-height: 100%;
     display: inline-block;
     position: relative;
-
+    margin-top: 0;
 }
 
 .record {
     width: 60%;
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 90%; 
     transform: translateX(-50%); 
     overflow: hidden;
@@ -91,13 +92,79 @@ footer {
     font-size: 1vh;
 }
 
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* SEARCH CSS */
+.search-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20%;
+}
+  
+.search-form {
+    border: none;
+    display: flex;
+    width: 70vw;
+    align-items: center;
+    justify-content: center;
+}
+  
+.search-input {
+    padding: 10px;
+    width: 30vw;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+  
+.search-button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+  
+.search-button:hover {
+    background-color: #424242;
+}
+
+.suggestions {
+    border: 1px solid #ccc; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    position: absolute; 
+    background: white; 
+    width: calc(50vw - 20px);
+    z-index: 1000;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 8px; 
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* LOGIN CSS */
 .login-container {
     width: 300px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
     text-align: center;
 }
@@ -127,8 +194,7 @@ input[type="password"] {
     width: 100%;
     padding: 10px; 
     margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
     font-size: 16px;
     box-sizing: border-box;
 }
@@ -137,8 +203,7 @@ input[type="password"] {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    background-color: rgb(235, 198, 235);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ebc6eb;
     color: white;
     border: none;
     border-radius: 4px;
@@ -146,7 +211,7 @@ input[type="password"] {
 }
 
 .login-button:hover {
-    background-color: rgb(235, 198, 235);
+    background-color: rgb(0, 0, 0);
 }
 
 .error-message {
@@ -157,7 +222,13 @@ input[type="password"] {
 }
 
 .register-link {
+    margin: 10px;
+}
+
+.register-link a {
+    text-decoration: none;
     margin-top: 15px;
+    color: #000000;
     text-align: center;
 }
 
@@ -172,136 +243,4 @@ input[type="password"] {
 
 .register-button:hover {
     color: #5751d9;
-}
-
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.search-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-  
-.search-form {
-    border: none;
-    display: flex;
-    width: 50vw;
-    align-items: center;
-    justify-content: center;
-}
-  
-.search-input {
-    padding: 10px;
-    width: 30vw;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-right: 10px;
-}
-  
-.search-button {
-    padding: 10px 20px;
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-  
-.search-button:hover {
-    background-color: #636363;
-}
-  
-.search-results {
-    margin-top: 20px;
-    width: 50vw;
-    text-align: center;
-}
-  
-.user-list {
-    list-style: none;
-    padding: 0;
-}
-  
-.user-item {
-    margin: 10px 0;
-}
-  
-.user-link {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-}
-  
-.user-link:hover {
-    text-decoration: underline;
-}
-  
-.no-results {
-    color: red;
-    font-size: 16px;
-}
-
-.tunetask {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.tunetask h2 {
-    margin-top: 0;
-    color: #007BFF;
-}
-
-.tunetask h3 {
-    color: #555;
-}
-
-.tunetask ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.tunetask li {
-    background-color: #e9ecef;
-    padding: 8px;
-    border-radius: 3px;
-    margin: 5px 0;
-}
-
-.tunetask form {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.tunetask button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.tunetask button:hover {
-    background-color: #c82333;
-}
-
-p {
-    text-align: center;
-    color: #666;
-    font-style: italic;
 }
