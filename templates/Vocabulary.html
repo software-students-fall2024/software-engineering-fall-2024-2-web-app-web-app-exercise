@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocabulary</title>
+{% extends "base.html" %}
+{% block title %}
+Vocabulary
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,10 +22,6 @@
             width: 100%;
             padding: 10px;
         }
-        .hamburger {
-            cursor: pointer;
-            color: #6CB873;
-        }
         .flashcard {
             background-color: #4CAF50;
             color: white;
@@ -36,6 +32,7 @@
             margin: 20px 0;
             transition: background-color 0.3s;
             width: 100%; /* Make the flashcard full width */
+            height: 30vh;
         }
         .flashcard:hover {
             background-color: #45a049;
@@ -61,7 +58,6 @@
         }
         .word-bank {
             width: 100%;
-            max-height: 150px;
             overflow-y: scroll;
             margin-top: 20px;
         }
@@ -82,11 +78,8 @@
             margin-top: 20px;
         }
     </style>
-</head>
-<body>
-    <div class="header">
-        <div class="hamburger" onclick="window.location.href='prototype-link.html'">☰</div>
-    </div>
+{% endblock %}
+{% block content %}
 
     <div class="flashcard" onclick="toggleDefinition()">
         <span id="flashcard-word">laborum</span> 
@@ -103,7 +96,7 @@
         <!-- Dynamic vocabulary boxes will be inserted here -->
     </div>
 
-    <button class="start-quiz" onclick="window.location.href='quiz-page.html'">Start Quiz →</button>
+    <!--<button class="start-quiz" onclick="window.location.href='quiz-page.html'">Start Quiz →</button>-->
 
     <script>
         // Vocabulary data (reduced to 5 words)
@@ -158,6 +151,5 @@
             }
         }
     </script>
-</body>
-</html>
+{% endblock %}
 
