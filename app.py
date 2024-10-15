@@ -104,7 +104,6 @@ def create_app():
     def getUpdatePage():
         user_info = {
             "username": current_user.username,
-            "password": current_user.password,
             "firstname": current_user.firstname,
             "lastname": current_user.lastname
         }

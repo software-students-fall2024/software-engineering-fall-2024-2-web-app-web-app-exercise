@@ -128,8 +128,6 @@ Edit User Info
 
     <form action="/user-info" method="POST">
         <input type="email" id="username" name="username" placeholder="Email" value={{user_info.username}} required>
-        <input type="password" id="password" name="password" placeholder="New Password" required>
-        <input type="password" id="password2" name="password2" placeholder="Re-enter New Password" required>
         <input type="text" id="firstname" name="firstname" placeholder="First Name" value={{user_info.firstname}} required>
         <input type="text" id="lastname" name="lastname" placeholder="Last Name" value={{user_info.lastname}} required>
         <button type="submit" class="signup-btn">Update Info</button>
