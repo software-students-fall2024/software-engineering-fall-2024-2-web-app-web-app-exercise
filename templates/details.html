@@ -15,7 +15,7 @@
 </header>
 <body>
     
-    <div class="container">
+    <div class="container" >
         <div class="exercise-details">
             <h1 style="padding-top: 20px;">{{ exercise.name }}</h1>
             <img src="{{ url_for('serve_image', filename=exercise.gif_path.split('/')[-1]) }}" alt="{{ exercise.name }}" class="exercise-gif">
@@ -23,7 +23,7 @@
             {% if exercise.secondaryMuscles %}
                 <p><strong>Secondary Muscles:</strong> {{ exercise.secondaryMuscles | join(', ') }}</p>
             {% endif %}
-            <h3>Instructions:</h3>
+            <h3 >Instructions:</h3>
             <ol>
                 {% for instruction in exercise.instructions %}
                     <li>{{ instruction }}</li>
