@@ -144,7 +144,7 @@ def default_exercises():
     exercises_id = []  # add recommendation exercise id here
     exercises = []
     for i in exercises_id:
-        exercises.append(get_exersice(i))
+        exercises.append(get_exercise(i))
 
     return exercises
 
@@ -161,7 +161,7 @@ def search():
         if not query:
             return jsonify({'message': 'Search content cannot be empty.'}), 400
             # return redirect(url_for('search'))
-        results = search_exersice(query)
+        results = search_exercise(query)
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
             # return redirect(url_for('search'))
@@ -230,7 +230,7 @@ def edit():
 
 @app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
-    exercise = get_exersice(exercise_id)
+    exercise = get_exercise(exercise_id)
     instruction = exercise['instruction']
 
     return render_template('instructions.html', instruction=instruction)
