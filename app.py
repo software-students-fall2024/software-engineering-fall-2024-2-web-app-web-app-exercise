@@ -113,16 +113,23 @@ def create_app():
     @app.route("/user-info",methods=["POST"])
     @login_required
     def updateUserInfo():
-        #get the new user info and update the db
-        title = request.form["title"]
-        content = request.form["content"]
-        ###TODO###
+        # getting firstname and last name from the HTML form
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
         
+        # update the user's first name and last name in the mongodb
+        db.users.update_one(
+            {"username": current_user.username},
+            {"$set": {"firstname": firstname, "lastname": lastname}}
+        )
         
-        #success
-        flash("User Info updated!")
+        # update the current_user object on flask app
+        current_user.firstname = firstname
+        current_user.lastname = lastname
+        
+        # flash a success message and redirect back to the user info page
+        flash("User info updated successfully!")
         return redirect(url_for("getUserInfo"))
-    
 
     @app.route("/log-out")
     @login_required 
