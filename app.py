@@ -41,6 +41,20 @@ def create_app():
         reps_no = request.form['reps']
         # add session info to database
         return redirect(url_for("counter"))
+    
+    @app.route("/congrats")
+    def congrats():
+        """
+        Route for the congratulations page.
+        Renders a template that shows the session details and a congratulations message.
+        """
+        focus_time = request.args.get('focus')
+        break_time = request.args.get('break_time')
+        reps_no = request.args.get('reps')
+        
+        return render_template("congrats.html", focus_time=focus_time, break_time=break_time, reps_no=reps_no)
+
+    return app
 
     return app
 

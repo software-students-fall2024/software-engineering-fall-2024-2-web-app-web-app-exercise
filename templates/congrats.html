@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations Screen</title>
+    <style>
+        body {
+            background-color: powderblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* This ensures that the text and image stack vertically */
+            height: 100vh;
+            margin: 0;
+        }
+       .congrats {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px; /* Adds space between text and image */
+        } 
+
+        h1 {
+            color: darkblue;
+            font-size: 3rem;
+        }
+        img {
+            max-width: 300px; /* Adjust the size of the bunny */
+            width: 100%; /* Makes it responsive */
+            height: auto;
+        }
+        .session-info {
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+        .home-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: darkblue;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .home-button:hover {
+            background-color: navy;
+        }
+    </style>
+</head>
+<body>
+    <div class="congrats">
+        <h1>Congratulations!</h1>
+    </div>
+    <p class="session-info">You've completed a session with:</p>
+    <ul class="session-info">
+        <li>Focus Time: {{ focus_time }} minutes</li>
+        <li>Break Time: {{ break_time }} minutes</li>
+        <li>Repetitions: {{ reps_no }}</li>
+    </ul>
+
+    <img src="{{ url_for('static', filename='images/BunnywHat.png') }}" alt="BunnyCongratsImage">
+    <a href="{{ url_for('session_form') }}" class="home-button">Start Another Session</a>
+
+</body>
+</html>
