@@ -19,7 +19,7 @@
                     <p>Date: {{ event.date }}</p>
                     <p>Location: {{ event.location }}</p>
 
-                    <h4>Attendees:</h4>
+                    <h4>Attendees List ({{ event.total_attendees }}):</h4>
                     <ul class="attendees-list">
                         {% if event.attendees_usernames %}
                             {% for attendee in event.attendees_usernames %}
