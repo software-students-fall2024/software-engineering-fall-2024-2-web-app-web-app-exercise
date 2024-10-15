@@ -204,12 +204,21 @@ def create_app():
             "location": location,
             "link": link,
             "stage": stage,
-            "time": time
+            "time": retDate(time)
         }
         db.records.insert_one(doc)
         return redirect(url_for("home"))
     
 
+    def retDate(inputDate):
+        if inputDate and inputDate.strip():
+            year, month, day = inputDate.split('/')
+            month = month.zfill(2)
+            day = day.zfill(2)
+            return f"{year}/{month}/{day}"
+        else:
+            return inputDate
+    
     def validate_date(date_str):
         parts = date_str.split('/')
     
@@ -306,8 +315,8 @@ def create_app():
             "link": link,
         }
         db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc_flash})
-        locations = load_cities()
-        formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
+        #locations = load_cities()
+        #formatted_locations=[f"{loc['city']}, {loc['state_id']}" for loc in locations]
         if stage == "":
             print("stage is empty")
             flash("Please choose the stage.")
@@ -322,7 +331,7 @@ def create_app():
             "location": location,
             "link": link,
             "stage": stage,
-            "time": time
+            "time": retDate(time)
         }
         db.records.update_one({"_id": ObjectId(record_id)},{"$set": doc})
         return redirect(url_for(return_to))
@@ -383,13 +392,12 @@ def create_app():
         if stage_global and stage_global.strip():  # Check if stage is not empty
             search_criteria['stage'] = stage_global
         if ddl_date_global and ddl_date_global.strip():  # Check if deadline is not empty
-            search_criteria['time'] = { "$lte": ddl_date_global }
+            search_criteria['time'] = { "$lte": retDate(ddl_date_global) }
             if validate_date(ddl_date_global)== False:
             # Insert data into MongoDB
                 flash("Invalid date format. Please enter a valid date in YYYY/MM/DD format.")
                 return search()
-                
-        docs = db.records.find(search_criteria)
+        docs = db.records.find(search_criteria).sort("time",1)
         docs_list = list(docs)
         return_to = request.form.get('return_to')
         return render_template("result.html",docs=docs_list,count=len(docs_list),return_to=return_to)
@@ -409,8 +417,8 @@ def create_app():
         if stage_global and stage_global.strip():  # Check if stage is not empty
             search_criteria['stage'] = stage_global
         if ddl_date_global and ddl_date_global.strip():  # Check if deadline is not empty
-            search_criteria['time'] = { "$lte": ddl_date_global }
-        docs = db.records.find(search_criteria)
+            search_criteria['time'] = { "$lte": retDate(ddl_date_global) }
+        docs = db.records.find(search_criteria).sort("time", 1)
         docs_list = list(docs)
         return render_template("result.html",docs=docs_list,count=len(docs_list))
     
