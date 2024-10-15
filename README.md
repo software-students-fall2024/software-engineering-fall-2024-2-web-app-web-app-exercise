@@ -12,11 +12,53 @@ Our vision is to provide an event planning platform that makes it accessible for
 
 ## Steps necessary to run the software
 
-To clone the repository to your local machine, open the terminal and run 'git clone https://github.com/software-students-fall2024/2-web-app-leodavejessalexangteamagain.git'. Use the 'cd' command to set the directory to the local repository. It is recommended to set a virtual environment with pipenv, which can be installed with the command 'pip install pipenv'. To activate the environment, run 'pipenv shell'. To install Flask and pymongo, run the commands 'pipenv install Flask' and 'pipenv install pymongo'. In the pipenv environment, run 'pipenv install -r requirements.txt' to install all dependencies. The Pipfile can alternatively used. 
+### Step 1: Clone the repository
+**To clone the repository to your local machine, open the terminal navigate to the directory where you want to clone the repository and run the following command:**
+'''bash
+git clone https://github.com/software-students-fall2024/2-web-app-leodavejessalexangteamagain.git
+'''
 
-Follow the example.env file to create a .env file in the local repository. If using Visual Studio Code, navigate the search bar and enter '>Python: Select Interpreter' and click on the virtual environment created in the previous steps. Running app.py will output the local address where your Flask web application is running. The link can be copied and pasted to a web brower or those on Visual Studio Code can press the command key and click on the link. 
+### Step 2: Create a virtual environment
+
+**It is recommended to set a virtual environment with pipenv, which can be installed with the command**
+'''bash
+pip install pipenv
+''' 
+
+**To activate the environment, run**
+'''bash
+pipenv shell
+''' 
+
+### Step 3: Install dependencies
+
+**To install Flask and pymongo, run the commands**
+'''bash
+pipenv install Flask
+'''
+'''bash
+pipenv install pymongo
+''' 
+
+**In the pipenv environment, run to install all dependencies. The Pipfile can alternatively used.**
+'''bash
+pipenv install -r requirements.txt
+'''
+
+### Step 4: Set up .env file
+
+**Follow the example.env file to create a .env file in the local repository. If using Visual Studio Code, navigate the search bar and enter '>Python: Select Interpreter' and click on the virtual environment created in the previous steps.**
+
+### Step 5: Run the application
+
+**To run the application, type this command in your terminal**
+'''bash
+python app.py
+'''
+**This will output the local address where your Flask web application is running. The link can be copied and pasted to a web brower or those on Visual Studio Code can press the command key and click on the link.** 
 
 ## Task boards
 
 [Sprint 1] (https://github.com/orgs/software-students-fall2024/projects/14)
+
 [Spring 2] (https://github.com/orgs/software-students-fall2024/projects/63)
