@@ -210,7 +210,7 @@ def create_app():
     @app.route("/news")
     def getNews():
         
-        return render_template("news.html")
+        return render_template("news.html", firstname=current_user.firstname, lastname = current_user.lastname)
     
     @app.route("/news-content")
     def getNewsContent():
