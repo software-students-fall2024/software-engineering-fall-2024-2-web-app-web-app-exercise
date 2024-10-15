@@ -35,6 +35,86 @@ def create_app():
         docs = db.tasks.find({}).sort("created_at", -1)
         return render_template("index.html", docs=docs)
 
+    @app.route("/create")
+    def add_task():
+        """
+        Route for the adding task page
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+        return render_template("form.html")
+
+    @app.route("/create", methods=["POST"])
+    def create_task():
+        """
+        Route for POST requests to the create page.
+        Accepts the form submission data for a new document and saves the document to the database.
+        Returns:
+            redirect (Response): A redirect response to the home page.
+        """
+        name = request.form["fname"]
+        description = request.form["fmessage"]
+
+        doc = {
+            "name": name,
+            "description": description,
+            "finished": "false",
+            "created_at": datetime.datetime.utcnow(),
+        }
+        db.messages.insert_one(doc)
+
+        return redirect(url_for("home"))
+
+    @app.route("/edit/<post_id>")
+    def edit(post_id):
+        """
+        Route for GET requests to the edit page.
+        Displays a form users can fill out to edit an existing record.
+        Args:
+            post_id (str): The ID of the post to edit.
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        return render_template("edit.html", doc=doc)
+
+    @app.route("/edit/<post_id>", methods=["POST"])
+    def edit_post(post_id):
+        """
+        Route for POST requests to the edit page.
+        Accepts the form submission data for the specified document and updates the document in the database.
+        Args:
+            post_id (str): The ID of the post to edit.
+        Returns:
+            redirect (Response): A redirect response to the home page.
+        """
+        name = request.form["fname"]
+        description = request.form["fmessage"]
+
+        doc = {
+            "name": name,
+            "description": description,
+            "finished": "true",
+            "created_at": datetime.datetime.utcnow(),
+        }
+
+        db.messages.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
+
+        return redirect(url_for("home"))
+
+    @app.route("/delete/<post_id>")
+    def delete(post_id):
+        """
+        Route for GET requests to the delete page.
+        Deletes the specified record from the database, and then redirects the browser to the home page.
+        Args:
+            post_id (str): The ID of the post to delete.
+        Returns:
+            redirect (Response): A redirect response to the home page.
+        """
+        db.messages.delete_one({"_id": ObjectId(post_id)})
+        return redirect(url_for("home"))
+
 
     @app.errorhandler(Exception)
     def handle_error(e):
