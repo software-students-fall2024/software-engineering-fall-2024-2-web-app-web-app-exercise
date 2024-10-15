@@ -1,39 +1,80 @@
-body{
-    margin: 0px;
-    padding: 0px;
-    font-family:Arial, Helvetica, sans-serif;
+/* Common styles for buttons */
+.link {
+    border: 2px solid gray; /* Define a consistent border for both views */
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px; /* Optional: for rounded corners */
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
-.navBar{
+/* Other shared styles */
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navBar {
     display: flex;
     justify-content: space-between;
     gap: 30px;
     overflow: hidden;
     width: 100%;
-    background-color:bisque;
+    background-color: bisque;
     margin-bottom: 5vh;
     padding: 0px;
     height: 100px;
 }
-.navBar h1{
-    margin: 20px;
+
+/* Style for the request list */
+.request-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding-left: 0; /* Remove default padding */
 }
 
-.navBar a{
-    float: right;
-    padding: 5px 5px;
-    text-decoration: none;
+li {
+    margin-bottom: 20px; /* Add space between each request item */
 }
 
-.navLinks {
-    display: flex;
+/* Make the entire request item clickable */
+.request-item {
+    display: block;
+    background-color: #d3d3d3; /* Light gray background */
     padding: 20px;
-    gap: 40px;
-}
-.link{
-    border: 5px solid gray;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
 }
 
-.welcome{
-    margin-left: 40px;
+.request-item:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+    border-color: #888;
+}
+
+.request-details h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.request-details p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+/* General body styling */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
 }
