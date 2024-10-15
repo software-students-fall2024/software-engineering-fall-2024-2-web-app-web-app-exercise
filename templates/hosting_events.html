@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your RSVPed Events</title>
+    <title>Your Events</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="page-layout">
-        <h1>Your RSVPed Events</h1>
+        <h1>Your Events</h1>
 
         {% if events %}
             <ul>
@@ -29,6 +29,8 @@
                             <li>No attendees yet.</li>
                         {% endif %}
                     </ul>
+                    <p>Number of Attendees: {{ event.attendee_count }}</p>
+
                     
 
                     <div class="button-container">
