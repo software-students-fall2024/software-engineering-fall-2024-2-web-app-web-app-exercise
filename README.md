@@ -52,9 +52,9 @@ Follow the example.env file to create a .env file in the local repository. If us
 ### Step 5: Run the application
 
 To run the application, type this command in your terminal
-'''
+``` 
 python app.py
-'''
+``` 
 This will output the local address where your Flask web application is running. The link can be copied and pasted to a web brower or those on Visual Studio Code can press the command key and click on the link.
 
 ## Task boards
