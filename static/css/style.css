@@ -56,7 +56,9 @@ h1 {
 
 /* Navbar styles */
 .navbar {
-    background-color: #d3d3d3;
+    /* Testing some nav bar colors */
+    /*background-color: #d3d3d3; */
+    background-color: bisque;
     display: flex;
     justify-content: space-between;
     padding: 12px;
@@ -129,6 +131,14 @@ h1 {
     font-size: 16px;
     font-weight: bold;
 }
+/* Displays the list of projects */
+.projects-list {
+    border: 2px solid black;
+    margin-bottom: 5%;
+    border-radius: 10px;
+    height: 20%;
+    overflow-y: scroll;
+}
 
 .box {
     background-color: #d3d3d3;
@@ -151,7 +161,7 @@ button {
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    background-color: #e0e0e0;
+    background-color: #ffe4c4;
     border: 1px solid #000;
     cursor: pointer;
     box-sizing: border-box;
@@ -169,8 +179,10 @@ button {
 /* Style for the project links to look like buttons */
 .button-link {
     display: inline-block;
+    width: 90%;
     padding: 5px 10px;
-    margin: 5px 0;
+    margin-top: 1%;
+    margin: .5%;
     background-color: #ffffff; /* Green background */
     color: rgb(0, 0, 0); /* White text */
     border: 1px solid #000;
@@ -187,7 +199,17 @@ button {
 
 /* Optional: Style for the container of each project link */
 .project-link {
-    margin-bottom: 10px; /* Add spacing between the links */
+    margin-top: 1%;
+    margin-bottom: 1px; /* Add spacing between the links */
+}
+
+.projects-list {
+    background-color: #ffe4c4;
+}
+
+/* Style to create project button */
+.create-button {
+    background-color: #ffe4c4;
 }
 
 /* Profile Page Specific Styles */

@@ -20,8 +20,9 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 5%;
     height: 100%; /* Take full height of the view */
 }
 

@@ -7,33 +7,29 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
+    <div class="container">
+        <div class="login-container">
+            <!-- Welcome text -->
+            <h1>Sign Up</h1>
 
-    <!-- Status bar -->
-    <div class="status-bar">
-    </div>
+            <!-- Register form -->
+            <form action="/register" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
 
-    <div class="login-container">
-        <!-- Welcome text -->
-        <h1>Sign Up</h1>
+            <!-- Sign up link -->
+            <div class="signup">
+                <p>Already have an account? <a href="/login">Login</a></p>
+            </div>
 
-        <!-- Register form -->
-        <form action="/register" method="POST">
-            <input type="text" name="username" placeholder="Username or Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Register</button>
-        </form>
-
-        <!-- Sign up link -->
-        <div class="signup">
-            <p>Already have an account? <a href="/login">Login</a></p>
+            {% if err is defined %}
+            <div class="registrationErr">
+                <p>{{err}}</p>
+            </div>
+            {% endif %}
         </div>
-
-        {% if err is defined %}
-        <div class="registrationErr">
-            <p>{{err}}</p>
-        </div>
-        {% endif %}
     </div>
-
 </body>
 </html>
