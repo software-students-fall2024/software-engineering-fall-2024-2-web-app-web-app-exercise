@@ -4,32 +4,28 @@
 <a href="/">Home</a>
 {% endblock %}
 
-{$block body%}
+{%block body%}
 
     <h1>Search for Appliance to Remove (By code/By building, floor, and name)</h1>
     <br/>
     <div class="options" style="text-align: center;">
-        <form method ="GET" action = "{{url_for(get_app), code='code'}}">
+        <form method="POST" action = "{{url_for('get_app', use='code')}}">
             <input type = "number" id = "code" name = "code" placeholder="Enter code"/>
             <br/>
             <input type ="submit" value="Search"/>
         </form>
-        <form method ="GET" action = "{{url_for(get_app), code='name'}}">
-            <input type = "text" id = "bname" name = "bname" placeholder="Enter code"/>
+        <form method="POST" action = "{{url_for('get_app', use='name')}}">
+            <input type = "text" id = "bname" name = "bname" placeholder="Enter building name"/>
             <br/>
-            <input type = "number" id = "code" name = "code" placeholder="Enter code"/>
+            <input type = "number" id = "floor" name = "floor" placeholder="Enter floor"/>
             <br/>
-            <input type = "number" id = "code" name = "code" placeholder="Enter code"/>
+            <input type = "text" id = "appName" name = "appName" placeholder="Enter appliance name"/>
             <br/>
             <input type ="submit" value="Search"/>
         </form>
     </div>
     <br/>
-    {% if done == '2' %}
-        <h2>Appliance Does Not Exist! Please Try Again!</h2>
-    {%elif done == '1' %}
-        <h2>Appliance Removed Successfully!</h2>
-    {% elif results is not none %}
+    {% if results is not none %}
         <h2>Here are the results:</h2>
         <br/>
         <div style="text-align: center;">
@@ -47,14 +43,15 @@
         <h2>Are you sure you want to delete?</h2>
         <br/>
         <div>
-            <button type="button" method="POST" action="{{url_for('remove_appliance', code = {{results.code}})}}">
+            <button type="button" method="POST" action="{{url_for('remove_appliance', code = results.code)}}">
                 Yes
             </button>
             <button type="button" action="{{url_for('index')}}">
                 No
             </button>
         </div>
+    {% else %}
+        <h2>No Results Found!</h2>
     {% endif %}
-
 
 {% endblock %}
