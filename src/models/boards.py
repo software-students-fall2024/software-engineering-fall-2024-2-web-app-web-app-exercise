@@ -9,6 +9,7 @@ def get_boards_by_user(email: str):
 
 def create_board(user: str, name: str):
     boards = get_db().boards
+    count = boards.count_documents({"email": user})
     return boards.insert_one({"user": user, "name": name, "pedals": []})
 
 
