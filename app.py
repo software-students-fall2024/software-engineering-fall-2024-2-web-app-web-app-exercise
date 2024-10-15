@@ -222,10 +222,18 @@ def create_app():
     @app.route("/vocab",methods=["DELETE"])
     def deleteVocab():
         #delete word
+        word = request.form["word"]
         ###TODO###
+        if word:
+            db.users.update_one(
+                {"username": current_user.username},
+                {"$pull": {"vocabList": {"word": word}}}
+            )
         
-        
-        flash("Word successfully deleted!")
+            flash("Word successfully deleted!")
+        else:
+            flash("Error: no word was provided to delete"
+                  )
         return redirect(url_for("getVocab"))
     
     @app.route("/news")
