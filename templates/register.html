@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block container %}
-  <h2>Login</h2>
+  <h2>Register</h2>
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class="messages">
@@ -11,11 +11,11 @@
       </ul>
     {% endif %}
   {% endwith %}
-  <form method="post" action="{{ url_for('login') }}">
+  <form method="post" action="{{ url_for('register') }}">
     <label for="username">Username:</label>
     <input type="text" name="username" required>
     <label for="password">Password:</label>
     <input type="password" name="password" required>
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
   </form>
 {% endblock %}

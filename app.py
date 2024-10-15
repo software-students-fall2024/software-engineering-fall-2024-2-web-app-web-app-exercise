@@ -1,6 +1,7 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -15,9 +16,33 @@ def create_app():
     """
 
     app = Flask(__name__)
+    app.secret_key = 'secret'
 
+    #mongodb connect
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = cxn[os.getenv("MONGO_DBNAME")]
+    users = db['users']
+    tasks = db['tasks']
+
+    #Configure Flask-login
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    #define user
+    class User(UserMixin):
+        def __init__(self, username):
+            self.username = username
+
+        def get_id(self):
+            return self.username
+ 
+    user = None
+    @login_manager.user_loader
+    def load_user(user_id):
+        user = users.find_one({"username": user_id})
+        return User(username=user["username"]) if user else None
+
+    login_manager.user_loader(load_user)
 
     try:
         cxn.admin.command("ping")
@@ -25,17 +50,67 @@ def create_app():
     except Exception as e:
         print(" * MongoDB connection error:", e)
 
-    @app.route("/")
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            # Check if the username already exists
+            if users.find_one({'username': username}):
+                flash('Username already exists. Choose a different one.', 'danger')
+            else:
+                users.insert_one({'username': username, 'password': password})
+                flash('Registration successful. You can now log in.', 'success')
+                return redirect(url_for('login'))
+
+        return render_template('register.html')
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if current_user.is_authenticated:
+            return redirect('/')
+
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            # Check if the username and password match
+            user = users.find_one({'username': username, 'password': password})
+
+            if user :
+                user = User(user['username'])
+                login_user(user)
+                return redirect('/')
+            else:
+                flash('Invalid username or password.')
+
+        return render_template('login.html')
+
+    @app.route('/logout')
+    @login_required
+    def logout():
+        # Logout the user
+        logout_user()
+        return redirect('/login')
+
+    @app.route('/api/status')
+    def status():
+        return jsonify({'logged_in': current_user.is_authenticated})   
+
+    @app.route('/')
+    @login_required
     def home():
         """
         Route for the home page.
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        docs = db.tasks.find({}).sort("created_at", -1)
+        docs = tasks.find({"user": {'$in': [current_user.username]}})
         return render_template("index.html", docs=docs)
 
     @app.route("/create")
+    @login_required
     def add_task():
         """
         Route for the adding task page
@@ -58,14 +133,14 @@ def create_app():
         doc = {
             "name": name,
             "description": description,
-            "finished": "false",
-            "created_at": datetime.datetime.utcnow(),
+            "user": current_user.username,
         }
-        db.messages.insert_one(doc)
+        db.tasks.insert_one(doc)
 
         return redirect(url_for("home"))
 
     @app.route("/edit/<post_id>")
+    @login_required
     def edit(post_id):
         """
         Route for GET requests to the edit page.
@@ -75,8 +150,8 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        doc = db.messages.find_one({"_id": ObjectId(post_id)})
-        return render_template("edit.html", doc=doc)
+        doc = tasks.find_one({"_id": ObjectId(post_id)})
+        return render_template("item.html", doc=doc)
 
     @app.route("/edit/<post_id>", methods=["POST"])
     def edit_post(post_id):
@@ -94,11 +169,10 @@ def create_app():
         doc = {
             "name": name,
             "description": description,
-            "finished": "true",
-            "created_at": datetime.datetime.utcnow(),
+            "user": current_user.username
         }
 
-        db.messages.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
+        db.tasks.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
 
         return redirect(url_for("home"))
 
@@ -112,7 +186,7 @@ def create_app():
         Returns:
             redirect (Response): A redirect response to the home page.
         """
-        db.messages.delete_one({"_id": ObjectId(post_id)})
+        tasks.delete_one({"_id": ObjectId(post_id)})
         return redirect(url_for("home"))
 
 
