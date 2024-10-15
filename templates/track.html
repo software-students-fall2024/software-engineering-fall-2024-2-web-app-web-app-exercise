@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+{% block body %}
+<form method="GET" action="/track">
+    <input type="text" pattern="^[0-9]{4}$" name="code" placeholder="Appliance/Request Code">
+    <input type="submit" value="search">
+</form>
+    <!-- {% if requestInfo is not none %}
+        {% for request in requestInfo %}
+            <h3>{{request.subject}}</h3>
+            <p>Filed on: {{request.date}}</p>
+            <p>By: {{request.fullName}} ({{request.email}})</p>
+            <p>Description: {{request.description}}</p>
+        {% endfor %}
+    {% else %}
+    <h1>REQUEST ID NOT FOUND</h1>
+    {% endif %} -->
+{% endblock %}

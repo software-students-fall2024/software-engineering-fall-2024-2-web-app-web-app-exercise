@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from pymongo import MongoClient, server_api
 import datetime
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
+import re
 
 # load environment variables from .env vile
 load_dotenv()
@@ -34,6 +35,17 @@ def list():
 def makeRequest(requestID=None):
     return render_template("request.html", requestID=requestID)
 
+@app.route("/track", methods=["GET"])
+def trackRequest(code=None):
+    # If code is not empty and is 4 numbers
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+        code = int(code)
+        # If code exists, retrieve data as entry and display it 
+        entry = requests_collection.find({'code':code});
+        # print(entry.fullName);
+    else:
+        entry = None
+    return render_template("track.html", requestInfo=entry)
 
 if __name__ == "__main__":
     app.run( host="127.0.0.1", port=3000)
