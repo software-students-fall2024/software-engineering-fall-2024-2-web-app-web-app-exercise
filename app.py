@@ -1,6 +1,7 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+import flask_login
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -15,15 +16,54 @@ def create_app():
     """
 
     app = Flask(__name__)
+    app.secret_key = 'secret'
 
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = cxn[os.getenv("MONGO_DBNAME")]
+    users = db['users']
+
+    class User(flask_login.UserMixin):
+        pass
+
+    #tasks = db['tasks']
 
     try:
         cxn.admin.command("ping")
         print(" *", "Connected to MongoDB!")
     except Exception as e:
         print(" * MongoDB connection error:", e)
+
+    @app.route('/register', methods=['GET', 'POST'])
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            # Check if the username already exists
+            if users.find_one({'username': username}):
+                flash('Username already exists. Choose a different one.', 'danger')
+            else:
+                users.insert_one({'username': username, 'password': password})
+                flash('Registration successful. You can now log in.', 'success')
+                return redirect(url_for('login'))
+
+        return render_template('register.html')
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            # Check if the username and password match
+            user = users.find_one({'username': username, 'password': password})
+            if user:
+                flash('Login successful.', 'success')
+            # Add any additional logic, such as session management
+            else:
+                flash('Invalid username or password. Please try again.', 'danger')
+
+        return render_template('login.html')
 
     @app.route("/")
     def home():
@@ -32,8 +72,8 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        docs = db.tasks.find({}).sort("created_at", -1)
-        return render_template("index.html", docs=docs)
+        #docs = db.tasks.find({}).sort("created_at", -1)
+        return render_template("index.html")# docs=docs)
 
     @app.route("/create")
     def add_task():
