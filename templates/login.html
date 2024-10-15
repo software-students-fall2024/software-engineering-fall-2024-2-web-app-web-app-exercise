@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+  </head>
+  <body>
+    <div class="container">
+      <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+      <form method="POST" action="{{ url_for('login')}}">
+        <h1>Login</h1>
+        <span>
+          <label>Username</label>
+          <input type="text" name="username" placeholder=" " required/>
+        </span>
+        <span>
+          <label>Password</label>
+          <input type="text" name="password" placeholder=" " required/>
+        </span>
+        <button type="submit">Login</button>
+      </form>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
+  </body>
+</html>
