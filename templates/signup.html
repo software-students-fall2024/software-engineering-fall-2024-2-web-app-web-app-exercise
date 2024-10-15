@@ -102,11 +102,10 @@
     <div class="signup-container">
         <h2>Create Account</h2>
 
-        <!-- Flash message section -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="flash-message">
-                    {{ messages[0] }}  <!-- Display the flash message -->
+                    {{ messages[0] }} 
                 </div>
             {% endif %}
         {% endwith %}

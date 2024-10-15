@@ -10,7 +10,8 @@ class User(UserMixin):
         self.password = password
         self.firstname = firstname
         self.lastname = lastname
-        self.id = _id
+        self.id = username # we'll keep emails as the unique id for users unless we want to change later...
+                        # this is not mongodb id so don't get confused
 
     @staticmethod
     def find_by_username(db, username):
@@ -31,5 +32,10 @@ class User(UserMixin):
     def validate_login(db, username, password):
         user = db.users.find_one({"username": username})
         if user and bcrypt.check_password_hash(user['password'], password):
-            return User(username=user["username"], _id=user["_id"])
+            return User(
+                username=user["username"],
+                password=user["password"],
+                firstname=user.get("firstname"),
+                lastname=user.get("lastname")
+            )
         return None

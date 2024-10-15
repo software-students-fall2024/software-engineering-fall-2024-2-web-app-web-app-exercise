@@ -32,9 +32,14 @@ def create_app():
     # user loader for flask login
     @login_manager.user_loader
     def load_user(user_id):
-        user = db.users.find_one({"_id": user_id})
+        user = db.users.find_one({"username": user_id}) # user is unique id'd by username (email)
         if user:
-            return User(str(user["_id"]), user["username"])
+            return User(
+                username=user["username"],
+                password=user.get("password"),
+                firstname=user.get("firstname"),
+                lastname=user.get("lastname"),
+            )
         return None
     
     @app.route("/")
@@ -61,10 +66,18 @@ def create_app():
         if request.method == "POST":
             username = request.form["username"]
             password = request.form["password"]
+            password2 = request.form["password2"]
+            firstname = request.form["firstname"]
+            lastname = request.form["lastname"]
+            # check if passwords match
+            if password != password2:
+                flash("Passwords don't match!")
+                return render_template("signup.html")
+            
             if User.find_by_username(db, username):
                 flash("Username with that email already exists!")
                 return render_template('signup.html', error="Error occurred!")
-            User.create_user(db, username, password)
+            User.create_user(db, username, password, firstname, lastname)
             flash("User created successfully!")
             return redirect(url_for("login"))
         return render_template("signup.html")
