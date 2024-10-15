@@ -1,16 +1,42 @@
 {% extends 'base.html' %}{% block container %}
 
 <body>
+  <h1>Welcome, {{ username }}!</h1>
+
   <div class="main-content">
-    <div class="section-title">program {{ program.id }}</div>
+    <div class="section-title">Project Name: {{ project.projectName }}</div>
+
+    <form class="project-form" action="{{ url_for('edit_project', post_id=project._id) }}" method="GET">
+      <button type="submit">Edit project specifications</button>
+  </form>
 
     <div class="section-title">Member List</div>
-
-    <div class="section-title">Task List</div>
-        {% for task in program.tasks %}
-            <li>{{ task }}</li>
+    <div class="projects-list">
+      {% if managers is defined %}
+        {% for manager in managers %}
+          <div class="project-link">{{manager}} (manager)</div>
         {% endfor %}
-  </div>
+      {% endif %}
 
-  {% endblock %}
+      {% if members is defined %}
+        {% for member in members %}
+        <div class="project-link">{{member}} (member)</div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    
+    <div class="section-title">Task List</div>
+    <div class="projects-list">
+        {% for task in tasks %}
+        <div class="project-link">
+          <a href="{{ url_for('task_view', post_id=project._id, post_name=task.taskName) }}" class="button-link">{{ task.taskName }}</a>
+        </div>
+        {% endfor %}
+      </div>
+  </div>
+  <form class="project-form" action="{{ url_for('add_task', post_id=project._id) }}" method="GET">
+    <button type="submit">Add new task</button>
+</form>
+
 </body>
+{% endblock %}

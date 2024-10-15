@@ -7,13 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
-    <!-- Status bar -->
-    <div class="status-bar">
-    </div>
     
     <div class="container">
         <header>
-            <h1>Group Project Grinder </h1>
+            <h1>Group Project Grinder</h1>
         </header>
 
         <div class="login-container">
@@ -23,7 +20,7 @@
             <h1>Welcome</h1>
 
             <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Username or Email" required>
+                <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>

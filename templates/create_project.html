@@ -8,23 +8,61 @@
 </head>
 {% extends 'base.html' %}{% block container %}
 <body>
-
+    {% if task is defined %}
     <header>
-    <h1>Create Project</h1>
-    </header>
-    
-    <form class="project-form" action="{{ url_for('create_project') }}" method="POST">
-        <input type="text" name="project_name" placeholder="Your project name" required>
-        <textarea name="description" placeholder="Write your description here..." required></textarea>
-    
-        <input type="text" name="start_date" placeholder="Start date..." required>
-        <input type="text" name="due_date" placeholder="Due date..." required>
-        <input type="text" name="managers" placeholder="Managers..." required>
-        <input type="text" name="members" placeholder="Members..." required>
-    
-        <button type="submit">Create Project</button>
-    </form>
-    
+        <h1>Edit This Task</h1>
+        </header>
+        <form class="project-form" action="{{ url_for('edit_task', post_id=project._id, post_name=task.taskName) }}" method="POST">
+            <input type="text" name="taskName" value="{{task.taskName}}" required>
+            <textarea name="description" required>{{task.description}}</textarea>
+        
+            <input type="text" name="due_date" value="{{task.due_date}}" required>
+            <input type="text" name="members" value="{{members}}">
+        
+            <button type="submit">Confirm Edits</button>
+        </form>
+        <form class="project-form" action="{{ url_for('remove_task', post_id=project._id, post_name=task.taskName) }}" method="GET">
+            <button type="submit">Remove Task</button>
+        </form>
+    {% else %}
+        {% if edit is defined %}
+        <header>
+            <h1>Edit Project</h1>
+            </header>
+            
+            <form class="project-form" action="{{ url_for('edit_project', post_id=project._id) }}" method="POST">
+                <input type="text" name="project_name" value="{{project.projectName}}" required>
+                <textarea name="description" required>{{project.description}}</textarea>
+            
+                <input type="text" name="start_date" value="{{project.start_date}}" required>
+                <input type="text" name="due_date" value="{{project.due_date}}" required>
+                <input type="text" name="managers" value="{{managers}}">
+                <input type="text" name="members" value="{{members}}">
+            
+                <button type="submit">Confirm Edits</button>
+            </form>
+
+            <form class="project-form" action="{{ url_for('remove_project', post_id=project._id) }}" method="GET">
+                <button type="submit">Remove Project</button>
+            </form>
+        {% else %}
+        <header>
+        <h1>Create Project</h1>
+        </header>
+        
+        <form class="project-form" action="{{ url_for('create_project') }}" method="POST">
+            <input type="text" name="project_name" placeholder="Your project name" required>
+            <textarea name="description" placeholder="Write your description here..." required></textarea>
+        
+            <input type="text" name="start_date" placeholder="Start date..." required>
+            <input type="text" name="due_date" placeholder="Due date..." required>
+            <input type="text" name="managers" placeholder="Add managers">
+            <input type="text" name="members" placeholder="Add regular members">
+        
+            <button type="submit">Create Project</button>
+        </form>
+        {% endif %}
+    {% endif %}
 
 </body>
 {% endblock %}
