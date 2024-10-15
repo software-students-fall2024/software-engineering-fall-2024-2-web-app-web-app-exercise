@@ -5,8 +5,10 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import flask_login
 import pymongo
 import certifi
-from bson.objectid import ObjectId
+
+from bson.objectid import ObjectId 
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
@@ -21,6 +23,7 @@ def create_app():
     app.secret_key = 'Amos_Bloomberg'
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"), tlsCAFile=certifi.where())
     db = cxn[os.getenv("MONGO_DBNAME")]
+    plans_collection = db['plans']  
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -111,6 +114,7 @@ def create_app():
         """
         return render_template("start-session.html")
     
+    
     @app.route("/start-session", methods=["POST"])
     def create_session():
         """
@@ -133,6 +137,13 @@ def create_app():
 
         return redirect(url_for("counter"))
     
+    @app.route('/delete-session/<session_id>', methods=['POST'])
+    def delete_session(session_id):
+        db.sessions.delete_one({'_id': ObjectId(session_id)})
+        print(f"Received session_id: {session_id}")
+        db.sessions.delete_one({'_id': ObjectId(session_id)})
+        return redirect(url_for('home_screen'))
+
     @app.route("/counter")
     def counter():
         """
