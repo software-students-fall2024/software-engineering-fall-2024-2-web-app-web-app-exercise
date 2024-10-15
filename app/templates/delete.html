@@ -29,22 +29,6 @@
             margin-top: 40px;
             background-color: white;
         }
-
-        .button {
-            padding: 15px 30px;
-            font-size: 18px;
-            color: white;
-            background-color: #4caf50;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -52,7 +36,7 @@
     <form method="POST" action="/delete_transaction">
         <label for="customer_email">Input customer email you would like to delete:</label>
         <input type="email" id="customer_email" name="customer_email" required />
-        <input type="submit" class="button" value="Delete Transaction" />
+        <input type="submit" value="Delete Transaction" />
     </form>
 </body>
 </html>
