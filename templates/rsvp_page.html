@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP for Event</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="page-layout">
+        <h1>RSVP for {{ event.title }}</h1>
+        <p>{{ event.description }}</p>
+        <p>Date: {{ event.date }}</p>
+        <p>Time: {{ event.time }}</p>
+        <p>Location: {{ event.location }}</p>
+        <p>Creator: {{ event.creator }}</p>
+    
+        <div id="rsvp-buttons">
+            <form method="POST" action="{{ url_for('rsvp_event', event_id=event['_id']) }}">
+                <button type="submit">Confirm RSVP</button>
+            </form>
+        
+            <a href="{{ url_for('home_feed') }}"><button>Cancel</button></a>
+        </div>
+    </div>
+</body>
+</html>
