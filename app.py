@@ -100,14 +100,13 @@ def home():
 
 # Homepage route
 @app.route('/index/<username>')
-#@app.route('/')
 def index(username):
-    #check whether or not the user is logged in 
+    # Check whether the user is logged in
     if session.get('username') != username:
         return redirect(url_for('login'))
     
     # Fetch budget data from the 'budgets' collection
-    budget_data = db['budgets'].find_one({'username':username})
+    budget_data = db['budgets'].find_one({'username': username})
 
     if budget_data is None:
         return redirect(url_for('account'))
@@ -117,29 +116,32 @@ def index(username):
     total_budget = budget_data.get('total_budget', 0)
     spending_budget = budget_data.get('spending_budget', 0)
 
-    # Fetch all transactions and calculate total expenses
-    transactions = list(transactions_collection.find({'username': username}))  # Base on username to find out
+    # Fetch all transactions for the logged-in user
+    transactions = list(transactions_collection.find({'username': username}))
+
+    # Calculate total income and total expenses
+    total_income = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'income')
     total_expenses = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
 
     # Corrected calculations:
-    # Balance should be total_budget minus expenses
-    balance = total_budget - total_expenses
+    # Balance should be total_budget (initial budget) + income - expenses
+    balance = total_budget + total_income - total_expenses
 
-    # Spending Budget Left should be spending_budget minus expenses
+    # Spending Budget Left should be spending_budget - expenses
     budget_left = spending_budget - total_expenses
 
     # Update the remaining budget in the database
     db['budgets'].update_one(
-        {}, 
+        {'username': username},  # Ensure to update the current user's budget
         {'$set': {'budget_left': budget_left}}
     )
 
     return render_template(
         'index.html', 
         transactions=transactions, 
-        balance=balance,  # total budget - expenses
-        spending_budget=spending_budget,  # user gives - stays constant
-        budget_left=budget_left,  # spending budget minus expenses
+        balance=balance,  # total budget + income - expenses
+        spending_budget=spending_budget,  # User-specified spending budget
+        budget_left=budget_left,  # Remaining spending budget after expenses
         name=name,
         username=username
     )
@@ -189,9 +191,13 @@ def add_transaction():
 
 @app.route('/edit_transaction', methods=['GET', 'POST'])
 def search_and_edit_transaction():
-    # Fetch all transactions for the dropdown menu
-    transactions = list(transactions_collection.find())
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
 
+    # Fetch transactions for the logged-in user only
+    transactions = list(transactions_collection.find({'username': username}))  # Filter by username
+ 
     if request.method == 'POST':
         selected_transaction_id = request.form['transaction_id']
 
@@ -204,10 +210,16 @@ def search_and_edit_transaction():
 
 @app.route('/edit_transaction/<transaction_id>', methods=['GET', 'POST'])
 def edit_transaction(transaction_id):
-    transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id)})
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Fetch the transaction for the logged-in user only
+    transaction = transactions_collection.find_one({'_id': ObjectId(transaction_id), 'username': username})  # Ensure the transaction belongs to the user
 
     if not transaction:
-        return "Transaction not found", 404
+        return "Transaction not found or you don't have permission to edit this transaction", 404
+ 
 
     if request.method == 'POST':
         # Get updated form data
@@ -219,7 +231,7 @@ def edit_transaction(transaction_id):
 
         # Update transaction in MongoDB
         transactions_collection.update_one(
-            {'_id': ObjectId(transaction_id)},
+            {'_id': ObjectId(transaction_id),'username': username},  
             {'$set': {
                 'amount': float(amount),
                 'category': category,
@@ -237,16 +249,25 @@ def edit_transaction(transaction_id):
 # Delete transaction route
 @app.route('/delete/<transaction_id>', methods=['POST'])
 def delete_transaction(transaction_id):
-    transactions_collection.delete_one({'_id': ObjectId(transaction_id)})
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Ensure the transaction belongs to the logged-in user
+    transactions_collection.delete_one({'_id': ObjectId(transaction_id), 'username': username})  # Delete only the user's transaction
     return redirect(url_for('view_transactions'))
 
 # Search route for transactions
 @app.route('/search_transactions', methods=['GET', 'POST'])
 def search_transactions():
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         query = request.form['query']
 
         results = transactions_collection.find({
+            'username': username,
             '$or': [
                 {'category': {'$regex': query, '$options': 'i'}},
                 {'description': {'$regex': query, '$options': 'i'}}
