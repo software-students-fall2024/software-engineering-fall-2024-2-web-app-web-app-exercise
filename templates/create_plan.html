@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
     <title>Create Plans</title>
 </head>
 <body>
     <div class="container">
         <h1>Your Goals</h1>
-        <form>
+        <form method="POST" action="{{ url_for('create_plan') }}">
             <label for="time">Time:</label>
             <input type="text" id="time" name="time" placeholder="Enter time">
-
+        
             <label for="day">Day:</label>
             <input type="text" id="day" name="day" placeholder="Enter day">
-
+        
             <label for="goals">Goals:</label>
             <input type="text" id="goals" name="goals" placeholder="Enter goals">
-
+        
             <button type="submit">Next</button>
         </form>
     </div>
