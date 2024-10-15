@@ -12,12 +12,7 @@ To provide insights and analytics that empower store performance, help make info
 
 ## Steps necessary to run the software
 
-### Frontend
-[Fill in frontend setup instructions here]
-
-### Backend
-
-The backend uses a Flask app to handle all database functionality. Follow these steps to set up and run the backend:
+This application uses Flask. Follow these steps to set up and run the app:
 
 1. Clone the repository to your local machine.
 
@@ -36,10 +31,10 @@ The backend uses a Flask app to handle all database functionality. Follow these 
    ```
    flask run
    ```
+7. In your terminal you should see where the app is running with something similar (or the same as) `Running on http://127.0.0.1:5000` Copy and paste this local host address into your web browser, and you should have access to the application!
+
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
-
-
-
+[Taskboard - Sprint 1](https://github.com/orgs/software-students-fall2024/projects/70)
+[Taskboard - Sprint 2](https://github.com/orgs/software-students-fall2024/projects/71)
