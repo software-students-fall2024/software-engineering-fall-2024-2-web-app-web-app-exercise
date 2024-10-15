@@ -10,15 +10,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto; 
-    height: 100vh;
-    padding: 20px;
+    min-height: 100vh;
+    padding: 0; 
+}
+.exercise-title {
+    text-align: center;  
+    font-size: 22px; 
+    margin-bottom: 5px;
 }
 
-.exercise-title , .search-exercise-title {
+
+.search-exercise-title {
     flex: 1;
     text-align: center;
-    transform: translateX(-7%);
     font-size: 22px;
 }
 
@@ -30,21 +34,25 @@ body {
 }
 
 .exercise-container, .search-container, .exercise-instruct-container, .progress-container {
-    width: 320px; 
-    height: 600px;
+    width: 100vw; 
+    max-width: 500px;
+    min-width: 300px; 
+    height: auto; 
+    min-height: 100vh; 
     background-color: white;
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 20px; 
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
     border-radius: 10px;
-    overflow-y: auto; 
+    margin-bottom: 20px;  
 }
-
 .header-container {
     display: flex;
-    align-items: center;
+    justify-content: center;  
+    align-items: center;      
     width: 100%;
+    margin-top:40px;
+    margin-bottom:30px;
 }
 
 .search-message p {
@@ -63,7 +71,7 @@ body {
     margin-bottom: 10px;
 }
 
-button, input {
+input {
     display: inline-block;
     width: 100%;
     padding: 5px;
@@ -73,6 +81,7 @@ button, input {
 
 .exercise-description, .progress-report {
     margin-bottom: 5px;
+    margin-top:20px;
 }
 
 .exercise-description p, .exercise-instruct p{
@@ -85,7 +94,8 @@ button, input {
     margin-top: 5px;
 }
 
-.exercise-description a {
+.more-info a {
+    margin-top:10px;
     font-size: 12px;
     color: #4CAF50;
 }
@@ -102,6 +112,19 @@ button, input {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 2px;
+    margin-top:10px;
+}
+
+.search-btn {
+    background-color: rgb(17, 52, 122);  
+    color: white;  
+    border: none;  
+    padding: 10px 0; 
+    font-size: 16px;  
+    width: 100%; 
+    cursor: pointer; 
+    border-radius: 5px; 
+
 }
 
 .progress-item {
@@ -127,7 +150,7 @@ button, input {
     margin-left: 20px;
 }
 
-.add-btn, .back-btn, .add-todo-btn, .exercise-save-btn {
+.add-btn, .back-btn, .add-todo-btn {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -138,14 +161,35 @@ button, input {
     border-radius: 5px;
 }
 
+.exercise-save-btn{
+    background-color: rgb(17, 52, 122);  
+    color: white;  
+    border: none;  
+    padding: 10px 0; 
+    font-size: 16px;  
+    width: 100%; 
+    cursor: pointer; 
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
 .add-btn {
     flex: 0 0 15%;
     margin-bottom: 5px;
 }
 
 .back-btn {
-    flex: 0 0 15%;
-    margin-bottom: 5px;
+    background-color: rgb(17, 52, 122);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    position: absolute;
+    top: 3vh;
+    left: 5vw;
+    margin-bottom: 20px;
 }
 
 .add-todo-btn {
@@ -161,10 +205,17 @@ footer {
     text-align: center;
     font-size: 12px;
     color: gray;
-    margin-top: 15px;
+    margin-top: 20px;  
+    padding: 10px 0;  
+    background-color: #fff;
+    width: 100%;  
 }
 
 footer a {
     color: gray;
     text-decoration: none;
+}
+
+.exercise-list{
+    margin-top:30px;
 }

@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -10,22 +11,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow-y: auto; 
-    height: 100vh;
+    min-height: 100vh;
+    padding: 0; 
 }
 
 .todo-container, .search-container, .delete-container {
-    width: 320px; 
-    height: 600px;
+    width: 100vw; 
+    max-width: 500px;
+    min-width: 300px; 
+    height: auto; 
+    min-height: 100vh; 
     background-color: white;
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 20px; 
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
     border-radius: 10px;
-    overflow-y: auto; 
-
 }
 
 header {
@@ -36,6 +36,7 @@ header {
 header h1 {
     font-size: 22px;
     margin-bottom: 10px;
+    margin-top:30px;
 }
 
 header p {
@@ -98,16 +99,17 @@ header p {
 }
 
 .delete-all-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background-color: red;
+    background-color: rgb(17, 52, 122);
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 10px 20px; 
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px; 
     border-radius: 5px;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
 .search-box {
@@ -123,6 +125,7 @@ footer {
     text-align: center;
     font-size: 12px;
     color: gray;
+    margin-top:40px;
 }
 
 footer a {
@@ -139,8 +142,8 @@ footer a {
     font-size: 14px;
     border-radius: 5px;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 3vh;
+    right: 5vw;
 }
 
 .task-checkbox {
@@ -153,7 +156,7 @@ footer a {
 }
 
 .back-btn {
-    background-color: blue;
+    background-color: rgb(17, 52, 122);
     color: white;
     border: none;
     padding: 5px 10px;
@@ -161,13 +164,13 @@ footer a {
     font-size: 14px;
     border-radius: 5px;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 3vh;
+    left: 5vw;
     margin-bottom: 20px;
 }
 
 .delete-btn {
-    background-color: red;
+    background-color: rgb(163, 26, 26);
     color: white;
     border: none;
     padding: 5px 10px;
@@ -176,16 +179,17 @@ footer a {
     border-radius: 5px;
 }
 .search-btn {
-    background-color: green;
+    background-color: rgb(17, 52, 122);
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 10px 20px; 
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14px; 
     border-radius: 5px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
 .exercise-btn {
@@ -198,12 +202,11 @@ footer a {
     text-decoration: underline; 
 }
 
-.exercise-btn:hover {
-    color: #0056b3; 
-    text-decoration: none;
-}
-
 .warning-message, .recommendation-message{
-    margin-top: 40px;
+    margin-top: 60px;
     margin-bottom: 20px; 
+}
+.exercise-btn:visited {
+    text-decoration: underline; 
+    color: #007BFF;
 }

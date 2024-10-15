@@ -10,10 +10,9 @@
 
     <div class="todo-container">
         <header>
-            <h1>To Do List</h1>
-            <p>Date, Day of the week</p>
+            <h1>Today's Exercise List</h1>
+            <p id="current-date"></p>
             <button class="add-todo-btn" onclick="window.location.href='/search';">Add</button>
-            <button class="delete-all-btn" onclick="window.location.href='/delete_exercise';">Delete</button>
         </header>
 
         <section class="welcome-message">
@@ -22,17 +21,16 @@
         </section>
 
         <div class="todo-list">
-            <div class="todo-list">
-                {% for exercise in exercises %}
-                <div class="todo-item">
-                    <input type="checkbox" class="task-checkbox" >
-                    <button class="exercise-btn" onclick="window.location.href='/edit?exercise_todo_id={{ exercise.exercise_todo_id }}'">
-                        {{ exercise.workout_name }}
-                    </button>
-                </div>
-                {% endfor %}
+            {% for exercise in exercises %}
+            <div class="todo-item">
+                <input type="checkbox" class="task-checkbox" >
+                <button class="exercise-btn" onclick="window.location.href='/edit?exercise_todo_id={{ exercise.exercise_todo_id }}'">
+                    {{ exercise.workout_name }}
+                </button>
             </div>
+            {% endfor %}
         </div>
+        <button class="delete-all-btn" onclick="window.location.href='/delete_exercise';">Delete</button>
 
         <footer>
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
@@ -41,9 +39,15 @@
 
     <script>
         document.querySelectorAll('.task-checkbox').forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            });
-    });
+            checkbox.addEventListener('change', function() {
+                });
+        });
+        const today = new Date();
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = today.toLocaleDateString('en-US', options);
+
+        document.getElementById('current-date').innerText = formattedDate;
     </script>
     
 </body>
