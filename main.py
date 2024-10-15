@@ -4,6 +4,7 @@ import datetime
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
+import re
 
 # load environment variables from .env vile
 load_dotenv()
@@ -24,6 +25,8 @@ building_collection = db.bldgs
 appliance_collection = db.appliances
 
 reports = ["Vending machine", "Water fountain", "Door hinge"]
+requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subject":"test","description":"Descript","date":"2024-10-13"}]
+applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 doc_code = 0 #for when we need to update appliances
 
 @app.route("/")
@@ -39,6 +42,21 @@ def list():
 def makeRequest(requestID=None):
     return render_template("request.html", requestID=requestID)
 
+@app.route("/track", methods=["GET"])
+def trackRequest(code=None):
+    # If code is not empty and is 4 numbers
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+        code = int(code)
+        # If code exists, retrieve data as entry and display it 
+        # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
+        requestEntry = requestTest
+        # applianceEntry = appliances_collection.find({'code':code});
+        applianceEntry = applianceTest
+        # print(entry.fullName);
+    else:
+        requestEntry = None
+        applianceEntry = None
+    return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
 @app.route("/newApp/<update>")
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)
