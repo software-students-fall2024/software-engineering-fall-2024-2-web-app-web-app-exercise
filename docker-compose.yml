@@ -6,7 +6,7 @@ services:
       - 3000:3000
     environment:
       - MONGO_DBNAME=project2
-      - MONGO_URI=mongodb://localhost:27017
+      - MONGO_URI=mongodb://csh7916:pwd@mongodb:27017
       - FLASK_APP=app.py
       - FLASK_ENV=development
       - FLASK_PORT=3000
@@ -17,6 +17,8 @@ services:
 
   mongodb:
     environment:
+      - MONGO_INITDB_ROOT_USERNAME=csh7916
+      - MONGO_INITDB_ROOT_PASSWORD=pwd
     image: mongo:latest
     ports:
       - 27017:27017
