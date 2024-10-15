@@ -1,0 +1,152 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", monospace;
+  }
+  
+  body {
+    background-color: hsl(0, 0%, 100%);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .logo img {
+    width: 50px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #e9ecef;
+  }
+  
+  .search-bar form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .search-bar input {
+    width: 60%;
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  .search-bar button {
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  .container {
+    display: flex;
+    padding: 20px;
+  }
+  
+  /* 导航和内容样式 */
+  .food-nav {
+    width: 20%; /* 缩小导航栏的宽度 */
+    background-color: #f8f9fa;
+    padding: 15px; /* 减少导航栏的padding */
+  }
+  
+  .food-nav ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .category-button {
+    width: 100%;
+    padding: 10px; /* 减少按钮的padding */
+    font-size: 14px; /* 缩小字体 */
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .food-items {
+    width: 80%; /* 调整主内容区的宽度 */
+    padding: 20px;
+  }
+  
+  .card-deck {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    width: calc(100% - 20px); /* 确保卡片不超出屏幕范围 */
+    margin: 10px auto; /* 居中 */
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+  }
+  
+  input[type="number"] {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  /* Footer 样式 */
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #6c757d;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  footer a {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #495057;
+    border-radius: 5px;
+  }
+  
+  /* 手机设备的样式 */
+  @media only screen and (max-width: 768px) {
+    .search-bar input,
+    .search-bar button {
+      font-size: 16px;
+      padding: 12px;
+    }
+  
+    .category-button {
+      font-size: 12px;
+      padding: 8px;
+    }
+  
+    .card {
+      width: calc(100% - 20px);
+      margin: 10px auto;
+    }
+  }
+  
