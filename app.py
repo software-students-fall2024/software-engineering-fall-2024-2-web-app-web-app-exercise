@@ -1,11 +1,13 @@
 import requests
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from models import User
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 import os
 
+bcrypt = Bcrypt()
 
 def create_app():
     #initiate env
@@ -118,8 +120,32 @@ def create_app():
     @app.route("/delete-acct")
     @login_required 
     def delete_acct():
-        logout_user() 
         return render_template("delete-acct.html")
+        
+    @app.route('/delete-acct', methods=['POST'])
+    @login_required
+    def delete_account():
+        # getting the form data
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # if username entered from form == logged in user's username
+        if username == current_user.username:
+            user = db.users.find_one({"username": username})
+
+            # check if the user exists and the password matches
+            if user and bcrypt.check_password_hash(user['password'], password):
+                db.users.delete_one({"username": username})
+                
+                # log user out and redirect to home w/ success message
+                logout_user()
+                flash('Account has been successfully deleted.')
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid username or password. Please try again.')
+        else:
+            flash('The provided email does not match the current user.')
+
+        return render_template('delete-acct.html')
     
     @app.route("/user-info",methods=["POST"])
     @login_required
