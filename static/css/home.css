@@ -1,0 +1,22 @@
+#inventory {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+}
+
+#inventory th,
+#inventory td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+#inventory thead th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#inventory tbody tr:hover {
+    background: #e0e0e0;
+}

@@ -1,0 +1,22 @@
+#searchResult {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+}
+
+#searchResult th,
+#searchResult td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+#searchResult thead th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#searchResult tbody tr:hover {
+    background: #e0e0e0;
+}
