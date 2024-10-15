@@ -35,7 +35,6 @@ A little exercise to build a web application following an agile development proc
 │   ├── food_instruction.html
 │   ├── index.html
 │   ├── my_weekly_report.html
-│   ├── script.js (this file should be moved to /static)
 │   └── workout_instruction.html
 └── utils
     ├── exercise_db.py
