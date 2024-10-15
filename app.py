@@ -79,7 +79,19 @@ def home_feed():
 
         events = list(events_collection.find(query).sort("date", 1))
 
-        return render_template('home_feed.html', username=session['username'], events=events)
+        current_time = datetime.now()
+
+        upcoming_events = []
+        for event in events:
+            try:
+                event_time = datetime.strptime(event['date'] + " " + event['time'], "%Y-%m-%d %H:%M")
+                
+                if event_time > current_time:
+                    upcoming_events.append(event)
+            except (KeyError, ValueError):
+                continue
+
+        return render_template('home_feed.html', username=session['username'], events=upcoming_events)
     else:
         return redirect(url_for('login'))
 
