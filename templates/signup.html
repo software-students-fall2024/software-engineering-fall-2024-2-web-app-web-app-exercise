@@ -71,6 +71,22 @@
         .sign-up:hover {
             background-color: #45a049;
         }
+        .back-btn {
+            background-color: transparent;
+            color: #6CB873;
+            border: 2px solid #6CB873;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .back-btn:hover {
+            background-color: #6CB873;
+            color: black;
+        }
         .flash-message {
             color: red;
             background-color: #f8d7da;
@@ -103,6 +119,10 @@
             <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
             <button type="submit" class="signup-btn">Create Account </button>
         </form>
+
+        <a href="{{ url_for('login') }}">
+            <button class="back-btn">Back to Login</button>
+        </a>
     </div>
 </body>
 </html>
