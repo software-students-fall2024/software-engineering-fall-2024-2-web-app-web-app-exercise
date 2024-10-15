@@ -9,6 +9,16 @@ def create_app():
 
     app = Flask(__name__)
 
+    @app.route("/")
+    def home_screen():
+        """
+        Route for the home page.
+        Returns:
+            rendered template (str): The rendered HTML template.
+        """
+                
+        return render_template("home.html")
+    
     @app.route("/start-session")
     def session_form():
         """
