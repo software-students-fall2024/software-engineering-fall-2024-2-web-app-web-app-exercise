@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 import os
 import re
 
-# load environment variables from .env vile
+# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__, static_url_path="", static_folder="static", template_folder="templates")
 
-# set up mongodb database connection
+# Set up MongoDB database connection
 mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
@@ -29,17 +29,25 @@ requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subjec
 applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 doc_code = 0 #for when we need to update appliances
 
+# Regular user homepage
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", is_admin=False)
 
+# Admin homepage - show all requests
+@app.route("/admin")
+def admin_home():
+    return render_template("index.html", reports=reports, is_admin=True)
+
+# List all reports (separate view)
 @app.route("/list")
-def list():
+def list_reports():
     return render_template("list.html", reports=reports)
 
+# Request details page
 @app.route("/request")
 @app.route("/request/<requestID>")
-def makeRequest(requestID=None):
+def make_request(requestID=None):
     return render_template("request.html", requestID=requestID)
 
 @app.route("/track", methods=["GET"])
@@ -180,6 +188,5 @@ def remove_appliance(code):
         "code": code
     })
     return redirect(url_for('index'))
-
 if __name__ == "__main__":
-    app.run( host="127.0.0.1", port=3000)
+    app.run(host="127.0.0.1", port=3000)

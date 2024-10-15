@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
- 
+
 <head>
     <title>NYU Maintenance Request Portal</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- Common styles for both admin and user -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    
+    {% if is_admin %}
+    <!-- Admin-specific styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-admin.css') }}">
+    {% else %}
+    <!-- User-specific styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-user.css') }}">
+    {% endif %}
 </head>
- 
+
 <body>
     <div class="navBar">
         <div>
-        <h1><a href="/">NYU Maintenance Request Portal</a></h1>
+            <h1><a href="/">NYU Maintenance Request Portal</a></h1>
         </div>
         <div class="navLinks">
+            <a class="link" href="/">User Home</a>
+            <a class="link" href="/admin">Admin Home</a>
+            <a class="link" href="/request">New Request</a>
             <a class="link" href="/track">Track A Request</a>
             <a class="link" href="/list">Requests</a>
             <a class="link" href="/request">Request Maintenance</a>
@@ -20,13 +32,10 @@
             <a class="link" href="/request">Make A Request</a>
             <a class="link" href="/login">Login</a>
         </div>
-        {% block homelink %}{% endblock %}
     </div>
 
-{% block body %}
-
-{% endblock %}
-
+    {% block body %}
+    {% endblock %}
 </body>
- 
+
 </html>

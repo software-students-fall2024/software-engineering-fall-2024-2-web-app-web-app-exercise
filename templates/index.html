@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1 class="welcome">Welcome!</h1>
+    <h2>All Work Requests (Admin)</h2>
+    <ul class="request-list">
+        {% for report in reports %}
+        <li>
+            <a href="/request/{{ report.id }}" class="request-item">
+                <div class="request-details">
+                    <h3>Subject Line</h3>
+                    <p>Placeholder Location</p>
+                    <p>Placeholder Date</p>
+                    <p class="request-id">Placeholder ID</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
