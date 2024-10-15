@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from bson import BSON
 from bson import json_util
+from bson.decimal128 import Decimal128
 from statistics import mean
 
 load_dotenv()
@@ -47,7 +48,9 @@ def get_store_location(store_location):
 
         for item in sale.get('items', []):
             # Calculate revenue
-            addition = float(item["price"].to_decimal()) * float(item["quantity"])
+            addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
+            if isinstance(item["price"], Decimal128) 
+            else float(item["price"]) * float(item["quantity"]))
             total_revenue += addition
 
             # Track quantities for each item

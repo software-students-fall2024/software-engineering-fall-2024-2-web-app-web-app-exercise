@@ -2,6 +2,8 @@ import pymongo
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+from bson.decimal128 import Decimal128
+
 
 load_dotenv()
 
@@ -21,14 +23,18 @@ def get_transactions(store_location):
     
     for sale in sales_records:
         # Get the sale date and format it
-        sale_date = sale['saleDate']
+        sale_date = sale.get('saleDate') if sale.get('saleDate') else sale.get('createdAt')
+        if isinstance(sale_date, str):
+            sale_date = datetime.fromisoformat(sale_date)
         formatted_date = sale_date.strftime("%Y-%m-") + str(sale_date.day)
 
         # Calculate the total sale amount
         sale_amount = 0
         for item in sale.get('items', []):
             # Assuming 'price' is stored as a decimal.Decimal type; convert it to float
-            addition = float(item["price"].to_decimal()) * float(item["quantity"])
+            addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
+            if isinstance(item["price"], Decimal128) 
+            else float(item["price"]) * float(item["quantity"]))
             sale_amount += addition
         
         sale_amount = round(sale_amount, 2)  # Round to 2 decimal places

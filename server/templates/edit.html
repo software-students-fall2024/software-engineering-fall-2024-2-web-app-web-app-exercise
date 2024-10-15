@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Transaction - {{ store_location }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .grid-item {
+        background-color: #4caf50;
+        color: white;
+        text-align: center;
+        padding: 40px;
+        font-size: 20px;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+      }
+
+      .grid-item:hover {
+        background-color: #45a049;
+      }
+
+      .box {
+        border: 2px solid black;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 40px;
+        background-color: white;
+      }
+
+      .button {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        background-color: #45a049;
+      }
+
+      div.scrollmenu {
+        overflow: auto;
+        white-space: nowrap;
+        max-width: 100vw;
+      }
+
+      div.grid-item {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Edit Transaction - {{ store_location }}</h1>
+    <form method="GET" action="/get_to_edit">
+      <label for="customer_email"
+        >Input customer email you would like to edit:</label
+      >
+      <input type="email" id="customer_email" name="customer_email" required />
+      <input type="submit" value="Get Info" />
+        <br><br>
+      <label for="purchase_method">Choose A New Purchase method:</label>
+      <select id="purchase_method" name="purchase_method">
+        <option value="In store">In store</option>
+        <option value="Online">Online</option>
+        <option value="Phone">Phone</option>
+      </select>
+    </form>
+  </body>
+</html>

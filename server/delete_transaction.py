@@ -13,5 +13,4 @@ db = client["sample_supplies"]
 collection = db["sales"]
 
 def delete_transaction(email):
-    
     collection.delete_one({"customer.email": email})
