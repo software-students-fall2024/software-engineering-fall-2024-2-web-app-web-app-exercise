@@ -84,7 +84,7 @@ input {
     margin-top:20px;
 }
 
-.exercise-description p, .exercise-instruct p{
+.exercise-description p, .exercise-instruct p, .exercise-list p{
     font-size: 14px;
     line-height: 1.3;
 }
