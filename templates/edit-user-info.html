@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup Page</title>
+{% extends "base.html" %}
+{% block title %}
+Edit User Info
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,31 +97,34 @@
             margin-bottom: 10px;
         }
     </style>
-</head>
-<body>
-    <div class="signup-container">
-        <h2>Create Account</h2>
+{% endblock %}
+{% block content %}
+<div class="signup-container">
+    <h2>Edit User Info</h2>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-message">
-                    {{ messages[0] }} 
-                </div>
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-message">
+                {{ messages[0] }} 
+            </div>
+        {% endif %}
+    {% endwith %}
 
-        <form action="/signup" method="POST">
-            <input type="email" id="username" name="username" placeholder="Email" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <input type="password" id="password2" name="password2" placeholder="Re-enter Password" required>
-            <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
-            <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
-            <button type="submit" class="signup-btn">Create Account </button>
-        </form>
+    <form action="/user-info" method="POST">
+        <input type="email" id="username" name="username" placeholder="Email" value={{user_info.username}} required>
+        <input type="password" id="password" name="password" placeholder="New Password" required>
+        <input type="password" id="password2" name="password2" placeholder="Re-enter New Password" required>
+        <input type="text" id="firstname" name="firstname" placeholder="First Name" value={{user_info.firstname}} required>
+        <input type="text" id="lastname" name="lastname" placeholder="Last Name" value={{user_info.lastname}} required>
+        <button type="submit" class="signup-btn">Update Info</button>
+    </form>
 
-        <a href="{{ url_for('login') }}">
-            <button class="back-btn">Back to Login</button>
-        </a>
-    </div>
-</body>
-</html>
+    <button onclick="goBack()" class="back-btn">Cancel</button>
+</div>
+
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
+{% endblock %}
