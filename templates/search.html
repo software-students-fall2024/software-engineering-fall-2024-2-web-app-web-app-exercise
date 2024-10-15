@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Transactions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <header class="header">
+        <i class="bx bx-menu" id="menu-icon"></i>
+    
+        <!-- Navigation Bar -->
+        <nav class="navbar" id="navbar">
+            <ul class="nav-links" id="nav-links">
+                <li><a href="{{ url_for('index', username=session['username']) }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>            
+                <li><a href="{{ url_for('add_transaction', username=session['username']) }}">Add Transaction</a></li>
+                <li><a href="{{ url_for('search_and_edit_transaction', username=session['username']) }}">Edit Transaction</a></li>
+                <li><a href="{{ url_for('search_transactions', username=session['username']) }}">Search Transactions</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Search Transactions</h1>
+        <form method="POST">
+            <label for="query">Search:</label>
+            <input type="text" name="query" id="query" placeholder="Search by category or description" required>
+            <button type="submit" class="button">Search</button>
+        </form>
+        {% if results %}
+        <h2>Search Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.date }}</td>
+                    <td>${{ result.amount }}</td>
+                    <td>{{ result.category }}</td>
+                    <td>{{ result.description }}</td>
+                    <td>{{ result.type }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
