@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from models import User
-from flask_login import LoginManager, login_user, login_required, current_user
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 import os
 
 
@@ -108,6 +108,12 @@ def create_app():
         }
         
         return render_template("edit-user-info.html", user_info=user_info)
+    
+    @app.route("/log-out")
+    @login_required 
+    def logout():
+        logout_user() 
+        return redirect(url_for('home'))
     
     
     @app.route("/user-info",methods=["POST"])
