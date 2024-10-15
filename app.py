@@ -231,7 +231,7 @@ def add():
     else:
         exercises = [] 
 
-    return render_template('add.html', exercises=exercises)
+    return render_template('add.html', exercises=exercises, exercises_length=len(exercises))
 
 
 @app.route('/add_exercise', methods=['POST'])
@@ -284,6 +284,15 @@ def instructions():
 
     return render_template('instructions.html', exercise=exercise)
 
+@app.route('/exercise_detail/<exercise_id>', methods=['GET'])
+def exercise_detail(exercise_id):
+    exercise = get_exercise(exercise_id)
+    
+    if exercise:
+        exercise['_id'] = str(exercise['_id'])
+        return render_template('exercise_detail.html', exercise=exercise)
+    else:
+        return jsonify({'message': 'Exercise not found'}), 404
 
 
 if __name__ == "__main__":

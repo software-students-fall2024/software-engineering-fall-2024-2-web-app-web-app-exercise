@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instruction Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/alex.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
 <body>
     <div class="exercise-instruct-container">
         <header class="header-container">
-            <h1 class="instruction-title">Instruction</h1>
-            <!-- <input type="text" placeholder="Search Exercises" class="search-box"> -->
+            <h1 class="instruction-title">{{ exercise.workout_name }} Instruction</h1>
+            <button class="back-btn" onclick="window.history.back();">Back</button>
         </header>
 
         <div class="exercise-image">
@@ -18,10 +18,8 @@
         </div>
 
         <section class="exercise-description">
-            <p style="text-align: center;"><strong>{{ exercise.workout_name }}</strong></p>
-            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad.
+            <p><Strong>Description:</Strong></p>
+            <p> {{ exercise.description }}
             </p>  
         </section>
 
@@ -29,11 +27,7 @@
             <p><Strong>Instruction:</Strong></p>
             <p> {{ exercise.instruction }}
             </p>
-        </div>
-
-        <div>
-            <button class="back-btn" onclick="window.history.back();">Back</button>
-        </div>        
+        </div>      
 
         <footer>
             <p>All rights reserved. <a href="#">Privacy policy</a></p>
