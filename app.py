@@ -28,7 +28,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = "KEY"
 
-    uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
+    uri = os.getenv("MONGO_URI")
     client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
     db = client['tasks']
     
@@ -378,5 +378,6 @@ def create_app():
     
 if __name__ == "__main__":
     app = create_app()
-    app.run(port="3000", debug=True)
+    flask_port = os.getenv("FLASK_PORT")
+    app.run(port=flask_port, debug=True)
 
