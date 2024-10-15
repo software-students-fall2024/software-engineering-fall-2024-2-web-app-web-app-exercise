@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+<head>
+<!DOCTYPE html>
+<html>
   <head>
-    <title>To-Do List</title>
+    <title>Event Planner</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
@@ -10,13 +13,21 @@
   <body>
     <div class="container">
       <header>
-        <h1>Flask-Pymongo Example App</h1>
-        <nav>
-          <a href="{{ url_for('home')}}">Home</a>
-        </nav>
+        <h1>Event Planner 
+        <div class="topnav">
+  			<input type="text" placeholder="Search..">
+		</div>
+        </h1>
       </header>
-      <main>{% block container %} {% endblock %}</main>
+      
+      
       <footer>
+        <section>
+         <div class="topnav">
+  			<a class="active" href="{{ url_for('Home')}}">Home</a>
+  			<a href="{{ url_for('Add')}}">Add Event</a>
+		</div>
+          <section>
       </footer>
     </div>
   </body>
