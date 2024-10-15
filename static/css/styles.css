@@ -14,6 +14,7 @@ main {
     overflow: auto;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 body {
@@ -41,7 +42,6 @@ header {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
 }
 
 .website-title {
@@ -100,10 +100,124 @@ footer {
     }
 }
 
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+  
 .search-form {
     border: none;
     display: flex;
     width: 50vw;
-    align-content: center;
+    align-items: center;
     justify-content: center;
+}
+  
+.search-input {
+    padding: 10px;
+    width: 30vw;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+  
+.search-button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.search-button:hover {
+    background-color: #636363;
+}
+  
+.search-results {
+    margin-top: 20px;
+    width: 50vw;
+    text-align: center;
+}
+  
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+  
+.user-item {
+    margin: 10px 0;
+}
+  
+.user-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+  
+.user-link:hover {
+    text-decoration: underline;
+}
+  
+.no-results {
+    color: red;
+    font-size: 16px;
+}
+
+.tunetask {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tunetask h2 {
+    margin-top: 0;
+    color: #007BFF;
+}
+
+.tunetask h3 {
+    color: #555;
+}
+
+.tunetask ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.tunetask li {
+    background-color: #e9ecef;
+    padding: 8px;
+    border-radius: 3px;
+    margin: 5px 0;
+}
+
+.tunetask form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tunetask button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tunetask button:hover {
+    background-color: #c82333;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    font-style: italic;
 }

@@ -3,8 +3,25 @@
 {% block title %} Search {% endblock %}
 
 {% block content %}
-  <form method="POST" action="{{ url_for('post_search') }}" class="search-form">
-    <input type="text" name="user" class="search-input">
-    <input type="submit" value="Search" class="search-button"/>
-  </form>
+  <div class="search-container">
+    <form method="POST" action="{{ url_for('post_search') }}" class="search-form">
+      <input type="text" name="user" class="search-input" placeholder="Search for a user...">
+      <input type="submit" value="Search" class="search-button"/>
+    </form>
+    <div class="search-results">
+      {% if users %}
+        <ul class="user-list">
+          {% for user in users %}
+            <li class="user-item">
+              <a href="{{ url_for('show_profile', user=user['username']) }}" class="user-link">
+                {{ user['username'] }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% elif request.method == "POST" %}
+        <p class="no-results">No users found.</p>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
