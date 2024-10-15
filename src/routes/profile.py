@@ -90,17 +90,3 @@ def update_account():
 
 @routes.route('/edit_board/<board_id>', methods=["GET", "POST"])
 @flask_login.login_required
-def edit_board(board_id):
-    board = get_board(board_id)
-    if not board:
-        flash('Board not found', 'error')
-        return redirect(url_for('routes.profile'))
-
-    if request.method == 'POST':
-        name = request.form.get('name')
-        pedals = request.form.getlist('pedals')
-        update_board(board_id, name, pedals)
-        flash('Board updated successfully', 'success')
-        return redirect(url_for('routes.profile'))
-
-    return render_template('edit_board.html', board=board)
