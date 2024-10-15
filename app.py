@@ -1,8 +1,9 @@
 import os
-from flask import Flask, request, redirect, url_for, flash, render_template, jsonify
+from flask import Flask, request, redirect, url_for, flash, render_template, jsonify, session
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
+import certifi
 
 load_dotenv()
 
@@ -11,9 +12,10 @@ mongo_uri = os.getenv('MONGO_URI')
 app = Flask(__name__)
 app.secret_key = os.urandom(13)
 
-client = MongoClient(mongo_uri)
+client = MongoClient(mongo_uri, tls=True, tlsCAFile=certifi.where())
+
 try:
-    client.admin.command('ping')  # 测试连接
+    client.admin.command('ping')  
     print("Successfully connected to MongoDB!")
 except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
@@ -23,15 +25,15 @@ exercises_collection = db['exercises']
 
 
 def search_exercise(query: str):
-    normalized_query = query.replace(" ", "")
-    
+    print('query ', query)
     exercises = exercises_collection.find({
         "workout_name": {
-            "$regex": normalized_query, 
+            "$regex": query, 
             "$options": "i" 
         }
     })
-    return list(exercises)
+    exercises_list = list(exercises)  
+    return exercises_list
 
 
 def get_exercise(exercise_id: str):
@@ -40,6 +42,7 @@ def get_exercise(exercise_id: str):
 
 def get_todo():
     todo_list = todo_collection.find_one({"_id": 1})
+    #print('todo_list', todo_list)
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
@@ -105,38 +108,49 @@ def add_todo(exercise_id: str, working_time, reps, weight):
 
 
 def edit_exercise(exercise_todo_id, working_time, weight, reps):
-    """Edit the todo item in the collection by its unique exercise_todo_id."""
+    exercise_todo_id = int(exercise_todo_id)
+    update_fields = {}
+    
+    if working_time is not None:
+        update_fields["todo.$.working_time"] = working_time
+    if reps is not None:
+        update_fields["todo.$.reps"] = reps
+    if weight is not None:
+        update_fields["todo.$.weight"] = weight
+    
+    if not update_fields:
+        #print("No fields to update.")
+        return False  
+
     result = todo_collection.update_one(
         {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
-        {"$set": {
-            "todo.$.working_time": working_time,
-            "todo.$.reps": reps,
-            "todo.$.weight": weight
-        }}
+        {"$set": update_fields}
     )
     
-    if result.modified_count > 0:
-        print(f"Exercise with To-Do ID {exercise_todo_id} updated in To-Do List.")
+    if result.matched_count > 0:  
         return True
     else:
-        print(f"Failed to update exercise with To-Do ID {exercise_todo_id}.")
+        #print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
         return False
 
 
+
 def get_exercise_in_todo(exercise_todo_id: int):
-    todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
+    todo_item = todo_collection.find_one({"_id": 1})
     
     if not todo_item:
-        print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        #print(f"Document with _id 1 not found.")
         return None
     
-    for item in todo_item['todo']:
-        if item['exercise_todo_id'] == exercise_todo_id:
+    #print(f"todo_item found: {todo_item}")
+    
+    for item in todo_item.get('todo', []):
+        #print(f"Checking item: {item}")
+        if item.get('exercise_todo_id') == int(exercise_todo_id):
             return item
 
-    print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
+    #print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
     return None
-
 
 def get_instruction(exercise_id: str):
 
@@ -176,12 +190,14 @@ def search():
             return jsonify({'message': 'Search content cannot be empty.'}), 400
             # return redirect(url_for('search'))
         results = search_exercise(query)
+        print('results are', results)
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
             # return redirect(url_for('search'))
         
-        # test
-        # session['results'] = results
+        for result in results:
+            result['_id'] = str(result['_id'])
+        session['results'] = results
         return redirect(url_for('add'))
 
     exercises = default_exercises()
@@ -211,9 +227,11 @@ def delete_exercise_id(exercise_todo_id):
 
 @app.route('/add')
 def add():
-    # test
-    # exercises = session['results']
-    exercises = []
+    if 'results' in session:
+        exercises = session['results']
+    else:
+        exercises = [] 
+
     return render_template('add.html', exercises=exercises)
 
 
@@ -227,27 +245,35 @@ def add_exercise(exercise_id):
         return jsonify({'message': 'Failed to add'}), 400
 
 
-@app.route('/edit/<int:exercise_todo_id>', methods=['GET', 'POST'])
+@app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    exercise_todo_id = request.args.get('exercise_todo_id')
+    exercise_todo_id = request.args.get('exercise_todo_id')  
     exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
+    
     if request.method == 'POST':
         working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        edit_exercise(exercise_todo_id, working_time, weight, reps)
-        flash('Updated successfully!')
-        return redirect(url_for('edit'))
-
+        print('working_time', working_time)
+        print('weight', weight)
+        print('reps', reps)
+        print('exercise_todo_id ',exercise_todo_id)
+        success = edit_exercise(exercise_todo_id, working_time, weight, reps)
+        if success:
+            return jsonify({'message': 'Edited successfully'}), 200
+        else:
+            return jsonify({'message': 'Failed to edit'}), 400
+    #print('exercise_todo_id is ', exercise_todo_id)
+    #print ('exercise is', exercise_in_todo)
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
-
-@app.route('/instructions/<string:exercise_id>')
-def instructions(exercise_id):
+@app.route('/instructions', methods=['GET'])
+def instructions():
+    exercise_id = request.args.get('exercise_id')  
     exercise = get_exercise(exercise_id)
-    instruction = exercise['instruction']
 
-    return render_template('instructions.html', instruction=instruction)
+    return render_template('instructions.html', exercise=exercise)
+
 
 
 if __name__ == "__main__":

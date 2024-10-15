@@ -43,20 +43,22 @@
         document.getElementById('search-btn').addEventListener('click', function() {
             const query = document.getElementById('query').value;
 
-            // Submit search query using fetch
             fetch('/search', {
                 method: 'POST',
                 body: new URLSearchParams({
                     'query': query
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
                 } else {
-                    // If the response is valid, redirect to /add or dynamically update the list
-                    window.location.href = '/add'; // Or dynamically update the exercise list here
+                    return response.json(); 
+                }
+            })
+            .then(data => {
+                if (data && data.message) {
+                    alert(data.message);  
                 }
             })
             .catch(error => {
@@ -64,6 +66,7 @@
                 alert('An error occurred while searching for the exercises.');
             });
         });
+
 
         document.querySelectorAll('.add-btn').forEach(function(button) {
             button.addEventListener('click', function() {
