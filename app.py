@@ -1,7 +1,8 @@
 import os
-from flask import Flask, request, redirect, url_for, flash, render_template
+from flask import Flask, request, redirect, url_for, flash, render_template, jsonify
 from dotenv import load_dotenv
 from pymongo import MongoClient
+from bson import ObjectId
 
 load_dotenv()
 
@@ -37,11 +38,13 @@ def search_exercise(query: str):
 def get_exercise(exercise_id: str):
     return exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
+
 def get_todo():
     todo_list = todo_collection.find_one({"_id": 1})
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
+
 
 def delete_todo(exercise_todo_id: int):
     result = todo_collection.update_one(
