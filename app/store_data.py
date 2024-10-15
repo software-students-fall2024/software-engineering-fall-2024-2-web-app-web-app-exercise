@@ -47,14 +47,12 @@ def get_store_location(store_location):
             purchase_method_dict[purchase_method] += 1
 
         for item in sale.get('items', []):
-            # Calculate revenue
-            # addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
-            # if isinstance(item["price"], Decimal128) 
-            # else float(item["price"]) * float(item["quantity"]))
+
             try:
                 addition = float(item["price"].to_decimal()) * float(item["quantity"])
             except:
                 addition = float(item["price"]) * float(item["quantity"])
+
             total_revenue += addition
 
             # Track quantities for each item
