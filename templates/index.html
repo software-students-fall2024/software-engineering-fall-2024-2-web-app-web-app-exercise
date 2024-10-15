@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+        <button><a href="start-session">Start new session</a></button>
+        <div class="session-container">
+        {% for sessions in past %}
+            <div class="sessions">
+                {% if sessions.created_at %}
+                    <h2>{{ sessions.created_at.strftime('%B %d, %Y, %I:%M %p') }}</h2>
+                {% else %}
+                    <h2>Unknown</h2>
+                {% endif %}
+                <p>{{sessions.focus_time}} minutes studied</p>
+                <p>Studied for {{sessions.subject}}</p>
+                <p>Earned {{ ((sessions.focus_time | default(0) | int) / 
+                    ((sessions.focus_time | default(0) | int) - 5)) | int }} bunnie(s)
+                </p>
+            </div>
+        {%endfor%}
+        </div>
+    </div>
+</body>
+</html>
