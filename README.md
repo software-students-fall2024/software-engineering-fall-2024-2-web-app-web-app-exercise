@@ -61,4 +61,4 @@ This will output the local address where your Flask web application is running. 
 
 [Sprint 1] (https://github.com/orgs/software-students-fall2024/projects/14)
 
-[Spring 2] (https://github.com/orgs/software-students-fall2024/projects/63)
+[Sprint 2] (https://github.com/orgs/software-students-fall2024/projects/63)
