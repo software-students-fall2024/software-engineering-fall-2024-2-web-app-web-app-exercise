@@ -77,7 +77,7 @@ def home_feed():
         else:
             query = {}  
 
-        events = list(events_collection.find(query).sort("date", -1))
+        events = list(events_collection.find(query).sort("date", 1))
 
         return render_template('home_feed.html', username=session['username'], events=events)
     else:
@@ -150,7 +150,7 @@ def rsvp_event(event_id):
     
     if event_id not in user.get('rsvped_events', []):
         collection.update_one({'_id': user['_id']}, {'$push': {'rsvped_events': event_id}})
-        events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['username']}})
+        events_collection.update_one({'_id': event['_id']}, {'$push': {'attendees': user['_id']}})
         flash(f"RSVP confirmed for {event['title']}.")
     else:
         flash("You have already RSVP'd for this event.")
@@ -171,7 +171,7 @@ def rsvp_list():
     for event in events:
         attendee_ids = event.get('attendees', [])
         attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1})) 
-        event['attendees_usernames'] = [attendee['username'] for attendee in attendees] 
+        event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
 
     return render_template('rsvped_events.html', events=events)
 
@@ -188,7 +188,6 @@ def delete_rsvp(event_id):
         return redirect(url_for('rsvp_list'))
     
     collection.update_one({'_id': user['_id']}, {'$pull': {'rsvped_events': event_id}})
-
     events_collection.update_one({'_id': event['_id']}, {'$pull': {'attendees': user['_id']}})
 
     flash(f"RSVP for {event['title']} has been deleted.")
@@ -216,11 +215,7 @@ def hosting_list():
 
     for event in hosting_events:
         attendee_ids = event.get('attendees', [])
-
-        valid_attendee_ids = [ObjectId(attendee_id) for attendee_id in attendee_ids if ObjectId.is_valid(attendee_id)]
-        
-        attendees = list(collection.find({"_id": {"$in": valid_attendee_ids}}, {"username": 1}))
-        
+        attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1}))
         event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
 
     return render_template('hosting_events.html', events=hosting_events)
