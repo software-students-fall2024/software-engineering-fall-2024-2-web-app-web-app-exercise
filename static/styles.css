@@ -219,7 +219,12 @@ h2 {
     align-items: center;
     height: max-content;
 }
-
+#timer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+}
 /* Circle with two halves to create the doughnut effect */
 .circle {
     position: relative;
