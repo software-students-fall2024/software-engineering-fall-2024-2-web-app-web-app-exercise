@@ -12,7 +12,7 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     
-    app.secret_key = "1Aaoo6C4ghz4aGTRqZV5AA3wzQ0cRjkv"  # actually, this is supposed to go into .env, but leave it for now
+    app.secret_key = os.getenv("SECRET_KEY") # actually, this is supposed to go into .env, but leave it for now
     
     db_uri = os.getenv("DB_URI")
     
