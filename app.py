@@ -1,7 +1,7 @@
 import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash
-import flask_login
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -18,14 +18,31 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = 'secret'
 
+    #mongodb connect
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = cxn[os.getenv("MONGO_DBNAME")]
     users = db['users']
+    tasks = db['tasks']
 
-    class User(flask_login.UserMixin):
-        pass
+    #Configure Flask-login
+    login_manager = LoginManager()
+    login_manager.init_app(app)
 
-    #tasks = db['tasks']
+    #define user
+    class User(UserMixin):
+        def __init__(self, username):
+            self.username = username
+
+        def get_id(self):
+            return self.username
+ 
+    user = None
+    @login_manager.user_loader
+    def load_user(user_id):
+        user = users.find_one({"username": user_id})
+        return User(username=user["username"]) if user else None
+
+    login_manager.user_loader(load_user)
 
     try:
         cxn.admin.command("ping")
@@ -51,31 +68,45 @@ def create_app():
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
+        if current_user.is_authenticated:
+            return redirect('/')
+
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
 
             # Check if the username and password match
             user = users.find_one({'username': username, 'password': password})
-            if user:
-                flash('Login successful.', 'success')
-            # Add any additional logic, such as session management
+
+            if user :
+                user_obj = User(user['username'])
+                login_user(user_obj)
+                return redirect('/')
             else:
-                flash('Invalid username or password. Please try again.', 'danger')
+                flash('Invalid username or password.')
 
         return render_template('login.html')
 
-    @app.route("/")
+    @app.route('/logout')
+    @login_required
+    def logout():
+        # Logout the user
+        logout_user()
+        return redirect('/login')
+
+    @app.route('/')
+    @login_required
     def home():
         """
         Route for the home page.
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        #docs = db.tasks.find({}).sort("created_at", -1)
-        return render_template("index.html")# docs=docs)
+        docs = db.tasks.find({user: user.get_id})
+        return render_template("index.html", docs=docs)
 
     @app.route("/create")
+    @login_required
     def add_task():
         """
         Route for the adding task page
@@ -106,6 +137,7 @@ def create_app():
         return redirect(url_for("home"))
 
     @app.route("/edit/<post_id>")
+    @login_required
     def edit(post_id):
         """
         Route for GET requests to the edit page.
