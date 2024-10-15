@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,20 +7,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <header class="header">
-            <!-- 
-            I don't know if it makes sense to have these nav link if th eusser is setting up their account
-            <i class="bx bx-menu" id="menu-icon"></i>
-            <ul class="nav-links">
-                <li><a href="{{ url_for('account') }}">Account</a></li> 
-                <li><a href="{{ url_for('index') }}">Home</a></li> 
-                <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
-                <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
-                <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
-                <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
-            </ul>
-            -->
-        </header>
+
         <!-- setting up account, only one time use in beginning -->
         <div id="account-page">
             <h2>Set up your account</h2>
