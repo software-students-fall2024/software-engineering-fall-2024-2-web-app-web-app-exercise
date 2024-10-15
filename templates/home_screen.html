@@ -9,6 +9,10 @@
     <div class="container">
         <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
         <button><a href="start-session">Start new session</a></button>
+        <form method="POST" action="{{ url_for('search') }}">
+            <input type="text" id="search" name="search" placeholder="Search Sessions..."/>
+            <input type="submit" value="Search" />
+        </form>
         <div class="session-container">
         {% for session in past %}
             <div class="sessions">
