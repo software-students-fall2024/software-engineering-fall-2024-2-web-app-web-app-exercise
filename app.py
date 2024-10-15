@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from models import User
+from flask_login import LoginManager, login_user, login_required
 import os
 
 
@@ -10,6 +12,8 @@ def create_app():
 
     # Load environment variables from .env file
     load_dotenv()
+    
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
 
     connection_string = os.getenv("MONGO_URI")  # Corrected to use "MONGO_URI" instead of MONGO_URI
 
@@ -19,50 +23,68 @@ def create_app():
     # # Create a MongoDB client with the correct connection string
     client = MongoClient(connection_string)
     db = client["test_db"]
-    collection = db["test_collection"]
-    sample_data = {"name": "John Doe", "age": 30, "city": "New York"}
-    collection.insert_one(sample_data)
-
-    print("Document inserted successfully!")
+    
+    # user auth stuff
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "login"
+    
+    # user loader for flask login
+    @login_manager.user_loader
+    def load_user(user_id):
+        user = db.users.find_one({"username": user_id}) # user is unique id'd by username (email)
+        if user:
+            return User(
+                username=user["username"],
+                password=user.get("password"),
+                firstname=user.get("firstname"),
+                lastname=user.get("lastname"),
+            )
+        return None
     
     @app.route("/")
-    def login():
+    def home():
         return render_template("home.html")
     
-    @app.route("/login",methods=["POST"])
-    def login_post():
-        ### login Logic ###
-        ###TODO###
-        
-        #if invalid, display error message on the same page
-        error = False
-        if error:
-            return render_template('home.html', error="Error occurred!")
-        
-        # if valid, load signup success page
-        return render_template("")
-    
-    
-    @app.route("/signup")
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        if request.method == "POST":
+            # Login Logic
+            username = request.form["username"]
+            password = request.form["password"]
+            user = User.validate_login(db, username, password)
+            if user:
+                login_user(user)
+                return redirect(url_for("contact_us")) ## change this for when news page gets implemented 
+            else:
+                flash("Invalid username or password. Try again.")
+                return render_template('home.html', error="Error occurred!")
+        return render_template("home.html")
+
+    @app.route("/signup", methods=["GET", "POST"])
     def signup():
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            password2 = request.form["password2"]
+            firstname = request.form["firstname"]
+            lastname = request.form["lastname"]
+            # check if passwords match
+            if password != password2:
+                flash("Passwords don't match!")
+                return render_template("signup.html")
+            
+            if User.find_by_username(db, username):
+                flash("Username with that email already exists!")
+                return render_template('signup.html', error="Error occurred!")
+            User.create_user(db, username, password, firstname, lastname)
+            flash("User created successfully!")
+            return redirect(url_for("login"))
         return render_template("signup.html")
     
     
-    @app.route("/signup",methods=["POST"])
-    def signup_post():
-        #signup logic
-        ###TODO###
-        
-        #if invalid, display error message on the same page
-        error = False
-        if error:
-            return render_template('signup.html', error="Error occurred!")
-        
-        # if valid, load signup success page
-        return render_template("signup-success.html")
-    
-    
     @app.route("/user-info")
+    @login_required # this decorator makes it so you can only be logged in to view this page.... put this on any new routes you make pls
     def getUserInfo():
         #retrieve user info and return with template
         ###TODO###
@@ -71,6 +93,7 @@ def create_app():
     
     
     @app.route("/user-info",methods=["PUT"])
+    @login_required
     def updateUserInfo():
         #get the new user info and update the db
         title = request.form["title"]
@@ -83,12 +106,13 @@ def create_app():
         return redirect(url_for("getUserInfo"))
     
     
-    @app.route("/contact-us")
-    def contactUs():
+    @app.route("/contact_us")
+    @login_required
+    def contact_us():
         #get contact-us page
-        return render_template("contact-us.html")
+        return render_template("Contact_us.html")
     
-    @app.route("/contact-us",methods=["POST"])
+    @app.route("/contact_us",methods=["POST"])
     def sendMessage():
         #get the message title and content from form and email it to a specific address
         title = request.form["title"]
@@ -97,10 +121,11 @@ def create_app():
         
         
         flash("Message Sent!")
-        return redirect(url_for("contactUs"))
+        return redirect(url_for("contact_us"))
     
     
     @app.route("/vocab")
+    @login_required
     def getVocab():
         #retrieve vocab list of the user and return with template
         ###TODO###
@@ -130,7 +155,6 @@ def create_app():
     
 
     return app
-
 
 
 
