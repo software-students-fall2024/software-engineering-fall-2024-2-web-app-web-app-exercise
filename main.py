@@ -22,6 +22,7 @@ requests_collection = db.requests
 
 reports = ["Vending machine", "Water fountain", "Door hinge"]
 requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subject":"test","description":"Descript","date":"2024-10-13"}]
+applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 
 @app.route("/")
 def index():
@@ -42,12 +43,15 @@ def trackRequest(code=None):
     if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
-        # entry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
-        entry = requestTest
+        # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
+        requestEntry = requestTest
+        # applianceEntry = appliances_collection.find({'code':code});
+        applianceEntry = applianceTest
         # print(entry.fullName);
     else:
-        entry = None
-    return render_template("track.html", requestInfo=entry)
+        requestEntry = None
+        applianceEntry = None
+    return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
 
 if __name__ == "__main__":
     app.run( host="127.0.0.1", port=3000)
