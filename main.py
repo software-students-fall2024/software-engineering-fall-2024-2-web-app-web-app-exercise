@@ -24,6 +24,7 @@ building_collection = db.bldgs
 appliance_collection = db.appliances
 
 reports = ["Vending machine", "Water fountain", "Door hinge"]
+doc_code = 0 #for when we need to update appliances
 
 @app.route("/")
 def index():
@@ -56,7 +57,7 @@ def add_app():
     appName = request.form["appName"]
     code = int(request.form["code"])
 
-    found: int = db.appliances.count_documents({
+    found: int = appliance_collection.count_documents({
         #ignore code for now, just focus on name and appliance
         "building":bname, 
         "floor":floor,
@@ -68,7 +69,14 @@ def add_app():
     })
 
     if found != 0:
-        return redirect(url_for("new_app", update = 1))
+        #not sure of a 'cleaner' way to do this
+        global doc_code
+        doc_code = (appliance_collection.find_one({
+            "building":bname, 
+            "floor":floor,
+            "applianceName" : appName
+        }).get("code"))
+        return redirect(url_for("new_app", update = 1,docCode = doc_code, blname = str(bname), floor=floor, appName=appName))
         #appliance exists, ask if they want to update code?
     elif codeUse != 0:
         return redirect(url_for("new_app", update = 2))
@@ -80,8 +88,55 @@ def add_app():
             "floor":floor,
             "applianceName" : appName
         }
-        db.appliances.insert_one(doc)
+        appliance_collection.insert_one(doc)
         return redirect(url_for("new_app", update =3)) #successfully added
+
+#@app.route("/newApp/update/", methods=["POST"])
+@app.route("/newApp/update", methods=["POST"])
+def update_app():
+    #make it so that a doc_code == 0 throws an error message?
+    bname = request.form["bname"]
+    floor = int(request.form["floor"])
+    appName = request.form["appName"]
+    code = int(request.form["code"])
+
+    found: int = appliance_collection.count_documents({
+        #ignore code for now, just focus on name and appliance
+        "code":{
+            "$ne": doc_code
+        },
+        "building":bname, 
+        "floor":floor,
+        "applianceName" : appName
+    })
+    
+    #can maybe simplify?
+    if(code != doc_code):
+        codeUse: int = appliance_collection.count_documents({
+            "code": code
+        })
+    else:
+        codeUse = 0
+
+    if found!= 0:
+        return redirect(url_for("new_app", update = 4,doc_code=doc_code, blname = str(bname), floor=floor, appName=appName))
+    elif codeUse != 0:
+        return redirect(url_for("new_app", update = 5,doc_code=doc_code, blname = str(bname), floor=floor, appName=appName))
+    else:
+        appliance_collection.update_one(
+            {"code":doc_code},
+            {
+                "$set": {
+                    "code" : code,
+                    "building":bname,
+                    "floor":floor,
+                    "applianceName" : appName
+                }
+            }
+        )
+        return redirect(url_for("new_app", update =3))
+
+    
 
 
 if __name__ == "__main__":
