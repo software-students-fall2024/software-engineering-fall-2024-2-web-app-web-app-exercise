@@ -99,10 +99,7 @@
 </head>
 <body>
     <div class="header">
-        <div>
-            <a href="{{ url_for('routes.profile', new=True) }}">New</a>
-            <a href="{{ url_for('routes.profile') }}">Profile</a>
-        </div>
+        
         <a href="{{ url_for('routes.logout') }}">Log Out</a>
     </div>
 
@@ -121,7 +118,12 @@
     <div class="profile">
         <div class="avatar"></div>
         <div>
-            <h2>{{ username }}</h2>
+            <h2>
+                {{ username }}
+                {% if privacy == 'Private' %}
+                    <span class="lock-icon" title="Private Account">🔒</span>
+                {% endif %}
+            </h2>
             <a href="{{ url_for('routes.account_settings') }}"><button class="account-settings">Account Settings</button></a>
         </div>
     </div>

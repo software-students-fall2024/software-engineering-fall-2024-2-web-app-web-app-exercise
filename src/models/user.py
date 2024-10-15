@@ -24,8 +24,6 @@ def create_user(email: str, username: str, password: str):
                              "username": username,
                              "password": password,
                              "privacy": "Public",
-                             "language": "English (US)",
-                             "theme": "light"
                              })
 
 
@@ -40,8 +38,6 @@ def user_loader(email):
     user.email = email
     user.username = found['username']
     user.privacy = found['privacy']
-    user.theme = found['theme']
-    user.language = found['language']
 
     return user
 
