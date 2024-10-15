@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>
+      Start Your Session
+    </h1>
+    <form method="POST" action="{{ url_for('session_form') }}">
+      <input type="number" id="focus" name="focus" placeholder="Enter focus time"/>
+      <input type="number" id="break" name="break" placeholder="Enter break time"/>
+      <input type="number" id="reps" name="reps" placeholder="Enter number of reps"/>
+      <input type="submit" value="Start" />
+  </form>
+  </body>
+</html>
