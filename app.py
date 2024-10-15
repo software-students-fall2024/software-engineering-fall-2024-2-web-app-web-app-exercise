@@ -154,7 +154,7 @@ def create_app():
         #retrieve vocab list of the user and return with template
         ###TODO###
         
-        return render_template("vocab.html")
+        return render_template("Vocabulary.html")
     
     @app.route("/vocab",methods=["POST"])
     def sendVocab():
