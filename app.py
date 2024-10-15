@@ -219,10 +219,22 @@ def create_app():
         
         return render_template("news.html", firstname=current_user.firstname, lastname = current_user.lastname)
     
-    @app.route("/news-content")
-    def getNewsContent():
+    @app.route("/news-content/<title>")
+    def getNewsContent(title):
+        #search for news by title
+        ### TODO ###
+        
+        #result data 
+        data = {
+            #replace the dummy data later
+            "title": "title",
+            "image_url": "https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png",
+            "autor": "chloe han",
+            "date": "2020/09/18",
+            "content": "content content content"
+        }
 
-        return render_template("news-content.html")
+        return render_template("news-content.html", data=data)
     
     @app.route("/menu")
     def getMenu():

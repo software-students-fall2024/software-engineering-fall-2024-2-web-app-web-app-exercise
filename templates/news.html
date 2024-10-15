@@ -29,7 +29,7 @@ News
             padding: 0rem;
         }
 
-        li {
+        .news-item {
             display: grid;
             grid-template-columns: 5 rem 1fr; 
             grid-template-rows: 1fr 1rem;  
@@ -75,20 +75,27 @@ News
         <ul id="news-list" class="news-list">
             <!-- temporarily hard coded -->
              <li>
-                <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
-                <p class="news-title">News headline</p>
-                <p class="news-date">2020-10-10</p>
+                <a href="{{ url_for('getNewsContent', title='News headline') }}" class="news-item">
+                    <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
+                    <p class="news-title">News headline</p>
+                    <p class="news-date">2020-10-10</p> 
+                </a>
              </li>
              <li>
-                <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
-                <p class="news-title">News headline</p>
-                <p class="news-date">2020-10-10</p>
+                <a href="{{ url_for('getNewsContent', title='News headline') }}"  class="news-item">
+                    <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
+                    <p class="news-title">News headline</p>
+                    <p class="news-date">2020-10-10</p> 
+                </a>
              </li>
              <li>
-                <img class="news-image" src="https://www.techspot.com/images2/news/bigimage/2018/09/2018-09-04-image-6.png" alt="image"/>
-                <p class="news-title">News headline</p>
-                <p class="news-date">2020-10-10</p>
+                <a href="{{ url_for('getNewsContent', title='News headline') }}"  class="news-item">
+                    <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
+                    <p class="news-title">News headline</p>
+                    <p class="news-date">2020-10-10</p> 
+                </a>
              </li>
+
         </ul>
     </div>
 {% endblock %}
