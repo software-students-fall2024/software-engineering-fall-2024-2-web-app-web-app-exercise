@@ -1,0 +1,137 @@
+{% extends 'base.html' %}{% block container %}
+
+<style>
+    .modal-content { background-color: white; padding: 20px; border-radius: 5px; }
+    .close { cursor: pointer; }
+</style>
+
+<script>
+    //delete task
+    function deleteTask(projectId, taskId) {
+        fetch(`/${projectId}/delete-task/${taskId}`, {
+            method: 'DELETE',
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Failed to delete task');
+            }
+        });
+    }
+
+    function openAssignTaskModal() {
+        document.getElementById('assignTaskModal').style.display = 'block';
+    }
+
+    function closeAssignTaskModal() {
+        document.getElementById('assignTaskModal').style.display = 'none';
+    }
+
+    //add task
+    document.addEventListener('DOMContentLoaded', function () {
+        const assignTaskForm = document.getElementById('assignTaskForm');
+        assignTaskForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const taskName = document.getElementById('taskName').value;
+            const projectId = "{{ project.id }}";  
+
+            fetch(`/${projectId}/assign-task`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ taskName: taskName }),
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();  // Reload the page to reflect the new task
+                } else {
+                    alert('Failed to assign task');
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const tasks = document.getElementsByClassName('task');
+        
+        // loop through the tasks
+        Array.from(tasks).forEach(function(task) {
+            task.addEventListener('click', function (event) {
+                document.getElementById('editTaskModal').style.display = 'block';
+            });
+        });
+    });
+    //edit task
+    document.addEventListener('DOMContentLoaded', function (e) {
+        const editTaskForm = document.getElementById('editTaskForm');
+        const taskId = task.getAttribute('data-task-id');
+        editTaskForm.addEventListener('submit', function(taskId) {
+            e.preventDefault(); 
+            const taskName = document.getElementById('taskName').value;
+            const projectId = "{{ project.id }}";  
+
+            fetch(`/${projectId}/edit-task/${taskId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ taskName: taskName }),
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();  // Reload the page to reflect the new task
+                } else {
+                    alert('Failed to assign task');
+                }
+            });
+        });
+    });
+
+</script>
+
+<body>
+  <div class="main-content">
+    <div class="section-title">project {{ project.id }}</div>
+
+    <div class="section-title">Member List</div>
+
+    <div class="section-title">Task List</div>
+        {% for task in project.tasks %}
+        <li class="task" data-task-id="{{ task.id }}" >
+            {{ task }} 
+            <button onclick="deleteTask('{{ project.id }}', '{{ task.id }}')">Delete</button>        
+        </li>
+        <!-- edit Task Modal -->
+        <div id="editTaskModal" style="display:none;">
+            <div class="modal-content">
+                <span onclick="closeAssignTaskModal()" class="close">&times;</span>
+                <p>Edit Task</p>
+                <form id="editTaskForm">
+                    <label for="taskName">Task Name:</label>
+                    <input type="text" id="taskName" name="taskName" required>
+                    <button type="submit">Assign</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Assign Task Button -->
+    <button onclick="openAssignTaskModal()">+ Assign Task</button>
+
+    <!-- Modal -->
+    <div id="assignTaskModal" style="display:none;">
+        <div class="modal-content">
+            <span onclick="closeAssignTaskModal()" class="close">&times;</span>
+            <p>Assign Task</p>
+            <form id="assignTaskForm">
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" name="taskName" required>
+                <button type="submit">Assign</button>
+            </form>
+        </div>
+    </div>
+
+
+
+  {% endblock %}
+</body>

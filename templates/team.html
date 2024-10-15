@@ -6,18 +6,62 @@
 </style>
 
 <script>
-    //delete task
-    function deleteTask(programId, taskId) {
-        fetch(`/${programId}/delete-task/${taskId}`, {
-            method: 'DELETE',
-        }).then(response => {
+    console.log("Script loaded!");
+    //delete member
+    async function deleteMember(projectId, member) {
+        try {
+            const response = await fetch(`/${projectId}/delete-member/${member}`, {
+                method: 'DELETE',
+            });
+    
             if (response.ok) {
-                location.reload();
+                location.reload();  // Reload the page after successful deletion
+            } else {
+                alert('Failed to delete member');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while trying to delete the member');
+        }
+    }    
+    //delete task
+    async function deleteTask(projectId, taskName) {
+        try {
+            // Encode the taskName to handle spaces and special characters
+            const encodedTaskName = encodeURIComponent(taskName);
+            console.log(`Sending DELETE request for task: ${encodedTaskName}`);
+            
+            const response = await fetch(`/${projectId}/delete-task/${encodedTaskName}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            console.log('Response status:', response.status);
+            
+            if (response.ok) {
+                location.reload();  // Reload the page after successful deletion
             } else {
                 alert('Failed to delete task');
             }
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while trying to delete the task');
+        }
     }
+
+    //edit task
+    document.addEventListener('DOMContentLoaded', function () {
+        const tasks = document.getElementsByClassName('task');
+        
+        // loop through the tasks
+        Array.from(tasks).forEach(function(task) {
+            task.addEventListener('click', function (event) {
+                document.getElementById('editTaskModal').style.display = 'block';
+            });
+        });
+    });
 
     function openAssignTaskModal() {
         document.getElementById('assignTaskModal').style.display = 'block';
@@ -30,88 +74,66 @@
     //add task
     document.addEventListener('DOMContentLoaded', function () {
         const assignTaskForm = document.getElementById('assignTaskForm');
-        assignTaskForm.addEventListener('submit', function(e) {
+        assignTaskForm.addEventListener('submit', async function(e) {
             e.preventDefault(); 
             const taskName = document.getElementById('taskName').value;
-            const programId = "{{ program.id }}";  
+            const taskDate = document.getElementById('taskDate').value;
+            const taskStatus = document.getElementById('taskStatus').value;
+            const projectId = "{{ project.id }}";  
 
-            fetch(`/${programId}/assign-task`, {
+            await fetch(`/${projectId}/assign-task`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ taskName: taskName }),
+                body: JSON.stringify({ taskName: taskName, taskDate: taskDate, taskStatus: taskStatus }),
             }).then(response => {
                 if (response.ok) {
-                    location.reload();  // Reload the page to reflect the new task
+                    location.reload();
                 } else {
                     alert('Failed to assign task');
                 }
             });
         });
     });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const tasks = document.getElementsByClassName('task');
-        
-        // loop through the tasks
-        Array.from(tasks).forEach(function(task) {
-            task.addEventListener('click', function (event) {
-                document.getElementById('editTaskModal').style.display = 'block';
-            });
-        });
-    });
-    //edit task
-    document.addEventListener('DOMContentLoaded', function (e) {
-        const editTaskForm = document.getElementById('editTaskForm');
-        const taskId = task.getAttribute('data-task-id');
-        editTaskForm.addEventListener('submit', function(taskId) {
-            e.preventDefault(); 
-            const taskName = document.getElementById('taskName').value;
-            const programId = "{{ program.id }}";  
-
-            fetch(`/${programId}/edit-task/${taskId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ taskName: taskName }),
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();  // Reload the page to reflect the new task
-                } else {
-                    alert('Failed to assign task');
-                }
-            });
-        });
-    });
-
+    
 </script>
 
 <body>
   <div class="main-content">
-    <div class="section-title">program {{ program.id }}</div>
+    <div class="section-title">{{ project.projectName }}</div>
 
     <div class="section-title">Member List</div>
+        {% for member in project.members %}
+        <li class="member" data-member-id="{{ member._id }}" >
+            {{ member }} 
+            <button onclick="deleteMember('{{ project._id }}', '{{ member }}')">Delete</button>        
+        </li>
+        {% endfor %}
 
     <div class="section-title">Task List</div>
-        {% for task in program.tasks %}
-        <li class="task" data-task-id="{{ task.id }}" >
-            {{ task }} 
-            <button onclick="deleteTask('{{ program.id }}', '{{ task.id }}')">Delete</button>        
+        {% for task in project.tasks %}
+        <li class="task" data-task-name="{{ task.taskName }}" >
+            {{ task.taskName }} 
+            <button onclick="deleteTask('{{ project._id }}', '{{ task.taskName }}')">Delete</button>        
         </li>
         <!-- edit Task Modal -->
         <div id="editTaskModal" style="display:none;">
             <div class="modal-content">
                 <span onclick="closeAssignTaskModal()" class="close">&times;</span>
                 <p>Edit Task</p>
-                <form id="assignTaskForm">
+                <form id="editTaskForm">
                     <label for="taskName">Task Name:</label>
                     <input type="text" id="taskName" name="taskName" required>
+                    <label for="taskDate">Start Date:</label>
+                    <input type="text" id="taskDate" name="taskDate" required>
+                    <label for="taskStatus">Task Status:</label>
+                    <input type="text" id="taskStatus" name="taskStatus" required>
                     <button type="submit">Assign</button>
                 </form>
             </div>
         </div>
+        
         {% endfor %}
     </div>
 
@@ -126,6 +148,13 @@
             <form id="assignTaskForm">
                 <label for="taskName">Task Name:</label>
                 <input type="text" id="taskName" name="taskName" required>
+                <label for="taskDate">Start Date:</label>
+                <input type="text" id="date" name="taskDate" required>
+                <label for="taskStatus">Task Status:</label>
+                <select name="taskStatus" id="taskStatus">
+                    <option value="not-complete">Not Complete</option>
+                    <option value="complete">Complete</option>
+                  </select>
                 <button type="submit">Assign</button>
             </form>
         </div>
