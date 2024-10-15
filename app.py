@@ -1,8 +1,9 @@
+import requests
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from models import User
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 import os
 
 
@@ -20,7 +21,7 @@ def create_app():
     if connection_string is None:
         raise ValueError("MONGO_URI environment variable not found!")
 
-    # # Create a MongoDB client with the correct connection string
+    # Create a MongoDB client with the correct connection string
     client = MongoClient(connection_string)
     db = client["test_db"]
     
@@ -55,7 +56,7 @@ def create_app():
             user = User.validate_login(db, username, password)
             if user:
                 login_user(user)
-                return redirect(url_for("contact_us")) ## change this for when news page gets implemented 
+                return redirect(url_for("getNews"))
             else:
                 flash("Invalid username or password. Try again.")
                 return render_template('home.html', error="Error occurred!")
@@ -87,12 +88,35 @@ def create_app():
     @login_required # this decorator makes it so you can only be logged in to view this page.... put this on any new routes you make pls
     def getUserInfo():
         #retrieve user info and return with template
-        ###TODO###
+        user_info = {
+            "username": current_user.username,
+            "password": current_user.password,
+            "firstname": current_user.firstname,
+            "lastname": current_user.lastname
+        }
         
-        return render_template("user-info.html")
+        return render_template("setting.html", user_info=user_info)
+    
+    @app.route("/update-info")
+    @login_required
+    def getUpdatePage():
+        user_info = {
+            "username": current_user.username,
+            "password": current_user.password,
+            "firstname": current_user.firstname,
+            "lastname": current_user.lastname
+        }
+        
+        return render_template("edit-user-info.html", user_info=user_info)
+    
+    @app.route("/log-out")
+    @login_required 
+    def logout():
+        logout_user() 
+        return redirect(url_for('home'))
     
     
-    @app.route("/user-info",methods=["PUT"])
+    @app.route("/user-info",methods=["POST"])
     @login_required
     def updateUserInfo():
         #get the new user info and update the db
@@ -151,6 +175,21 @@ def create_app():
         
         flash("Word successfully deleted!")
         return redirect(url_for("getVocab"))
+    
+    @app.route("/news")
+    def getNews():
+        
+        return render_template("news.html")
+    
+    @app.route("/news-content")
+    def getNewsContent():
+
+        return render_template("news-content.html")
+    
+    @app.route("/menu")
+    def getMenu():
+        
+        return render_template("Menu.html")
     
     
 

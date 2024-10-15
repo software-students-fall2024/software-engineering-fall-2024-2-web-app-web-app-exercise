@@ -9,8 +9,7 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             height: 100vh;
             background-color: #000; /* Black background */
         }
@@ -26,12 +25,17 @@
             padding: 20px; /* Add padding for spacing */
             font-family: Arial, sans-serif; /* Font style */
             position: relative; /* Positioning for logo */
+            margin: auto;
+        }
+        #top-bar {
+            display: flex;
+            align-items: center;
+            width: 90vw;
+            margin: 0rem auto;
         }
         .logo {
-            margin-bottom: 20px;
             color: #6CB873; /* Green color for the logo text */
             font-size: 24px;
-            position: absolute; /* Position the logo absolutely */
             top: 20px; /* Distance from the top */
             left: 20px; /* Distance from the left */
         }
@@ -54,26 +58,41 @@
         }
         .close-icon {
             align-self: flex-end; /* Keep close icon at the top right */
-            font-size: 18px;
-            color: #FFFFFF; /* White color for the close icon */
-            margin-bottom: 10px; /* Spacing from the top */
-            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6CB873; /* Color for the close icon */
+            background-color: transparent; /* No background */
+            border: none; /* Remove any border */
+            padding: 0; /* Remove padding */
+            margin: auto 0rem;
+            margin-left: auto;
+            cursor: pointer; /* Optional: Show pointer on hover */
+            outline: none; /* Remove focus outline */
+        }
+        #log-out{
+            color: red;
         }
     </style>
 </head>
 <body>
 
+<div id="top-bar">
+    <h1 class="logo">FHUB.</h1> 
+    <button onclick="goBack()" class="close-icon">X</button>
+</div>
 <div class="container">
-    <div class="close-icon">X</div>
-    <h1 class="logo">FHUB.</h1> <!-- Logo without border and background -->
     <div class="menu">
-        <a href="news.html" class="menu-item">News</a>
-        <a href="vocabulary.html" class="menu-item">Vocabulary</a>
-        <a href="quiz.html" class="menu-item">Quiz</a>
-        <a href="settings.html" class="menu-item">Settings</a>
-        <a href="contact.html" class="menu-item">Contact Us</a>
+        <a href="/news" class="menu-item">News</a>
+        <a href="" class="menu-item">Vocabulary</a>
+        <a href="" class="menu-item">Quiz</a>
+        <a href="/user-info" class="menu-item">Settings</a>
+        <a href="/contact_us" class="menu-item">Contact Us</a>
+        <a href="/log-out" class="menu-item" id="log-out">Log out</a>
     </div>
 </div>
-
+<script>
+    function goBack() {
+      window.history.back();
+    }
+</script>
 </body>
 </html>
