@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import pymongo
 from bson.objectid import ObjectId
@@ -79,8 +79,8 @@ def create_app():
             user = users.find_one({'username': username, 'password': password})
 
             if user :
-                user_obj = User(user['username'])
-                login_user(user_obj)
+                user = User(user['username'])
+                login_user(user)
                 return redirect('/')
             else:
                 flash('Invalid username or password.')
@@ -94,6 +94,10 @@ def create_app():
         logout_user()
         return redirect('/login')
 
+    @app.route('/api/status')
+    def status():
+        return jsonify({'logged_in': current_user.is_authenticated})   
+
     @app.route('/')
     @login_required
     def home():
@@ -102,7 +106,7 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        docs = db.tasks.find({user: user.get_id})
+        docs = tasks.find({"user": {'$in': [current_user.username]}})
         return render_template("index.html", docs=docs)
 
     @app.route("/create")
@@ -148,7 +152,7 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         doc = db.messages.find_one({"_id": ObjectId(post_id)})
-        return render_template("edit.html", doc=doc)
+        return render_template("item.html", doc=doc)
 
     @app.route("/edit/<post_id>", methods=["POST"])
     def edit_post(post_id):
@@ -166,13 +170,12 @@ def create_app():
         doc = {
             "name": name,
             "description": description,
-            "finished": "true",
-            "created_at": datetime.datetime.utcnow(),
+            "user": current_user.username
         }
 
         db.messages.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
 
-        return redirect(url_for("home"))
+        return redirect('/')
 
     @app.route("/delete/<post_id>")
     def delete(post_id):
