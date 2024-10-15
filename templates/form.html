@@ -4,9 +4,9 @@
 {% block container %}
 <h2>Write a Post</h2>
 <form method="POST" action="{{ url_for('create_task') }}">
-  <input type="text" id="fname" name="fname" placeholder="Your name"/>
+  <input type="text" id="fname" name="fname" placeholder="Event Name"/>
   <br />
-  <textarea type="text" id="fmessage" name="fmessage" placeholder="Message"></textarea>
+  <textarea type="text" id="fmessage" name="fmessage" placeholder="Description"></textarea>
   <br />
   <input type="submit" value="Save" />
 </form>
