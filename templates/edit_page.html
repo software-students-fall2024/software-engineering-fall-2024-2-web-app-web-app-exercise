@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="page-layout">
+    <div class="container">
         <h1>Edit Event</h1>
         <form action="{{ url_for('edit_event', event_id=event._id) }}" method="POST">
             <div class="form-group">
