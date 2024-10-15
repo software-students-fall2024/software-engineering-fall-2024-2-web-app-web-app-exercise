@@ -133,10 +133,9 @@ def create_app():
         doc = {
             "name": name,
             "description": description,
-            "finished": "false",
-            "created_at": datetime.datetime.utcnow(),
+            "user": current_user.username,
         }
-        db.messages.insert_one(doc)
+        db.tasks.insert_one(doc)
 
         return redirect(url_for("home"))
 
@@ -151,7 +150,7 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        doc = tasks.find_one({"_id": ObjectId(post_id)})
         return render_template("item.html", doc=doc)
 
     @app.route("/edit/<post_id>", methods=["POST"])
@@ -173,9 +172,9 @@ def create_app():
             "user": current_user.username
         }
 
-        db.messages.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
+        db.tasks.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
 
-        return redirect('/')
+        return redirect(url_for("home"))
 
     @app.route("/delete/<post_id>")
     def delete(post_id):
@@ -187,7 +186,7 @@ def create_app():
         Returns:
             redirect (Response): A redirect response to the home page.
         """
-        db.messages.delete_one({"_id": ObjectId(post_id)})
+        tasks.delete_one({"_id": ObjectId(post_id)})
         return redirect(url_for("home"))
 
 
