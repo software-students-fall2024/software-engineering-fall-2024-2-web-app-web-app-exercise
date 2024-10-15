@@ -22,17 +22,15 @@ body {
 }
 
 nav {
-    width: 80vw;
-    border: 2px solid black;
-    border-radius: 20px;
+    width: 100vw;
+    background-color: black;
     padding: 1em;
-    margin-top: 5%;
     justify-content: flex-start;
 }
 
 nav a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 
@@ -99,4 +97,12 @@ footer {
     to {
         transform: rotate(360deg);
     }
+}
+
+.search-form {
+    border: none;
+    display: flex;
+    width: 50vw;
+    align-content: center;
+    justify-content: center;
 }
