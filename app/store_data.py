@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from bson import BSON
 from bson import json_util
+from bson.decimal128 import Decimal128
 from statistics import mean
 
 load_dotenv()
@@ -47,11 +48,20 @@ def get_store_location(store_location):
 
         for item in sale.get('items', []):
             # Calculate revenue
+<<<<<<< Updated upstream:app/store_data.py
+=======
+            # addition = (float(item["price"].to_decimal()) * float(item["quantity"]) 
+            # if isinstance(item["price"], Decimal128) 
+            # else float(item["price"]) * float(item["quantity"]))
+>>>>>>> Stashed changes:server/store_data.py
             try:
                 addition = float(item["price"].to_decimal()) * float(item["quantity"])
             except:
                 addition = float(item["price"]) * float(item["quantity"])
+<<<<<<< Updated upstream:app/store_data.py
             
+=======
+>>>>>>> Stashed changes:server/store_data.py
             total_revenue += addition
 
             # Track quantities for each item
