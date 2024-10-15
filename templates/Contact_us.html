@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+{% extends "base.html" %}
+{% block title %}
+Contact Us
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
     <style>
         * {
             margin: 0;
@@ -108,24 +108,12 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Top Bar with Settings -->
-        <div class="top-bar">
-            <a href="/menu" class="menu-icon">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </a>
-        </div>
-
-        <h1>Contact Us</h1>
-        <form class="form-container" action="/contact_us" method="POST">
-            <input type="text" id="title" name="title" placeholder="Message Title" required/>
-            <textarea id="content" name="content" placeholder="Enter Message" required></textarea>
-            <button type="submit" class="submit-btn">Submit ></button>
-        </form>
-    </div>
-</body>
-</html>
+{% endblock %}
+{% block content %}
+    <h1>Contact Us</h1>
+    <form class="form-container" action="/contact_us" method="POST">
+        <input type="text" id="title" name="title" placeholder="Message Title" required/>
+        <textarea id="content" name="content" placeholder="Enter Message" required></textarea>
+        <button type="submit" class="submit-btn">Submit ></button>
+    </form>
+{% endblock %}
