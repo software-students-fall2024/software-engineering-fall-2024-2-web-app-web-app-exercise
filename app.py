@@ -203,6 +203,8 @@ def rsvp_list():
         attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1}))
         event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
 
+        event['total_attendees'] = len(event['attendees_usernames'])
+
         if event_date >= current_time:
             upcoming_events.append(event)
         else:
@@ -254,6 +256,8 @@ def hosting_list():
         attendee_ids = event.get('attendees', [])
         attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1}))
         event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
+
+        event['total_attendees'] = len(event['attendees_usernames'])
 
     return render_template('hosting_events.html', events=hosting_events)
 
