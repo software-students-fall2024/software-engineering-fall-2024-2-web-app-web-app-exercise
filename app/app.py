@@ -23,6 +23,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/location/<store_location>')
+
 def location(store_location):
 
     store_data = get_store_data(store_location)
@@ -37,7 +38,7 @@ def transactions(store_location):
 
 @app.route('/add_transaction_page/<store_location>')
 def add_transaction_page(store_location):
-    return render_template('create2.html', store_location=store_location)
+    return render_template('create.html', store_location=store_location)
 
 @app.route('/submit/<store_location>', methods=['POST'])
 def submit_form(store_location):
@@ -84,37 +85,6 @@ def delete():
         except:
             return f"No transaction found for {email}.", 404
     return "Email is required.", 400
-
-
-# GET
-# @app.route('/get_store_data/<store_location>')
-# def get_store_data(store_location):
-#     return get_store_location(store_location)
-
-# GET
-# @app.route('/get_transactions/<store_location>')
-# def get_transaction_data(store_location): 
-#     return get_transactions(store_location)
-
-# POST
-# @app.route('/add/<item_name>/<int:quantity>/<float:price>/<store_location>/<gender>/<int:age>/<email>/<coupon_used>/<purchase_method>')
-# def add(item_name, quantity, price, store_location, gender, age, email, coupon_used, purchase_method): 
-#     add_transaction(item_name, quantity, price, store_location, gender, age, email, coupon_used, purchase_method)
-
-# GET
-# @app.route('/get_to_edit/<email>')
-# def get_to_edit(email):
-#     return get_transaction_to_edit(email)
-    
-# POST
-# @app.route('/edit/<email>/<purchase_method>')   
-# def edit(email, purchase_method):
-#     edit_transaction(email, purchase_method)
-
-# POST
-# @app.route('/delete/<email>')
-# def delete(email):
-#     delete_transaction(email)
 
 if __name__ == '__main__':
     app.run(debug=True)
