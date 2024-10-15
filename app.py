@@ -170,23 +170,47 @@ def rsvp_event(event_id):
 
     return redirect(url_for('rsvp_list'))
 
-
 @app.route('/rsvped_events')
 def rsvp_list():
+    DATE_FORMAT = "%Y-%m-%d"
+
     if 'username' not in session:
         return redirect(url_for('login'))
 
     user = collection.find_one({'username': session['username']})
 
     rsvped_event_ids = user.get('rsvped_events', [])
+
+    events = list(events_collection.find({
+        "_id": {"$in": [ObjectId(event_id) for event_id in rsvped_event_ids]}
+    }))
     
-    events = list(events_collection.find({"_id": {"$in": [ObjectId(event_id) for event_id in rsvped_event_ids]}}))
+    current_time = datetime.now()
+
+    upcoming_events = []
+    past_events = []
+
     for event in events:
+        if isinstance(event['date'], str):
+            try:
+                event_date = datetime.strptime(event['date'], DATE_FORMAT)
+            except ValueError:
+                continue
+        else:
+            event_date = event['date']  
+
         attendee_ids = event.get('attendees', [])
-        attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1})) 
+        attendees = list(collection.find({"_id": {"$in": attendee_ids}}, {"username": 1}))
         event['attendees_usernames'] = [attendee['username'] for attendee in attendees]
 
-    return render_template('rsvped_events.html', events=events)
+        if event_date >= current_time:
+            upcoming_events.append(event)
+        else:
+            past_events.append(event)
+
+    upcoming_events.sort(key=lambda x: x['date'])
+    past_events.sort(key=lambda x: x['date'], reverse=True)
+    return render_template('rsvped_events.html', upcoming_events=upcoming_events, past_events=past_events)
 
 @app.route('/delete_rsvp/<event_id>', methods=['POST'])
 def delete_rsvp(event_id):
