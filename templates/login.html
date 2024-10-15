@@ -33,6 +33,14 @@
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        <script>
+            const menuIcon = document.getElementById('menu-icon');
+            const navLinks = document.getElementById('nav-links');
+    
+            menuIcon.onclick = () => {
+                navLinks.classList.toggle('active');
+            };
+        </script>
         
     
 </body>
