@@ -107,7 +107,6 @@ def create_app():
         db.sessions.insert_one(session_data)
 
         return redirect(url_for("counter"))
-
     @app.route("/counter")
     def counter():
         """
@@ -122,8 +121,33 @@ def create_app():
             focus_time = 0
 
         return render_template("counter.html", focus_time=focus_time)
+    
+    @app.route("/congrats")
+    def congrats():
+        """
+        Route for the congratulations page.
+        Renders a template that shows the session details and a congratulations message.
+        """
+
+        focus_times = db.sessions.find({}, {"focus_time": 1, "_id": 0})
+        
+        totaltime =0;
+        for focus_time in focus_times:
+            time = (focus_time['focus_time'])
+            if time == '':
+                amount = 0
+            elif int (time) >= 0:
+                amount = int (time)
+            totaltime += amount;
+        
+        # break_time = request.args.get('break_time')
+        # reps_no = request.args.get('reps')
+        
+        return render_template("congrats.html", totaltime=totaltime)
 
     return app
+
+
 
 if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "5000")

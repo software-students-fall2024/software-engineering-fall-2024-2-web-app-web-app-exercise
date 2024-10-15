@@ -32,6 +32,9 @@
       const time = "{{focus_time}}"
       let timeNo = Number(time) * 60
       function countDown(){
+        if(timeNo<=0){
+          window.location.href = '/congrats';
+        }
         let min = Math.floor(timeNo/60)
         min = (min<10) ?  '0' + min : min
         let seconds = timeNo % 60
