@@ -32,6 +32,11 @@ def create_app():
         tune_tasks = list(db.tune_tasks.find({"created_by":user}))
         return render_template('profile.html', user=user, collection=tune_tasks)
     
+    @app.route('/profile/<user>/delete/<tunetask>', methods=["POST"])
+    def delete_tunetask(user, tunetask):
+        db.tune_tasks.delete_one({'title':"morning sun"})
+        return redirect(url_for('show_profile', user=user))
+    
     @app.route('/search')
     def show_search():
         return render_template('search.html')
