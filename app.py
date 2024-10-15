@@ -194,10 +194,12 @@ def create_app():
     @login_required
     def getVocab():
         #retrieve vocab list of the user and return with template
-        ###TODO###
+        user = db.users.find_one({"username": current_user.username})
+        vocab_list = user.get("vocabList", [])
         
-        return render_template("Vocabulary.html")
-    
+        # Render the template with the vocab list
+        return render_template("Vocabulary.html", vocab_list=vocab_list)
+            
     @app.route("/vocab",methods=["POST"])
     def sendVocab():
         #add vocab(word, definition) to the user vocab list
