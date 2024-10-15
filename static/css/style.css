@@ -229,6 +229,9 @@ footer a {
     
 
   }
+  footer a {
+    padding: 5px;
+  }
  
  
 }

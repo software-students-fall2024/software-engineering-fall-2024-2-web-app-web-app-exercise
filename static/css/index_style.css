@@ -134,7 +134,37 @@ footer a {
     height: 50px;
     font-size: 10px;
     
-
   }
- 
+  footer a {
+    padding: 5px;
+  }
+ .main-container h1{
+  font-size: 40px;
+  padding-left: 20px;
+ }
+ .main-container #current-day{
+  font-size: 30px;
+  padding-left: 20px;
+  
+ }
+ .container{
+  max-width: 80%;
+  
+ }
+ .container .content-in-box{
+  font-size: 20px;
+  margin-bottom: -40px;
+  
+  
+ }
+.main1-container{
+  font-size: 30px;
+  padding-left: 20px;
+}
+ .container1{
+  max-width: 80%;
+ }
+ .add-workout-container{
+  max-width: 80%;
+ }
 }
