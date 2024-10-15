@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Fetcher</title>
+{% extends "base.html" %}
+{% block title %}
+News Content
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,8 +30,8 @@
         }
 
     </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
     {%if data%}
         <div class="news-content">
             <h2>{{data.title}}</h2>
@@ -40,5 +40,4 @@
             <p id="content"></p>
         </div>
     {% endif %}
-</body>
-</html>
+{% endblock %}

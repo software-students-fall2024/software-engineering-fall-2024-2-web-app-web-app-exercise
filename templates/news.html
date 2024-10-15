@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Fetcher</title>
+{% extends "base.html" %}
+{% block title %}
+News
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +13,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+        }
+
+        .container1 {
+            display: flex;
+            flex-direction: column;
         }
 
         h1{
@@ -29,14 +34,13 @@
             grid-template-columns: 5 rem 1fr; 
             grid-template-rows: 1fr 1rem;  
             grid-gap: 10px;
-            padding: 10px;
-            margin-bottom: 0.5rem;
+            margin : 1rem 0rem;
         }
 
         li .news-image{
             grid-column: span 1;
             grid-row: span 2;
-            width: 100%;
+            width: 40vw;
             height: 100%;
             object-fit: cover;
             border-radius: 0.8rem;
@@ -44,8 +48,10 @@
 
         li .news-title{
             grid-column: 2/3;
+            width: 50vw;
             grid-row: 1/2;
             margin: 0rem;
+            color: white;
         }
 
         li .news-date{
@@ -55,28 +61,27 @@
             color: #B5B5B5;
         }
     </style>
-</head>
-<body>
-    <div class="container">
+{% endblock %}
+{% block content %}
+    <div class="container1">
         <h1>Top News</h1>
         <ul id="news-list" class="news-list">
             <!-- temporarily hard coded -->
              <li>
-                <img class="news-image" src="" alt="image"/>
+                <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
                 <p class="news-title">News headline</p>
                 <p class="news-date">2020-10-10</p>
              </li>
              <li>
-                <img class="news-image" src="" alt="image"/>
+                <img class="news-image" src="https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png" alt="image"/>
                 <p class="news-title">News headline</p>
                 <p class="news-date">2020-10-10</p>
              </li>
              <li>
-                <img class="news-image" src="" alt="image"/>
+                <img class="news-image" src="https://www.techspot.com/images2/news/bigimage/2018/09/2018-09-04-image-6.png" alt="image"/>
                 <p class="news-title">News headline</p>
                 <p class="news-date">2020-10-10</p>
              </li>
         </ul>
     </div>
-</body>
-</html>
+{% endblock %}
