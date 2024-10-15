@@ -118,7 +118,7 @@ def index(username):
     spending_budget = budget_data.get('spending_budget', 0)
 
     # Fetch all transactions and calculate total expenses
-    transactions = list(transactions_collection.find())  # Convert cursor to list
+    transactions = list(transactions_collection.find({'username': username}))  # Base on username to find out
     total_expenses = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
 
     # Corrected calculations:
@@ -148,7 +148,13 @@ def index(username):
 # View all transactions
 @app.route('/transactions')
 def view_transactions():
-    transactions = list(transactions_collection.find())  # Convert cursor to list
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Fetch transactions for the current user only
+    transactions = list(transactions_collection.find({'username': username}))
+    
     return render_template('transactions.html', transactions=transactions)
 
 # Add transaction route
@@ -168,6 +174,7 @@ def add_transaction():
 
         # Insert transaction into MongoDB
         transactions_collection.insert_one({
+            'username': username,
             'amount': float(amount),
             'category': category,
             'description': description,

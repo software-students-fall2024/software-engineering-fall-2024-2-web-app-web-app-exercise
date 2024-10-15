@@ -12,8 +12,7 @@
         <ul class="nav-links">
             <li><a href="{{ url_for('account') }}">Account</a></li> 
             <li><a href="{{ url_for('index', username=username) }}">Home</a></li>
-            <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>
-            <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
+            <li><a href="{{ url_for('view_transactions', username=session['username']) }}">Transactions</a></li>            <li><a href="{{ url_for('add_transaction') }}">Add Transaction</a></li>
             <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
             <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
