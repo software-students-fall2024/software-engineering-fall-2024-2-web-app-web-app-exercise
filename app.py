@@ -1,10 +1,11 @@
 import os
-from bson.objectid import ObjectId
 import certifi
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import pymongo 
 from dotenv import load_dotenv
 from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
+
 
 logged_in = False
 projects_projects_as_manager = None
@@ -33,7 +34,7 @@ def create_app():
     db = client['tasks']
     
     project_collection = db['projects']
-    
+
     user_list = db['users']
 
     try:
@@ -48,17 +49,16 @@ def create_app():
     @app.route("/")
     def base():
         return redirect(url_for('login'))
-
+    
     # main route displays home screen with all projects
     @app.route("/main")
     def home():
         global username
-
+    
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
         
-        # no matching projects
         global projects_as_manager, projects_as_member
         projects_as_manager = project_collection.find({'managers': username})
         projects_as_member = project_collection.find({'members': username})
@@ -75,7 +75,7 @@ def create_app():
         # have both manager and member roles in projects
         else:
             return render_template("main.html", username=username, docs_as_manager=projects_as_manager, docs_as_member=projects_as_member)
-    
+
     # route to login page
     # if POST, check if username and password match
     # if match, redirect to main
@@ -88,6 +88,7 @@ def create_app():
             
             # username within database, find matching projects then redirect
             if (user_list.find_one({'username': username, 'password': password}) != None):
+                
                 # check if any projects contain the username as a manager
                 if (project_collection.find_one({'managers': username}) != None):
                     global projects_as_manager

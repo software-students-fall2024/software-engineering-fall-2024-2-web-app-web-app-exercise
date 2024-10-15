@@ -50,34 +50,34 @@
     <h1>Welcome, {{ username }}!</h1>
 
     <div class="main-content">
-      <div class="section-title">YOUR WORKSPACES</div>
-  
-      <div class="section-title">As a manager...</div>
-      {% if docs_as_manager is defined %}
+        <div class="section-title">YOUR WORKSPACES</div>
+
+        <div class="section-title">As a manager...</div>
+        {% if docs_as_manager is defined %}
         {% for doc in docs_as_manager %}
         <div class="project-link">
-          <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+            <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
         </div>
         {% endfor %}
-      {% else %}
+        {% else %}
         <p>No projects. Try adding some!</p>
-      {% endif %}
-  
-      <div class="section-title">As a member...</div>
-      {% if docs_as_member is defined %}
+        {% endif %}
+
+        <div class="section-title">As a member...</div>
+        {% if docs_as_member is defined %}
         {% for doc in docs_as_member %}
         <div class="project-link">
-          <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
+            <a href="{{ url_for('home') }}" class="button-link">{{ doc.projectName }}</a>
         </div>
         {% endfor %}
-      {% else %}
+        {% else %}
         <p>No projects. Try adding some!</p>
-      {% endif %}
-      <form action="/create_project", method="GET">
+        {% endif %}
+        <form action="/create_project", method="GET">
         <button type="submit">Create new project</button>
-      </form>
+        </form>
     </div>
   
-  </body>
-  {% endblock %}
+</body>
+{% endblock %}
 
