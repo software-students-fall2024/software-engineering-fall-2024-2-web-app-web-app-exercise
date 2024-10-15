@@ -28,7 +28,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = "KEY"
 
-    uri = "mongodb+srv://FriedBananaBan:Wc6466512288@project2.nzxyf.mongodb.net/?retryWrites=true&w=majority&appName=project2"
+    uri = os.getenv("MONGO_URI")
     client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
     db = client['tasks']
     
@@ -139,10 +139,10 @@ def create_app():
             # Get managers and members as comma-separated strings from the form
             managers = request.form['managers'].split(',')
             members = request.form['members'].split(',')
-            if (managers[0] == ""):
-                managers = []
             if (members[0] == ""):
                 members = []
+            if (managers[0]== ""):
+                managers = []
             managers.append(username) # Creator of project is automatically a manager
 
             # Create the project data
@@ -170,8 +170,17 @@ def create_app():
             return redirect(url_for('login'))
         cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
         if (request.method == 'POST'):
+
             managers = request.form['managers'].split(',')
             members = request.form['members'].split(',')
+
+                        
+            if (len(members) == 0 or members[0] == ""):
+                members = []
+            if (len(managers) == 0 or managers[0]== ""):
+                managers = []
+                managers.append(username) # Creator of project is automatically a manager
+            
             project_data = {
                 "_id": ObjectId(post_id),
                 'projectName': request.form['project_name'],
@@ -190,6 +199,7 @@ def create_app():
         else:
             managers = ",".join(cur_project['managers'])
             members = ",".join(cur_project['members'])
+
             return render_template('create_project.html', edit=True, project=cur_project, managers=managers, members=members)
 
     # route to remove an available project
@@ -300,11 +310,11 @@ def create_app():
 
         managers = cur_project["managers"]
         members = cur_project["members"]
-        if (managers[0] == "" and members[0] == ""):
+        if (len(managers) == 0 and len(members) == 0):
             return render_template("team.html", username=username, project=cur_project, tasks=cur_project["tasks"])
-        elif (managers[0] == ""):
+        elif (len(managers) == 0):
             return render_template("team.html", username=username, project=cur_project, tasks=cur_project["tasks"], members=members)
-        elif (members[0] == ""):
+        elif (len(members) == 0):
             return render_template("team.html", username=username, project=cur_project, tasks=cur_project["tasks"], managers=managers)
         else:
             return render_template("team.html", username=username, project=cur_project, tasks=cur_project["tasks"], managers=managers, members=members)
@@ -378,5 +388,6 @@ def create_app():
     
 if __name__ == "__main__":
     app = create_app()
-    app.run(port="3000", debug=True)
+    flask_port = os.getenv("FLASK_PORT")
+    app.run(port=flask_port, debug=True)
 

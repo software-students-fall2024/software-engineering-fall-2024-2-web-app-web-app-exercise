@@ -25,6 +25,26 @@
       {% endif %}
     </div>
     
+    <form action="{{url_for('remove_user', post_id=project._id)}}" method="GET">
+      <label for="cars">Choose a user:</label>
+      <select name="username">
+        {% if managers is defined %}
+        {% for manager in managers %}
+          <option value="{{manager}}">{{manager}} (manager)</div>
+        {% endfor %}
+      {% endif %}
+
+        {% if members is defined %}
+        {% for member in members %}
+        <option value="{{member}}">{{member}} (member)</div>
+      {% endfor %}
+      {% endif %}
+
+      </select>
+      <br><br>
+      <input type="submit" value="Remove User">
+    </form>
+
     <div class="section-title">Task List</div>
     <div class="projects-list">
         {% for task in tasks %}
