@@ -21,6 +21,7 @@ db = client[db_name]
 requests_collection = db.requests
 
 reports = ["Vending machine", "Water fountain", "Door hinge"]
+requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subject":"test","description":"Descript","date":"2024-10-13"}]
 
 @app.route("/")
 def index():
@@ -41,7 +42,8 @@ def trackRequest(code=None):
     if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
-        entry = requests_collection.find({'code':code});
+        # entry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
+        entry = requestTest
         # print(entry.fullName);
     else:
         entry = None
