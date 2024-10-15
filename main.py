@@ -136,12 +136,37 @@ def create_app():
     def delete():
         return render_template('delete.html')
 
-    #Edit data route
+    #Edit data route (get)
     @app.route("/edit/<post_id>")
     @login_required
     def edit(post_id):
         restaurant=db.RestaurantData.find_one({"_id": ObjectId(post_id)})
         return render_template('edit.html', restaurant=restaurant)
+    
+    #Edit data route (post)
+    @app.route("/edit/<post_id>", methods=["POST"])
+    def edit_post(post_id):
+        restaurant=db.RestaurantData.find_one({"_id": ObjectId(post_id)})
+
+        restaurantData = {
+            'username': current_user.username,
+            'restaurantName': request.form['restaurantName'],
+            'cuisine': request.form['cuisine'],
+            'location': request.form['location'],
+            'review': request.form['review']
+        }
+
+        result = db.RestaurantData.update_one({"_id": ObjectId(post_id), "username": current_user.username}, {"$set": restaurantData})
+
+        if (result.matched_count != 1):
+            return redirect(url_for('editFail', restaurantName=restaurant['restaurantName']))
+
+        return redirect(url_for('home'))
+    
+    @app.route('/editFail')
+    def editFail():
+        restaurantName = request.args.get('restaurantName')
+        return render_template('edit_fail.html', restaurantName=restaurantName)
 
     #Search data route
     @app.route('/search', methods=['GET'])
@@ -150,15 +175,20 @@ def create_app():
         query = {}
         nameSearch = request.args.get('resName')
         cuisineSearch = request.args.get('resCuisine')
+        locationSearch = request.args.get('resLocation')
         userSearch = request.args.get('resUser')
         
-        if nameSearch or cuisineSearch or userSearch:
+        if nameSearch or cuisineSearch  or locationSearch or userSearch:
             if nameSearch:
                 query['restaurantName'] = {'$regex': nameSearch, '$options': 'i'}
             if cuisineSearch:
                 query['cuisine'] = {'$regex': cuisineSearch, '$options': 'i'}
+            if locationSearch:
+                query['location'] = {'$regex': locationSearch, '$options': 'i'}
             if userSearch:
                 query['username'] = {'$regex': userSearch, '$options': 'i'} 
+            
+            print(f"Location Search: {locationSearch}")
 
             restaurants = db.RestaurantData.find(query)
             restaurantList = list(restaurants)
@@ -172,7 +202,7 @@ def create_app():
     @login_required
     def addData():
         restaurantData = {
-            'username': request.form['username'],
+            'username': current_user.username,
             'restaurantName': request.form['restaurantName'],
             'cuisine': request.form['cuisine'],
             'location': request.form['location'],
@@ -183,12 +213,12 @@ def create_app():
         db.RestaurantData.insert_one(restaurantData)
 
         #change to success page 
-        return redirect(url_for('success', restaurantName=request.form['restaurantName']))
+        return redirect(url_for('add_success', restaurantName=request.form['restaurantName']))
     
-    @app.route('/success')
-    def success():
+    @app.route('/add_success')
+    def add_success():
         restaurantName=request.args.get('restaurantName')
-        return render_template('success.html',restaurantName=restaurantName)
+        return render_template('add_success.html',restaurantName=restaurantName)
         
     #Handle delete data form
     @app.route('/deleteData', methods=['POST'])

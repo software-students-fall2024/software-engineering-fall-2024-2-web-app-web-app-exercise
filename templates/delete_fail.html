@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block container %}
-    <h1>Fail!</h1>
-    <p>Restaurant "{{ restaurantName }}"Not Found!</p>
-
-
+    <h1>Failed to delete!</h1>
+    <br>
+    <p>Restaurant "{{ restaurantName }}" not found!</p>
+    <br>
 
     <!--  button to delete another -->
     <form action="{{ url_for('deleteData') }}" method="get">
