@@ -3,12 +3,8 @@
 {% block title %} Search {% endblock %}
 
 {% block content %}
-
-<section>
-    <form method="POST" action="{{ url_for('post_search') }}">
-        <input type="text" name="user">Search for a friend to view their profile
-        <input type="submit" value="Save" />
-    </form>
-</section>
-
+  <form method="POST" action="{{ url_for('post_search') }}" class="search-form">
+    <input type="text" name="user" class="search-input">
+    <input type="submit" value="Search" class="search-button"/>
+  </form>
 {% endblock %}
