@@ -58,7 +58,7 @@ h1 {
 .navbar {
     /* Testing some nav bar colors */
     /*background-color: #d3d3d3; */
-    background-color: bisque;
+    background-color: #ccc;
     display: flex;
     justify-content: space-between;
     padding: 12px;
@@ -71,7 +71,7 @@ h1 {
 }
 
 .navbar a:hover {
-    color: gray;
+    color: #ccc;
 }
 
 /* Program checkboxes */
@@ -102,12 +102,12 @@ h1 {
 .project-form button {
     padding: 10px;
     background-color: #e0e0e0;
-    border: 1px solid #000;
+    border: 1px solid #a3a2a2;
     cursor: pointer;
 }
 
 .project-form button:hover {
-    background-color: #d3d3d3;
+    background-color: #ccc;
 }
 
 /* New Merged Styles */
@@ -116,7 +116,7 @@ h1 {
 }
 
 .nav {
-    background-color: #d3d3d3;
+    background-color: #ccc;
     text-align: center;
     padding: 10px;
     font-size: 18px;
@@ -141,7 +141,7 @@ h1 {
 }
 
 .box {
-    background-color: #d3d3d3;
+    background-color: #ccc;
     padding: 15px;
     margin-bottom: 10px;
     display: flex;
@@ -153,7 +153,7 @@ h1 {
 }
 
 li a:hover {
-    background-color: #d3d3d3;
+    background-color: #ccc;
 }
 
 /* Create button */
@@ -161,7 +161,7 @@ button {
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    background-color: #ffe4c4;
+    background-color: #ccc;
     border: 1px solid #000;
     cursor: pointer;
     box-sizing: border-box;
@@ -194,7 +194,7 @@ button {
 }
 
 .button-link:hover {
-    background-color: #2a2c2a; /* Darker on hover */
+    background-color: #616261; /* Darker on hover */
 }
 
 /* Optional: Style for the container of each project link */
@@ -204,12 +204,12 @@ button {
 }
 
 .projects-list {
-    background-color: #ffe4c4;
+    background-color: #ccc;
 }
 
 /* Style to create project button */
 .create-button {
-    background-color: #ffe4c4;
+    background-color: #ccc;
 }
 
 /* Profile Page Specific Styles */
