@@ -8,7 +8,8 @@
 </head>
 <body class="container">
         <h2>Login</h2>
-        
+        <a href="{{ url_for('account') }}" class="button">Create an Account</a>
+        <br/>
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for message in messages %}
@@ -20,6 +21,7 @@
         {% endwith %}
         
         <!-- Login form -->
+        
         <form method="POST" action="{{ url_for('login') }}">
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -31,6 +33,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        
+        
         
 </body>
 </html>

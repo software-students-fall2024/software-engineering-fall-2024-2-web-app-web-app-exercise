@@ -9,6 +9,8 @@
     </head>
     <body>
         <header class="header">
+            <!-- 
+            I don't know if it makes sense to have these nav link if th eusser is setting up their account
             <i class="bx bx-menu" id="menu-icon"></i>
             <ul class="nav-links">
                 <li><a href="{{ url_for('account') }}">Account</a></li> 
@@ -18,11 +20,21 @@
                 <li><a href="{{ url_for('search_and_edit_transaction') }}">Edit Transaction</a></li>
                 <li><a href="{{ url_for('search_transactions') }}">Search Transactions</a></li>
             </ul>
+            -->
         </header>
         <!-- setting up account, only one time use in beginning -->
         <div id="account-page">
             <h2>Set up your account</h2>
-            <form action="/account" method="POST">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('save_account') }}" method="POST">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" class="form-control" required>

@@ -35,6 +35,7 @@ users_collection = db['users']
 def account():
     return render_template('account.html')
 
+# Login route
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -52,7 +53,7 @@ def login():
 
     return render_template('login.html')
 
-
+# Save account route from Create an account 
 @app.route('/save_account', methods=['POST'])
 def save_account():
     name = request.form['name']
@@ -61,29 +62,35 @@ def save_account():
     total_budget = float(request.form['total_budget'])
     spending_budget = float(request.form['spending_budget'])
 
-    # Save the name, total budget, and spending budget to the 'budgets' collection
-    existing_user = users_collection.find_one({'$or': [{'username': username}, {'password': password}]})
-    if not existing_user:
+    # Save the username, name, total budget, and spending budget to the 'budgets' collection
+    existing_user = users_collection.find_one({{'username': username, 'password': password}})
+    if existing_user is None:
         new_user = {'name':name,'username': username,'password': password}
         users_collection.insert_one(new_user)
         db['budgets'].update_one(
             {}, 
-            {'$set': {'name': name,'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
+            {'$set': {'username':username,'name': name,'total_budget': total_budget, 'spending_budget': spending_budget, 'budget_left': total_budget}},
             upsert=True
         )
+        return redirect(url_for('index',username=username))
     else: 
         flash("Username already exists.")
-        
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
+    
+    
 
 
 # Homepage route
-@app.route('/')
-def index():
+@app.route('/index/<username>')
+def index(username):
+    #check whether or not the user is logged in 
+    if session.get('username') != username:
+        return redirect(url_for('login'))
+    
     # Fetch budget data from the 'budgets' collection
-    budget_data = db['budgets'].find_one()
+    budget_data = db['budgets'].find_one({'username':username})
 
-    if not budget_data:
+    if budget_data is None:
         return redirect(url_for('account'))
 
     # Set the budget and spending budget values
