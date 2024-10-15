@@ -1,0 +1,216 @@
+/* Reset margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 8%; /* HEADER padding */
+    background: rgba(100, 100, 100, 0.8); /* HEADER background color */
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Push content down */
+    align-items: center; /* Center everything horizontally */
+    text-align: center;
+    height: 100vh;
+}
+
+/* Center container that holds all content */
+.container {
+    width: 80%; 
+    text-align: center;
+    margin-top: 150px; /* Adjust this margin to fit below the menu */
+}
+#desktop-nav {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 8%;
+    background-color: rgba(58, 58, 58, 0.8); /* Match the background color of the header */
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5 2%; 
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 8px; /* Add a little spacing between items */
+}
+
+.nav-links li {
+    margin: 0; /* Remove extra margins to keep links tight */
+}
+
+.nav-links li a {
+    font-size: 1.8rem;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #555; 
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    background-color: rgba(70, 117, 246, 0.2); 
+    color: #7f94f2;
+}
+
+/* Summary styling for balance */
+.summary {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.budget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    gap: 10px; /* Add spacing between balance label and number */
+    margin-top: 20px; /* Add some spacing below the header */
+}
+
+p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/*styling all buttons*/
+button{
+    cursor: pointer;
+}
+
+/* Additional styling for buttons if necessary */
+.button {
+    display: inline-block;
+    padding: 6px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #007bff; /* Bootstrap primary button color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.button:active{
+    background-color: #333;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    color: red;
+}
+
+#account-page {
+    font-size: 18px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 80%;
+}
+@media (max-width: 768px) {
+    html, body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 90%; 
+        margin-top: 100px; /* Adjust top margin for smaller screens */
+    }
+
+    /* Adjust navigation bar for mobile */
+    nav {
+        padding: 6px; /* Reduce padding */
+    }
+
+    .nav-links {
+        display: flex; /* Ensure the items are flexed */
+        gap: 5px; /* Reduce gap between navigation items */
+        justify-content: space-around; /* Spread out the items evenly */
+        flex-wrap: nowrap; /* Prevent the buttons from wrapping to a new line */
+        width: 100%;
+    }
+
+    .nav-links li {
+        flex: 1; /* Distribute available space evenly */
+        text-align: center;
+    }
+
+    .nav-links li a {
+        padding: 5px 8px; /* Smaller padding for navigation links */
+        font-size: 0.8rem; /* Reduce font size for navigation links */
+        text-align: center; /* Ensure text is centered inside the button */
+        display: block;
+        width: 100%
+    }
+
+    /* Reduce font size and padding for summary section */
+    .summary {
+        padding: 10px;
+    }
+
+    .budget {
+        font-size: 2rem; /* Smaller font size for balance */
+        margin-top: 15px;
+    }
+
+    p {
+        font-size: 1rem; /* Reduce font size for paragraph text */
+    }
+
+    /* Reduce button size */
+    .button {
+        padding: 6px 12px; /* Further reduce button padding */
+        font-size: 12px; /* Smaller font size */
+    }
+
+    /* Adjust account page styling */
+    #account-page {
+        font-size: 16px; /* Smaller font size on mobile */
+        padding: 20px;
+    }
+}
