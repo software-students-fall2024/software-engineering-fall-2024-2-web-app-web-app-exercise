@@ -7,17 +7,29 @@
 {% block container %}
     <h1>Add a Book</h1> 
     <form action="/add" method="POST">
+        <div>
         <label for="title">Book Title:</label>
         <textarea name="title" placeholder="e.g. The Great Gatsby" id="title" required>{{ userInput.title }}</textarea>
+        </div>
+        <div>
         <label for="genre">Genre:</label>
         <input type="text" name="genre" placeholder="e.g. Fiction" id="genre" required value={{ userInput.genre }}>
+        </div>
+        <div>
         <label for="price">Price:</label>
         <input type="text" name="price" placeholder="e.g. 9.99" id="price" required value={{ userInput.price }}>
+        </div>
+        <div>
         <label for="author">Author:</label>
         <textarea name="author" placeholder="e.g. F. Scott Fitzgerald" id="author" required>{{ userInput.author }}</textarea>
+        </div>
+        <div>
         <label for="quantity">Quantity:</label>
         <input type="number" name="quantity" id="quantity" required value={{ userInput.quantity }}>
+        </div>
+        <div>
         <input type="submit" value="Add" id="addButton">
+        </div>
     </form>
 
     <p id="errorMessage" style="color: red;"> {{ message }} </p>
