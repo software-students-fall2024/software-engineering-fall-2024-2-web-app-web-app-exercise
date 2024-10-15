@@ -22,7 +22,7 @@
             <p style="text-align: center;"><strong>{{ exercise.workout_name }}</strong></p>
             <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad. <a href="instructions.html">More Instruction</a>
+                Ut enim ad. <a href="{{ url_for('instructions', exercise_id=exercise.exercise_id) }}">More Instruction</a>
             </p>  
         </section>
 
