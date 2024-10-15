@@ -13,7 +13,7 @@ def create_app():
     # Load environment variables from .env file
     load_dotenv()
     
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
 
     connection_string = os.getenv("MONGO_URI")  # Corrected to use "MONGO_URI" instead of MONGO_URI
 

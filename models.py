@@ -5,7 +5,7 @@ from flask_login import UserMixin
 bcrypt = Bcrypt()
 
 class User(UserMixin):
-    def __init__(self, username, password=None, firstname=None, lastname=None, _id=None):
+    def __init__(self, username, password=None, firstname=None, lastname=None):
         self.username = username
         self.password = password
         self.firstname = firstname
