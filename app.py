@@ -56,7 +56,7 @@ def create_app():
             user = User.validate_login(db, username, password)
             if user:
                 login_user(user)
-                return redirect(url_for("contact_us")) ## change this for when news page gets implemented 
+                return redirect(url_for("getNews"))
             else:
                 flash("Invalid username or password. Try again.")
                 return render_template('home.html', error="Error occurred!")
