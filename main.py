@@ -18,7 +18,8 @@ client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
 
 db = client[db_name]
 requests_collection = db.requests
-#collections for the appliances?
+#collections for the buildings?
+#could potentially be used for auto generating codes
 building_collection = db.bldgs
 appliance_collection = db.appliances
 
@@ -37,7 +38,11 @@ def list():
 def makeRequest(requestID=None):
     return render_template("request.html", requestID=requestID)
 
-@app.route("/newApp")
+@app.route("/newApp/<update>")
+def new_app(update): #0 by default
+    return render_template("newApp.html", update=update)
+
+@app.route("/newApp/make", methods=["POST"])
 def add_app():
     """
     Route for POST requests to new appliances page.
@@ -47,18 +52,27 @@ def add_app():
     """
 
     bname = request.form["bname"]
-    floor = request.form["floor"]
+    floor = int(request.form["floor"])
     appName = request.form["appName"]
-    code = request.form["code"]
+    code = int(request.form["code"])
 
-    found: int = db.appliances.find({
+    found: int = db.appliances.count_documents({
         #ignore code for now, just focus on name and appliance
         "building":bname, 
         "floor":floor,
         "applianceName" : appName
-    }).count()
+    })
 
-    if found == 0:
+    codeUse: int = appliance_collection.count_documents({
+        "code": code
+    })
+
+    if found != 0:
+        return redirect(url_for("new_app", update = 1))
+        #appliance exists, ask if they want to update code?
+    elif codeUse != 0:
+        return redirect(url_for("new_app", update = 2))
+    else:
         #check code is not in use
         doc = {
             "code":code,
@@ -67,11 +81,7 @@ def add_app():
             "applianceName" : appName
         }
         db.appliances.insert_one(doc)
-        return redirect(url_for("index"))
-
-    else:
-        return redirect(url_for("index"))
-        #appliance exists, ask if they want to update code?
+        return redirect(url_for("new_app", update =3)) #successfully added
 
 
 if __name__ == "__main__":

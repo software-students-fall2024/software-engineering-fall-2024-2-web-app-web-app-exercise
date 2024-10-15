@@ -6,12 +6,23 @@
 <a href="/">Home</a>
 {% endblock %}
 
-{% block container %}
-
-<body>
-<article class="newApp">
-    {% include 'appForm.html' %}
-</article>
-</body>
-
+{% block body %}
+    {% if update == '0' %}
+        <h1>Create/Update New Appliance</h1>
+        <br/>
+        {% include 'appForm.html' %}
+    {%elif update == '1'%}
+        <h1>Update New Appliance</h1>
+        <h2>Appliance already exists! Confirm information to update: </h2>
+        <br/> 
+        {% include 'appForm.html' %}
+    {%elif update == '2'%}
+        <h1>Create/Update New Appliance</h1>
+        <h2>Code is already in use, please choose another one!</h2>
+        <br/> 
+        {% include 'appForm.html' %}
+    {%else%}
+        <h2>Appliance successfully created/updated!</h2>
+    {%endif%}
+        
 {% endblock %}
