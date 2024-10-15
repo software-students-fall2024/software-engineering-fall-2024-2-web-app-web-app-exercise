@@ -15,7 +15,7 @@ client = pymongo.MongoClient(database_url)
 db = client["sample_supplies"]
 collection = db["sales"]
 
-def get_store_location(store_location):
+def get_store_data(store_location):
     sales_records = collection.find({"storeLocation": store_location})
     
     total_revenue = 0
