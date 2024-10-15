@@ -52,6 +52,11 @@ Edit User Info
             border-radius: 10px;
             font-size: 14px;
         }
+        .email-input {
+            color: #C0C0C0;
+            font-style: italic;
+            cursor: not-allowed;
+        }
         .signup-container input::placeholder {
             color: #C0C0C0;
         }
@@ -127,7 +132,7 @@ Edit User Info
     {% endwith %}
 
     <form action="/user-info" method="POST">
-        <input type="email" id="username" name="username" placeholder="Email" value={{user_info.username}} required>
+        <input type="email" class="email-input" id="username" name="username" placeholder="Email" value={{user_info.username}} readonly>
         <input type="text" id="firstname" name="firstname" placeholder="First Name" value={{user_info.firstname}} required>
         <input type="text" id="lastname" name="lastname" placeholder="Last Name" value={{user_info.lastname}} required>
         <button type="submit" class="signup-btn">Update Info</button>

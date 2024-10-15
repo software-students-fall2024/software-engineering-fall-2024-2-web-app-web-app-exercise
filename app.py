@@ -110,6 +110,20 @@ def create_app():
         
         return render_template("edit-user-info.html", user_info=user_info)
     
+    @app.route("/user-info",methods=["POST"])
+    @login_required
+    def updateUserInfo():
+        #get the new user info and update the db
+        title = request.form["title"]
+        content = request.form["content"]
+        ###TODO###
+        
+        
+        #success
+        flash("User Info updated!")
+        return redirect(url_for("getUserInfo"))
+    
+
     @app.route("/log-out")
     @login_required 
     def logout():
@@ -145,19 +159,6 @@ def create_app():
             flash('The provided email does not match the current user.')
 
         return render_template('delete-acct.html')
-    
-    @app.route("/user-info",methods=["POST"])
-    @login_required
-    def updateUserInfo():
-        #get the new user info and update the db
-        title = request.form["title"]
-        content = request.form["content"]
-        ###TODO###
-        
-        
-        #success
-        flash("User Info updated!")
-        return redirect(url_for("getUserInfo"))
     
     
     @app.route("/contact_us")
