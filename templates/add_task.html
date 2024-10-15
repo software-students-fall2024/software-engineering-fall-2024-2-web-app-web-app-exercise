@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% block container %}
+<body>
+        <header>
+        <h1>Add a new task</h1>
+        </header>
+        
+        <form class="project-form" action="{{ url_for('add_task', post_id=project._id) }}" method="POST">
+            <input type="text" name="taskName" placeholder="Your task name" required>
+            <textarea name="description" placeholder="Write your description here..." required></textarea>
+        
+            <input type="date" name="due_date" placeholder="Due date..." required>
+            <input type="text" name="members" placeholder="Add members">
+        
+            <button type="submit">Create New Task</button>
+        </form>
+</body>
+{% endblock %}

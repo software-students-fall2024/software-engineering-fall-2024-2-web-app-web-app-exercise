@@ -16,8 +16,8 @@
             <input type="text" name="taskName" value="{{task.taskName}}" required>
             <textarea name="description" required>{{task.description}}</textarea>
         
-            <input type="text" name="due_date" value="{{task.due_date}}" required>
-            <input type="text" name="members" value="{{members}}">
+            <input type="date" name="due_date" value="{{task.due_date}}" required>
+            <input type="date" name="members" value="{{members}}">
         
             <button type="submit">Confirm Edits</button>
         </form>
@@ -34,8 +34,8 @@
                 <input type="text" name="project_name" value="{{project.projectName}}" required>
                 <textarea name="description" required>{{project.description}}</textarea>
             
-                <input type="text" name="start_date" value="{{project.start_date}}" required>
-                <input type="text" name="due_date" value="{{project.due_date}}" required>
+                <input type="date" name="start_date" value="{{project.start_date}}" required>
+                <input type="date" name="due_date" value="{{project.due_date}}" required>
                 <input type="text" name="managers" value="{{managers}}">
                 <input type="text" name="members" value="{{members}}">
             
@@ -54,8 +54,8 @@
             <input type="text" name="project_name" placeholder="Your project name" required>
             <textarea name="description" placeholder="Write your description here..." required></textarea>
         
-            <input type="text" name="start_date" placeholder="Start date..." required>
-            <input type="text" name="due_date" placeholder="Due date..." required>
+            <input type="date" name="start_date" placeholder="Start date..." required>
+            <input type="date" name="due_date" placeholder="Due date..." required>
             <input type="text" name="managers" placeholder="Add managers">
             <input type="text" name="members" placeholder="Add regular members">
         
