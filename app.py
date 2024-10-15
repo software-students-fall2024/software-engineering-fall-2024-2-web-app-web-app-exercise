@@ -6,7 +6,6 @@ from pymongo import MongoClient
 load_dotenv()
 
 mongo_uri = os.getenv('MONGO_URI')
-print(f"MONGO_URI: {mongo_uri}")
 
 app = Flask(__name__)
 app.secret_key = os.urandom(13)
