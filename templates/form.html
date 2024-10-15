@@ -2,12 +2,20 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<h2>Write a Post</h2>
-<form method="POST" action="{{ url_for('create_task') }}">
-  <input type="text" id="fname" name="fname" placeholder="Your name"/>
+<h2>Add Event</h2>
+<form method="POST" action="{{ url_for('create_post') }}">
+  <label for="date">date:</label><br>
+  <input type="text" id="date" name="date" placeholder="DD/MM/YYYY"/>
   <br />
-  <textarea type="text" id="fmessage" name="fmessage" placeholder="Message"></textarea>
+  <label for="time">time:</label><br>
+  <input type="text" id="time" name="time" placeholder="HH:MM"/>
   <br />
-  <input type="submit" value="Save" />
+  <label for="requirements">Requirements:</label><br>
+  <textarea type="text" id="requirements" name="requirements" placeholder="Requirements"></textarea>
+  <br />
+  <label for="name">Event Name:</label><br>
+  <input type="text" id="name" name="name" placeholder="Event Name"/>
+  <br />
+  <input type="submit" value="Creat Event" />
 </form>
 {% endblock %}
