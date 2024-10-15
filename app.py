@@ -1,52 +1,161 @@
-from flask import Flask, request, jsonify, redirect, url_for, flash, render_template, session
-import secrets
+import os
+from flask import Flask, request, redirect, url_for, flash, render_template
+from dotenv import load_dotenv
+from pymongo import MongoClient
+
+load_dotenv()
+
+mongo_uri = os.getenv('MONGO_URI')
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(16)
+app.secret_key = os.urandom(13)
+
+client = MongoClient(mongo_uri)
+try:
+    client.admin.command('ping')  # 测试连接
+    print("Successfully connected to MongoDB!")
+except Exception as e:
+    print(f"Failed to connect to MongoDB: {e}")
+db = client['fitness_db']
+todo_collection = db['todo']
+exercises_collection = db['exercises']
 
 
-def search_exersice(query: str):
-    return []
+def search_exercise(query: str):
+    normalized_query = query.replace(" ", "")
+    
+    exercises = exercises_collection.find({
+        "workout_name": {
+            "$regex": normalized_query, 
+            "$options": "i" 
+        }
+    })
+    return list(exercises)
 
 
-def get_exersice(exercise_id: int):
-    return {}
-
+def get_exercise(exercise_id: str):
+    return exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
 def get_todo():
-    #test
-    return [
-        {"name": "Strength", "completed": False},
-        {"name": "Cardio", "completed": True},
-        {"name": "Interval Training", "completed": False},
-        {"name": "Core Workouts", "completed": False},
-        {"name": "Flexibility & Mobility", "completed": True}
-    ]
-
+    todo_list = todo_collection.find_one({"_id": 1})
+    if todo_list and "todo" in todo_list:
+        return todo_list['todo']
+    return []
 
 def delete_todo(exercise_todo_id: int):
-    return True
+    result = todo_collection.update_one(
+        {"_id": 1},
+        {"$pull": {"todo": {"exercise_todo_id": exercise_todo_id}}}
+    )
+    
+    if result.modified_count > 0:
+        print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
+        return True
+    else:
+        print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        return False
 
 
-def add_todo(exercise_id: str):
-    return True
+def add_todo(exercise_id: str, working_time, reps, weight):
+    """Add a to-do item using ObjectId for exercise and generate a unique exercise_todo_id."""
+    exercise = exercises_collection.find_one({"_id": ObjectId(exercise_id)})
 
+    if exercise:
+
+        todo = todo_collection.find_one({"_id": 1})
+
+        if todo and "todo" in todo:
+            max_id = max([item.get("exercise_todo_id", 999) for item in todo["todo"]], default=999)
+            next_exercise_todo_id = max_id + 1  
+        else:
+            next_exercise_todo_id = 1000  
+
+        exercise_item = {
+            "exercise_todo_id": next_exercise_todo_id,  
+            "exercise_id": exercise['_id'], 
+            "workout_name": exercise["workout_name"],
+            "working_time": working_time,
+            "reps": reps,
+            "weight": weight
+        }
+
+        if todo:
+            result = todo_collection.update_one(
+                {"_id": 1},
+                {"$push": {"todo": exercise_item}}
+            )
+        else:
+            result = todo_collection.insert_one({
+                "_id": 1,
+                "todo": [exercise_item]
+            })
+
+        if result.modified_count > 0 or result.inserted_id:
+            print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
+            return True
+        else:
+            print(f"Failed to add exercise {exercise['workout_name']} to To-Do List.")
+            return False
+    else:
+        print(f"Exercise with ID {exercise_id} not found.")
+        return False
 
 def edit_exercise(exercise_todo_id, working_time, weight, reps):
-    return
+    """Edit the todo item in the collection by its unique exercise_todo_id."""
+    result = todo_collection.update_one(
+        {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
+        {"$set": {
+            "todo.$.working_time": working_time,
+            "todo.$.reps": reps,
+            "todo.$.weight": weight
+        }}
+    )
+    
+    if result.modified_count > 0:
+        print(f"Exercise with To-Do ID {exercise_todo_id} updated in To-Do List.")
+        return True
+    else:
+        print(f"Failed to update exercise with To-Do ID {exercise_todo_id}.")
+        return False
+
+def get_exercise_in_todo(exercise_todo_id: int):
+    todo_item = todo_collection.find_one({"_id": 1, "todo.exercise_todo_id": exercise_todo_id})
+    
+    if not todo_item:
+        print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        return None
+    
+    for item in todo_item['todo']:
+        if item['exercise_todo_id'] == exercise_todo_id:
+            return item
+
+    print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
+    return None
 
 
-def get_exercise_in_todo(exercise_todo_id):
-    return {}
+def get_instruction(exercise_id: str):
 
+    exercise = exercises_collection.find_one({"_id": ObjectId(exercise_id)}, {"instruction": 1, "workout_name": 1})
+    
+    if exercise:
+        if "instruction" in exercise:
+            return {
+                "workout_name": exercise.get("workout_name", "Unknown Workout"),
+                "instruction": exercise["instruction"]
+            }
+        else:
+            return {
+                "workout_name": exercise.get("workout_name", "Unknown Workout"),
+                "instruction": "No instructions available for this exercise."
+            }
+    else:
+        return {
+            "error": f"Exercise with ID {exercise_id} not found."
+        }
 
 def default_exercises():
-    exercises_id = []  # add recommendation exercise id here
-    exercises = []
-    for i in exercises_id:
-        exercises.append(get_exersice(i))
-
-    return exercises
+    exercises = exercises_collection.find().limit(5)  
+    return list(exercises)  
 
 
 @app.route('/')
@@ -61,7 +170,7 @@ def search():
         if not query:
             return jsonify({'message': 'Search content cannot be empty.'}), 400
             # return redirect(url_for('search'))
-        results = search_exersice(query)
+        results = search_exercise(query)
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
             # return redirect(url_for('search'))
@@ -130,7 +239,7 @@ def edit():
 
 @app.route('/instructions/<string:exercise_id>')
 def instructions(exercise_id):
-    exercise = get_exersice(exercise_id)
+    exercise = get_exercise(exercise_id)
     instruction = exercise['instruction']
 
     return render_template('instructions.html', instruction=instruction)
