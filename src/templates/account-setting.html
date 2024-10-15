@@ -87,6 +87,15 @@
             background-color: #333;
             color: #fff;
         }
+        .flash {
+        color: #ff0000;
+        font-size: 12px;
+        margin-top: 0px;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -103,7 +112,18 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="{{ current_user.email }}">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class="flashes">
+                            {% for category, message in messages %}
+                                <li class="flash {{ category }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             </div>
+
             <div class="form-group">
                 <label for="privacy">Account Privacy</label>
                 <select id="privacy" name="privacy">

@@ -39,3 +39,11 @@ def update_board(id: str, name: str, pedals: list):
         {"_id": ObjectId(id)},
         {"$set": {"name": name, "pedals": pedals}}
     )
+
+
+def change_board_email(email: str, new_email: str):
+    boards = get_db().boards
+    return boards.update_many(
+        {"user": email},
+        {"$set": {"user": new_email}}
+    )
