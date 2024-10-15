@@ -1,0 +1,3 @@
+textarea, input[type="text"], input[type="number"], input[type="submit"] {
+    height: 40px;
+  }
