@@ -8,6 +8,7 @@ from src.models.user import user_loader, request_loader
 from src.models.user import User
 from src.models.boards import *
 from src.app import get_db
+from bson.objectid import ObjectId
 
 
 @flask_login.login_required
@@ -90,3 +91,72 @@ def update_account():
 
 @routes.route('/edit_board/<board_id>', methods=["GET", "POST"])
 @flask_login.login_required
+def edit_board(board_id):
+    try:
+        board = get_board(ObjectId(board_id))
+    except Exception:
+        flash('Invalid Board ID.', 'error')
+        return redirect(url_for('routes.profile'))
+
+    if not board:
+        flash('Board not found', 'error')
+        return redirect(url_for('routes.profile'))
+
+    board['_id'] = str(board['_id'])
+
+    if request.method == 'POST':
+
+        name = request.form.get('name')
+        pedal_data = request.form.getlist('pedals')
+
+        pedals = [None] * 10
+        for index, data in enumerate(pedal_data):
+            if data:
+                try:
+                    pedal_name, pedal_image = data.split('|')
+                    pedals[index] = {'name': pedal_name,
+                                     'image_url': pedal_image}
+                except ValueError:
+                    continue
+
+        update_board(board_id, name, pedals)
+
+        flash('Board updated successfully', 'success')
+        return redirect(url_for('routes.profile'))
+
+    pedal_name = request.args.get("pedal_name")
+    pedal_image = request.args.get("pedal_image")
+    slot_index = request.args.get("slot_index")
+
+    if pedal_name and pedal_image and slot_index is not None:
+        try:
+            slot_index = int(slot_index)
+        except ValueError:
+            flash('Invalid slot index.', 'error')
+            return redirect(url_for('routes.profile'))
+
+        if 'pedals' not in board or not board['pedals']:
+            board['pedals'] = [None] * 10  # Assume 10 slots
+
+        if slot_index < len(board['pedals']):
+            board['pedals'][slot_index] = {
+                'name': pedal_name, 'image_url': pedal_image}
+            update_board(board_id, board['name'], board['pedals'])
+
+    return render_template('edit_board.html', board=board)
+
+
+@routes.route('/view_board/<board_id>', methods=["GET"])
+def view_board(board_id):
+    try:
+        board = get_board(ObjectId(board_id))
+    except Exception:
+        flash('Invalid Board ID.', 'error')
+        return redirect(url_for('routes.profile'))
+
+    if not board:
+        flash('Board not found', 'error')
+        return redirect(url_for('routes.profile'))
+
+    return render_template('view_board.html', board=board)
+
