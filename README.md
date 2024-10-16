@@ -2,7 +2,7 @@
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Our product aims to help individuals keep track of their daily events, by helping your organize which events to prioritize by time!
 
 ## User stories
 
@@ -40,6 +40,9 @@ Create a file name .env. The contents of this file is located in the scoobygang 
 ### Running the project
 Type the command: <br>
 ```python app.py```
+
+Then open a browser, and type in the url: 
+```http://localhost:3000```
 
 
 ## Task boards
