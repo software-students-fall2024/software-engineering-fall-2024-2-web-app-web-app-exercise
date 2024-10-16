@@ -31,7 +31,6 @@
                     <p><strong>Filed on:</strong> {{request.date}}</p>
                     <p><strong>Requested By:</strong> {{request.fullName}} ({{request.email}})</p>
                     <p><strong>Description:</strong> {{request.description}}</p>
-                    <button onclick='location.href="/track/{{request.ticket}}"'>More Details</button>
                 </div>
             {% endfor %}
         {% endif %}
