@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
 import certifi
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 
@@ -19,13 +21,33 @@ try:
     print("Successfully connected to MongoDB!")
 except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
+
 db = client['fitness_db']
 todo_collection = db['todo']
 exercises_collection = db['exercises']
+users_collection = db['users']
+
+# Flask-Login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+class User(UserMixin):
+    def __init__(self, user_id, username, password):
+        self.id = user_id
+        self.username = username
+        self.password = password
+
+    @staticmethod
+    def get(user_id):
+        user_data = users_collection.find_one({"_id": ObjectId(user_id)})
+        if user_data:
+            return User(str(user_data['_id']), user_data['username'], user_data['password'])
+        return None
 
 
 def search_exercise(query: str):
-    #print('query ', query)
     exercises = exercises_collection.find({
         "workout_name": {
             "$regex": query, 
@@ -42,7 +64,6 @@ def get_exercise(exercise_id: str):
 
 def get_todo():
     todo_list = todo_collection.find_one({"_id": 1})
-    #print('todo_list', todo_list)
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
@@ -133,7 +154,6 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
         return False
 
 
-
 def get_exercise_in_todo(exercise_todo_id: int):
     todo_item = todo_collection.find_one({"_id": 1})
     
@@ -150,6 +170,7 @@ def get_exercise_in_todo(exercise_todo_id: int):
 
     #print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
     return None
+
 
 def get_instruction(exercise_id: str):
 
@@ -171,6 +192,7 @@ def get_instruction(exercise_id: str):
             "error": f"Exercise with ID {exercise_id} not found."
         }
 
+
 def default_exercises():
     exercises = exercises_collection.find().limit(5)  
     return list(exercises)  
@@ -181,7 +203,50 @@ def home():
     return redirect(url_for('todo'))
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        return jsonify({'message': 'Username and password are required!'}), 400
+
+    if users_collection.find_one({"username": username}):
+        return jsonify({'message': 'Username already exists!'}), 400
+
+    hashed_password = generate_password_hash(password, method='sha256')
+    users_collection.insert_one({"username": username, "password": hashed_password})
+    return jsonify({'message': 'Registration successful! Please log in.'}), 201
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user_data = users_collection.find_one({"username": username})
+    if user_data and check_password_hash(user_data['password'], password):
+        user = User(str(user_data['_id']), user_data['username'], user_data['password'])
+        login_user(user)
+        return jsonify({'message': 'Login successful!'}), 200
+    else:
+        return jsonify({'message': 'Invalid username or password!'}), 401
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
 @app.route('/search', methods=['POST', 'GET'])
+@login_required
 def search():
     if request.method == 'POST':
         query = request.form.get("query")
@@ -204,12 +269,14 @@ def search():
 
 
 @app.route('/todo')
+@login_required
 def todo():
     exercises = get_todo()
     return render_template('todo.html', exercises=exercises)
 
 
 @app.route('/delete_exercise')
+@login_required
 def delete_exercise():
     exercises = get_todo()
     return render_template('delete.html', exercises=exercises)
@@ -225,6 +292,7 @@ def delete_exercise_id(exercise_todo_id):
 
 
 @app.route('/add')
+@login_required
 def add():
     if 'results' in session:
         exercises = session['results']
@@ -235,6 +303,7 @@ def add():
 
 
 @app.route('/add_exercise', methods=['POST'])
+@login_required
 def add_exercise():
     exercise_id = request.args.get('exercise_id')
     
@@ -254,8 +323,8 @@ def add_exercise():
         return jsonify({'message': 'Failed to add'}), 400
 
 
-
 @app.route('/edit', methods=['GET', 'POST'])
+@login_required
 def edit():
     exercise_todo_id = request.args.get('exercise_todo_id')  
     exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
@@ -264,18 +333,19 @@ def edit():
         working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        #print('working_time', working_time)
-        #print('weight', weight)
-        #print('reps', reps)
-        #print('exercise_todo_id ',exercise_todo_id)
+        # print('working_time', working_time)
+        # print('weight', weight)
+        # print('reps', reps)
+        # print('exercise_todo_id ',exercise_todo_id)
         success = edit_exercise(exercise_todo_id, working_time, weight, reps)
         if success:
             return jsonify({'message': 'Edited successfully'}), 200
         else:
             return jsonify({'message': 'Failed to edit'}), 400
-    #print('exercise_todo_id is ', exercise_todo_id)
-    #print ('exercise is', exercise_in_todo)
+    # print('exercise_todo_id is ', exercise_todo_id)
+    # print ('exercise is', exercise_in_todo)
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
+
 
 @app.route('/instructions', methods=['GET'])
 def instructions():
@@ -283,7 +353,6 @@ def instructions():
     exercise = get_exercise(exercise_id)
 
     return render_template('instructions.html', exercise=exercise)
-
 
 
 if __name__ == "__main__":
