@@ -200,6 +200,23 @@ def create_app():
         
         # render the template and pass in the vocab list
         return render_template("Vocabulary.html", vocab_list=vocab_list)
+    
+    @app.route("/vocab/<word>")
+    @login_required
+    def getVocabSearch(word):
+        # retrieve vocab list of the user and return with template
+        user = db.users.find_one({"username": current_user.username})
+        vocab = db.users.find_one({
+            "username": current_user.username,
+            "vocabList.word": word},{"vocabList.$": 1})
+        
+        vocab_list = user.get("vocabList", [])
+        search_list = []
+        if(vocab):
+            search_list = vocab.get("vocabList",[])
+        
+        # render the template and pass in the vocab list
+        return render_template("Vocabulary.html", vocab_list=vocab_list, searchVal=word, search_list=search_list)
             
     @app.route("/vocab",methods=["POST"])
     def sendVocab():
@@ -220,10 +237,9 @@ def create_app():
             flash("Error: Please provide word and definition!")
             return jsonify({"error": "Word or definition missing."}), 400
             
-    @app.route("/vocab",methods=["DELETE"])
-    def deleteVocab():
+    @app.route("/vocab/<word>",methods=["DELETE"])
+    def deleteVocab(word):
         #delete word
-        word = request.form["word"]
         ###TODO###
         if word:
             db.users.update_one(
@@ -254,7 +270,7 @@ def create_app():
             "image_url": "https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png",
             "autor": "chloe han",
             "date": "2020/09/18",
-            "content": "content content content"
+            "content": "content content content apple inflation"
         }
 
         return render_template("news-content.html", data=data)
