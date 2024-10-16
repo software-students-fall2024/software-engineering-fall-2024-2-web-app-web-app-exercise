@@ -6,6 +6,8 @@ from bson import ObjectId
 import certifi
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+
 
 load_dotenv()
 
@@ -63,7 +65,7 @@ def get_exercise(exercise_id: str):
 
 
 def get_todo():
-    todo_list = todo_collection.find_one({"_id": 1})
+    todo_list = todo_collection.find_one({"user_id": current_user.id})
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
@@ -71,7 +73,7 @@ def get_todo():
 
 def delete_todo(exercise_todo_id: int):
     result = todo_collection.update_one(
-        {"_id": 1},
+        {"user_id": current_user.id},
         {"$pull": {"todo": {"exercise_todo_id": exercise_todo_id}}}
     )
     
@@ -88,7 +90,7 @@ def add_todo(exercise_id: str, working_time=None, reps=None, weight=None):
 
     if exercise:
 
-        todo = todo_collection.find_one({"_id": 1})
+        todo = todo_collection.find_one({"user_id": current_user.id})
 
         if todo and "todo" in todo:
             max_id = max([item.get("exercise_todo_id", 999) for item in todo["todo"]], default=999)
@@ -107,23 +109,22 @@ def add_todo(exercise_id: str, working_time=None, reps=None, weight=None):
 
         if todo:
             result = todo_collection.update_one(
-                {"_id": 1},
+                {"user_id": current_user.id},
                 {"$push": {"todo": exercise_item}}
             )
+            success = result.modified_count > 0
         else:
             result = todo_collection.insert_one({
-                "_id": 1,
+                "user_id": current_user.id,
                 "todo": [exercise_item]
             })
+            success = result.inserted_id is not None
 
-        if result.modified_count > 0 or result.inserted_id:
-            #print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
+        if success:
             return True
         else:
-            #print(f"Failed to add exercise {exercise['workout_name']} to To-Do List.")
             return False
     else:
-        #print(f"Exercise with ID {exercise_id} not found.")
         return False
 
 
@@ -143,7 +144,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
         return False  
 
     result = todo_collection.update_one(
-        {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
+        {"user_id": current_user.id, "todo.exercise_todo_id": exercise_todo_id},
         {"$set": update_fields}
     )
     
@@ -155,7 +156,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
 
 
 def get_exercise_in_todo(exercise_todo_id: int):
-    todo_item = todo_collection.find_one({"_id": 1})
+    todo_item = todo_collection.find_one({"user_id": current_user.id})
     
     if not todo_item:
         #print(f"Document with _id 1 not found.")
@@ -207,7 +208,6 @@ def home():
 def load_user(user_id):
     return User.get(user_id)
 
-
 @app.route('/register', methods=['POST'])
 def register():
     username = request.form.get('username')
@@ -219,9 +219,29 @@ def register():
     if users_collection.find_one({"username": username}):
         return jsonify({'message': 'Username already exists!'}), 400
 
-    hashed_password = generate_password_hash(password, method='sha256')
-    users_collection.insert_one({"username": username, "password": hashed_password})
-    return jsonify({'message': 'Registration successful! Please log in.'}), 201
+    # Hash the password
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    # Insert the new user into the users collection and get the new user's ID
+    user_id = users_collection.insert_one({"username": username, "password": hashed_password}).inserted_id
+
+    # Create an empty todo list for the new user using the new user's ID
+    todo_collection.insert_one({
+        "user_id": str(user_id),  # Using the newly created user's ID
+        "date": datetime.utcnow(),  # Storing the current UTC date and time
+        "todo": []     # Empty todo list initially
+    })
+
+    return jsonify({'message': 'Registration successful! Please log in.', 'success': True}), 200
+
+
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET'])
+def signup_page():
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=['POST'])
@@ -230,12 +250,13 @@ def login():
     password = request.form.get('password')
 
     user_data = users_collection.find_one({"username": username})
+    
     if user_data and check_password_hash(user_data['password'], password):
         user = User(str(user_data['_id']), user_data['username'], user_data['password'])
         login_user(user)
-        return jsonify({'message': 'Login successful!'}), 200
+        return jsonify({'message': 'Login successful!', 'success': True}), 200  
     else:
-        return jsonify({'message': 'Invalid username or password!'}), 401
+        return jsonify({'message': 'Invalid username or password!', 'success': False}), 401
 
 
 @app.route('/logout')
