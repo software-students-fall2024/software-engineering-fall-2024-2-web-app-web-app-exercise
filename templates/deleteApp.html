@@ -25,7 +25,12 @@
         </form>
     </div>
     <br/>
-    {% if results is not none %}
+    {% if results == "banana" %}
+    <div>
+        <h2>No Results Found!</h2>
+    </div>
+    {% else %}
+    <div>
         <h2>Here are the results:</h2>
         <br/>
         <div style="text-align: center;">
@@ -42,16 +47,15 @@
         </div>
         <h2>Are you sure you want to delete?</h2>
         <br/>
-        <div>
-            <button type="button" method="POST" action="{{url_for('remove_appliance', code = results.code)}}">
-                Yes
-            </button>
-            <button type="button" action="{{url_for('index')}}">
-                No
-            </button>
+        <div style="align-content: center;text-align: center;justify-content: center;align-items: center;">
+            <form method="POST" action="{{url_for('remove_appliance', code = results.code)}}">
+                <input type = "submit" value = "Yes"  style="width: 10vw; height: 2vh; font: 1em;"/>
+            </form>
+            <form type="submit" action="{{url_for('index')}}" style="width: 10vw; height: 2vh; font: 1em;">
+                <input type = "submit" value = "No"  style="width: 10vw; height: 2vh; font: 1em;"/>
+            </form>
         </div>
-    {% else %}
-        <h2>No Results Found!</h2>
+    </div>
     {% endif %}
 
 {% endblock %}

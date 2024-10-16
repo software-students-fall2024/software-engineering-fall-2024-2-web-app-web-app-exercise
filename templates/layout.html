@@ -16,21 +16,12 @@
 </head>
 
 <body>
-    <div class="navBar">
+    <div class="navBar" style="text-align: center; align-items: center;">
         <div>
-            <h1><a href="/">NYU Maintenance Request Portal</a></h1>
+            <h1 style="text-align: center;"><a href="/">NYU Maintenance Request Portal</a></h1>
         </div>
         <div class="navLinks">
-            <a class="link" href="/">User Home</a>
-            <a class="link" href="/admin">Admin Home</a>
-            <a class="link" href="/request">New Request</a>
-            <a class="link" href="/track">Track A Request</a>
-            <a class="link" href="/list">Requests</a>
-            <a class="link" href="/request">Request Maintenance</a>
-            <a class="link" href="{{url_for('new_app', update = 0)}}">Add Appliance</a>
-            <a class="link" href="{{url_for('delete_app')}}">Remove Appliance</a>
-            <a class="link" href="/request">Make A Request</a>
-            <a class="link" href="/login">Login</a>
+            <h2><a class="link" href="{{url_for('show_menu')}}">Menu</a></h2>
         </div>
     </div>
 
