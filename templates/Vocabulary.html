@@ -106,15 +106,7 @@
     <button class="start-quiz" onclick="window.location.href='quiz-page.html'">Start Quiz →</button>
 
     <script>
-        // Vocabulary data (reduced to 5 words)
-        const vocabList = [
-            { word: "laborum", definition: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-            { word: "exercitationem", definition: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-            { word: "consectetur", definition: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris." },
-            { word: "ullamcorper", definition: "Nisi ut aliquip ex ea commodo consequat." },
-            { word: "cupidatat", definition: "Duis aute irure dolor in reprehenderit in voluptate velit esse." }
-        ];
-
+        const vocabList = {{ vocab_list | tojson }};
         let currentIndex = 0;
 
         // Load the first vocabulary on page load
