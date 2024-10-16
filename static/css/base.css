@@ -84,7 +84,7 @@ nav {
 }
 
 #navigation a:hover {
-    background-color: #FAD5A5;
+    background-color: #d3d3d3;
     transform: scale(1.05);
 }
 
