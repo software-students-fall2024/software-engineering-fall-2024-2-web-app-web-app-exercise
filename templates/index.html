@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index_style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<header style="position: fixed; top: 0; width: 100%; z-index: 1000; background-color: #6b63638c; height: 60px;">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='icon.svg') }}" alt="Icon" width="30" height="30">
+    </div>
+</header>
+<body>
+    {% if session.get('user_name') %}
+    <div class="main-container">
+        <h1>Welcome, {{ session.get('user_name') }}!</h1>
+        <p id="current-day"></p>
+    </div>
+    <div class="container">
+        <h2 class="content-in-box">Daily value: <span id="calories-value">0</span> / --cal</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4 justify-content-center p-3">
+            <div class="col">
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Protein: <span id="protein-value">0</span>g</a>
+            </div>
+            <div class="col">
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Carbs: <span id="carbs-value">0</span>g</a>
+            </div>
+            <div class="col">
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Fats: <span id="fats-value">0</span>g</a>
+            </div>
+            <div class="col">
+                <a class="textbox btn btn-outline-secondary btn-lg w-100 h-100 d-flex align-items-center justify-content-center p-3">Sugar: <span id="sugar-value">0</span>g</a>
+            </div>
+        </div>        
+        <a class="text btn btn-link mt-4" href="{{ url_for('show_food_instruction') }}">Enter Your Intake Food</a>
+    </div>
+    
+
+    <div class="main1-container">
+        <h3>My Body Value</h3>
+    </div>
+    <div class="container1 p-4 mb-5 rounded bg-light shadow-sm">
+        <div class="form-row mb-3">
+            <label for="weight">Enter your Weight:</label>
+            <input type="number" id="weight" class="form-control d-inline w-25 mx-2" placeholder="lbs" min="0">
+            <span class="unit">lbs</span>
+        </div>
+        
+        <div class="form-row mb-3">
+            <label for="height-feet">Enter your Height:</label>
+            <input type="number" id="height-feet" class="form-control d-inline w-25 mx-2" placeholder="ft" min="0" value="{{ height_feet }}">
+            <span class="unit">ft</span>
+            <input type="number" id="height-inches" class="form-control d-inline w-25 mx-2" placeholder="in" min="0" value="{{ height_inches }}">
+            <span class="unit">in</span>
+        </div>
+    
+        <div class="form-row mb-3">
+            <span class="equals">=</span>
+            <input type="number" id="bmi" class="form-control d-inline w-25 mx-2" placeholder="BMI" readonly>
+            <span class="unit">BMI</span>
+        </div>
+    
+        <div class="bmi-output mt-3">
+            <button onclick="validateInputs()" class="btn btn-primary">Calculate BMI</button>
+        </div>
+    </div>
+    
+
+    <div class="add-workout-container d-flex justify-content-center align-items-center mb-4">
+        <div class="me-3">
+            <a href="{{ url_for('show_workout_instruction', for_plan=True) }}" class="add-workout-button btn btn-outline-primary btn-lg d-flex align-items-center">
+                <img src="{{ url_for('static', filename='add-button.png') }}" alt="Add Icon" class="me-2" width="20">
+                Add Workout Plan
+            </a>
+        </div>
+        <div>
+            <form action="{{ url_for('clear_workout_plan') }}" method="POST">
+                <button type="submit" class="btn btn-danger btn-lg d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='delete-button.png') }}" alt="Delete Icon" class="me-2" width="20">
+                    Remove All
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card-deck container mb-5">
+        {% if daily_workout_plan %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+                {% for workout in daily_workout_plan %}
+                    <div class="col">
+                        <div class="card h-100 text-center position-relative">
+                            <!-- Delete workout form (trash icon in the upper right corner) -->
+                            <form action="{{ url_for('delete_workout_plan') }}" method="POST" class="position-absolute top-0 end-0 m-2">
+                                <input type="hidden" name="name" value="{{ workout.name }}">
+                                <button type="submit" class="btn btn-link p-0">
+                                    <img src="{{ url_for('static', filename='trash-fill.svg') }}" alt="Icon">
+                                </button>
+                            </form>
+                            
+                            <img class="card-img-top" src="{{ url_for('serve_image', filename=workout.gif_path.split('/')[-1]) }}" alt="Workout Image">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ workout.name }}</h5>
+                                <p class="card-text">Target muscles: {{ workout.target_muscle }}</p>
+                                <label for="setNum">Sets: {{ workout.setNum }}</label>
+                                <div class="timer-controls mt-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form action="{{ url_for('start_timer', workout_name=workout.name) }}" method="POST" class="d-flex align-items-center gap-2">
+                                            <input type="number" name="duration" class="form-control timer-input" placeholder="Minutes" min="1">
+                                            <button type="submit" class="btn btn-success">Start</button>
+                                        </form>
+                                        <form action="{{ url_for('stop_timer', workout_name=workout.name) }}" method="POST">
+                                            <button type="submit" class="btn btn-warning">Stop</button>
+                                        </form>
+                                        <form action="{{ url_for('reset_timer', workout_name=workout.name) }}" method="POST">
+                                            <button type="submit" class="btn btn-secondary">Reset</button>
+                                        </form>
+                                    </div>
+                                    <div id="timer-display-{{ workout.name }}" class="mt-2">
+                                        {% if workout.timer.status == 'running' %}
+                                            Timer is running: {{ workout.timer.duration // 60 }}m {{ workout.timer.duration % 60 }}s remaining
+                                        {% elif workout.timer.status == 'stopped' %}
+                                            Timer is stopped.
+                                        {% elif workout.timer.status == 'completed' %}
+                                            Time's up!
+                                        {% endif %}
+                                    </div>
+                                </div>                             
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No workouts selected yet.</p>
+        {% endif %}
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the current day of the week and set it in the #current-day element
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const currentDate = new Date();
+            const currentDay = daysOfWeek[currentDate.getDay()];
+
+            document.getElementById("current-day").textContent = `Date: ${currentDay}`;
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const timerContainers = document.querySelectorAll('[id^="timer-display-"]');
+    
+            // Update timer displays every second
+            timerContainers.forEach(container => {
+                const workoutName = container.id.replace('timer-display-', '');
+                updateTimerDisplay(workoutName, container);
+                setInterval(() => {
+                    updateTimerDisplay(workoutName, container);
+                }, 1000); // Update every second
+            });
+    
+            // Handle start timer form
+            document.querySelectorAll('.start-timer-form').forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent form submission
+                    const workoutName = form.querySelector('button[type="submit"]').dataset.workoutName;
+                    const duration = form.querySelector('input[name="duration"]').value;
+    
+                    fetch(`/start_timer/${workoutName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({ 'duration': duration }),
+                    }).then(() => {
+                        updateTimerDisplay(workoutName, document.getElementById(`timer-display-${workoutName}`));
+                    }).catch(console.error);
+                });
+            });
+    
+            // Handle stop timer
+            document.querySelectorAll('.stop-timer').forEach(button => {
+                button.addEventListener('click', function () {
+                    const workoutName = button.dataset.workoutName;
+    
+                    fetch(`/stop_timer/${workoutName}`, {
+                        method: 'POST',
+                    }).then(() => {
+                        updateTimerDisplay(workoutName, document.getElementById(`timer-display-${workoutName}`));
+                    }).catch(console.error);
+                });
+            });
+    
+            // Handle reset timer
+            document.querySelectorAll('.reset-timer').forEach(button => {
+                button.addEventListener('click', function () {
+                    const workoutName = button.dataset.workoutName;
+    
+                    fetch(`/reset_timer/${workoutName}`, {
+                        method: 'POST',
+                    }).then(() => {
+                        updateTimerDisplay(workoutName, document.getElementById(`timer-display-${workoutName}`));
+                    }).catch(console.error);
+                });
+            });
+        });
+
+        function validateInputs() {
+            const weight = parseFloat(document.getElementById("weight").value);
+            const heightFeet = parseFloat(document.getElementById("height-feet").value);
+            const heightInches = parseFloat(document.getElementById("height-inches").value);
+
+            if (isNaN(weight) || isNaN(heightFeet) || isNaN(heightInches)) {
+                alert("Please enter valid values for weight and height.");
+                return;
+            }
+
+            // Update the database
+            const data = {
+                weight: weight,
+                height: {
+                    feet: heightFeet,
+                    inches: heightInches
+                }
+            };
+
+            fetch(`/api/user/update_body_values`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.ok) {
+                    alert("BMI and Weight updated successfully!");
+                    return response.json();
+                } else {
+                    throw new Error("Error updating values.");
+                }
+            }).then(data => {
+                if (data.bmi !== undefined) {
+                    document.getElementById("bmi").value = data.bmi;
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert("Error updating values. Please try again.");
+            });
+        }
+    
+        function updateTimerDisplay(workoutName, container) {
+            fetch(`/api/timer_status/${workoutName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        container.textContent = 'Error fetching timer';
+                        return;
+                    }
+                    
+                    const minutes = Math.floor(data.duration / 60);
+                    const seconds = data.duration % 60;
+                    
+                    if (data.status === 'running') {
+                        container.textContent = `Timer is running: ${minutes}m ${seconds}s remaining`;
+                    } else if (data.status === 'stopped') {
+                        container.textContent = 'Timer is stopped.';
+                    } else if (data.status === 'reset') {
+                        container.textContent = 'Timer reset.';
+                    } else if (data.status === 'completed') {
+                        container.textContent = "Time's up!";
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching timer status:', err);
+                    container.textContent = 'Unable to fetch timer status';
+                });
+        }
+
+        function updateNutritionValues() {
+            fetch("/api/user/nutrition_values")
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById("calories-value").textContent = data.calories;
+                        document.getElementById("protein-value").textContent = data.protein;
+                        document.getElementById("carbs-value").textContent = data.carbs;
+                        document.getElementById("fats-value").textContent = data.fats;
+                        document.getElementById("sugar-value").textContent = data.sugar;
+                    }
+                })
+                .catch(error => console.error("Error fetching nutrition values:", error));
+        }
+        
+        // Update every 10 seconds or after food intake is added
+        setInterval(updateNutritionValues, 10000);
+        updateNutritionValues();
+    </script>
+        </div>
+        {% else %}
+            <!-- Content for Guests (Not Logged-in Users) -->
+            <div class="container mt-5">
+                <h1>Welcome to Our Fitness App!</h1>
+                <p>Please <a href="{{ url_for('auth') }}">log in</a> to access your personalized dashboard.</p>
+                <p>You can still check out our <a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a>.</p>
+            </div>
+        {% endif %}   
+    
+</body>
+<footer>
+    {% if session.get('user_name') %}
+        <div class="footer-box"><a href="{{ url_for('show_workout_instruction') }}">Workout Instructions</a></div>
+        <div class="footer-box"><a href="{{ url_for('show_my_weekly_report') }}">My Weekly Report</a></div>
+        <div class="footer-box"><a href="{{ url_for('logout') }}">Logout</a></div>
+    {% else %}
+        <div class="footer-box"><a href="{{ url_for('auth') }}">Login / Register</a></div>
+    {% endif %}
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>

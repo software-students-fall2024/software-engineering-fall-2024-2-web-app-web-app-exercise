@@ -1,0 +1,216 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", monospace;
+  }
+  
+  body {
+    background-color: hsl(0, 0%, 100%);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #6b63638c;
+    color: white;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    padding: 10px;
+   
+    
+    
+  }
+  
+  .search-bar form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .search-bar input {
+    width: 60%;
+    padding: 15px;
+    font-size: 18px;
+   
+  }
+  
+  .search-bar button {
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  .container {
+    display: flex;
+    padding: 20px;
+    padding-top: 150px;
+  }
+  
+  /* 导航和内容样式 */
+  .food-nav {
+    width: 20%; /* 缩小导航栏的宽度 */
+    background-color: #f8f9fa;
+    padding: 15px; /* 减少导航栏的padding */
+  }
+  
+  .food-nav ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .category-button {
+    
+    width: 100%;
+    padding: 10px; /* 减少按钮的padding */
+    font-size: 11px; /* 缩小字体 */
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .col-3{
+    position: fixed;
+    
+    overflow-y: auto;
+    left: 0;
+    width: 35%;
+    max-height: 100vh;
+    
+
+    
+
+  }
+  .col-9{
+    margin-left: 35%;
+    padding-left: 20px;
+    overflow-y: auto;
+    max-height: 100vh;
+    
+  }
+ 
+  
+  .card-deck {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    width: calc(100% - 20px); /* 确保卡片不超出屏幕范围 */
+    margin: 10px auto; /* 居中 */
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+  }
+  
+  input[type="number"] {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  /* Footer 样式 */
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #6b63638c;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  footer a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+  
+  /* 手机设备的样式 */
+  @media only screen and (max-width: 767px) {
+    .search-bar input,
+    .search-bar button {
+      font-size: 16px;
+      padding: 12px;
+      
+      
+    }
+    
+    
+  
+    .category-button {
+      font-size: 11px;
+      padding: 10px;
+      
+      
+
+
+    }
+  
+    .card {
+      width: calc(100% - 20px);
+      margin: 10px auto;
+      
+    }
+    .col-3{
+      width:35% !important;
+      
+    }
+    .col-9{
+      
+      width: 65% !important;
+    }
+    header{
+      height: 50px;
+    }
+    footer{
+      height: 50px;
+      font-size: 10px;
+    }
+    footer a{
+      padding: 5px;
+    }
+    
+  }
+  
