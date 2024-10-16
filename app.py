@@ -166,7 +166,7 @@ def create_app():
 
         focus_times = db.sessions.find({}, {"focus_time": 1, "_id": 0})
         
-        totaltime =0;
+        totaltime = 0;
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
@@ -174,9 +174,6 @@ def create_app():
             elif int (time) >= 0:
                 amount = int (time)
             totaltime += amount;
-        
-        # break_time = request.args.get('break_time')
-        # reps_no = request.args.get('reps')
         
         return render_template("congrats.html", totaltime=totaltime)
 

@@ -91,6 +91,7 @@ form {
     padding: 15px;
     border-style: none;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 input {
@@ -270,22 +271,6 @@ h2 {
     color: #3a383d;
 }
 
-.congratsscreen {
-    background-color: powderblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; 
-    height: 100vh;
-    margin: 0;
-}
-
-.congrats {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    margin-bottom: 20px; 
-} 
-
 .header {
     color: darkblue;
     font-size: 3rem;
@@ -300,19 +285,6 @@ h2 {
 .session-info {
     font-size: 1.5rem;
     margin-top: 20px;
-}
-
-.home-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: darkblue;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.home-button:hover {
-    background-color: navy;
 }
 
 #search-form {
@@ -372,4 +344,76 @@ h2 {
 #delete-form {
     background: none;
     width: 100%;
+}
+
+.header {
+    color: #4A3F58;
+    font-size: 30px;
+    margin: 20px;
+    font-weight: bold;
+    animation: bounce 1s infinite alternate;
+}
+
+.session-info {
+    font-size: 20px;
+    color: #6A617D;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.session-info-list {
+    background-color: white;
+    list-style: none;
+    padding: 20px;
+    margin: 15px;
+    border-style: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.session-info-list li {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.image {
+    max-width: 50%;
+    height: auto;
+    margin: 15px;
+    margin-bottom: 0px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
 }
