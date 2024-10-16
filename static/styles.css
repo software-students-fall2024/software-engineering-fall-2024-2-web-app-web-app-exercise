@@ -141,7 +141,11 @@ input[type="submit"] {
 input[type="submit"]:hover {
     opacity: 70%;
 }
+.sessions-wrapper {
+    display: flex;
+    flex-direction: row;
 
+}
 .sessions {
     position: relative; 
     display: flex;
