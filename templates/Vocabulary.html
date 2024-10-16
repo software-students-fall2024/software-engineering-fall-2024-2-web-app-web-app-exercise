@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}
+Vocabulary
+{% endblock %}
+{% block styles %}
+    {{ super() }} 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            height: 871px; /* Adjusted height */
+            width: 398px; /* Adjusted width */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content horizontally */
+        }
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 10px;
+        }
+        .flashcard {
+            background-color: #6CB873;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+            width: 100%; /* Make the flashcard full width */
+            height: 30vh;
+        }
+        .flashcard:hover {
+            background-color: #45a049;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 20px;
+            margin: 20px 0; /* Add margin to separate from flashcard */
+        }
+        .arrow {
+            cursor: pointer;
+            color: #6CB873;
+            font-size: 24px;
+            display: flex; /* Use flex for alignment */
+            align-items: center; /* Center vertically */
+        }
+        .index-text {
+            color: white; /* Change index text color to white */
+            font-size: 18px;
+            align-self: center;
+        }
+        .word-bank {
+            width: 100%;
+            overflow-y: scroll;
+            margin-top: 20px;
+        }
+        .word-box {
+            background-color: #6CB873;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            display: flex;
+        }
+        .word-box .word{
+            border-right: 2px solid black;
+            font-weight: bold;
+            min-width: 30%;
+            max-width: 30%;
+            padding-right: 0.2rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            text-align: center
+        }
+        .word-box .definition{
+            padding-left: 0.2rem;
+        }
+        .word-box .delete-button{
+            height: 1.6rem;
+            padding: 0rem 0.5rem;
+            background-color: red;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            margin: auto;
+        }
+        .start-quiz {
+            background-color: #6CB873;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .search-bar {
+            display: flex;
+            width: 100%;
+            gap: 0.1rem;
+        }
+        .search-bar input{
+            flex-grow: 1;
+            background-color:  #858585;
+            padding: 0.5rem;
+            border-radius: 1rem;
+
+        }
+        .search-bar .search-btn{
+            border-radius: 1rem;
+            padding: 0rem 0.3rem;
+            color: #6CB873;
+            border: 2px solid #6CB873;
+            background-color: transparent;
+
+        }
+        .search-bar .x-btn{
+            border-radius: 1rem;
+            padding: 0rem 0.7rem;
+            padding-top: 0.3rem;
+            text-decoration: none;
+            color: red;
+            border: 2px solid red;
+            background-color: transparent;
+        }
+        .no-vocab{
+            color: white;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    {% if vocab_list[0]%}
+        <div class="flashcard" onclick="toggleDefinition()">
+            <span id="flashcard-word">{{vocab_list[0].word}}</span> 
+        </div>
+    
+        <div class="navigation">
+            <div class="arrow" onclick="previousVocabulary()">&#9664;</div>
+            <span class="index-text" id="index-text">1 / {{vocab_list|length}}</span> <!-- Updated total -->
+            <div class="arrow" onclick="nextVocabulary()">&#9654;</div>
+        </div>
+    
+        <div class="search-bar">
+            <input type="text" id="search-word" name="search-word" placeholder="Search for a word" {% if searchVal %} value="{{ searchVal }}"{% endif %} required>
+            <button class="search-btn" onclick="search()">Search</button>
+            <a class="x-btn" href="/vocab">x</a>
+        </div>
+    
+        <div class="word-bank" id="word-bank">
+            {% if searchVal%}
+                {% for word in search_list %}
+                <div class="word-box">
+                    <div class="word">{{word.word}}</div>
+                    <div class="definition">{{word.definition}}</div>
+                    <button class="delete-button" onclick="deleteWord('{{word.word}}')">x</button>
+                </div>
+                {% endfor %}
+            {% else %}
+                {% for word in vocab_list %}
+                <div class="word-box">
+                    <div class="word">{{word.word}}</div>
+                    <div class="definition">{{word.definition}}</div>
+                    <button class="delete-button" onclick="deleteWord('{{word.word}}')">x</button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    
+        <!--<button class="start-quiz" onclick="window.location.href='quiz-page.html'">Start Quiz →</button>-->
+
+    {% else %}
+        <div class="no-vocab">
+            There are no words yet!
+        </div>
+    {% endif %}
+
+    <script>
+        const vocabList = {{ vocab_list | tojson }};
+        let currentIndex = 0;
+        let currSide = 'word';
+
+        async function search(){
+            const inputElement = document.getElementById('search-word');
+            const inputValue = inputElement.value;
+            window.location.href = `/vocab/${encodeURIComponent(inputValue)}`;
+        }
+
+        async function deleteWord(word){
+            fetch(`/vocab/${encodeURIComponent(word)}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Successfully deleted ${word}`);
+                }
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function toggleDefinition() {
+            currSide = currSide==='word' ? 'definition' : 'word'
+            const content = document.getElementById('flashcard-word');
+            content.textContent = currSide==='word' ? vocabList[currentIndex].word : vocabList[currentIndex].definition 
+        }
+
+        function updateCard(){
+            const flashcardWord = document.getElementById('flashcard-word');
+            const indexTextElement = document.getElementById('index-text');
+            
+            flashcardWord.textContent = vocabList[currentIndex].word;
+            currSide = 'word'
+            
+            indexTextElement.textContent = `${currentIndex+1} / ${vocabList.length}`;
+        }
+        
+        function previousVocabulary() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard()
+            }
+        }
+
+        function nextVocabulary() {
+            if (currentIndex < vocabList.length - 1) {
+                currentIndex++;
+                updateCard()
+            }
+        }
+    </script>
+{% endblock %}
+
