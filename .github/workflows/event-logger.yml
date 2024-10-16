@@ -37,16 +37,18 @@ jobs:
           pipenv install gitcommitlogger
       - name: Debug Environment Variables
         run: |
-          echo "REPOSITORY_URL: $REPOSITORY_URL"
-          echo "EVENT_TYPE: $EVENT_TYPE"
-          echo "EVENT_ACTION: $EVENT_ACTION"
-          echo "GITHUB_LOGIN: $GITHUB_LOGIN"
-          if [ -z "$COMMIT_LOG_API" ]; then
-            echo "COMMIT_LOG_API is not set"
-            exit 1
-          else
-            echo "COMMIT_LOG_API is set"
-          fi
+            echo "REPOSITORY_URL: $REPOSITORY_URL"
+            echo "EVENT_TYPE: $EVENT_TYPE"
+            echo "EVENT_ACTION: $EVENT_ACTION"
+            echo "GITHUB_LOGIN: $GITHUB_LOGIN"
+            if [ -z "$COMMIT_LOG_API" ]; then
+              echo "COMMIT_LOG_API is not set"
+              echo "Available environment variables:"
+              printenv
+              exit 1
+            else
+              echo "COMMIT_LOG_API is set"
+            fi
       - name: Log pull request opened
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         run: |
