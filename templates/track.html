@@ -3,34 +3,40 @@
 {% block body %}
 
 <div class="track-request">
-    <div class="track-request-left">
+    <div class="track-request-top">
         <div class="code-box">
-            <h2>Track a Request!</h2>
+            <h1>Track a Request!</h1>
+            <h3>5-digit Appliance Code or Request Ticket Number</h3>
             <form method="GET" action="/track">
-            <input type="text" pattern="^[0-9]{4}$" name="code" placeholder="Appliance/Request Code">
-            <input type="submit" value="search">
+            <input class="tracking-code-box" type="text" pattern="^[0-9]{5}$" name="code" placeholder="Appliance/Request Code">
+            <input class="tracking-code-box" type="submit" value="Search">
             </form>
         </div>
+        {% if applianceInfo is not none %}
+        <div class="track-request-right">
+            <h2>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h2>
+            <h2>Building: {{applianceInfo.building}}</h2>
+            <h2>Floor: {{applianceInfo.floor}}<h2>
+        </div>
+        {% endif %}
+    </div>
+    <div class="track-request-list">
+
         
         {% if requestInfo is not none %}
             {% for request in requestInfo %}
-                <div class="request-row">
-                    <h1>{{request.subject}}</h1>
-                    <p>Filed on: {{request.date}}</p>
-                    <p>By: {{request.fullName}} ({{request.email}})</p>
-                    <p>Description: {{request.description}}</p>
+                <div class="request-row {{'resolved' if request.status != 'pending'}}">
+                    <h1 class="request-title">{{request.subject}}</h1>
+                    <h4 class="status">{{request.status.upper()}}</h4>
+                    <p><strong>Filed on:</strong> {{request.date}}</p>
+                    <p><strong>Requested By:</strong> {{request.fullName}} ({{request.email}})</p>
+                    <p><strong>Description:</strong> {{request.description}}</p>
+                    <button onclick='location.href="/track/{{request.ticket}}"'>More Details</button>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-    {% if applianceInfo is not none %}
-    <div class="track-request-right">
-        <h6>APPLIANCE/ROOM</h6>
-        <h1>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h>
-        <h5>Building: {{applianceInfo.building}}</h5>
-        <h5>Floor: {{applianceInfo.floor}}<h5>
-    </div>
-    {% endif %}
+
 </div>
 
 

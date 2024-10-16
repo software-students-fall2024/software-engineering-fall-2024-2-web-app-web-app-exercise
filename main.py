@@ -128,18 +128,25 @@ def makeRequest(code=None):
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
-    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{5}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
-        requestEntry = requests_collection.find({'code':code}); # broken bc can't connect to atlas
-        # requestEntry = requestTest
-        applianceEntry = appliance_collection.find_one({'code':code});
-        # applianceEntry = applianceTest
-        # print(entry.fullName);
+        requestEntry = requests_collection.find({'code':code})
+        applianceEntry = appliance_collection.find_one({'code':code})
     else:
         requestEntry = None
         applianceEntry = None
     return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
+
+@app.route("/track/<ticket>", methods=["GET"])
+def trackRequestDetailed(ticket):
+    # If code is not empty and is 4 numbers
+    if (ticket != '' and ticket is not None):
+        # If code exists, retrieve data as entry and display it 
+        requestEntry = requests_collection.find_one({'ticket':ticket})
+    else:
+        requestEntry = None
+    return render_template("trackDetailed.html", requestInfo=requestEntry)
 
 @app.route("/newApp/<update>")
 def new_app(update): #0 by default

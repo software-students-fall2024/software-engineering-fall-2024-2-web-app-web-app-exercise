@@ -11,6 +11,10 @@
     cursor: pointer;
 }
 
+.logo{
+    font-size: 1rem;
+}
+
 /* Other shared styles */
 body {
     margin: 0px;
@@ -20,10 +24,14 @@ body {
 
 h1{
     text-align: center;
+    font-size: 3rem;
 }
 
 h2{
     text-align: center;
+
+    font-size: 1.8em;
+    margin-bottom: 20px;
 }
 
 .navBar {
@@ -61,34 +69,69 @@ h2{
     margin-left: 40px;
 }
 
-.code-box{
-    background: lightgray;
-    padding: 10px 20px;
-    width: 250px;
+.request-row{
+    background-color: bisque;
+    border: 1px solid black;
+    padding: 20px 30px;
 }
 
-.request-row{
-    border: 1px solid black;
-    padding: 10px 20px;
+.request-row:hover{
+    /* border: 1px solid black;
+    padding: 20px 30px; */
+    background-color: lightgray;
 }
 
 .track-request{
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
-.track-request-left{
-    flex-grow: 5;
+.track-request p {
+    font-size: 1rem;
 }
 
-.track-request-right{
-    flex-grow: 1;
-    border: 2px solid gray;
-    padding: 10px 20px;
-    min-width: 200px;
+.code-box{
+    background: lightgray;
+    width: 100%;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.tracking-code-box{
+    font-size: 2rem;
+    padding: 12px 20px;
+    border-radius: 20px;
+}
+
+.track-request-top{
+    position: static;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    border-radius: 40px;
+    overflow: hidden;
+    border: black;
+    border-style: solid;
+}
+
+.track-request-list{
+    position: static;
+    display: flex;
+    flex-direction: column;
+}
+
+.status{
+    color: gray;
+}
+
+.resolved{
+    background-color: rgb(204, 255, 204);
 }
 
 /* Style for the request list */
@@ -128,39 +171,7 @@ li {
     font-size: 1em;
 }
 
-h2 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-}
-
-
-.code-box{
-    background: lightgray;
-    padding: 10px 20px;
-    width: 250px;
-}
-
-.request-row{
-    border: 1px solid black;
-    padding: 10px 20px;
-}
-
-.track-request{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-.track-request-left{
-    flex-grow: 5;
-}
-
-.track-request-right{
-    flex-grow: 1;
-    border: 2px solid gray;
-    padding: 10px 20px;
-    min-width: 200px;
+.request-title{
+    text-align: left;
 }
 
