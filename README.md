@@ -10,7 +10,26 @@ Our vision is to offer a straightforward and user-friendly diary app that makes 
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+1. Clone the respository to your local machine.
+
+2. Create a virtual environment by running the following command:
+```
+pip3 install pipenv
+```
+
+3. Activiate the environment by running the below command:
+```
+pipenv shell
+```
+
+4. Install all the dependencies:
+```
+pip install -r requirements.txt
+```
+
+5. Create an `.env` file and retrieve the information from the project owner
+
+6. Run the application with `flask run`
 
 ## Task boards
 
