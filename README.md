@@ -41,6 +41,9 @@ Create a file name .env. The contents of this file is located in the scoobygang 
 Type the command: <br>
 ```python app.py```
 
+Then open a browser, and type in the url:
+```http://localhost:3000```
+
 
 ## Task boards
 
