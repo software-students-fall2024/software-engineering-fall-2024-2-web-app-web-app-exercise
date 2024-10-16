@@ -294,6 +294,35 @@ def exercise_detail(exercise_id):
     else:
         return jsonify({'message': 'Exercise not found'}), 404
 
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if username == "test" and password == "1234":  
+        return jsonify({'message': 'Login successful!', 'success': True}), 200
+    else:
+        return jsonify({'message': 'Invalid credentials.', 'success': False}), 400
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if username and email and password:
+        return jsonify({'message': 'Sign up successful!', 'success': True}), 200
+    else:
+        return jsonify({'message': 'Failed to sign up.', 'success': False}), 400
+
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+@app.route('/signup', methods=['GET'])
+def signup_page():
+    return render_template('signup.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
