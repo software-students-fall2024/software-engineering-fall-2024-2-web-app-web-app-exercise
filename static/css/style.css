@@ -1,0 +1,67 @@
+.posts {
+  max-width: 800px;
+  margin: 20px auto; 
+  padding: 20px; 
+  background-color: #ddb9b9; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.post {
+  margin-bottom: 20px; 
+  padding: 15px; 
+  background-color: #ffffff; 
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+}
+
+.name {
+  font-size: 1.2em; 
+  font-weight: bold; 
+  color: #333; 
+}
+
+.controls {
+  margin: 10px 0; 
+}
+
+.controls a {
+  text-decoration: none; 
+  color: #007BFF; 
+  transition: color 0.3s; 
+}
+
+.controls a:hover {
+  color: #0056b3; 
+}
+
+
+.message {
+  font-size: 0.9em; 
+  color: #555;
+}
+
+.navbar {
+  display: flex;
+  background-color: #c25959;
+  padding: 10px 5px;
+}
+
+.navbar a {
+  color: white; 
+  text-decoration: none; 
+  padding: 5px 5px; 
+  margin: 0 5px; 
+  border-radius: 5px; 
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+.navbar a.active {
+  background-color: #ddb9b9;
+  color: white; 
+}
+
+.navbar a:hover {
+  background-color: #0056b3;
+  color: white; 
+}
