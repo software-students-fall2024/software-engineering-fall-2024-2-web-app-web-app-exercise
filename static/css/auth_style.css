@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono", monospace;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-box {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-size: 18px;
+  }
+  
+  input {
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  button {
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+  
+  /* Mobile Devices */
+  @media (max-width: 767px) {
+    h1, h2 {
+      font-size: 28px;
+    }
+  
+    input, button {
+      font-size: 20px;
+      padding: 20px;
+    }
+  
+    .container {
+      padding: 40px;
+    }
+  }
+  
