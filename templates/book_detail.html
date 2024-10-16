@@ -1,21 +1,27 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/book_detail.css') }}">
 {% endblock %}
 
 {% block container %}
-<h1>Book Details</h1>
+    <h1>Book Details</h1>
+<div class="book-info">
     <p><strong>Title:</strong> {{ book.title }}</p>
     <p><strong>Author:</strong> {{ book.author }}</p>
     <p><strong>Genre:</strong> {{ book.genre }}</p>
     <p><strong>Price:</strong> {{ book.price }}</p>
     <p><strong>Quantity:</strong> {{ book.quantity }}</p>
     <p><strong>Date Added:</strong> {{ book.date_added }}</p>
-    <br>
+
+</div>
+<div class="action-buttons">
+    <a href="{{ url_for('edit', book_id=book['_id']) }}" class="btn-edit">
+        <button>Edit Book</button>
+    </a>
     <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="POST" style="display:inline;">
-        <button type="submit">Delete Book</button>
+        <button type="submit" class="btn-delete">Delete Book</button>
     </form>
-    <a href="{{ url_for('edit', book_id=book['_id']) }}"><button>Edit Book</button></a>
-    <a href="{{ url_for('home') }}">Back to Home</a>
+</div>
+
 {% endblock %}
