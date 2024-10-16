@@ -85,7 +85,7 @@ def makeRequest(code=None):
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
-    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4-5}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
         # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
@@ -101,9 +101,9 @@ def trackRequest(code=None):
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)
 
-@app.route("/removeApp")
-def delete_app():
-    return render_template("deleteApp.html", results = None)
+@app.route("/removeApp/<results>")
+def delete_app(results):
+    return render_template("deleteApp.html", results = "banana")
 
 @app.route("/newApp/make", methods=["POST"])
 def add_app():
@@ -201,21 +201,30 @@ def update_app():
 @app.route("/removeApp/find/<use>", methods=["POST"])
 def get_app(use): #can potentially also be used for making requests?
     if(use == 'code'):
-        code = request.form["code"]
+        try:
+            code = int(request.form["code"])
+        except:
+            code = -1
         result=appliance_collection.find_one({
             "code":code
         })
     else:
+        if len(request.form["floor"]) == 0:
+            floor = 0
+        else:
+            floor = int(request.form["floor"])
         result = appliance_collection.find_one({
             "building": request.form["bname"],
-            "floor": request.form["floor"],
+            "floor": floor,
             "applianceName":request.form["appName"]
         })
-    
-    return redirect(url_for('delete_app', results=result))
+    if result == None:
+        result = "banana"
+    return render_template('deleteApp.html', results=result)
 
 @app.route("/removeApp/remove/<code>", methods=["POST"])
 def remove_appliance(code):
+    code = int(code)
     appliance_collection.delete_one({
         "code": code
     })
