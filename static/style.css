@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    background-color: #f4f4f9;
+}
+
+input, textarea, button {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    display: block;
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Optional: Styling for links */
+a {
+    color: #007BFF; /* Change to blue */
+    text-decoration: none; /* Remove underline */
+    margin-left: 10px; /* Space between links */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
