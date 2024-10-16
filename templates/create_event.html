@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Occasio Logo" class="logoelsewhere">
+
     <div class="page-layout">
         <h1>Create Event</h1>
         <form action="{{ url_for('create_event') }}" method="post">
