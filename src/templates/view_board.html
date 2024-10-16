@@ -65,14 +65,18 @@
     
             <div class="board">
                 {% for pedal in board['pedals'] %}
-                <div class="slot">
-                    <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
-                    <input type="hidden" name="pedals" value="{{ pedal['name'] }}|{{ pedal['image_url'] }}">
-                </div>
+                    <div class="slot">
+                        {% if pedal and pedal['image_url'] %}
+                            <img src="{{ url_for('static', filename=pedal['image_url']) }}" alt="Pedal Image">
+                        {% else %}
+                        {% endif %}
+                        {% if pedal %}
+                            <input type="hidden" name="pedals" value="{{ pedal['name'] }}|{{ pedal['image_url'] }}">
+                        {% endif %}
+                    </div>
                 {% endfor %}
-                
                 {% for _ in range(10 - board['pedals']|length) %}
-                <div class="slot" ></div>
+                    <div class="slot"></div>
                 {% endfor %}
             </div>
 
