@@ -197,6 +197,9 @@ button {
     background-color: #616261; /* Darker on hover */
 }
 
+.remove_manager {
+    margin-bottom: 5%;
+}
 /* Optional: Style for the container of each project link */
 .project-link {
     margin-top: 1%;

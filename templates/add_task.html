@@ -1,17 +1,88 @@
 {% extends 'base.html' %}{% block container %}
 <body>
+    {%if edit is defined %}
+    <header>
+        <h1>Edit task</h1>
+    </header>
+    <form class="remove_manager" action="{{url_for('add_task_user_edit', post_id=project._id, post_name=cur_members, post_task=cur_task.taskName)}}" method="GET">
+        <label for="name">Add a member:</label>
+        <select name="username_for_edit">
+          {% if members is defined %}
+          {% for member in members %}
+          <option value="{{member}}">{{member}}</div>
+            {% endfor %}
+        {% endif %}
+        </select>
+        <br><br>
+        <input type="submit" value="Add Member">
+      </form>
+
+      <form action="{{url_for('remove_task_user_edit', post_id=project._id, post_name=cur_members, post_task=cur_task.taskName)}}" method="GET">
+        <label for="name">Delete a member:</label>
+        <select name="username_for_edit">
+          {% if members2 is defined %}
+          {% for member in members2 %}
+          <option value="{{member}}">{{member}}</div>
+        {% endfor %}
+        {% endif %}
+        </select>
+        <br><br>
+        <input type="submit" value="Remove Member">
+      </form>
+
+    <form class="project-form" action="{{ url_for('edit_task', post_id=project._id, post_name=cur_task.taskName) }}" method="POST">
+        <input type="text" name="members" value="{{cur_members}}" readonly required>
+        <input type="text" name="taskName" value="{{cur_task.taskName}}" required>
+        <textarea name="description" required>{{cur_task.description}}</textarea>
+    
+        <input type="date" name="due_date" value="{{cur_task.due_date}}" required>
+    
+        <button type="submit">Confirm Edits</button>
+    </form>
+
+    <form class="project-form" action="{{ url_for('remove_task', post_id=project._id, post_name=cur_task.taskName)}}" method="GET">
+        <button type="submit">Delete this task</button>
+    </form>
+    {% else %}
         <header>
         <h1>Add a new task</h1>
         </header>
         
-        <form class="project-form" action="{{ url_for('add_task', post_id=project._id) }}" method="POST">
+        <form class="remove_manager" action="{{url_for('add_task_user', post_id=project._id, post_name=cur_members)}}" method="GET">
+            <label for="name">Add a member:</label>
+            <select name="username">
+              {% if members is defined %}
+              {% for member in members %}
+              <option value="{{member}}">{{member}}</div>
+                {% endfor %}
+            {% endif %}
+            </select>
+            <br><br>
+            <input type="submit" value="Add Member">
+          </form>
+
+          <form action="{{url_for('remove_task_user', post_id=project._id, post_name=cur_members)}}" method="GET">
+            <label for="name">Delete a member:</label>
+            <select name="username">
+              {% if members2 is defined %}
+              {% for member in members2 %}
+              <option value="{{member}}">{{member}} (member)</div>
+            {% endfor %}
+            {% endif %}
+            </select>
+            <br><br>
+            <input type="submit" value="Remove Member">
+          </form>
+
+        <form class="project-form" action="{{ url_for('add_task', post_id=project._id, post_name=cur_members) }}" method="POST">
+            <input type="text" name="members" value="{{cur_members}}" readonly required>
             <input type="text" name="taskName" placeholder="Your task name" required>
             <textarea name="description" placeholder="Write your description here..." required></textarea>
         
             <input type="date" name="due_date" placeholder="Due date..." required>
-            <input type="text" name="members" placeholder="Add members">
         
             <button type="submit">Create New Task</button>
         </form>
+        {% endif %}
 </body>
 {% endblock %}

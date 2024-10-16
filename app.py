@@ -136,14 +136,6 @@ def create_app():
 
         global username
         if request.method == 'POST':
-            # Get managers and members as comma-separated strings from the form
-            managers = request.form['managers'].split(',')
-            members = request.form['members'].split(',')
-            if (members[0] == ""):
-                members = []
-            if (managers[0]== ""):
-                managers = []
-            managers.append(username) # Creator of project is automatically a manager
 
             # Create the project data
             project_data = {
@@ -151,8 +143,8 @@ def create_app():
                 'description': request.form['description'],
                 'start_date': request.form['start_date'],
                 'due_date': request.form['due_date'],
-                'managers': managers,  # Store managers as an array 
-                'members': members,    # Store members as an array
+                'managers': [username],  # Store managers as an array 
+                'members': [],    # Store members as an array
                 'tasks': []  # Initially no tasks
             }
 
@@ -170,17 +162,8 @@ def create_app():
             return redirect(url_for('login'))
         cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
         if (request.method == 'POST'):
-
-            managers = request.form['managers'].split(',')
-            members = request.form['members'].split(',')
-
-                        
-            if (len(members) == 0 or members[0] == ""):
-                members = []
-            if (len(managers) == 0 or managers[0]== ""):
-                managers = []
-                managers.append(username) # Creator of project is automatically a manager
-            
+            managers = cur_project['managers']
+            members = cur_project['members']
             project_data = {
                 "_id": ObjectId(post_id),
                 'projectName': request.form['project_name'],
@@ -189,7 +172,7 @@ def create_app():
                 'due_date': request.form['due_date'],
                 'managers': managers,  # Store managers as an array 
                 'members': members,    # Store members as an array
-                'tasks': []  # Initially no tasks
+                'tasks': cur_project['tasks'] 
             }
             project_collection.replace_one(
                 {"_id": ObjectId(post_id)},
@@ -197,10 +180,23 @@ def create_app():
             )
             return redirect(url_for('project_view', post_id=post_id))
         else:
-            managers = ",".join(cur_project['managers'])
-            members = ",".join(cur_project['members'])
+            managers = cur_project['managers']
+            members = cur_project['members']
 
-            return render_template('create_project.html', edit=True, project=cur_project, managers=managers, members=members)
+            if (len(managers) == ""):
+                global username
+                managers.append(username)
+
+            all_users = user_list.find({
+                "username":
+                {"$nin": managers}
+            })
+
+            all_users2 = user_list.find({
+                "username":
+                {"$nin": members}
+            })
+            return render_template('create_project.html', edit=True, project=cur_project, managers=managers, members=members, all_users=all_users, all_users2=all_users2)
 
     # route to remove an available project
     @app.route('/remove_project/<post_id>',  methods=['GET'])
@@ -216,9 +212,150 @@ def create_app():
             )
         return redirect(url_for("home"))
 
+    @app.route('/remove_user/<post_id>/<post_name>', methods=['GET'])
+    def remove_user(post_id, post_name):
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        name = request.args.get('username')
+
+        if (post_name == "member"):
+            project_collection.update_one(
+                {"_id": ObjectId(post_id)},
+                {"$pull": {"members": name}}
+            )
+        elif (post_name == "manager"):
+            project_collection.update_one(
+                {"_id": ObjectId(post_id)},
+                {"$pull": {"managers": name}}
+            )
+        return redirect(url_for("edit_project", post_id=post_id))
+    
+    @app.route('/remove_task_user/<post_id>/<post_name>', methods=['GET'])
+    def remove_task_user(post_id, post_name):
+        cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        name = request.args.get('username')
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        if (post_name == "No Members Added Yet"):
+            return redirect(url_for("add_task", post_id=post_id, post_name=post_name))
+        else:
+            cur_members = post_name
+            cur_members = cur_members.split(",")
+            cur_members.remove(name)
+            if (len(cur_members) == 0):
+                return redirect(url_for("add_task", post_id=post_id, post_name="No Members Added Yet"))
+            else:
+                cur_members = ",".join(cur_members)
+                return redirect(url_for("add_task", post_id=post_id, post_name=cur_members))
+
+    @app.route('/add_task_user/<post_id>/<post_name>', methods=['GET'])
+    def add_task_user(post_id, post_name):
+        cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        name = request.args.get('username')
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        if (post_name == "No Members Added Yet"):
+            cur_members = name
+            print("setting default\n")
+            return redirect(url_for("add_task", post_id=post_id, post_name=cur_members))
+        else:
+            print("adding to array\n")
+            cur_members = post_name
+            cur_members = cur_members.split(",")
+            cur_members.append(name)
+            cur_members = ",".join(cur_members)
+            return redirect(url_for("add_task", post_id=post_id, post_name=cur_members, cur_members=cur_members))
+
+    @app.route('/add_task_user_edit/<post_id>/<post_name>/<post_task>', methods=['GET'])
+    def add_task_user_edit(post_id, post_name, post_task):
+        cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        name = request.args.get('username_for_edit')
+        task_list = cur_project["tasks"]
+        cur_task = None
+        for task in task_list:
+            if task['taskName'] == post_task:
+                cur_task = task
+                break
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        all_members = task['members']
+        if (post_name == "No Members Added Yet"):
+            cur_members = name
+            print("setting default\n")
+            return render_template("add_task.html", post_id=post_id, post_name=cur_members, members=all_members, cur_task=cur_task, project=cur_project, edit=True)
+        else:
+            cur_members = post_name
+            cur_members_arr = cur_members.split(",")
+            cur_members_arr.append(name)
+            for member in cur_members_arr:
+                if member in all_members:
+                    all_members.remove(member)
+            cur_members = ",".join(cur_members_arr)
+            
+            return render_template("add_task.html", post_id=post_id, post_name=cur_members, members=all_members, members2=cur_members_arr, project=cur_project, cur_members=cur_members, cur_task=cur_task, edit=True)
+    
+    @app.route('/remove_task_user_edit/<post_id>/<post_name>/<post_task>', methods=['GET'])
+    def remove_task_user_edit(post_id, post_name, post_task):
+        cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        name = request.args.get('username_for_edit')
+        task_list = cur_project["tasks"]
+        cur_task = None
+        for task in task_list:
+            if task['taskName'] == post_task:
+                cur_task = task
+                break
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        all_members = task['members']
+        if (post_name == "No Members Added Yet"):
+            cur_members = name
+            print("setting default\n")
+            return render_template("add_task.html", post_id=post_id, post_name=cur_members, members=all_members, cur_task=cur_task, project=cur_project, edit=True)
+        else:
+            cur_members = post_name
+            cur_members_arr = cur_members.split(",")
+            cur_members_arr.remove(name)
+            for member in cur_members_arr:
+                if member in all_members:
+                    all_members.remove(member)
+            cur_members = ",".join(cur_members_arr)
+            if (len(cur_members_arr) == 0):
+                cur_members = "No Members Added Yet"
+            return render_template("add_task.html", post_id=post_id, post_name=cur_members, members=all_members, members2=cur_members_arr, project=cur_project, cur_members=cur_members, cur_task=cur_task, edit=True)
+    
+    @app.route('/add_user/<post_id>/<post_name>', methods=['GET'])
+    def add_user(post_id, post_name):
+        # not logged in yet, return to login
+        if (logged_in == False):
+            return redirect(url_for('login'))
+
+        name = request.args.get('username')
+
+        if (post_name == "member"):
+            project_collection.update_one(
+                {"_id": ObjectId(post_id)},
+                {"$push": {"members": name}}
+            )
+        elif (post_name == "manager"):
+            project_collection.update_one(
+                {"_id": ObjectId(post_id)},
+                {"$push": {"managers": name}}
+            )
+        return redirect(url_for("edit_project", post_id=post_id))
+
     # route to create task page
-    @app.route('/add_task/<post_id>',  methods=['GET', 'POST'])
-    def add_task(post_id):
+    @app.route('/add_task/<post_id>/<post_name>',  methods=['GET', 'POST'])
+    def add_task(post_id, post_name):
         # not logged in yet, return to login
         if (logged_in == False):
             return redirect(url_for('login'))
@@ -238,10 +375,16 @@ def create_app():
             )
             return redirect(url_for('project_view', post_id=post_id))
         else:
-            return render_template('add_task.html', project=cur_project)
+            cur_members = post_name
+            all_members = cur_project['members'] + cur_project['managers']
+            members2 = cur_members.split(",")
+            for member in members2:
+                if member in all_members:
+                    all_members.remove(member)
+            return render_template('add_task.html', cur_members=cur_members, project=cur_project, members=all_members, members2=members2)
 
    # this page allows you to edit available tasks
-    @app.route("/edit_task/<post_id>/<post_name>", methods=['POST'])
+    @app.route("/edit_task/<post_id>/<post_name>", methods=['POST', 'GET'])
     def edit_task(post_id, post_name):
         # not logged in yet, return to login
         if (logged_in == False):
@@ -319,8 +462,6 @@ def create_app():
         else:
             return render_template("team.html", username=username, project=cur_project, tasks=cur_project["tasks"], managers=managers, members=members)
         
-
-
     @app.route("/task_view/<post_id>/<post_name>")
     def task_view(post_id, post_name):
         # not logged in yet, return to login
@@ -340,8 +481,19 @@ def create_app():
             # shouldn't happen
             print("Task not found!")
         else:
-            return render_template("create_project.html", project=cur_project, task=cur_task, members=",".join(cur_task['members']))
-        
+            members2 = cur_task['members']
+            if (len(members2) == 0):
+                all_members = cur_project['managers'] + cur_project['members']
+                return render_template('add_task.html', cur_members="No Members Added Yet", project=cur_project, members=all_members, members2=members2, edit=True)
+            else:
+                all_members = cur_project['managers'] + cur_project['members']
+                for member in members2:
+                    if member in all_members:
+                        all_members.remove(member)
+                cur_members = ",".join(members2)
+                
+                return render_template('add_task.html', cur_members=cur_members, project=cur_project, members=all_members, members2=members2, edit=True, cur_task=cur_task)
+
 
     @app.route('/profile')
     def profile():
