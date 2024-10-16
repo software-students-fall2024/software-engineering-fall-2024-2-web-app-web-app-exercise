@@ -164,18 +164,25 @@ def create_app():
         Renders a template that shows the session details and a congratulations message.
         """
 
-        focus_times = db.sessions.find({}, {"focus_time": 1, "_id": 0})
+        focus_times = db.sessions.find({"username": current_user.id}, {"focus_time": 1, "subject":1, "_id": 0})
         
         totaltime = 0;
+        subjectSet = set()
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
                 amount = 0
             elif int (time) >= 0:
                 amount = int (time)
-            totaltime += amount;
+            totaltime += amount
+            subjectSet.add(focus_time['subject'])
+        subjectArr = list(subjectSet)
+        if len(subjectArr) > 1:
+            subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
+        else:
+            subjects = subjectArr[0]
         
-        return render_template("congrats.html", totaltime=totaltime)
+        return render_template("congrats.html", totaltime=totaltime, subject = subjects)
 
     @app.route("/search", methods=["POST"])
     @login_required  
