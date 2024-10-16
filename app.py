@@ -366,7 +366,7 @@ def get_exercises_by_category_and_equipment(category, equipment):
         "categories": {"$regex": category}
         , "equipment": {"$regex": equipment}
         })
-    result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercises]
+    result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercise]
     return jsonify(result)
 
 # endpoint for update flask to server timer data
