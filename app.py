@@ -78,10 +78,10 @@ def delete_todo(exercise_todo_id: int):
     )
     
     if result.modified_count > 0:
-        #print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
+        # print(f"Exercise with To-Do ID {exercise_todo_id} deleted from To-Do List.")
         return True
     else:
-        #print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        # print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
         return False
 
 
@@ -140,7 +140,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
         update_fields["todo.$.weight"] = weight
     
     if not update_fields:
-        #print("No fields to update.")
+        # print("No fields to update.")
         return False  
 
     result = todo_collection.update_one(
@@ -151,7 +151,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
     if result.matched_count > 0:  
         return True
     else:
-        #print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
+        # print(f"Exercise with To-Do ID {exercise_todo_id} not found.")
         return False
 
 
@@ -159,17 +159,17 @@ def get_exercise_in_todo(exercise_todo_id: int):
     todo_item = todo_collection.find_one({"user_id": current_user.id})
     
     if not todo_item:
-        #print(f"Document with _id 1 not found.")
+        # print(f"Document with _id 1 not found.")
         return None
     
-    #print(f"todo_item found: {todo_item}")
+    # print(f"todo_item found: {todo_item}")
     
     for item in todo_item.get('todo', []):
-        #print(f"Checking item: {item}")
+        # print(f"Checking item: {item}")
         if item.get('exercise_todo_id') == int(exercise_todo_id):
             return item
 
-    #print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
+    # print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
     return None
 
 
@@ -219,17 +219,14 @@ def register():
     if users_collection.find_one({"username": username}):
         return jsonify({'message': 'Username already exists!'}), 400
 
-    # Hash the password
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
-    # Insert the new user into the users collection and get the new user's ID
     user_id = users_collection.insert_one({"username": username, "password": hashed_password}).inserted_id
 
-    # Create an empty todo list for the new user using the new user's ID
     todo_collection.insert_one({
-        "user_id": str(user_id),  # Using the newly created user's ID
-        "date": datetime.utcnow(),  # Storing the current UTC date and time
-        "todo": []     # Empty todo list initially
+        "user_id": str(user_id), 
+        "date": datetime.utcnow(),
+        "todo": []
     })
 
     return jsonify({'message': 'Registration successful! Please log in.', 'success': True}), 200
@@ -273,12 +270,10 @@ def search():
         query = request.form.get("query")
         if not query:
             return jsonify({'message': 'Search content cannot be empty.'}), 400
-            # return redirect(url_for('search'))
         results = search_exercise(query)
         print('results are', results)
         if len(results) == 0:
             return jsonify({'message': 'Exercise was not found.'}), 404
-            # return redirect(url_for('search'))
         
         for result in results:
             result['_id'] = str(result['_id'])
@@ -354,17 +349,12 @@ def edit():
         working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        # print('working_time', working_time)
-        # print('weight', weight)
-        # print('reps', reps)
-        # print('exercise_todo_id ',exercise_todo_id)
         success = edit_exercise(exercise_todo_id, working_time, weight, reps)
         if success:
             return jsonify({'message': 'Edited successfully'}), 200
         else:
             return jsonify({'message': 'Failed to edit'}), 400
-    # print('exercise_todo_id is ', exercise_todo_id)
-    # print ('exercise is', exercise_in_todo)
+
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
 
 
