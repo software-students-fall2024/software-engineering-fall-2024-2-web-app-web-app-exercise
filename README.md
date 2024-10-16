@@ -202,20 +202,8 @@ The vision behind our application is simple: to simplify the journey towards per
 
 ## User stories
 
-___Workout Tracking___
-
-- As a `user`, I want to browse exercises by muscle group so that I can focus on specific areas during my workout.
-- As a `user`, I want to see animated GIFs and instructions for each exercise so that I can perform them correctly.
-
-___Dietary Calorie Tracking___
-
-- As a `user`, I want to search for food items and see their nutritional information so that I can track my calorie intake accurately.
-- As a `user`, I want to add my daily meals to the app so that I can see how many calories I have consumed throughout the day.
-
-___Personal Progress___
-
-- As a `user`, I want to input my daily weight and height so that I can track my BMI and monitor my progress.
-- As a `user`, I want to see a weekly report of my calorie intake and body weight so that I can evaluate my health progress over time.
+___- A link to user stories___
+> [click me](https://github.com/software-students-fall2024/2-web-app-garage1/issues)
 
 ## Steps necessary to run the software
 
