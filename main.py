@@ -36,6 +36,9 @@ requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subjec
 applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 doc_code = 0 #for when we need to update appliances
 
+#reports = ["Vending machine", "Water fountain", "Door hinge"]
+reports = list(requests_collection.find({}))
+
 # Regular user homepage
 @app.route("/")
 def index():
@@ -44,6 +47,7 @@ def index():
 # Admin homepage - show all requests
 @app.route("/admin")
 def admin_home():
+    print(reports)  # Debugging to see what is returned
     return render_template("index.html", reports=reports, is_admin=True)
 
 # List all reports (separate view)

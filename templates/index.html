@@ -7,10 +7,10 @@
         <li>
             <a href="/request/{{ report.id }}" class="request-item">
                 <div class="request-details">
-                    <h3>Subject Line</h3>
-                    <p>Placeholder Location</p>
-                    <p>Placeholder Date</p>
-                    <p class="request-id">Placeholder ID</p>
+                    <h3>{{ report.subject }}</h3>
+                    <p> {{ report.code }}</p>
+                    <p>{{ report.date }}</p>
+                    <p class="request-id">{{ report.id }}</p>
                 </div>
             </a>
         </li>
