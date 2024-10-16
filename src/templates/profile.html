@@ -159,10 +159,10 @@
                     <div class="board-text">Click to View Board</div>
                 </div>
                 <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
-                    
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
                     <button type="submit" name="duplicate" value="{{ board['_id'] }}">Copy</button>
                     <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
+                    <input type="hidden" name="pedal_deleted_{{ loop.index0 }}" id="pedal_deleted_{{ loop.index0 }}" value="{{ '1' if board['pedals'][loop.index0] is none else '0' }}">
                 </form>
             </div>
         {% endfor %}

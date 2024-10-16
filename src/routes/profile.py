@@ -105,13 +105,16 @@ def edit_board(board_id):
     board['_id'] = str(board['_id'])
 
     if request.method == 'POST':
-
         name = request.form.get('name')
         pedal_data = request.form.getlist('pedals')
 
-        pedals = [None] * 10
+        pedals = board.get('pedals', [None] * 10)
+
         for index, data in enumerate(pedal_data):
-            if data:
+            isDeleted = request.form.get(f'pedal_deleted_{index}') == '1'
+            if isDeleted:
+                pedals[index] = None
+            elif data:
                 try:
                     pedal_name, pedal_image = data.split('|')
                     pedals[index] = {'name': pedal_name,
@@ -124,11 +127,11 @@ def edit_board(board_id):
         flash('Board updated successfully', 'success')
         return redirect(url_for('routes.profile'))
 
-    pedal_name = request.args.get("pedal_name")
-    pedal_image = request.args.get("pedal_image")
+    pedal_name = request.args.get("pedal_name", "")
+    pedal_image = request.args.get("pedal_image", "")
     slot_index = request.args.get("slot_index")
 
-    if pedal_name and pedal_image and slot_index is not None:
+    if slot_index is not None:
         try:
             slot_index = int(slot_index)
         except ValueError:
@@ -138,10 +141,14 @@ def edit_board(board_id):
         if 'pedals' not in board or not board['pedals']:
             board['pedals'] = [None] * 10  # Assume 10 slots
 
-        if slot_index < len(board['pedals']):
-            board['pedals'][slot_index] = {
-                'name': pedal_name, 'image_url': pedal_image}
-            update_board(board_id, board['name'], board['pedals'])
+        if pedal_name == "" and pedal_image == "":
+            board['pedals'][slot_index] = None
+        else:
+            if slot_index < len(board['pedals']):
+                board['pedals'][slot_index] = {
+                    'name': pedal_name, 'image_url': pedal_image}
+
+        update_board(board_id, board['name'], board['pedals'])
 
     return render_template('edit_board.html', board=board)
 

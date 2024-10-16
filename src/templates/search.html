@@ -31,8 +31,12 @@
         const boardId = params.get("board_id");
         const slotIndex = params.get("slot_index");
         if (boardId && slotIndex !== null) {
-           
-            window.location.href = `/edit_board/${boardId}?pedal_name=${encodeURIComponent(pedalName)}&pedal_image=${encodeURIComponent(pedalImage)}&slot_index=${slotIndex}`;
+            if (pedalName === "Delete pedal") {
+                window.location.href = `/edit_board/${boardId}?pedal_name=&pedal_image=&slot_index=${slotIndex}`;
+            }
+            else { 
+                window.location.href = `/edit_board/${boardId}?pedal_name=${encodeURIComponent(pedalName)}&pedal_image=${encodeURIComponent(pedalImage)}&slot_index=${slotIndex}`;
+            }
         } else {
             alert("Error: Unable to add pedal. Missing board or slot information.");
         }
@@ -60,6 +64,11 @@
     -->
 
     <ul class="pedal-list">
+        <li class="pedal-item" onclick="selectPedal('Delete pedal', '')">
+            <div class="pedal-info">
+                <p class="pedal-name">Delete pedal</p>
+            </div>
+        </li>
         {% for pedal in pedals %}
         <li class="pedal-item" onclick="selectPedal('{{ pedal['name'] }}', '{{ pedal['image_url'] }}')">
             <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
