@@ -215,11 +215,11 @@ def create_app():
                                 {"$push": {"vocabList": new_vocab}})
         
             flash("Word added to the list!")
+            return jsonify({"message": "Word added successfully!"}), 200
         else:
             flash("Error: Please provide word and definition!")
+            return jsonify({"error": "Word or definition missing."}), 400
             
-        return redirect(url_for("getVocab"))
-    
     @app.route("/vocab",methods=["DELETE"])
     def deleteVocab():
         #delete word
