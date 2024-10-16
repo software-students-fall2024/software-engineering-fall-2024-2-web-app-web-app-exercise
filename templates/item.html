@@ -1,0 +1,12 @@
+{% extends 'base.html' %} 
+
+{% block container %}
+<h2>Update</h2>
+<form method="POST" action="{{ url_for('edit_post', post_id=doc._id) }}">
+    Event Name: <input type="text" id="fname" name="fname" value="{{doc.name}}" placeholder="{{doc.name}}"/>
+    <br />
+    Description: <textarea id="fmessage" name="fmessage" placeholder="{{doc.description}}">{{doc.description}}</textarea>
+    <br />
+    <input type="submit" value="Save" />
+</form>
+{% endblock %}

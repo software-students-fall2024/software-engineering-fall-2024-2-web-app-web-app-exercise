@@ -8,12 +8,19 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+[Link to User Stories](https://github.com/software-students-fall2024/2-web-app-scoobygang/issues/2)
 
 ## Steps necessary to run the software
 
-See instructions. Delete this line and place instructions to download, configure, and run the software here.
+1. Configure .env file
+2. Install requirements and virtual environment (optional)
+3. In the commandline, within project folder, type the command:
+    >python app.py <br>
+    OR <br>
+    >python3 app.py <br>
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+[Sprint 1 Task Board](https://github.com/orgs/software-students-fall2024/projects/16)
+
+[Sprint 2 Task Board](https://github.com/orgs/software-students-fall2024/projects/18)
