@@ -4,11 +4,6 @@
 {% block container %}
 
     <h2>Events</h2>
-    <form method="POST" action="{{ url_for('search') }}">
-        <input type="text" name="search" id="search" placeholder="Search...">
-    </form>
-    <br>
-    <br>
     <section class="posts">
 
         {% for doc in docs %}
