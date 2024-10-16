@@ -184,46 +184,28 @@ def create_app():
         Renders a template that shows the session details and a congratulations message.
         """
 
-        focus_times = db.sessions.find({}, {"focus_time": 1, "_id": 0})
-
-        latest_session = db.sessions.find_one(sort=[("created_at", -1)])
-
-        totaltime =0;
-        
+        focus_times = db.sessions.find({"username": current_user.id}, {"focus_time": 1, "subject":1, "_id": 0})
         totaltime = 0;
+
         subjectSet = set()
+
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
                 amount = 0
+
             elif int (time) >= 0:
                 amount = int (time)
-            totaltime += amount
-            subjectSet.add(focus_time['subject'])
-        subjectArr = list(subjectSet)
-        if len(subjectArr) > 1:
-            subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
-        else:
-            subjects = subjectArr[0]
-        
-        #amount of time studied x sessions x bunnies
-        if latest_session:
-            focus_time = int(latest_session.get('focus_time', 0))  # Default to 0 if not present
-            subject = latest_session.get('subject', 'Unknown')
-            
-            # Calculate bunnies collected (1 bunny for every 5 minutes of focus time)
-            bunnies_collected = focus_time // 5 if focus_time >= 5 else 0
-        else:
-            focus_time = 0
-            subject = 'Unknown'
-            bunnies_collected = 0
+                totaltime += amount
+                subjectSet.add(focus_time['subject'])
+                subjectArr = list(subjectSet)
 
-        # Pass all data to the congrats.html template
-        return render_template("congrats.html", 
-                            totaltime=totaltime, 
-                            focus_time=focus_time, 
-                            subject=subject, 
-                            bunnies_collected=bunnies_collected)
+            if len(subjectArr) > 1:
+                subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
+            else:
+                subjects = subjectArr[0]
+        
+        return render_template("congrats.html", totaltime=totaltime, subject = çsubjects)
 
     # Pass all data to the congrats.html template
    # return render_template("congrats.html", 

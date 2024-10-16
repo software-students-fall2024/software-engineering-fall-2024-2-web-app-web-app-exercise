@@ -7,24 +7,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
 </head>
 <body>
-    <div class = "congratsscreen">
-        <div class="congrats">
-            <h1 class = "header">Congratulations!</h1>
-        </div> 
-        <p class="session-info">You've completed a session with:</p>
-        <ul class="session-info">
+    <div class="container">
+        <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+        <h1 class="header">Congratulations! 🐰</h1>
+        <p class="session-info">Here are you session stats...</p>
+        <ul class="session-info-list">
+            <li>You focused for <strong>{{ totaltime }}</strong> minutes</li>
+            <li>You focused on <strong>{{ subject }}</strong></li>
             
-            <li>Focus Time: {{ focus_time }} minutes</li>
-            <li>Subject: {{ subject }}</li>
-            <li>Total Focus Time: {{ totaltime }} minutes</li>
-            <li>Bunnies Collected: {{ bunnies_collected }}</li>
-            
-
         </ul>
-    
-        <img class = "image" src="{{ url_for('static', filename='images/BunnywHat.png') }}" alt="BunnyCongratsImage">
-        <a style="margin-bottom: 5px;" href="{{ url_for('session_form') }}" class="home-button">Start Another Session</a>    
-        <a href="{{ url_for('home_screen') }}" class="home-button">Home Page</a>    
+        <img class="image" src="{{ url_for('static', filename='studybunny.png') }}" alt="Bunny Congrats Image"/>
+        <button class="home-button">
+            <a href="{{ url_for('session_form') }}">Start Another Session</a>
+        </button>
+          
     </div>
 </body>
 </html>
