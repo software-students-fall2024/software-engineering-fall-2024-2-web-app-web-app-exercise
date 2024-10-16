@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedal Search</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .top-bar { display: flex; align-items: center; padding: 15px; background-color: #e0e0e0; }
+        .back-arrow { font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+        .search-query { flex-grow: 1; font-size: 1.2rem; border-bottom: 1px solid #ccc; display: inline-block; margin-right: 15px; }
+        .filter-sort { display: flex; justify-content: space-between; padding: 10px 15px; background-color: #ffffff; }
+        .filter-sort button { padding: 10px; border: 1px solid #333; background-color: #ffffff; cursor: pointer; border-radius: 5px; }
+        .pedal-list { padding: 0; list-style: none; margin: 0; }
+        .pedal-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #ccc; background-color: #ffffff; cursor: pointer; }
+        .pedal-item img { width: 100px; height: auto; margin-right: 15px; }
+        .pedal-info { flex-grow: 1; }
+        .pedal-name { font-weight: bold; font-size: 1.1rem; margin: 0; cursor: pointer; }
+        .pedal-description { font-size: 0.9rem; color: #666; margin: 5px 0 0; }
+    </style>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function selectPedal(pedalName, pedalImage) {
+        
+        const params = new URLSearchParams(window.location.search);
+        const boardId = params.get("board_id");
+        const slotIndex = params.get("slot_index");
+        if (boardId && slotIndex !== null) {
+            if (pedalName === "Delete pedal") {
+                window.location.href = `/edit_board/${boardId}?pedal_name=&pedal_image=&slot_index=${slotIndex}`;
+            }
+            else { 
+                window.location.href = `/edit_board/${boardId}?pedal_name=${encodeURIComponent(pedalName)}&pedal_image=${encodeURIComponent(pedalImage)}&slot_index=${slotIndex}`;
+            }
+        } else {
+            alert("Error: Unable to add pedal. Missing board or slot information.");
+        }
+    }
+        
+    </script>
+</head>
+
+<body>
+    <div class="top-bar">
+        <a href="/edit_board/{{ board_id }}" class="back-arrow">&#x2190;</a>
+        <form method="GET" action="{{ url_for('routes.search') }}">
+            <input type="text" name="query" placeholder="Search for a pedal">
+            <input type="hidden" name="board_id" value="{{ board_id }}">
+            <input type="hidden" name="slot_index" value="{{ request.args.get('slot_index', '') }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!--
+    <div class="filter-sort">
+        <button>Filters</button>
+        <button>Sort By</button>
+    </div>
+    -->
+
+    <ul class="pedal-list">
+        <li class="pedal-item" onclick="selectPedal('Delete pedal', '')">
+            <div class="pedal-info">
+                <p class="pedal-name">Delete pedal</p>
+            </div>
+        </li>
+        {% for pedal in pedals %}
+        <li class="pedal-item" onclick="selectPedal('{{ pedal['name'] }}', '{{ pedal['image_url'] }}')">
+            <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
+            <div class="pedal-info">
+                <p class="pedal-name">{{ pedal['name'] }}</p>
+                <p class="pedal-description">{{ pedal['description'] }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

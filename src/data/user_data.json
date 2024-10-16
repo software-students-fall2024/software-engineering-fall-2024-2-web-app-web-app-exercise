@@ -1,0 +1,9 @@
+[
+    {
+        "username": "username",
+        "password": "password",
+        "_id": 0,
+        "pedal_board_collection_ids": [0, 1]
+    }
+
+]
