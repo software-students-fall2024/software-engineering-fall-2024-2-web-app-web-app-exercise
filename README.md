@@ -2,6 +2,14 @@
 
 A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
 
+## Team members
+
+- [Ryoma Nagano](https://github.com/RYOMA-NAGANO)
+- [Xueying (Andrea) Tang](https://github.com/AndreaTang123)
+- [Yuhao Sheng](https://github.com/imyhalex)
+- [Qiyuan (Bryce) Yin](https://github.com/Bryccce)
+
+
 ### Project structure (10/14/2024)
 
 ```text
