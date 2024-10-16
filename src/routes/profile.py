@@ -143,3 +143,20 @@ def edit_board(board_id):
 
    
     return render_template('edit_board.html', board=board)
+
+
+
+@routes.route('/view_board/<board_id>',  methods=["GET", "POST"])
+@flask_login.login_required
+def view_board(board_id):
+    try:
+        board = get_board(ObjectId(board_id))
+    except Exception:
+        flash('Invalid Board ID.', 'error')
+        return redirect(url_for('routes.profile'))
+    
+    if not board:
+        flash('Board not found', 'error')
+        return redirect(url_for('routes.profile'))
+    
+    return render_template('view_board.html', board=board)
