@@ -38,5 +38,5 @@ https://github.com/software-students-fall2024/2-web-app-this-app/issues
     <br>Go to browser "http://localhost:5000"<br>
 ## Task boards
 
-[Sprint 1](https://github.com/orgs/software-students-fall2024/projects/1)
+[Sprint 1](https://github.com/orgs/software-students-fall2024/projects/1)<br>
 [Sprint 2](https://github.com/orgs/software-students-fall2024/projects/60)
