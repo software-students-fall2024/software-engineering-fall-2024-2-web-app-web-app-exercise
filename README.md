@@ -34,7 +34,19 @@ Navigate into directory by running following command:
 cd 2-web-app-webstars.git
 ```
 
+**pip**
+Note that most Python programs require the use of the package manager named pip - the default Python "package manager". A package manager is software that takes care of installing the correct version of any modules in the correct place for the current system you are running it on. It comes with most distributions of Python. On many machines, the Python 3-compatible version it is calld pip3 and on others it is simply pip.
+
 ### Step 2: Set up Virtual Enviroment
+Install pipenv using pip:
+'''
+pip3 install pipenv
+'''
+
+Activate it:
+'''
+pipenv shell
+'''
 
 Create and activate a virtual environment using the following commands:
 
@@ -78,11 +90,37 @@ Once this .env file is received and downloade, place it in the root directory of
 
 ### Step 5: Running the software
 
-Run the following command:
+On Mac, use the commands: 
 
 ```
-python app.py
+export FLASK_APP=app.py
 ```
+
+and
+
+```
+export FLASK_ENV=development
+```
+
+On Windows, use 
+
+```
+set FLASK_APP=app.py
+```
+
+and 
+
+```
+set FLASK_ENV=development
+```
+
+Start flask with 
+
+```
+flask run
+```
+This will output an address at which the app is running locally, e.g. https://127.0.0.1:5000. Visit that address in a web browser.
+
 
 ## Task boards
 
