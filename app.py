@@ -138,8 +138,28 @@ def create_app():
     @app.route('/delete-session/<session_id>', methods=['POST'])
     def delete_session(session_id):
         db.sessions.delete_one({'_id': ObjectId(session_id)})
-        print(f"Received session_id: {session_id}")
-        db.sessions.delete_one({'_id': ObjectId(session_id)})
+        return redirect(url_for('home_screen'))
+    
+    @app.route('/edit-session/<session_id>', methods=['GET'])
+    def edit_session(session_id):
+        session = db.sessions.find_one({'_id': ObjectId(session_id)})
+        return render_template('edit-session.html', session=session)
+
+    @app.route('/edit-session/<session_id>', methods=['POST'])
+    def update_session(session_id):
+        focus_time = request.form['focus']
+        subject = request.form['subject']
+    
+        db.sessions.update_one(
+            {'_id': ObjectId(session_id)},
+            {
+                "$set": {
+                    "focus_time": focus_time,
+                    "subject": subject,
+                    "updated_at": datetime.now(timezone.utc)
+                }
+            }
+        )
         return redirect(url_for('home_screen'))
 
     @app.route("/counter")

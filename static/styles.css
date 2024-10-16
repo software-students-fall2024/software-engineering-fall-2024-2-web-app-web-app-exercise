@@ -142,7 +142,11 @@ input[type="submit"] {
 input[type="submit"]:hover {
     opacity: 70%;
 }
+.sessions-wrapper {
+    display: flex;
+    flex-direction: row;
 
+}
 .sessions {
     position: relative; 
     display: flex;
@@ -288,6 +292,29 @@ h2 {
     margin-top: 20px;
 }
 
+.home-button {
+        width: 80%;
+        padding: 15px;
+        background-color:white;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        margin: 20px;
+        border: 1px solid #f0f0f0;
+        outline: 2px solid rgba(146, 136, 208, 0.2);
+
+}
+
+.home-button:hover {
+    opacity: 70%;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+}
+
 #search-form {
     background: none;
     width: 100%;
@@ -324,27 +351,31 @@ h2 {
     background-position: center;
 }
 
-#delete-button {
-    width: 15%;
-    margin: 0px;
+#delete-button, #edit-button {
+    width: 40px; 
+    height: 40px;
+    margin: 0;
+    padding: 0;
     border-style: none;
     border-radius: 5px;
-    background-color: #F5DEED;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    height: 100%;
-    font-size: 12px;
-    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22 fill=%22currentColor%22%3E%3Cpath d=%22M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z%22/%3E%3C/svg%3E');
+    background-color: #F5DEED;  
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center;
+    cursor: pointer;
 }
 
-#delete-form {
+#delete-button {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22 fill=%22currentColor%22%3E%3Cpath d=%22M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z%22/%3E%3C/svg%3E');
+}
+
+#edit-button {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22 fill=%22currentColor%22%3E%3Cpath d=%22M257.6 768l160-160L811.2 94.4c12.5-12.5 32.8-12.5 45.3 0l72.5 72.5c12.5 12.5 12.5 32.8 0 45.3L535.2 768l-160 160H257.6v-160zm532.7-532.7L573.3 445.3l-64-64L726.3 171.3l64 64z%22/%3E%3C/svg%3E');
+}
+
+#delete-form, #edit-form {
     background: none;
-    width: 100%;
+    width: 10%;
 }
 
 .header {
@@ -417,4 +448,12 @@ h2 {
     100% {
         transform: translateY(0px);
     }
+    display: inline;
+    width:5%;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1%;
+    justify-content: flex-start; 
 }
