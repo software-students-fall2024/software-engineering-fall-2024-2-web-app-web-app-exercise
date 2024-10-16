@@ -20,7 +20,7 @@ def create_app():
 
     app = Flask(__name__)
 
-    app.secret_key = 'Amos_Bloomberg'
+    app.secret_key = os.getenv("SECRET_KEY")
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"), tlsCAFile=certifi.where())
     db = cxn[os.getenv("MONGO_DBNAME")]
     plans_collection = db['plans']  
@@ -165,20 +165,58 @@ def create_app():
         """
 
         focus_times = db.sessions.find({}, {"focus_time": 1, "_id": 0})
-        
+
+        latest_session = db.sessions.find_one(sort=[("created_at", -1)])
+
         totaltime =0;
+        
+        totaltime = 0;
+        subjectSet = set()
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
                 amount = 0
             elif int (time) >= 0:
                 amount = int (time)
-            totaltime += amount;
+            totaltime += amount
+            subjectSet.add(focus_time['subject'])
+        subjectArr = list(subjectSet)
+        if len(subjectArr) > 1:
+            subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
+        else:
+            subjects = subjectArr[0]
+        
+        #amount of time studied x sessions x bunnies
+        if latest_session:
+            focus_time = int(latest_session.get('focus_time', 0))  # Default to 0 if not present
+            subject = latest_session.get('subject', 'Unknown')
+            
+            # Calculate bunnies collected (1 bunny for every 5 minutes of focus time)
+            bunnies_collected = focus_time // 5 if focus_time >= 5 else 0
+        else:
+            focus_time = 0
+            subject = 'Unknown'
+            bunnies_collected = 0
+
+        # Pass all data to the congrats.html template
+        return render_template("congrats.html", 
+                            totaltime=totaltime, 
+                            focus_time=focus_time, 
+                            subject=subject, 
+                            bunnies_collected=bunnies_collected)
+
+    # Pass all data to the congrats.html template
+   # return render_template("congrats.html", 
+                          # totaltime=totaltime 
+                         #  )
+        
+        
         
         # break_time = request.args.get('break_time')
         # reps_no = request.args.get('reps')
         
-        return render_template("congrats.html", totaltime=totaltime)
+        
+    
 
     @app.route("/search", methods=["POST"])
     @login_required  

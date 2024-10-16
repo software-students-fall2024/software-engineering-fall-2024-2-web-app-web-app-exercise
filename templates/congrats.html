@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congratulations Screen</title>
+    <title>Congratulations</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
 </head>
 <body>
@@ -13,15 +13,18 @@
         </div> 
         <p class="session-info">You've completed a session with:</p>
         <ul class="session-info">
+            
+            <li>Focus Time: {{ focus_time }} minutes</li>
+            <li>Subject: {{ subject }}</li>
             <li>Total Focus Time: {{ totaltime }} minutes</li>
-            <li>Break Time: {{ break_time }} minutes</li>
-            <li>Repetitions: {{ reps_no }}</li>
+            <li>Bunnies Collected: {{ bunnies_collected }}</li>
+            
 
         </ul>
     
         <img class = "image" src="{{ url_for('static', filename='images/BunnywHat.png') }}" alt="BunnyCongratsImage">
-        <a href="{{ url_for('session_form') }}" class="home-button">Start Another Session</a>    
+        <a href="{{ url_for('session_form') }}" class="home-button">Start Another Session</a> 
+        <a href="{{ url_for('home_screen') }}" class="home-button">Home</a>   
     </div>
-    
 </body>
 </html>
