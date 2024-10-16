@@ -16,7 +16,7 @@
     </form>
     {% endif %}
 
-    {% if applianceInfo is not none %} <!-- If code is found, display help form -->
+    {% if applianceInfo is not none %}  <!-- If code is found, display help form -->
         <h3>{{applianceInfo.applianceName}}</h3>
         <p>Building:{{applianceInfo.building}}</p>
         <p>Floor:{{applianceInfo.floor}}</p>
@@ -32,4 +32,5 @@
             <input type="submit" value="Submit Request">
         </form>
     {% endif %}
+    
 {% endblock %}

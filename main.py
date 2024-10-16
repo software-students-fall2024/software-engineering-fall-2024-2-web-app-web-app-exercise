@@ -36,8 +36,7 @@ requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subjec
 applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 doc_code = 0 #for when we need to update appliances
 
-#reports = ["Vending machine", "Water fountain", "Door hinge"]
-reports = list(requests_collection.find({}))
+#reports = list(requests_collection.find({}))
 
 # Regular user homepage
 @app.route("/")
@@ -47,13 +46,52 @@ def index():
 # Admin homepage - show all requests
 @app.route("/admin")
 def admin_home():
-    print(reports)  # Debugging to see what is returned
+    reports = list(requests_collection.find({}))
+    reports.sort(key=lambda x: (x['status'] != 'pending', x['date']))
     return render_template("index.html", reports=reports, is_admin=True)
 
+@app.route("/adminRequest/<id>", methods=["GET"])
+def admin_viewRequest(id):
+    try:
+        # Convert the id into a valid ObjectId
+        object_id = ObjectId(id)
+    except InvalidId:
+        # If the conversion fails, return a 404 error
+        return "Invalid request ID", 404
+    
+    # Fetch the specific request from the database using the ObjectId
+    report = requests_collection.find_one({'_id': object_id})
+    
+    if report:
+        return render_template("adminRequest.html", report=report)
+    else:
+        return "Request not found", 404
+
+@app.route("/resolve/<id>", methods=["POST"])
+def resolve_request(id):
+    try:
+        # Convert the id into a valid ObjectId
+        object_id = ObjectId(id)
+    
+        # Update the request's status to "complete"
+        result = requests_collection.update_one(
+            {"_id": object_id},
+            {"$set": {"status": "complete"}}
+        )
+
+        if result.modified_count > 0:
+            return redirect(url_for('admin_viewRequest', id=id))
+        else:
+            return "Failed to resolve the request.", 500
+    except Exception as e:
+        print(f"Error resolving request: {e}")
+        return "An error occurred while resolving the request.", 500
+
+
 # List all reports (separate view)
-@app.route("/list")
-def list():
-    return render_template("list.html")
+@app.route("/requestList")
+def requestList():
+    return render_template("requestList.html")
 
 @app.route("/request", methods=["GET", "POST"])
 def makeRequest(code=None):
@@ -101,6 +139,7 @@ def trackRequest(code=None):
         requestEntry = None
         applianceEntry = None
     return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
+
 @app.route("/newApp/<update>")
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)
