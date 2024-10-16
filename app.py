@@ -107,6 +107,8 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
+        if not current_user.is_authenticated :
+            return redirect('/login')
         docs = tasks.find({"user": {'$in': [current_user.username]}})
         return render_template("index.html", docs=docs)
 
@@ -114,7 +116,7 @@ def create_app():
     @login_required
     def add_task():
         """
-        Route for the adding task page
+        Route for the adding task page.
         Returns:
             rendered template (str): The rendered HTML template.
         """
