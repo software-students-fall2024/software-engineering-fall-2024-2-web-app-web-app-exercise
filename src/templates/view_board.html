@@ -16,9 +16,10 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 5px;
-            width: 500px;
+            width: 90vw;
             border: 2px solid black;
             padding: 10px;
+            margin: 0 auto;
         }
 
         .slot {
@@ -36,18 +37,9 @@
             max-height: 90%;
         }
 
-        .btn-group {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 500px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
         .btn {
             padding: 10px 15px;
-            margin: 5px;
+            margin: 20px;
             border-radius: 20px;
             border: none;
             background-color: #ddd;
@@ -56,16 +48,11 @@
             flex: 1;
             min-width: 100px;
         }
-
-        .btn:hover {
-            background-color: #bbb;
-        }
     </style>
    
 </head>
 <body>
     <div class="top-bar">
-        <a href="{{ url_for('routes.profile') }}" id="new">New</a>
         <a href="{{ url_for('routes.profile') }}" id="profile">Profile</a>
         <a href="{{ url_for('routes.logout') }}" id="logout">Log Out</a>
     </div>
@@ -73,7 +60,7 @@
     
         <div class="container">
             <div class="board-title">
-                <input type="text" name="name" value="{{ board['name'] }}" placeholder="Board Title (editable)">
+                <h1>{{ board['name'] }}</h1>
             </div>
     
             <div class="board">
@@ -88,6 +75,10 @@
                 <div class="slot" ></div>
                 {% endfor %}
             </div>
+
+            <a href="/edit_board/{{ board['_id'] }}">
+                <button class="btn">Edit Board</button>
+            </a>
     
             
         </div>

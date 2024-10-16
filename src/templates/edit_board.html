@@ -16,9 +16,10 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 5px;
-            width: 500px;
+            width: 90vw;
             border: 2px solid black;
             padding: 10px;
+            margin: 0 auto;
         }
 
         .slot {
@@ -209,7 +210,7 @@
 </head>
 <body>
     <div class="top-bar">
-        
+       
         <a href="{{ url_for('routes.profile') }}" id="profile">Profile</a>
         <a href="{{ url_for('routes.logout') }}" id="logout">Log Out</a>
     </div>
