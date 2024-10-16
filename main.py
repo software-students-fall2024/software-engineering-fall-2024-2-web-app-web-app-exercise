@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
 import re
+import certifi
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,7 +18,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
-client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
+client = MongoClient(mongo_host, tlsCAFile=certifi.where(), server_api=server_api.ServerApi('1'))
 db = client[db_name]
 requests_collection = db.requests
 #collections for the buildings?
