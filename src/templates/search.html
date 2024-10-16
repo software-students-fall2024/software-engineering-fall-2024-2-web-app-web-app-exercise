@@ -25,8 +25,6 @@
             window.history.back();
         }
 
-        
-        
         function selectPedal(name, imageUrl) {
         const boardId = "{{ board_id }}"; 
         if (!boardId) {
@@ -41,7 +39,7 @@
 
 <body>
     <div class="top-bar">
-        <span class="back-arrow" onclick="goBack()">&#x2190;</span>
+        <a href="/edit_board/{{ board_id }}" class="back-arrow">&#x2190;</a>
         <form method="GET" action="{{ url_for('routes.search') }}" style="flex-grow: 1; display: flex;">
             <input type="hidden" name="board_id" value="{{ board_id }}"> 
             <input type="text" name="query" class="search-query" placeholder="Search Pedals">

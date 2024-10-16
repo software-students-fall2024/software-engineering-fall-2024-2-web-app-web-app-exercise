@@ -37,18 +37,9 @@
             max-height: 90%;
         }
 
-        .btn-group {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 500px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
         .btn {
             padding: 10px 15px;
-            margin: 5px;
+            margin: 20px;
             border-radius: 20px;
             border: none;
             background-color: #ddd;
@@ -56,10 +47,6 @@
             font-size: 1rem;
             flex: 1;
             min-width: 100px;
-        }
-
-        .btn:hover {
-            background-color: #bbb;
         }
     </style>
    
@@ -73,7 +60,7 @@
     
         <div class="container">
             <div class="board-title">
-                <input type="text" name="name" value="{{ board['name'] }}" placeholder="Board Title (editable)">
+                <h1>{{ board['name'] }}</h1>
             </div>
     
             <div class="board">
@@ -88,6 +75,10 @@
                 <div class="slot" ></div>
                 {% endfor %}
             </div>
+
+            <a href="/edit_board/{{ board['_id'] }}">
+                <button class="btn">Edit Board</button>
+            </a>
     
             
         </div>
