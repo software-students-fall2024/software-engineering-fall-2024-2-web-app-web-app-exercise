@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
 import re
+import certifi
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,7 +18,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
-client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
+client = MongoClient(mongo_host, tlsCAFile=certifi.where(), server_api=server_api.ServerApi('1'))
 db = client[db_name]
 requests_collection = db.requests
 #collections for the buildings?
@@ -36,6 +37,8 @@ requestTest = [{"code":"1234","fullName":"Stephen","email":"srs@nyu.edu","subjec
 applianceTest = {"code":"1234","building":"Bobst","floor":"4","applianceName":"Toilet"}
 doc_code = 0 #for when we need to update appliances
 
+#reports = list(requests_collection.find({}))
+
 # Regular user homepage
 @app.route("/")
 def index():
@@ -44,12 +47,52 @@ def index():
 # Admin homepage - show all requests
 @app.route("/admin")
 def admin_home():
+    reports = list(requests_collection.find({}))
+    reports.sort(key=lambda x: (x['status'] != 'pending', x['date']))
     return render_template("index.html", reports=reports, is_admin=True)
 
+@app.route("/adminRequest/<id>", methods=["GET"])
+def admin_viewRequest(id):
+    try:
+        # Convert the id into a valid ObjectId
+        object_id = ObjectId(id)
+    except InvalidId:
+        # If the conversion fails, return a 404 error
+        return "Invalid request ID", 404
+    
+    # Fetch the specific request from the database using the ObjectId
+    report = requests_collection.find_one({'_id': object_id})
+    
+    if report:
+        return render_template("adminRequest.html", report=report)
+    else:
+        return "Request not found", 404
+
+@app.route("/resolve/<id>", methods=["POST"])
+def resolve_request(id):
+    try:
+        # Convert the id into a valid ObjectId
+        object_id = ObjectId(id)
+    
+        # Update the request's status to "complete"
+        result = requests_collection.update_one(
+            {"_id": object_id},
+            {"$set": {"status": "complete"}}
+        )
+
+        if result.modified_count > 0:
+            return redirect(url_for('admin_viewRequest', id=id))
+        else:
+            return "Failed to resolve the request.", 500
+    except Exception as e:
+        print(f"Error resolving request: {e}")
+        return "An error occurred while resolving the request.", 500
+
+
 # List all reports (separate view)
-@app.route("/list")
-def list():
-    return render_template("list.html")
+@app.route("/requestList")
+def requestList():
+    return render_template("requestList.html")
 
 @app.route("/request", methods=["GET", "POST"])
 def makeRequest(code=None):
@@ -85,18 +128,31 @@ def makeRequest(code=None):
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
+<<<<<<< HEAD
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4,5}$', code)):
+=======
     if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4-5}$', code)):
+>>>>>>> main
         code = int(code)
         # If code exists, retrieve data as entry and display it 
-        # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
-        requestEntry = requestTest
-        # applianceEntry = appliances_collection.find({'code':code});
-        applianceEntry = applianceTest
-        # print(entry.fullName);
+        requestEntry = requests_collection.find({'code':code}).sort({'date':-1})
+        applianceEntry = appliance_collection.find_one({'code':code})
+        print(requestEntry.alive)
     else:
         requestEntry = None
         applianceEntry = None
     return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
+
+@app.route("/track/<ticket>", methods=["GET"])
+def trackRequestDetailed(ticket):
+    # If code is not empty and is 4 numbers
+    if (ticket != '' and ticket is not None):
+        # If code exists, retrieve data as entry and display it 
+        requestEntry = requests_collection.find_one({'ticket':ticket})
+    else:
+        requestEntry = None
+    return render_template("trackDetailed.html", requestInfo=requestEntry)
+
 @app.route("/newApp/<update>")
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)

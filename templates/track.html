@@ -11,26 +11,39 @@
             <input type="submit" value="search">
             </form>
         </div>
+        {% if applianceInfo is not none %}
+        <div class="track-request-right">
+            <h1>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h1>
+            <h2>Building: {{applianceInfo.building}}</h2>
+            <h2>Floor: {{applianceInfo.floor}}<h2>
+            <a href={{url_for('makeRequest',code=applianceInfo.code)}}>Start a New Request</a>
+        </div>
+        {% else %}
+        <div class="track-request-right">
+            <h1>No appliance selected.</h1>
+        </div>
+        {% endif %}
+    </div>
+    <div class="track-request-list">
+
         
         {% if requestInfo is not none %}
             {% for request in requestInfo %}
-                <div class="request-row">
-                    <h1>{{request.subject}}</h1>
-                    <p>Filed on: {{request.date}}</p>
-                    <p>By: {{request.fullName}} ({{request.email}})</p>
-                    <p>Description: {{request.description}}</p>
+                <div class="request-row {{'resolved' if request.status != 'pending'}}">
+                    <h1 class="request-title">{{request.subject}}</h1>
+                    <h4 class="status">{{request.status.upper()}}</h4>
+                    <p><strong>Filed on:</strong> {{request.date}}</p>
+                    <p><strong>Requested By:</strong> {{request.fullName}} ({{request.email}})</p>
+                    <p><strong>Description:</strong> {{request.description}}</p>
+                    <a href={{url_for('trackRequestDetailed',ticket=request.ticket)}}>More Details</a>
                 </div>
             {% endfor %}
+        {% else %}
+            <h1>No requests found.</h1>
         {% endif %}
+
     </div>
-    {% if applianceInfo is not none %}
-    <div class="track-request-right">
-        <h6>APPLIANCE/ROOM</h6>
-        <h1>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h>
-        <h5>Building: {{applianceInfo.building}}</h5>
-        <h5>Floor: {{applianceInfo.floor}}<h5>
-    </div>
-    {% endif %}
+
 </div>
 
 
