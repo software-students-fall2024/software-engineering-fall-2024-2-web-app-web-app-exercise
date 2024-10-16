@@ -56,3 +56,16 @@ button:hover {
 .btn-delete {
     background-color: #F7DC6F;
 }
+
+@media (min-width: 450px) {
+    h1, h2 {
+        text-align: center;
+    }
+    .book-info,  .form-group {
+        margin: 0 auto;  /* Centers the .book-info horizontally */
+        max-width: 600px;
+        padding-bottom: 20px;
+        text-align: center;  /* Ensures the text inside is left-aligned */
+        position: relative;
+    }
+}
