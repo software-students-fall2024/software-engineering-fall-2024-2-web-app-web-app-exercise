@@ -13,9 +13,9 @@ This Project Tracker App is an intelligent task management tool that divides tas
 
 2. As an `event organizer`, I want to create new projects so that I can organize and track the tasks my team needs to complete.
 
-3. As a `user`, I want to update my profile so that I can keep my account information current.
+3. As a `user`, I want to view my profile so that I can see my personal name and workspaces.
 
-4. As a `team member`, I want to be able to view what other tasks within the project my team members have completed, so that I can better collaborate with my teammates.
+4. As a `team member`, I want to be able to view what other tasks within the project my team members have, so that I can better collaborate with my teammates.
 
 5. As a `user`, I want to log out of the system so that I can secure my account when I'm done using it.
 
