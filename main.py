@@ -220,5 +220,10 @@ def remove_appliance(code):
         "code": code
     })
     return redirect(url_for('index'))
+
+@app.route("/menu")
+def show_menu():
+    return render_template("menu.html");
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=3000)

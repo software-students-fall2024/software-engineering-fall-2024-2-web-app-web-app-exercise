@@ -1,0 +1,51 @@
+
+{% extends "layout.html" %}
+
+{% block body %}
+
+    
+    <ul style="list-style-type: none; align-items: center; row-gap: 1vw; padding: 1vw; margin-bottom: .25vh;">
+        <li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/">User Home</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/admin">Admin Home</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+    <h2 style="margin-bottom: .5vh;"><a class="link" href="/request">New Request</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+    <h2 style="margin-bottom: .5vh;"><a class="link" href="/track">Track A Request</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/list">Requests</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/request">Request Maintenance</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="{{url_for('new_app', update = 0)}}">Add Appliance</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="{{url_for('delete_app')}}">Remove Appliance</a></h2>
+</div></li>
+    
+<li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/request">Make A Request</a></h2>
+</div></li>
+    
+    <li><div class = "navLinks">
+        <h2 style="margin-bottom: .5vh;"><a class="link" href="/login">Login</a></h2>
+    </div>
+    </li>
+</ul>
+    
+
+{%endblock %}
