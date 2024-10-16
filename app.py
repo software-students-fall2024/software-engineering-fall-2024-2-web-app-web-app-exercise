@@ -133,4 +133,5 @@ def create_app():
 if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "3000")
     app = create_app()
+    app.debug = True
     app.run(port=FLASK_PORT)

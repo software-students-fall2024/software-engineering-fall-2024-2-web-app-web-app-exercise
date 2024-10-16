@@ -15,7 +15,6 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 body {
@@ -103,26 +102,26 @@ footer {
 
 /* SEARCH CSS */
 .search-container {
+    height: 20vh;
+    justify-content: center;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20%;
 }
   
 .search-form {
     border: none;
     display: flex;
-    width: 70vw;
+    width: 80vw;
     align-items: center;
     justify-content: center;
 }
   
 .search-input {
     padding: 10px;
-    width: 30vw;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    width: 100vw;
+    border-radius: 10px;
     font-size: 16px;
     margin-right: 10px;
 }
@@ -133,21 +132,23 @@ footer {
     color: white;
     border: none;
     border-radius: 5px;
+    z-index: 1000;
 }
   
 .search-button:hover {
-    background-color: #424242;
+    background-color: #868686;
 }
 
 .suggestions {
-    border: 1px solid #ccc; 
-    max-height: 200px; 
-    overflow-y: auto; 
-    position: absolute; 
-    background: white; 
-    width: calc(50vw - 20px);
-    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    width: 50vw;
     display: none;
+    position: absolute;
+    margin-top: 11%;
+    left: 10vw;
+    border-radius: 2px solid black;
 }
 
 .suggestion-item {
@@ -161,8 +162,9 @@ footer {
 
 /* LOGIN CSS */
 .login-container {
+    justify-content: center;
     width: 300px;
-    margin: 0 auto;
+    margin: auto;
     padding: 20px;
     border-radius: 8px;
     background-color: #f9f9f9;
