@@ -29,26 +29,39 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1001;
   
 }
 
 .search-bar{
   width: 100%;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  padding: 5px;
+    padding: 0px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    padding: 10px;
+    background-color: white;
+    
  
   
 
 }
-.search-bar input[type="text"] {
-  width: 300px;
-  padding: 10px; /* Add padding for better appearance */
-  font-size: 16px; /* Increase font size */
-  border: 1px solid black; /* Add a border */
-  border-radius: 5px; /* Optional: add rounded corners */
-  margin-right: 5px; /* Space between input and button */
+.search-bar form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search-bar input {
+  width: 60%;
+  padding: 15px;
+  font-size: 18px;
+}
+
+.search-bar button {
+  padding: 15px;
+  font-size: 18px;
 }
 
 .logo {
@@ -57,12 +70,8 @@ header {
 
 .container {
   display: flex;
-  flex: 1;
-  
-  
-  padding: 0;
-  margin: 0;
-  width: 100%;
+    padding: 20px;
+    padding-top: 150px;
 }
 
 .workout-nav {
@@ -196,29 +205,13 @@ footer a {
 
 /* Mobile Devices */
 @media only screen and (max-width: 767px) {
-  .search-bar {
-      width: 80%; /* Make the search bar take up most of the screen width */
-      margin: 10px; /* Center the search bar horizontally */
-      padding: 5px;
-      display: flex; /* Keep elements in a row */
-      flex-direction: row; /* Align input and button horizontally */
-      justify-content: space-between; /* Add spacing between the input and button */
-      align-items: center;
-  }
-
-  .search-bar input[type="text"] {
-    width: 70%;
-      flex: 1; /* Allow the input to take up available space */
-      padding: 10px; /* Adjust padding for better appearance on smaller screens */
-      font-size: 14px; /* Reduce font size for better fit */
-      margin-right: 5px; /* Space between the input and the button */
-  }
-
-  .search-bar button {
-      padding: 8px; /* Adjust padding for consistency */
-      font-size: 14px; /* Adjust font size */
-      flex-shrink: 0; /* Prevent the button from shrinking */
-  }
+  .search-bar input,
+    .search-bar button {
+      font-size: 16px;
+      padding: 12px;
+      
+      
+    }
   header{
     height: 50px;
   }
