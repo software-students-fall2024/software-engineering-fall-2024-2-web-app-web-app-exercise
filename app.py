@@ -183,28 +183,6 @@ def create_app():
         Route for the congratulations page.
         Renders a template that shows the session details and a congratulations message.
         """
-
-        focus_times = db.sessions.find({"username": current_user.id}, {"focus_time": 1, "subject":1, "_id": 0})
-        totaltime = 0;
-
-        subjectSet = set()
-
-        for focus_time in focus_times:
-            time = (focus_time['focus_time'])
-            if time == '':
-                amount = 0
-
-            elif int (time) >= 0:
-                amount = int (time)
-                totaltime += amount
-                subjectSet.add(focus_time['subject'])
-                subjectArr = list(subjectSet)
-
-            if len(subjectArr) > 1:
-                subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
-            else:
-                subjects = subjectArr[0]
-
             #amount of time studied x sessions x bunnies
         latest_session = db.sessions.find_one(sort=[("created_at", -1)])
         if latest_session:
@@ -217,15 +195,12 @@ def create_app():
             focus_time = 0
             subject = 'Unknown'
             bunnies_collected = 0
-        totalbunnies = totaltime // 5 if totaltime >= 5 else 0
         # Pass all data to the congrats.html template
-        return render_template("congrats.html", 
-                            totaltime=totaltime, 
-                            subjects=subjects,
+        return render_template("congrats.html",
                             focus_time=focus_time, 
                             subject=subject, 
                             bunnies_collected=bunnies_collected,
-                            totalbunnies = totalbunnies)
+                          )
         
         
 
