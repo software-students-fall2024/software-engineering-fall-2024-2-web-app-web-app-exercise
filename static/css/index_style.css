@@ -12,6 +12,7 @@ html, body {
 }
 
 body {
+  padding-top: 60px;
   background-color: hsl(0, 0%, 100%);
   display: flex;             
   align-items: center;        
