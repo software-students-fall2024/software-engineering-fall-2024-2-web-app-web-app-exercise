@@ -41,7 +41,9 @@ doc_code = 0 #for when we need to update appliances
 # Regular user homepage
 @app.route("/")
 def index():
-    return render_template("index.html", is_admin=False)
+    reports = list(requests_collection.find({}))
+    reports.sort(key=lambda x: (x['status'] != 'pending', x['date']))
+    return render_template("index.html", reports=reports, is_admin=False)
 
 # Admin homepage - show all requests
 @app.route("/admin")
