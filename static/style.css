@@ -1,0 +1,210 @@
+/* Common styles for buttons */
+.link {
+    border: 2px solid gray; /* Define a consistent border for both views */
+    padding: 2vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px; /* Optional: for rounded corners */
+    font-size: 1em;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+input {
+    height: 2vh;
+    width: 50vw;
+    font: 2em sans-serif;
+}
+
+.logo{
+    font-size: 1rem;
+}
+
+/* Other shared styles */
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+h1{
+    text-align: center;
+    font-size: 3rem;
+}
+
+h2{
+    text-align: center;
+
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    overflow: hidden;
+    width: 100%;
+    background-color: bisque;
+    margin-bottom: 5vh;
+    padding: 0px;
+    height: 100px;
+}
+
+.navBar h1{
+    margin: 20px;
+}
+
+.navBar a{
+    float: right;
+    padding: 5px 5px;
+    text-decoration: none;
+}
+
+.navLinks {
+    display: flex;
+    padding: 2vw;
+    gap: 2vw;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.link{
+    border: 5px solid gray;
+}
+
+.welcome{
+    margin-left: 40px;
+}
+
+.request-row{
+    background-color: bisque;
+    border: 1px solid black;
+    padding: 20px 30px;
+}
+
+.request-row:hover{
+    /* border: 1px solid black;
+    padding: 20px 30px; */
+    background-color: lightgray;
+}
+
+.track-request{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.track-request p {
+    font-size: 1rem;
+}
+
+.newRequest {
+    background-color: greenyellow;
+}
+
+.trackRequest {
+    background-color: black;
+    color: white;
+}
+
+.code-box{
+    background: lightgray;
+    width: 100%;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.tracking-code-box{
+    font-size: 2rem;
+    padding: 12px 20px;
+    border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.track-request-top{
+    position: static;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    border-radius: 40px;
+    overflow: hidden;
+    border: black;
+    border-style: solid;
+}
+
+.track-request-list{
+    position: static;
+    display: flex;
+    flex-direction: column;
+}
+
+.track-request-expanded{
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    padding: 30px 100px;
+}
+
+.track-request-expanded p {
+    font-size: 2rem;
+}
+
+.status{
+    color: gray;
+}
+
+.resolved{
+    background-color: rgb(204, 255, 204);
+}
+
+/* Style for the request list */
+.request-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding-left: 0; /* Remove default padding */
+}
+
+li {
+    margin-bottom: 20px; /* Add space between each request item */
+}
+
+/* Make the entire request item clickable */
+.request-item {
+    display: block;
+    background-color: #d3d3d3; /* Light gray background */
+    padding: 20px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+}
+
+.request-details h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.request-details p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.request-title{
+    text-align: left;
+}
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+
+

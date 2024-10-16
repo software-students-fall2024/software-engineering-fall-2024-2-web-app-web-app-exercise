@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NYU Maintenance Request Portal</title>
+    <!-- Common styles for both admin and user -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    
+    {% if is_admin %}
+    <!-- Admin-specific styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-admin.css') }}">
+    {% else %}
+    <!-- User-specific styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style-user.css') }}">
+    {% endif %}
+</head>
+
+<body>
+    <div class="navBar" style="text-align: center; align-items: center;">
+        <div>
+            <h1 style="text-align: center;"><a href="/">NYU Maintenance Request Portal</a></h1>
+        </div>
+        <div class="navLinks">
+
+            <h2><a class="link" href="{{url_for('show_menu')}}">Menu</a></h2>
+        </div>
+    </div>
+
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>

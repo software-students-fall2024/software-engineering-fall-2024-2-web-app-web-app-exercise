@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+{%block body%}
+
+    <h1>Search for Appliance to Remove (By code/By building, floor, and name)</h1>
+    <br/>
+    <div class="options" style="text-align: center;">
+        <form method="POST" action = "{{url_for('get_app', use='code')}}">
+            <input type = "number" id = "code" name = "code" placeholder="Enter code"/>
+            <br/>
+            <input type ="submit" value="Search"/>
+        </form>
+        <form method="POST" action = "{{url_for('get_app', use='name')}}">
+            <input type = "text" id = "bname" name = "bname" placeholder="Enter building name"/>
+            <br/>
+            <input type = "number" id = "floor" name = "floor" placeholder="Enter floor"/>
+            <br/>
+            <input type = "text" id = "appName" name = "appName" placeholder="Enter appliance name"/>
+            <br/>
+            <input type ="submit" value="Search"/>
+        </form>
+    </div>
+    <br/>
+    {% if results == "banana" %}
+    <div>
+        <h2>No Results Found!</h2>
+    </div>
+    {% else %}
+    <div>
+        <h2>Here are the results:</h2>
+        <br/>
+        <div style="text-align: center;">
+            <p style="text-align: center;">
+                Building: {{results.building}}
+                <br/>
+                Floor: {{results.floor}}
+                <br/>
+                Name: {{results.applianceName}}
+                <br/>
+                Code: {{results.code}}
+                <br/>
+            </p>
+        </div>
+        <h2>Are you sure you want to delete?</h2>
+        <br/>
+        <div style="align-content: center;text-align: center;justify-content: center;align-items: center;">
+            <form method="POST" action="{{url_for('remove_appliance', code = results.code)}}">
+                <input type = "submit" value = "Yes"  style="width: 10vw; height: 2vh; font: 1em;"/>
+            </form>
+            <form type="submit" action="{{url_for('index')}}" style="width: 10vw; height: 2vh; font: 1em;">
+                <input type = "submit" value = "No"  style="width: 10vw; height: 2vh; font: 1em;"/>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

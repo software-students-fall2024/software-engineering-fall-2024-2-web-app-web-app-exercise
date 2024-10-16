@@ -1,0 +1,38 @@
+<!-- to add a new appliance/update existing one maybe-->
+
+{% extends "layout.html" %}
+
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+{% block body %}
+    {% if update == '0' %}
+        <h1>Create/Update New Appliance</h1>
+        <br/>
+        {% include 'appForm.html' %}
+    {%elif update == '1'%}
+        <h1>Update New Appliance</h1>
+        <h2>Appliance already exists! Confirm information to update: </h2>
+        <br/> 
+        {% include 'appFormU.html' with context %}
+    {%elif update == '2'%}
+        <h1>Create/Update New Appliance</h1>
+        <h2>Code is already in use, please choose another one!</h2>
+        <br/> 
+        {% include 'appForm.html' %}
+    {% elif update == '4' %}
+        <h1>Update New Appliance</h1>
+        <h2>Appliance already exists! Confirm information to update: </h2>
+        <br/> 
+        {% include 'appFormU.html' with context %}
+    {%elif update == '5'%}
+        <h1>Update New Appliance</h1>
+        <h2>Code is already in use, please choose another one!</h2>
+        <br/> 
+        {% include 'appFormU.html' with context %}
+    {%else%}
+        <h2>Appliance successfully created/updated!</h2>
+    {%endif%}
+        
+{% endblock %}
