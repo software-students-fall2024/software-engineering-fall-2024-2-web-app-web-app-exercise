@@ -8,6 +8,7 @@
 
 
     <h1>Book Details</h1>
+    <div class="book-info">
     <div class="detail-row">
         <span class="detail-label">Title:</span> <span>{{ book.title }}</span>
     </div>
@@ -26,37 +27,37 @@
     <div class="detail-row">
         <span class="detail-label">Date Added:</span> <span>{{ book.date_added }}</span>
     </div>
+</div>
     <br>
     <h2>Edit Book Details</h2>
     <form method="POST" action="{{ url_for('edit', book_id=book['_id']) }}">
-        <div class="detail-row">
+        <div class="form-group">
             <label for="title" class="detail-label">Title:</label>
             <input type="text" id="title" name="title" value="{{ book.title }}">
         </div>
-        <div class="detail-row">
+        <div class="form-group">
             <label for="author" class="detail-label">Author:</label>
             <input type="text" id="author" name="author" value="{{ book.author }}">
         </div>
-        <div class="detail-row">
+        <div class="form-group">
             <label for="genre" class="detail-label">Genre:</label>
             <input type="text" id="genre" name="genre" value="{{ book.genre }}">
         </div>
-        <div class="detail-row">
+        <div class="form-group">
             <label for="price" class="detail-label">Price:</label>
             <input type="text" id="price" name="price" value="{{ book.price }}">
         </div>
-        <div class="detail-row">
+        <div class="form-group">
             <label for="quantity" class="detail-label">Quantity:</label>
             <input type="text" id="quantity" name="quantity" value="{{ book.quantity }}">
         </div>
         <br>
-        <button type="submit">Save Changes</button>
+        <div class="action-buttons">
+            <button type="submit" class="btn-save">Save Changes</button>
+            <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn-delete">Delete Book</button>
+            </form>
+        </div>
     </form>
-    <br>
-    <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="POST" style="display:inline;">
-        <button type="submit">Delete Book</button>
-    </form>
-    <br><br>
-    <a href="{{ url_for('home') }}">Back to Home</a>
 
 {% endblock %}
