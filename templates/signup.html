@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+  </head>
+  <body>
+    <div class="container">
+      <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+      <form method="POST" action="{{ url_for('signup') }}">
+        <h1>Create Your Account</h1>
+        <span>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required placeholder="Enter your username..."/>
+        </span>
+        <span>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password..."/>
+        </span>
+        <input type="submit" value="Sign Up" />
+      </form>
+      <p>Already have an account?</p>
+      <p><a href="{{ url_for('login') }}">Log in here</a>.</p>
+    </div>
+  </body>
+</html>
