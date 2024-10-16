@@ -128,7 +128,7 @@ def makeRequest(code=None):
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
-    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4-5}$', code)):
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4,5}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
         requestEntry = requests_collection.find({'code':code}).sort({'date':-1})
