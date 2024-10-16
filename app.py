@@ -4,6 +4,10 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from bson import ObjectId
 import certifi
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+
 
 load_dotenv()
 
@@ -19,13 +23,33 @@ try:
     print("Successfully connected to MongoDB!")
 except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
+
 db = client['fitness_db']
 todo_collection = db['todo']
 exercises_collection = db['exercises']
+users_collection = db['users']
+
+# Flask-Login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+class User(UserMixin):
+    def __init__(self, user_id, username, password):
+        self.id = user_id
+        self.username = username
+        self.password = password
+
+    @staticmethod
+    def get(user_id):
+        user_data = users_collection.find_one({"_id": ObjectId(user_id)})
+        if user_data:
+            return User(str(user_data['_id']), user_data['username'], user_data['password'])
+        return None
 
 
 def search_exercise(query: str):
-    #print('query ', query)
     exercises = exercises_collection.find({
         "workout_name": {
             "$regex": query, 
@@ -41,8 +65,7 @@ def get_exercise(exercise_id: str):
 
 
 def get_todo():
-    todo_list = todo_collection.find_one({"_id": 1})
-    #print('todo_list', todo_list)
+    todo_list = todo_collection.find_one({"user_id": current_user.id})
     if todo_list and "todo" in todo_list:
         return todo_list['todo']
     return []
@@ -50,7 +73,7 @@ def get_todo():
 
 def delete_todo(exercise_todo_id: int):
     result = todo_collection.update_one(
-        {"_id": 1},
+        {"user_id": current_user.id},
         {"$pull": {"todo": {"exercise_todo_id": exercise_todo_id}}}
     )
     
@@ -67,7 +90,7 @@ def add_todo(exercise_id: str, working_time=None, reps=None, weight=None):
 
     if exercise:
 
-        todo = todo_collection.find_one({"_id": 1})
+        todo = todo_collection.find_one({"user_id": current_user.id})
 
         if todo and "todo" in todo:
             max_id = max([item.get("exercise_todo_id", 999) for item in todo["todo"]], default=999)
@@ -86,23 +109,22 @@ def add_todo(exercise_id: str, working_time=None, reps=None, weight=None):
 
         if todo:
             result = todo_collection.update_one(
-                {"_id": 1},
+                {"user_id": current_user.id},
                 {"$push": {"todo": exercise_item}}
             )
+            success = result.modified_count > 0
         else:
             result = todo_collection.insert_one({
-                "_id": 1,
+                "user_id": current_user.id,
                 "todo": [exercise_item]
             })
+            success = result.inserted_id is not None
 
-        if result.modified_count > 0 or result.inserted_id:
-            #print(f"Exercise {exercise['workout_name']} added to To-Do List with exercise_todo_id {next_exercise_todo_id}.")
+        if success:
             return True
         else:
-            #print(f"Failed to add exercise {exercise['workout_name']} to To-Do List.")
             return False
     else:
-        #print(f"Exercise with ID {exercise_id} not found.")
         return False
 
 
@@ -122,7 +144,7 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
         return False  
 
     result = todo_collection.update_one(
-        {"_id": 1, "todo.exercise_todo_id": exercise_todo_id},
+        {"user_id": current_user.id, "todo.exercise_todo_id": exercise_todo_id},
         {"$set": update_fields}
     )
     
@@ -133,9 +155,8 @@ def edit_exercise(exercise_todo_id, working_time, weight, reps):
         return False
 
 
-
 def get_exercise_in_todo(exercise_todo_id: int):
-    todo_item = todo_collection.find_one({"_id": 1})
+    todo_item = todo_collection.find_one({"user_id": current_user.id})
     
     if not todo_item:
         #print(f"Document with _id 1 not found.")
@@ -150,6 +171,7 @@ def get_exercise_in_todo(exercise_todo_id: int):
 
     #print(f"Exercise with To-Do ID {exercise_todo_id} not found in the list.")
     return None
+
 
 def get_instruction(exercise_id: str):
 
@@ -171,6 +193,7 @@ def get_instruction(exercise_id: str):
             "error": f"Exercise with ID {exercise_id} not found."
         }
 
+
 def default_exercises():
     exercises = exercises_collection.find().limit(5)  
     return list(exercises)  
@@ -181,7 +204,70 @@ def home():
     return redirect(url_for('todo'))
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        return jsonify({'message': 'Username and password are required!'}), 400
+
+    if users_collection.find_one({"username": username}):
+        return jsonify({'message': 'Username already exists!'}), 400
+
+    # Hash the password
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    # Insert the new user into the users collection and get the new user's ID
+    user_id = users_collection.insert_one({"username": username, "password": hashed_password}).inserted_id
+
+    # Create an empty todo list for the new user using the new user's ID
+    todo_collection.insert_one({
+        "user_id": str(user_id),  # Using the newly created user's ID
+        "date": datetime.utcnow(),  # Storing the current UTC date and time
+        "todo": []     # Empty todo list initially
+    })
+
+    return jsonify({'message': 'Registration successful! Please log in.', 'success': True}), 200
+
+
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET'])
+def signup_page():
+    return render_template('signup.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user_data = users_collection.find_one({"username": username})
+    
+    if user_data and check_password_hash(user_data['password'], password):
+        user = User(str(user_data['_id']), user_data['username'], user_data['password'])
+        login_user(user)
+        return jsonify({'message': 'Login successful!', 'success': True}), 200  
+    else:
+        return jsonify({'message': 'Invalid username or password!', 'success': False}), 401
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
 @app.route('/search', methods=['POST', 'GET'])
+@login_required
 def search():
     if request.method == 'POST':
         query = request.form.get("query")
@@ -204,12 +290,14 @@ def search():
 
 
 @app.route('/todo')
+@login_required
 def todo():
     exercises = get_todo()
     return render_template('todo.html', exercises=exercises)
 
 
 @app.route('/delete_exercise')
+@login_required
 def delete_exercise():
     exercises = get_todo()
     return render_template('delete.html', exercises=exercises)
@@ -225,6 +313,7 @@ def delete_exercise_id(exercise_todo_id):
 
 
 @app.route('/add')
+@login_required
 def add():
     if 'results' in session:
         exercises = session['results']
@@ -235,6 +324,7 @@ def add():
 
 
 @app.route('/add_exercise', methods=['POST'])
+@login_required
 def add_exercise():
     exercise_id = request.args.get('exercise_id')
     
@@ -254,8 +344,8 @@ def add_exercise():
         return jsonify({'message': 'Failed to add'}), 400
 
 
-
 @app.route('/edit', methods=['GET', 'POST'])
+@login_required
 def edit():
     exercise_todo_id = request.args.get('exercise_todo_id')  
     exercise_in_todo = get_exercise_in_todo(exercise_todo_id)
@@ -264,18 +354,19 @@ def edit():
         working_time = request.form.get('working_time')
         weight = request.form.get('weight')
         reps = request.form.get('reps')
-        #print('working_time', working_time)
-        #print('weight', weight)
-        #print('reps', reps)
-        #print('exercise_todo_id ',exercise_todo_id)
+        # print('working_time', working_time)
+        # print('weight', weight)
+        # print('reps', reps)
+        # print('exercise_todo_id ',exercise_todo_id)
         success = edit_exercise(exercise_todo_id, working_time, weight, reps)
         if success:
             return jsonify({'message': 'Edited successfully'}), 200
         else:
             return jsonify({'message': 'Failed to edit'}), 400
-    #print('exercise_todo_id is ', exercise_todo_id)
-    #print ('exercise is', exercise_in_todo)
+    # print('exercise_todo_id is ', exercise_todo_id)
+    # print ('exercise is', exercise_in_todo)
     return render_template('edit.html', exercise_todo_id=exercise_todo_id, exercise=exercise_in_todo)
+
 
 @app.route('/instructions', methods=['GET'])
 def instructions():
@@ -293,36 +384,6 @@ def exercise_detail(exercise_id):
         return render_template('exercise_detail.html', exercise=exercise)
     else:
         return jsonify({'message': 'Exercise not found'}), 404
-
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-
-    if username == "test" and password == "1234":  
-        return jsonify({'message': 'Login successful!', 'success': True}), 200
-    else:
-        return jsonify({'message': 'Invalid credentials.', 'success': False}), 400
-
-@app.route('/signup', methods=['POST'])
-def signup():
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    if username and email and password:
-        return jsonify({'message': 'Sign up successful!', 'success': True}), 200
-    else:
-        return jsonify({'message': 'Failed to sign up.', 'success': False}), 400
-
-@app.route('/login', methods=['GET'])
-def login_page():
-    return render_template('login.html')
-
-@app.route('/signup', methods=['GET'])
-def signup_page():
-    return render_template('signup.html')
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -28,35 +28,38 @@
             </div>
 
             <div class="login-footer">
-                <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+                <p>Don't have an account? <a href="/register">Sign up here</a></p>
             </div>
         </form>
     </div>
 
     <script>
         document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(this);
+    event.preventDefault();
+    
+    const formData = new FormData(this);
 
-            fetch('/login', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);  
-                    if (data.success) {
-                        window.location.href = '/dashboard'; 
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred during login.');
-            });
-        });
+    fetch('/login', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response received:', data);
+
+        if (data.success) {
+            window.location.href = '/todo'; 
+        } else if (data.message) {
+            alert(data.message);  
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during login.');
+    });
+});
+
+
     </script>
 </body>
 </html>

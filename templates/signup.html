@@ -38,18 +38,18 @@
             event.preventDefault();
             
             const formData = new FormData(this);
-
-            fetch('/signup', {
+    
+            fetch('/register', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
-                if (data.message) {
-                    alert(data.message);  
-                    if (data.success) {
-                        window.location.href = '/dashboard';  
-                    }
+                if (data.success) {
+                    window.location.href = '/login';
+                    alert(data.message);
+                } else{
+                    alert(data.message);
                 }
             })
             .catch(error => {
@@ -58,5 +58,6 @@
             });
         });
     </script>
+    
 </body>
 </html>
