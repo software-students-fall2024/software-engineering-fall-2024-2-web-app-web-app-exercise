@@ -14,7 +14,7 @@
     --second-bg-color: #1b0686;  /* HEADER backgssround color */
     --text-color: black;         /* Text color */
     --main-color: black;         /* A */
-    --icon-color: white;         /* Icon color */
+    --icon-color: #ffe46a;       /* Icon color */
 }
 html {
     font-size: 60%;
@@ -29,7 +29,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 3rem 12% 3rem;
+    padding: 2.5rem 8%;                 /* HEADER margin */
     background: rgba(0, 0, 101, 0.8); /* HEADER background color */
     backdrop-filter: blur(10px);
     display: flex;
@@ -53,7 +53,7 @@ body {
 }
 .navbar a {
     font-size: 1.8rem;
-    color: var(--text-color);
+    color: white;       /* color when inactive */
     margin-left: 4rem;
     font-weight: 500;
     transition: 0.3s ease;
@@ -61,13 +61,32 @@ body {
 }
 .navbar a:hover, 
 .navbar a.active {
-    color: var(--icon-color);
+    color: var(--icon-color);                   /* color when active */
     border-bottom: 3px solid var(--icon-color);
+}
+#logo {                                  /* Logo next to webName */
+    font-size: 2.5rem; 
+    width: 4.5rem;
+    height: 4.5rem;
+    background: transparent;
+    border: 2px solid var(--icon-color); /* border thickness */
+    border-radius: 50%;                  /* border shape (circle) */
+    color: var(--icon-color);
+    display: inline-flex;                /* in middle of border-radius */
+    align-items: center;                 
+    justify-content: center;
+}
+.webName {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    gap: 1.5rem;
 }
 #menu-icon {                    /* Dropdown menu icon */
     font-size: 3.6rem; 
     color: var(--icon-color);
-    display: none;
+    display: none;              /* Doesn't display yet */
     cursor: pointer;
 }
 .navbar.active {display: block;}
