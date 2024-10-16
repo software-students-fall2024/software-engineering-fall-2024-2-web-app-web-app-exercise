@@ -10,7 +10,8 @@
     <img src="{{ url_for('static', filename='logo.png') }}" alt="Occasio Logo" class="logoelsewhere">
 
     <div class="container">
-        <h1>Welcome, {{ username }}!</h1>
+        <h1>Welcome to Occasio!</h1>
+        <h2>Logged in as: {{ username }}</h2>
         
         <form method="GET" action="{{ url_for('home_feed') }}" class="search-container">
             <div class="search-filter">

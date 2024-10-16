@@ -9,7 +9,7 @@
 <body>
     <img src="{{ url_for('static', filename='logo.png') }}" alt="Occasio Logo" class="logoelsewhere">
 
-    <div class="page-layout">
+    <div class="container">
         <h1>Your RSVPed Events</h1>
 
         <h2>Upcoming Events</h2>
@@ -75,7 +75,9 @@
             <p>You have no past events.</p>
         {% endif %}
 
-        <a href="{{ url_for('home_feed') }}"><button>Back to Home Feed</button></a>
+        <div class="center-button">
+            <a href="{{ url_for('home_feed') }}"><button>Back to Home Feed</button></a>
+        </div>
     </div>
 </body>
 </html>
