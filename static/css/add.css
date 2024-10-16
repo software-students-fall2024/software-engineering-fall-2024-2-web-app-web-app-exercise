@@ -1,3 +1,8 @@
-textarea, input[type="text"], input[type="number"], input[type="submit"] {
-    height: 40px;
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #faf4f4;
   }
