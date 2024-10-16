@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime, time
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import pymongo
@@ -108,7 +108,7 @@ def create_app():
         if not current_user.is_authenticated :
             flash("Login Required")
             return redirect('/login')
-        docs = tasks.find({"user": {'$in': [current_user.username]}})
+        docs = tasks.find({"user": {'$in': [current_user.username]}}).sort("time", 1)
         return render_template("index.html", docs=docs)
 
     @app.route("/create")
@@ -131,11 +131,15 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
+        hour = int(request.form["hours"])
+        minute = int(request.form["minutes"])
+        second = 0
 
         doc = {
             "name": name,
             "description": description,
-            "user": current_user.username,
+            "time": datetime.combine(datetime.today().date(), time(hour, minute, second)),
+            "user": current_user.username
         }
         db.tasks.insert_one(doc)
 
@@ -167,10 +171,14 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
+        hour = int(request.form["hours"])
+        minute = int(request.form["minutes"])
+        second = 0
 
         doc = {
             "name": name,
             "description": description,
+            "time": datetime.combine(datetime.today().date(), time(hour, minute, second)),
             "user": current_user.username
         }
 
