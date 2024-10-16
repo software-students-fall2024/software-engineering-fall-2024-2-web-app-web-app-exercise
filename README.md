@@ -10,8 +10,6 @@ A mobile-friendly web application that helps users manage their budget by tracki
 
 ## Steps necessary to run the software
 
-## Steps necessary to run the software
-
 Before you begin, ensure you have met the following requirements:
 
 - **Python**: This project requires Python 3.x. You can download Python from [here](https://www.python.org/downloads/).
