@@ -5,8 +5,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 from datetime import datetime
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-import os
-import re
+import os, re, string, random, certifi
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,7 +16,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
-client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
+client = MongoClient(mongo_host, tlsCAFile=certifi.where(), server_api=server_api.ServerApi('1'))
 db = client[db_name]
 requests_collection = db.requests
 #collections for the buildings?
@@ -89,23 +88,34 @@ def resolve_request(id):
         print(f"Error resolving request: {e}")
         return "An error occurred while resolving the request.", 500
 
-
-# List all reports (separate view)
-@app.route("/requestList")
-def requestList():
-    return render_template("requestList.html")
-
 @app.route("/request", methods=["GET", "POST"])
-def makeRequest(code=None):
+def make_request():
+    error = request.args.get('error')  # Get error from query parameters
+
     entry = None
+    if(error):
+        return render_template("request.html", error=True)
     if(request.method == 'GET'):
-        # If code is not empty and is 4 numbers
-        if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+        ticket=None
+        # If code is not empty and is 5 numbers
+        if ((code := request.args.get('code')) and re.match(r'^[0-9]{4,5}$', code)):
             code = int(code)
             # If code exists, retrieve data as entry and display it 
             entry = appliance_collection.find_one({'code': code})
-        else:
-            entry = None
+        
+            # If code was not found in database send error
+            if(not entry):
+                return render_template("request.html", error=True, errInfo="Code not found", applianceInfo=None, ticket=None)
+            
+        # If there is no code given, check for support ticket
+        if(not request.args.get('code')):
+            # Render ticket if it exists in args and in database
+            ticket = request.args.get('ticket')
+            # If ticket does not exist in database, do not display successful request screen
+            if(ticket and requests_collection.count_documents({'ticket':ticket}) == 0):
+                ticket=None
+        return render_template("request.html",ticket=ticket, applianceInfo=entry)
+    
     if(request.method == 'POST'):
         entry = None
         # Retrieve post data and sanitize
@@ -114,41 +124,71 @@ def makeRequest(code=None):
         email = escape(request.form.get('email'))
         subject = escape(request.form.get('subject'))
         description = escape(request.form.get('description'))
-        if(re.match(r'^[0-9]{4}$', code) and
-            re.match(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$', email)
-        ):
+        # If code and email match
+        if(re.match(r'^[0-9]{4,5}$', code) and re.match(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$', email)):
             code = int(code)
             date = datetime.today().strftime('%Y-%m-%d')
 
-            result = requests_collection.insert_one({'code': code, 'fullName': fullName, 'email': email, 'subject': subject, 'description': description, 'date': date})
-            if(result.inserted_id):
-                return render_template("request.html", success=True, applianceInfo=None)
+            # Generate a random unique ticket
+            ticket = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            i = 0
+            while(requests_collection.count_documents({'ticket':ticket}) != 0):
+                ticket = ''.join(random.choices(string.ascii_uppercase) + string.digits, k=8)
+                i+=1
+                if(i > 10):
+                    break
 
-    return render_template("request.html", applianceInfo=entry)
+            result = requests_collection.insert_one({
+                'code': code, 
+                'status':'pending', 
+                'ticket':ticket, 
+                'fullName': fullName, 
+                'email': email, 
+                'subject': subject, 
+                'description': description, 
+                'date': date
+            })
+
+            if(result.inserted_id):
+                return redirect(url_for("make_request", ticket=ticket))
+
+        # Redirect with error if validation fails
+        return redirect(url_for("make_request", error=True))
+    
+
+    return render_template("request.html", ticket=ticket, applianceInfo=entry)
 
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
-    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4}$', code)):
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4,5}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
-        # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
-        requestEntry = requestTest
-        # applianceEntry = appliances_collection.find({'code':code});
-        applianceEntry = applianceTest
-        # print(entry.fullName);
+        requestEntry = requests_collection.find({'code':code}).sort({'date':-1})
+        applianceEntry = appliance_collection.find_one({'code':code})
+        print(requestEntry.alive)
     else:
         requestEntry = None
         applianceEntry = None
     return render_template("track.html", requestInfo=requestEntry, applianceInfo=applianceEntry)
 
+@app.route("/track/<ticket>", methods=["GET"])
+def trackRequestDetailed(ticket):
+    # If code is not empty and is 4 numbers
+    if (ticket != '' and ticket is not None):
+        # If code exists, retrieve data as entry and display it 
+        requestEntry = requests_collection.find_one({'ticket':ticket})
+    else:
+        requestEntry = None
+    return render_template("trackDetailed.html", requestInfo=requestEntry)
+
 @app.route("/newApp/<update>")
 def new_app(update): #0 by default
     return render_template("newApp.html", update=update)
 
-@app.route("/removeApp")
-def delete_app():
-    return render_template("deleteApp.html", results = None)
+@app.route("/removeApp/<results>")
+def delete_app(results):
+    return render_template("deleteApp.html", results = "banana")
 
 @app.route("/newApp/make", methods=["POST"])
 def add_app():
@@ -246,24 +286,38 @@ def update_app():
 @app.route("/removeApp/find/<use>", methods=["POST"])
 def get_app(use): #can potentially also be used for making requests?
     if(use == 'code'):
-        code = request.form["code"]
+        try:
+            code = int(request.form["code"])
+        except:
+            code = -1
         result=appliance_collection.find_one({
             "code":code
         })
     else:
+        if len(request.form["floor"]) == 0:
+            floor = 0
+        else:
+            floor = int(request.form["floor"])
         result = appliance_collection.find_one({
             "building": request.form["bname"],
-            "floor": request.form["floor"],
+            "floor": floor,
             "applianceName":request.form["appName"]
         })
-    
-    return redirect(url_for('delete_app', results=result))
+    if result == None:
+        result = "banana"
+    return render_template('deleteApp.html', results=result)
 
 @app.route("/removeApp/remove/<code>", methods=["POST"])
 def remove_appliance(code):
+    code = int(code)
     appliance_collection.delete_one({
         "code": code
     })
     return redirect(url_for('index'))
+
+@app.route("/menu")
+def show_menu():
+    return render_template("menu.html");
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=3000)
