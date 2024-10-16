@@ -1,17 +1,32 @@
 {% extends 'base.html' %}
 
-    <h2>Events</h2>
-    <section class="posts">
-        <form method="post" action="{{ url_for('login') }}">
-            <label for="username">Search:</label>
-            <input type="text" name="search" required>
-            <button type="submit">Search</button>
-          </form>
+{% block container %}
 
-        <ul id="eventList">
-            <li><a href="{{ url_for('Golf')}}">Golf</a></li>
-            <li><a href="{{ url_for('Pizza')}}">Pizza</a></li>
-            <li><a href="{{ url_for('Beach')}}">Beach</a></li>
-        </ul>
+    <h2>Events</h2>
+    <form method="POST" action="{{ url_for('search') }}">
+        <input type="text" name="search" id="search" placeholder="Search...">
+    </form>
+    <br>
+    <br>
+    <section class="posts">
+
+        {% for doc in docs %}
+        <article class="post">
+            <p class="name">
+                {{doc.name}}
+            </p>
+            <nav class="controls">
+                <a href="{{ url_for('edit', post_id=doc._id)}}">Edit</a> | <a href="{{ url_for('delete', post_id=doc._id)}}">Delete</a>
+            </nav>
+            <p class="message">
+                Description: {{ doc.description }}
+            </p>
+            <br>
+        </article>
+        {%endfor%}
+
     </section>
+
+
+{% endblock %}
 
