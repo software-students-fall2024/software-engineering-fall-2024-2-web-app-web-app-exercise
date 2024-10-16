@@ -16,7 +16,7 @@
             <h1>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h1>
             <h2>Building: {{applianceInfo.building}}</h2>
             <h2>Floor: {{applianceInfo.floor}}<h2>
-            <a href={{url_for('makeRequest',code=applianceInfo.code)}}>Start a New Request</a>
+            <a href={{url_for('make_request',code=applianceInfo.code)}}>Start a New Request</a>
         </div>
         {% else %}
         <div class="track-request-right">
