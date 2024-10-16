@@ -216,26 +216,26 @@ h2 {
     border-radius: 15px;
 }
 
-/* Timer container styles */
 .timer-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: max-content;
 }
+
 #timer{
     display: flex;
     justify-content: center;
     align-items: center;
     height: max-content;
 }
-/* Circle with two halves to create the doughnut effect */
+
 .circle {
     position: relative;
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background-color: #f0f0f0;
+    background-color: #F5DEED;
     overflow: hidden;
 }
 
@@ -243,7 +243,7 @@ h2 {
     position: absolute;
     width: 100%;
     height: 100%;
-    clip: rect(0px, 200px, 200px, 100px);
+    clip: rect(0px, 200px, 200px, 100px); 
 }
 
 .fill {
@@ -252,12 +252,11 @@ h2 {
     height: 100%;
     border-radius: 50%;
     background-color: #9288D0;
-    clip: rect(0px, 100px, 200px, 0px);
-    transform: rotate(0deg);
-    transition: transform 0.1s linear;
+    clip: rect(0px, 100px, 200px, 0px); 
+    transform: rotate(0deg); 
+    transition: transform 1s linear; 
 }
 
-/* Inner circle for the time display */
 .inner-circle {
     position: absolute;
     top: 50%;
@@ -275,21 +274,6 @@ h2 {
     color: #3a383d;
 }
 
-/* Animate the doughnut's two halves */
-.mask.full, .mask.half .fill {
-    animation: rotate 60s linear infinite;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Congrats Screen */
 .congratsscreen {
     height: 100%; 
     margin: 0;
@@ -309,10 +293,11 @@ h2 {
     margin: 0; 
     
 }
+
 .congrats {
     text-align: center;
     font-family: Arial, sans-serif;
-    margin-bottom: 20px; /* Adds space between text and image */
+    margin-bottom: 20px; 
 } 
 
 .header {
@@ -320,15 +305,18 @@ h2 {
     font-size: 3rem; 
     font-weight: bold;
 }
+
 .image {
-    max-width: 300px; /* Adjust the size of the bunny */
-    width: 100%; /* Makes it responsive */
+    max-width: 300px; 
+    width: 100%; 
     height: auto;
 }
+
 .session-info {
     font-size: 1.5rem;
     margin-top: 20px;
 }
+
 .home-button {
         width: 80%;
         padding: 15px;
@@ -347,9 +335,68 @@ h2 {
     
 
 }
+
 .home-button:hover {
     opacity: 70%;
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
         transform: translateY(-5px);
 }
 
+#search-form {
+    background: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#search {
+    width: 85%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#search-button {
+    width: 15%;
+    margin: 0px;
+    border-style: none;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #F5DEED;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 100%;
+    font-size: 12px;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018z"/><path d="M13 6.5a6.471 6.471 0 01-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1.007 1.007 0 01-.1-.115h.002A6.5 6.5 0 1113 6.5zM6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11z"/></svg>');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#delete-button {
+    width: 15%;
+    margin: 0px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #F5DEED;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 100%;
+    font-size: 12px;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22 fill=%22currentColor%22%3E%3Cpath d=%22M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z%22/%3E%3C/svg%3E');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#delete-form {
+    background: none;
+    width: 100%;
+}
