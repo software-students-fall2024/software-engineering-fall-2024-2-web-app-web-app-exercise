@@ -20,7 +20,7 @@ def create_app():
 
     app = Flask(__name__)
 
-    app.secret_key = 'Amos_Bloomberg'
+    app.secret_key = os.getenv("SECRET_KEY")
     cxn = pymongo.MongoClient(os.getenv("MONGO_URI"), tlsCAFile=certifi.where())
     db = cxn[os.getenv("MONGO_DBNAME")]
     plans_collection = db['plans']  
