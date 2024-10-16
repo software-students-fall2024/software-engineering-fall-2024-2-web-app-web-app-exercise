@@ -99,8 +99,9 @@ def create_app():
         return jsonify({'logged_in': current_user.is_authenticated})   
 
     @app.route('/')
-    @login_required
     def home():
+        if not current_user.is_authenticated :
+            return redirect('/login')
         """
         Route for the home page.
         Returns:

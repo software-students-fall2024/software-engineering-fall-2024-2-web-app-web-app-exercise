@@ -11,35 +11,9 @@
 </head>
 <body>
 
-<h2>Events</h2>
-<input type="text" id="inp" onkeyup="search()" placeholder="Search..">
 
 
-<ul id="eventList">
-  <li><a href="{{ url_for('Golf')}}">Golf</a></li>
-  <li><a href="{{ url_for('Pizza')}}">Pizza</a></li>
-  <li><a href="{{ url_for('Beach')}}">Beach</a></li>
-</ul>
-
-<script>
-    function search() {
-        //https://www.w3schools.com/howto/howto_js_filter_lists.asp
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById("inp");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("eventList");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
-    </script>
+>
 
 
 </body>
