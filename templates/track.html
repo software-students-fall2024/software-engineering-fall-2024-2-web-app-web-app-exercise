@@ -2,13 +2,13 @@
 
 {% block body %}
 
-<div class="track-request" style="justify-content: center;text-align: center; align-items: center;">
-    <div class="track-request-left" style="justify-content: center;text-align: center; align-items: center;">
-        <div class="code-box" style="justify-content: center;text-align: center; align-items: center;">
-            <h2>Track a Request!</h2>
+<div class="track-request">
+    <div class="track-request-top">
+        <div class="code-box">
+            <h1>Track a Request!</h1>
             <form method="GET" action="/track">
-            <input type="text" pattern="^[0-9]{4-5}$" name="code" placeholder="Appliance/Request Code">
-            <input type="submit" value="search">
+            <input class="tracking-code-box" type="text" pattern="^[0-9]{4,5}$" name="code" placeholder="5-digit Appliance Code">
+            <input class="tracking-code-box" type="submit" value="Search">
             </form>
         </div>
         {% if applianceInfo is not none %}
