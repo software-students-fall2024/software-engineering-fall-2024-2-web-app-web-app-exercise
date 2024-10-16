@@ -469,6 +469,10 @@ def create_app():
             return redirect(url_for('login'))
         
         cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        if not cur_project:
+            flash("Project not found!", "error")
+            return redirect(url_for('project_view', post_id=post_id))
+        
         tasks = cur_project["tasks"]
         cur_task = None
         # find the correct task to view
@@ -476,10 +480,9 @@ def create_app():
             if (task["taskName"] == post_name):
                 cur_task = task
                 break
-
-        if (cur_task == None):
-            # shouldn't happen
-            print("Task not found!")
+        if cur_task is None:
+            flash("Task not found!", "error")
+            return redirect(url_for('project_view', post_id=post_id))
         else:
             members2 = cur_task['members']
             if (len(members2) == 0):
