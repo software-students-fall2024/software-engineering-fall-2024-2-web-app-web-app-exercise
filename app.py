@@ -1,11 +1,13 @@
 import requests
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from models import User
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 import os
 
+bcrypt = Bcrypt()
 
 def create_app():
     #initiate env
@@ -102,32 +104,68 @@ def create_app():
     def getUpdatePage():
         user_info = {
             "username": current_user.username,
-            "password": current_user.password,
             "firstname": current_user.firstname,
             "lastname": current_user.lastname
         }
         
         return render_template("edit-user-info.html", user_info=user_info)
     
+    @app.route("/user-info",methods=["POST"])
+    @login_required
+    def updateUserInfo():
+        # getting firstname and last name from the HTML form
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
+        
+        # update the user's first name and last name in the mongodb
+        db.users.update_one(
+            {"username": current_user.username},
+            {"$set": {"firstname": firstname, "lastname": lastname}}
+        )
+        
+        # update the current_user object on flask app
+        current_user.firstname = firstname
+        current_user.lastname = lastname
+        
+        # flash a success message and redirect back to the user info page
+        flash("User info updated successfully!")
+        return redirect(url_for("getUserInfo"))
+
     @app.route("/log-out")
     @login_required 
     def logout():
         logout_user() 
         return redirect(url_for('home'))
     
-    
-    @app.route("/user-info",methods=["POST"])
+    @app.route("/delete-acct")
+    @login_required 
+    def delete_acct():
+        return render_template("delete-acct.html")
+        
+    @app.route('/delete-acct', methods=['POST'])
     @login_required
-    def updateUserInfo():
-        #get the new user info and update the db
-        title = request.form["title"]
-        content = request.form["content"]
-        ###TODO###
-        
-        
-        #success
-        flash("User Info updated!")
-        return redirect(url_for("getUserInfo"))
+    def delete_account():
+        # getting the form data
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # if username entered from form == logged in user's username
+        if username == current_user.username:
+            user = db.users.find_one({"username": username})
+
+            # check if the user exists and the password matches
+            if user and bcrypt.check_password_hash(user['password'], password):
+                db.users.delete_one({"username": username})
+                
+                # log user out and redirect to home w/ success message
+                logout_user()
+                flash('Account has been successfully deleted.')
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid username or password. Please try again.')
+        else:
+            flash('The provided email does not match the current user.')
+
+        return render_template('delete-acct.html')
     
     
     @app.route("/contact_us")
@@ -179,12 +217,24 @@ def create_app():
     @app.route("/news")
     def getNews():
         
-        return render_template("news.html")
+        return render_template("news.html", firstname=current_user.firstname, lastname = current_user.lastname)
     
-    @app.route("/news-content")
-    def getNewsContent():
+    @app.route("/news-content/<title>")
+    def getNewsContent(title):
+        #search for news by title
+        ### TODO ###
+        
+        #result data 
+        data = {
+            #replace the dummy data later
+            "title": "title",
+            "image_url": "https://appsero.com/app/uploads/2022/02/how-to-fix-the-url-problems.png",
+            "autor": "chloe han",
+            "date": "2020/09/18",
+            "content": "content content content"
+        }
 
-        return render_template("news-content.html")
+        return render_template("news-content.html", data=data)
     
     @app.route("/menu")
     def getMenu():

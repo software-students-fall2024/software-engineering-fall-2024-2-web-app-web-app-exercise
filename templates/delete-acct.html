@@ -52,11 +52,6 @@ Edit User Info
             border-radius: 10px;
             font-size: 14px;
         }
-        .email-input {
-            color: #C0C0C0;
-            font-style: italic;
-            cursor: not-allowed;
-        }
         .signup-container input::placeholder {
             color: #C0C0C0;
         }
@@ -121,7 +116,7 @@ Edit User Info
 {% endblock %}
 {% block content %}
 <div class="signup-container">
-    <h2>Edit User Info</h2>
+    <h2>Confirm Deletion of Your Account by Filling in Account Credentials</h2>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -131,17 +126,14 @@ Edit User Info
         {% endif %}
     {% endwith %}
 
-    <form action="/user-info" method="POST">
-        <input type="email" class="email-input" id="username" name="username" placeholder="Email" value={{user_info.username}} readonly>
-        <input type="text" id="firstname" name="firstname" placeholder="First Name" value={{user_info.firstname}} required>
-        <input type="text" id="lastname" name="lastname" placeholder="Last Name" value={{user_info.lastname}} required>
-        <button type="submit" class="signup-btn">Update Info</button>
+    <form action="/delete-acct" method="POST">
+        <input type="email" id="username" name="username" placeholder="Email" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <button type="submit" class="delete-btn">Delete Account</button>
     </form>
+    
 
     <button onclick="goBack()" class="back-btn">Cancel</button>
-
-    <h2>Danger Zone</h2>
-    <a href="/delete-acct" class="delete-btn">Delete Account</a>
 </div>
 
 <script>

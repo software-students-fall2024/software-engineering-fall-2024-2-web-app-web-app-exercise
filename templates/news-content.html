@@ -16,28 +16,170 @@ News Content
         }
 
         .news-content {
-            margin: 3vw 3vw;
+            width: 100%;
+            
         }
 
-        .news-content h2 {
+        .news-content h1 {
             color: #6CB873;
             line-height: 1.8rem;
         }
 
         .news-content img{
-            max-width: 94vw;
+            width: 100%;
             border-radius: 0.8rem;
+        }
+
+        .news-content #content{
+            color: white;
+        }
+
+        .back-button {
+            color: #6CB873;
+            font-size: 1rem;
+            background-color: transparent;
+            border: 3px solid #6CB873;
+            border-radius: 1rem;
+            margin: 1rem 0rem;
+            margin-right: auto;
+            padding: 0.2rem 0.5rem;
+        }
+
+        .word-popup{
+            display: none;
+            background-color: #6CB873;
+            flex-direction: column;
+            max-width: 50vw;
+            padding: 0.5rem;
+            border-radius: 1rem;
+
+        }
+
+        .word-popup a, .word-popup button{
+            text-decoration: none;
+            color: white;
+            background-color: black;
+            text-align: center;
+            margin: 0.2rem 0rem;
+            border-radius: 1rem;
+            padding: 0.1rem 0rem;
         }
 
     </style>
 {% endblock %}
 {% block content %}
+    <button class="back-button" onclick="goBack()">Back</button>
     {%if data%}
         <div class="news-content">
-            <h2>{{data.title}}</h2>
-            <img src={{data.topImage}} alt={{data.title}}/>
-            <p>By {{data.author}}</p>
-            <p id="content"></p>
+            <h1>{{data.title}}</h1>
+            <img src={{data.image_url}} alt={{data.title}}/>
+            <p id="author">By {{data.author}}</p>
+            <p id="content">
+                {% for word in data.content.split() %}
+                    <span class="content-word">{{ word }}</span>
+                {% endfor %}
+            </p>
         </div>
     {% endif %}
+    <div class="word-popup" id="wordPopup">
+        <h3>Definition: </h3>
+        <p class="word-definition"></p>
+        <button class="add-button" onclick="" >Add to Word Bank</button>
+        <button onclick="closeNote()">Got it</button>
+    </div>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+
+        function closeNote() {
+            wordPopup.style.display = 'none';
+        }
+
+        async function addToWordBank(word, definition) {
+            const url = '/vocab'; // Replace with your actual backend route
+
+            const formData = new URLSearchParams();
+            formData.append('word', word);
+            formData.append('definition', definition);
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData.toString()
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json(); // Parse the JSON response
+                console.log('Success:', result); // Handle success response
+                alert(`Added "${word}" to your Word Bank!`); // Notify the user
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                alert('Failed to add to Word Bank. Please try again.');
+            }
+        }
+
+
+        // Function to handle word click and display the popup
+        document.addEventListener('DOMContentLoaded', function() {
+            const words = document.querySelectorAll('.content-word');
+            const wordPopup = document.getElementById('wordPopup');
+
+            words.forEach(word => {
+                word.addEventListener('click', function(event) {
+                    word.style.backgroundColor = 'rgba(108, 184, 115,0.5)';
+
+                    const finalWord = word.textContent.replace(/[^a-zA-Z]/g, '').toLowerCase()
+                    //get word definition
+                    fetch( `https://api.dictionaryapi.dev/api/v2/entries/en/${finalWord}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {             
+                        const definition = data[0].meanings[0].definitions[0].definition || "Error; Definition Not found.";
+                        return definition
+                    })
+                    .then(definition => {
+                        // Get the position of the clicked word
+                        const rect = word.getBoundingClientRect();
+                        const top = rect.top+25, left = rect.left;
+                        //const top = rect.top + window.scrollY - wordPopup.offsetHeight - 5;
+                        //const left = rect.left + window.scrollX;
+
+                        // Position the popup near the word and show it
+                        wordPopup.style.position = 'absolute';
+                        wordPopup.style.top = `${top}px`;
+                        wordPopup.style.left = `${left}px`;
+                        const childElement = wordPopup.querySelector('.word-definition');
+                        if (childElement) childElement.textContent = definition;
+                        const addButton = wordPopup.querySelector('.add-button');
+                        if (addButton) {
+                            addButton.onclick = function() {
+                                addToWordBank(finalWord, definition);
+                            };
+                        }
+                        wordPopup.style.display = 'flex'; 
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+
+
+                    // Hide the popup after 2 seconds
+                    setTimeout(() => {
+                        word.style.backgroundColor = 'transparent';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 {% endblock %}
