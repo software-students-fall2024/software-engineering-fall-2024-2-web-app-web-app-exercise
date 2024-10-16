@@ -1,0 +1,49 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome!</title>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}"
+  />
+</head>
+{% extends 'base.html' %}{% block container %}
+<body>
+  <h1>Welcome, {{ username }}!</h1>
+
+  <div class="main-content">
+    <div class="section-title">YOUR WORKSPACES</div>
+
+      <div class="section-title">As a manager...</div>
+      <div class="projects-list">
+      {% if docs_as_manager is defined %}
+        {% for doc in docs_as_manager %}
+        <div class="project-link">
+          <a href="{{ url_for('project_view', post_id=doc._id) }}" class="button-link">{{ doc.projectName }}</a>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p>No projects. Try adding some!</p>
+      {% endif %}
+    </div>
+
+
+    <div class="section-title">As a member...</div>
+    <div class="projects-list">
+      {% if docs_as_member is defined %}
+        {% for doc in docs_as_member %}
+        <div class="project-link">
+          <a href="{{ url_for('project_view', post_id=doc._id) }}" class="button-link">{{ doc.projectName }}</a>
+        </div>
+        {% endfor %}
+        {% else %}
+          <p>No projects. Try adding some!</p>
+        {% endif %}
+    </div>
+    <form class="create-button" action="/create_project", method="GET">
+      <button type="submit">Create new project</button>
+    </form>
+  </div>
+
+</body>
+{% endblock %}
