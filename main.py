@@ -40,7 +40,9 @@ doc_code = 0 #for when we need to update appliances
 # Regular user homepage
 @app.route("/")
 def index():
-    return render_template("index.html", is_admin=False)
+    reports = list(requests_collection.find({}))
+    reports.sort(key=lambda x: (x['status'] != 'pending', x['date']))
+    return render_template("index.html", reports=reports, is_admin=False)
 
 # Admin homepage - show all requests
 @app.route("/admin")
@@ -85,13 +87,6 @@ def resolve_request(id):
     except Exception as e:
         print(f"Error resolving request: {e}")
         return "An error occurred while resolving the request.", 500
-
-
-# List all reports (separate view)
-@app.route("/requestList")
-def requestList():
-    return render_template("requestList.html")
-
 
 @app.route("/request", methods=["GET", "POST"])
 def make_request():

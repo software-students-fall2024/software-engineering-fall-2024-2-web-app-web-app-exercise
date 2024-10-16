@@ -1,16 +1,20 @@
 {% extends "layout.html" %}
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
 
 {% block body %}
-    <h2>All Work Requests (Admin)</h2>
+    <h2> Work Requests</h2>
     <ul class="request-list">
         {% for report in reports %}
         <li>
-            <a href="/request/{{ report.id }}" class="request-item">
+            <a href="/adminRequest/{{ report._id }}" class="request-item">
                 <div class="request-details">
-                    <h3>Subject Line</h3>
-                    <p>Placeholder Location</p>
-                    <p>Placeholder Date</p>
-                    <p class="request-id">Placeholder ID</p>
+                    <h3>{{ report.subject }}</h3>
+                    <p> Code: {{ report.code }}</p>
+                    <p> Date: {{ report.date }}</p>
+                    <p> Status: {{ report.status | upper }}</p>
+                    <p class="request-id">{{ report._id }}</p>
                 </div>
             </a>
         </li>

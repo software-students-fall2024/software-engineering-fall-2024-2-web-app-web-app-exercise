@@ -23,7 +23,6 @@
             <input type="text" pattern="^[0-9]{4,5}$" name="code" placeholder="Appliance Code">
             <input type="submit" value="search">
         </form>
-
     {% elif applianceInfo and applianceInfo.applianceName %} <!-- If code is found, display help form -->
         <h3>{{applianceInfo.applianceName}}</h3>
         <p>Building:{{applianceInfo.building}}</p>
@@ -40,5 +39,4 @@
             <input type="submit" value="Submit Request">
         </form>
     {% endif %}
-
 {% endblock %}
