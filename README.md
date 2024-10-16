@@ -8,7 +8,7 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## User stories
 
-[Link to User Stories](https://github.com/software-students-fall2024/2-web-app-scoobygang/issues/2)
+[Link to User Stories](https://github.com/software-students-fall2024/2-web-app-scoobygang/issues)
 
 ## Steps necessary to run the software
 
