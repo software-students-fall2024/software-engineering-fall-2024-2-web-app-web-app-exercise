@@ -169,6 +169,8 @@ def create_app():
         latest_session = db.sessions.find_one(sort=[("created_at", -1)])
 
         totaltime =0;
+        
+        totaltime = 0;
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
