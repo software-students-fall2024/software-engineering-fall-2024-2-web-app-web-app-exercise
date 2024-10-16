@@ -64,3 +64,18 @@ footer {
     font-size: 16px;
     text-align: center;
 }
+
+
+@media (min-width: 450px) {
+    h1 {
+        text-align: center;
+    }
+    .book-info {
+        margin: 0 auto;  /* Centers the .book-info horizontally */
+        max-width: 600px;
+        padding-bottom: 20px;
+        text-align: center;  /* Ensures the text inside is left-aligned */
+        position: relative;
+    }
+}
+
