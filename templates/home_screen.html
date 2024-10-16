@@ -9,9 +9,9 @@
     <div class="container">
         <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
         <button><a href="start-session">Start new session</a></button>
-        <form method="POST" action="{{ url_for('search') }}">
+        <form method="POST" id="search-form" action="{{ url_for('search') }}">
             <input type="text" id="search" name="search" placeholder="Search Sessions..."/>
-            <input type="submit" value="Search" />
+            <input type="submit" id="search-button" value=""/>
         </form>
         <div class="session-container">
         {% for session in past %}
@@ -27,9 +27,8 @@
                     ((session.focus_time | default(0) | int) - 5)) | int }} bunnie(s)
                 </p>
         
-                <!-- Fix the session ID access -->
-                <form action="{{ url_for('delete_session', session_id=session._id) }}" method="POST" style="display:inline;">
-                    <button type="submit">Delete</button>
+                <form id="delete-form" action="{{ url_for('delete_session', session_id=session._id) }}" method="POST" style="display:inline;">
+                    <input type="submit" id="delete-button" value="" />
                 </form>
             </div>
         {% endfor %}
