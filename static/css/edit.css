@@ -1,0 +1,71 @@
+.book-info {
+    margin-left: 40px;
+    max-width: 600px;
+    padding-bottom: 20px;
+}
+
+h2 {
+    margin-top: 20px; 
+    margin-left: 0;
+    text-align: left;
+}
+
+.form-group {
+    margin-left: 40px;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #F7DC6F;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f6eaac;
+}
+
+.btn-save {
+    background-color: #F7DC6F;
+}
+
+.btn-delete {
+    background-color: #e33b3b;
+}
+
+@media (min-width: 450px) {
+    h1, h2 {
+        text-align: center;
+    }
+    .book-info,  .form-group {
+        margin: 0 auto;  /* Centers the .book-info horizontally */
+        max-width: 600px;
+        padding-bottom: 20px;
+        text-align: center;  /* Ensures the text inside is left-aligned */
+        position: relative;
+    }
+}
