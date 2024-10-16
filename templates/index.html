@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block container %}
@@ -12,6 +13,7 @@
 
         {% for doc in docs %}
         <article class="post">
+            <input type="checkbox">
             <p class="name">
                 {{doc.name}}
             </p>
@@ -29,4 +31,3 @@
 
 
 {% endblock %}
-
