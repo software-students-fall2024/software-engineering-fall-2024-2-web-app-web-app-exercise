@@ -359,6 +359,16 @@ def get_exercise_by_category(category):
     }
     return jsonify(response)
 
+# endpoint for exercise by catgoery with subcategory in equipment (sub side-bar maybe)
+@app.route("/api/exercises/category/<category>/equipment/<equipment>", methods=["GET"])
+def get_exercises_by_category_and_equipment(category, equipment):
+    exercise = exercise_collection.find({
+        "categories": {"$regex": category}
+        , "equipment": {"$regex": equipment}
+        })
+    result = [{"id": str(e["_id"]), "name": e["name"]} for e in exercise]
+    return jsonify(result)
+
 # endpoint for update flask to server timer data
 @app.route("/api/timer_status/<workout_name>", methods=["GET"])
 def get_timer_status(workout_name):
