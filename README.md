@@ -56,8 +56,14 @@ venv\Scripts\activate
 
 ### Step 3: Install Requirements
 
+To install Flask and pymongo, run the following commands:
+```
+pipenv install Flask
+```
+```
+pipenv install pymongo
+```
 Install the project dependencies by running the following command:
-
 ```
 pip install -r requirements.txt
 ```
@@ -67,6 +73,8 @@ pip install -r requirements.txt
 A file named .env is necessary to run the application. This file contains sensitive environment variables holding credentials such as the database connection string, username, password, etc.
 
 For the use of this project, the env file is sent to the admins/managers via the team's messenger channel (webstars).
+
+Once this .env file is received and downloade, place it in the root directory of the project to ensure the application runs correctly.
 
 ### Step 5: Running the software
 
@@ -79,6 +87,7 @@ python app.py
 ## Task boards
 
 [Task Board Sprint 1](https://github.com/orgs/software-students-fall2024/projects/7)
+
 [Task Board Sprint 2](https://github.com/orgs/software-students-fall2024/projects/78)
 
 
