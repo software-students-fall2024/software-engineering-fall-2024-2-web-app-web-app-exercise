@@ -27,10 +27,8 @@ To get started, clone the repository to your local machine using Git:
 git clone https://github.com/software-students-fall2024/2-web-app-code-crafters.git
 ```
 
-Navigate to your project directory
-```bash
-cd 
-```
+Navigate to your project directory using the `cd` command.
+
 #### 2. Set up virtual environment
 And you can create a virtual environment for the app with the command,
 ```bash
@@ -66,7 +64,7 @@ An example file named `env.example` is given. Copy this into a file named `.env`
 MONGO_URI="mongodb://<username>:<password>@<clustername>/myDatabase?authSource=admin&retryWrites=true&w=majority"
 ```
 
-Note: You need to replace <username>, <password>, and myDatabase with your MongoDB credentials and database name.
+Note: You need to replace `<username>`, `<password>`, and myDatabase with your MongoDB credentials and database name.
 
 ### Run the App
 To start the Flask application, run the command in your terminal:
