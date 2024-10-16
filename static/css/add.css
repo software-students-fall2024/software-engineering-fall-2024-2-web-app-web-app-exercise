@@ -57,13 +57,5 @@ input[type="submit"]:hover {
     background-color: #F7DC6F;
 }
 
-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #000; 
-    background: none;
-    border: none;
-    padding: 0;
-}
+
   
