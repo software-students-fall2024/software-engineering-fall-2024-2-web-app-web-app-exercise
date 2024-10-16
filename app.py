@@ -496,7 +496,7 @@ def create_app():
 
     @app.route('/search_tasks/<post_id>', methods=['GET'])
     def search_tasks(post_id):
-        task_name = request.args.get('task_name', '').lower()
+        task_name = request.args.get('task_name', '')
         cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
         # check if exists - no - return to project view
         if not cur_project:
