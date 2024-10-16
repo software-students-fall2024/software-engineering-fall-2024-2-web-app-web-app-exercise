@@ -1,0 +1,37 @@
+#inventory {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#inventory thead th {
+    background-color: #ffffff;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 2px solid #ccc;
+}
+
+#inventory td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+    color: #333;
+    font-size: 14px;
+}
+
+#inventory tbody tr:hover {
+    background: #f4f4f4;
+    transition: background 0.3s ease;
+}
+
+#inventory th, #inventory td {
+    border: none;
+}
