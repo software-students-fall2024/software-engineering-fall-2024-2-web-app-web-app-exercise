@@ -5,6 +5,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 from datetime import datetime
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
+import certifi
 import os
 import re
 
@@ -17,7 +18,7 @@ app = Flask(__name__, static_url_path="", static_folder="static", template_folde
 mongo_host = os.getenv("MONGO_HOST")
 db_name = os.getenv("MONGO_DBNAME")
 
-client = MongoClient(mongo_host, server_api=server_api.ServerApi('1'))
+client = MongoClient(mongo_host, tlsCAFile=certifi.where(), server_api=server_api.ServerApi('1'))
 db = client[db_name]
 requests_collection = db.requests
 #collections for the buildings?
@@ -44,6 +45,21 @@ def index():
     reports = list(requests_collection.find({}))
     reports.sort(key=lambda x: (x['status'] != 'pending', x['date']))
     return render_template("index.html", reports=reports, is_admin=False)
+
+@app.route("/request/<id>", methods=["GET"])
+def user_viewRequest(id):
+    try:
+        object_id = ObjectId(id)
+    except InvalidId:
+        return "Invalid request ID", 404
+
+    report = requests_collection.find_one({'_id': object_id})
+
+    if report:
+        return render_template("userRequest.html", report=report)
+    else:
+        return "Request not found", 404
+
 
 # Admin homepage - show all requests
 @app.route("/admin")
@@ -265,5 +281,7 @@ def remove_appliance(code):
         "code": code
     })
     return redirect(url_for('index'))
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=3000)
