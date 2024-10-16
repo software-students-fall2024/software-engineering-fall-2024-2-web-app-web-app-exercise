@@ -25,6 +25,16 @@ label {
     text-align: left;
 }
 
+input, a {
+    box-sizing: border-box;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  /* Space between buttons */
+}
+
 input[type="text"],
 input[type="password"] {
     width: calc(100% - 20px);
@@ -36,8 +46,8 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    background-color: #c4c11e;
-    color: white;
+    background-color: #f7dc6f;
+    color: black;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -51,19 +61,28 @@ input[type="submit"]:hover {
     background-color: #e4cf14de;
 }
 
+input[type="submit"],
 #register {
-    display: block;
-    margin-top: 15px;
-    color: #e4cf14de;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    background-color: #f7dc6f;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;  /* Force same width */
     text-align: center;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border: none;
 }
 
+input[type="submit"]:hover,
 #register:hover {
-    color: #e4cf14de;
+    background-color: #e4cf14de;
 }
+
 
 #errorMessage {
     color: red;

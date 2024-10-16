@@ -9,11 +9,13 @@
             <input type="text" name="username" placeholder="e.g. myUsername" id="username" minlength="6" required>
             <label for="password">Password:</label>
             <input type="password" name="password" placeholder="e.g. 12345678" id="password" minlength="8" required>
-            <input type="submit" value="Log In" id="login">
+            <div class="button-container">
+                <input type="submit" value="Log In" id="login">
+                <a href="/register" id="register">Register</a>
+            </div>
         </form>
 
         <p id="errorMessage" style="color: red;"> {{ message }} </p>
 
-        <a href="/register" id="register">Register</a>
     </body>
 </html>

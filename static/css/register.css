@@ -1,3 +1,13 @@
+input, a {
+    box-sizing: border-box;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  /* Space between buttons */
+}
+
 
 body {
     font-family: Arial, sans-serif;
@@ -37,8 +47,8 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    background-color: #e4cf14de;
-    color: white;
+    background-color: #f7dc6f
+    color: black;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -49,22 +59,31 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #e4cf14de;
+    background-color: #FAD5A5;
 }
 
+input[type="submit"],
 #login {
-    display: block;
-    margin-top: 25px;
-    color: #e4cf14de;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    background-color: #f7dc6f;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;  /* Force same width */
     text-align: center;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    border: none;
 }
 
+input[type="submit"]:hover,
 #login:hover {
-    color: #e4cf14de;
+    background-color: #FAD5A5;
 }
+
 
 #errorMessage {
     color: red;
