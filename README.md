@@ -81,3 +81,5 @@ open a web browser and go to `http://localhost:5000` (or change `5000` to whatev
 ## Task boards
 
 [Task Boards](https://github.com/software-students-fall2024/2-web-app-code-crafters/projects?query=is%3Aopen)
+[Spring 1 Task Boards](https://github.com/orgs/software-students-fall2024/projects/34)
+[Spring 2 Task Boards](https://github.com/orgs/software-students-fall2024/projects/82)
