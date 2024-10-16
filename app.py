@@ -171,13 +171,20 @@ def create_app():
         totaltime =0;
         
         totaltime = 0;
+        subjectSet = set()
         for focus_time in focus_times:
             time = (focus_time['focus_time'])
             if time == '':
                 amount = 0
             elif int (time) >= 0:
                 amount = int (time)
-            totaltime += amount;
+            totaltime += amount
+            subjectSet.add(focus_time['subject'])
+        subjectArr = list(subjectSet)
+        if len(subjectArr) > 1:
+            subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
+        else:
+            subjects = subjectArr[0]
         
         #amount of time studied x sessions x bunnies
         if latest_session:
