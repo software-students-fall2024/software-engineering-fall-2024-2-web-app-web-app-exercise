@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+        <button><a href="start-session">Start new session</a></button>
+        <form method="POST" id="search-form" action="{{ url_for('search') }}">
+            <input type="text" id="search" name="search" placeholder="Search Sessions..."/>
+            <input type="submit" id="search-button" value=""/>
+        </form>
+        <div class="session-container">
+        {% for session in past %}
+            <div class="sessions">
+                {% if session.created_at %}
+                    <h2>{{ session.created_at.strftime('%B %d, %Y, %I:%M %p') }}</h2>
+                {% else %}
+                    <h2>Unknown</h2>
+                {% endif %}
+                <p>{{ session.focus_time }} minutes studied</p>
+                <p>Studied for {{ session.subject }}</p>
+                <p>Earned {{ ((session.focus_time | default(0) | int) / 
+                    ((session.focus_time | default(0) | int) - 5)) | int }} bunnie(s)
+                </p>
+                <div class="form-buttons">
+                    <form id="edit-form" action="{{ url_for('edit_session', session_id=session._id) }}" method="GET" style="display:inline;">
+                        <button type="submit" id="edit-button"></button>
+                    </form>
+                
+                    <form id="delete-form" action="{{ url_for('delete_session', session_id=session._id) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
+                        <button type="submit" id="delete-button"></button> 
+                    </form>
+                </div>                
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this session?');
+        }
+    </script>
+</body>
+</html>
