@@ -1,0 +1,66 @@
+
+.book-info {
+    margin-left: 40px;
+    max-width: 600px;
+    padding-bottom: 20px;
+}
+
+.book-info p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.book-info strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+    position: static;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #F7DC6F;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #f6eaac;
+}
+
+.btn-delete {
+    background-color: #F7DC6F;
+}
+
+.btn-delete:hover {
+    background-color: #f6eaac;
+}
+
+.btn-edit button {
+    background-color: #F7DC6F;
+}
+
+.btn-edit button:hover {
+    background-color: #f6eaac;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
