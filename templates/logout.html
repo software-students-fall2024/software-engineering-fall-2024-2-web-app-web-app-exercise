@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <i class="bx bx-menu" id="menu-icon"></i>
+    
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index', username=session['username']) }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('view_transactions') }}">Transactions</a></li>            
+                <li><a href="{{ url_for('add_transaction', username=session['username']) }}">Add Transaction</a></li>
+                <li><a href="{{ url_for('search_and_edit_transaction', username=session['username']) }}">Edit Transaction</a></li>
+                <li><a href="{{ url_for('search_transactions', username=session['username']) }}">Search Transactions</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Are you sure you want to logout?</h2>
+        <!-- Logout button -->
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
