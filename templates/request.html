@@ -5,18 +5,26 @@
 {% endblock %}
 
 {% block body %}
-    {% if success %}
-        <h1>Request successful</h1>
+    {% if error %}
+        <h1>Error submitting request</h1>
+        {% if errInfo %}
+            <h2>{{errInfo}}</h2>
+        {% endif %}
     {% endif %}
 
+    {% if ticket %}
+        <h1>Successfully submitted request</h1>
+        <h2>Support Ticket: {{ticket}}</h2>
+    {% endif %}
+    
     {% if applianceInfo is none %}
-    <form method="GET" action="/request">
-        <input type="text" pattern="^[0-9]{4}$" name="code" placeholder="Appliance Code">
-        <input type="submit" value="search">
-    </form>
-    {% endif %}
+        <h3>Enter appliance code to make new request:</h3>
+        <form method="GET" action="/request">
+            <input type="text" pattern="^[0-9]{4,5}$" name="code" placeholder="Appliance Code">
+            <input type="submit" value="search">
+        </form>
 
-    {% if applianceInfo is not none %} <!-- If code is found, display help form -->
+    {% elif applianceInfo and applianceInfo.applianceName %} <!-- If code is found, display help form -->
         <h3>{{applianceInfo.applianceName}}</h3>
         <p>Building:{{applianceInfo.building}}</p>
         <p>Floor:{{applianceInfo.floor}}</p>
@@ -32,4 +40,5 @@
             <input type="submit" value="Submit Request">
         </form>
     {% endif %}
+
 {% endblock %}
