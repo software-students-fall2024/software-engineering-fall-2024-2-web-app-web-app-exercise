@@ -61,7 +61,7 @@ def make_request():
     if(request.method == 'GET'):
         ticket=None
         # If code is not empty and is 5 numbers
-        if ((code := request.args.get('code')) and re.match(r'^[0-9]{5}$', code)):
+        if ((code := request.args.get('code')) and re.match(r'^[0-9]{4,5}$', code)):
             code = int(code)
             # If code exists, retrieve data as entry and display it 
             entry = appliance_collection.find_one({'code': code})
@@ -88,7 +88,7 @@ def make_request():
         subject = escape(request.form.get('subject'))
         description = escape(request.form.get('description'))
         # If code and email match
-        if(re.match(r'^[0-9]{5}$', code) and re.match(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$', email)):
+        if(re.match(r'^[0-9]{4,5}$', code) and re.match(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$', email)):
             code = int(code)
             date = datetime.today().strftime('%Y-%m-%d')
 
@@ -124,7 +124,7 @@ def make_request():
 @app.route("/track", methods=["GET"])
 def trackRequest(code=None):
     # If code is not empty and is 4 numbers
-    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{5}$', code)):
+    if ((code := request.args.get('code')) != '' and code is not None and re.match(r'^[0-9]{4,5}$', code)):
         code = int(code)
         # If code exists, retrieve data as entry and display it 
         # requestEntry = requests_collection.find({'code':code}); // broken bc can't connect to atlas
