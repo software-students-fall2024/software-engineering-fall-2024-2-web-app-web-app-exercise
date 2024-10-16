@@ -8,6 +8,11 @@
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
         }
+
+        function view(board_id) {
+            const view_url = `/view_board/` + board_id;
+            window.location.href = view_url;
+        }
     </script>
     <style> 
         body {
@@ -137,8 +142,9 @@
         {% for board in boards %}
             <div class="board">
                 <div class="board-title">{{ board['name'] }}</div>
-                <div class="board-image"></div>
+                <div class="board-image" onclick="view( '{{ board['_id'] }}' )"></div>
                 <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
+                    
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
                     <button type="submit" name="duplicate" value="{{ board['_id'] }}">Copy</button>
                     <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
