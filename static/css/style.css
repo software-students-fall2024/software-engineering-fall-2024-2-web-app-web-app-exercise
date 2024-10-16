@@ -153,7 +153,7 @@ header {
 }
 
 .card {
-  width: 18rem;
+  width: 15rem;
   padding: 10px;
   margin-top: 10px;
 }
@@ -215,6 +215,13 @@ footer a {
   header{
     height: 50px;
   }
+  .workout-nav{
+    width: 35%;
+  }
+  .workout-instructions{
+    width: 65%;
+  }
+  
   footer{
     
     height: 50px;
