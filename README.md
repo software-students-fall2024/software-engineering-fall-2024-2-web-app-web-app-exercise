@@ -10,6 +10,12 @@ Our app boosts productivity by gamifying task management, offering users fun, in
 
 ## Steps necessary to run the software
 
+### Clone the repository
+
+```
+git clone https://github.com/software-students-fall2024/2-web-app-codebuns-v2.git
+```
+
 ### Set up a Python virtual environment
 
 Here are instructions for using `pipenv`
@@ -70,11 +76,13 @@ python3 -m pip install pymongo
 
 ### Create .env file
 
-Create a [.env](https://knowledge.kitchen/content/courses/software-engineering/slides/flask-pymongo/#combined) to store credentials for connecting to the database.
+Create a [.env](https://knowledge.kitchen/content/courses/software-engineering/slides/flask-pymongo/#combined) to store credentials for connecting to the database. This file should be excluded from version control in the [`.gitignore`](.gitignore) file.
+
+Replace the example values with values that match your database credentials.
 
 ```
-MONGO_DBNAME=
-MONGO_URI=
+MONGO_DBNAME=example
+MONGO_URI="mongodb://admin:secret@localhost:27017/example?authSource=admin&retryWrites=true&w=majority"
 
 #other options
 FLASK_APP="app.py"
@@ -93,7 +101,11 @@ pip install python-dotenv
 
 ### Run the app
 
-Start flask with `flask run` - this will output an address at which the app is running locally, e.g. https://127.0.0.1:5000. Visit that address in a web browser.
+- define two environment variables from the command line:
+  - on Mac, use the commands: `export FLASK_APP=app.py` and `export FLASK_ENV=development`.
+  - on Windows, use `set FLASK_APP=app.py` and `set FLASK_ENV=development`.
+- start flask with `flask run` - this will output an address at which the app is running locally, e.g. https://127.0.0.1:5000. Visit that address in a web browser.
+- in some cases, the command `flask` will not be found when attempting `flask run`... you can alternatively launch it with `python3 -m flask run --host=0.0.0.0 --port=5000` (or change to `python -m ...` if the `python3` command is not found on your system).
 
 ## Task boards
 
