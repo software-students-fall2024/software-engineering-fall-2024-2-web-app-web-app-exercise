@@ -9,6 +9,7 @@ A little exercise to build a web application following an agile development proc
 - [Yuhao Sheng](https://github.com/imyhalex)
 - [Qiyuan (Bryce) Yin](https://github.com/Bryccce)
 
+
 ### Project structure (10/14/2024)
 
 ```text
