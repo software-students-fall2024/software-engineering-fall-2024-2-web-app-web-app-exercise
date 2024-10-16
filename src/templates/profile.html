@@ -75,6 +75,9 @@
             margin-top: 5px;
             margin-bottom: 10px;
             flex-grow: 1;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
         }
         .board-title {
             font-weight: bold;
@@ -99,6 +102,16 @@
             height: 200px;
             width: 90vw;
             box-sizing: border-box;
+        }
+        .board-text {
+            position: relative;
+            background-color: none;
+            color: black;
+            font-size: 18px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
         }
     </style>
 </head>
@@ -142,7 +155,9 @@
         {% for board in boards %}
             <div class="board">
                 <div class="board-title">{{ board['name'] }}</div>
-                <div class="board-image" onclick="view('{{ board['_id'] }}')"></div>
+                <div class="board-image" onclick="view('{{ board['_id'] }}')">
+                    <div class="board-text">Click to View Board</div>
+                </div>
                 <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
                     
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
