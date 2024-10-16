@@ -8,6 +8,14 @@ body {
     margin: 0;
 }
 
+#errorMessage {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -15px; /* Adjust margin to tighten space */
+    margin-bottom: 15px;
+    text-align: left; /* Align error with form elements */
+}
+
 form {
     background-color: #ffffff;
     padding: 20px;
@@ -58,7 +66,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #e4cf14de;
+    background-color: #FAD5A5;
 }
 
 input[type="submit"],
@@ -80,7 +88,7 @@ input[type="submit"],
 
 input[type="submit"]:hover,
 #register:hover {
-    background-color: #e4cf14de;
+    background-color: #FAD5A5;
 }
 
 

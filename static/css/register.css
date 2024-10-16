@@ -8,6 +8,13 @@ input, a {
     gap: 10px;  /* Space between buttons */
 }
 
+#errorMessage {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -15px; /* Adjust margin to tighten space */
+    margin-bottom: 15px;
+    text-align: left; /* Align error with form elements */
+}
 
 body {
     font-family: Arial, sans-serif;
