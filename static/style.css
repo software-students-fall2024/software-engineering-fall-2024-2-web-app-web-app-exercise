@@ -126,6 +126,17 @@ h2{
     flex-direction: column;
 }
 
+.track-request-expanded{
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    padding: 30px 100px;
+}
+
+.track-request-expanded p {
+    font-size: 2rem;
+}
+
 .status{
     color: gray;
 }
@@ -153,11 +164,6 @@ li {
     border: 1px solid #ccc;
     border-radius: 5px;
     color: black;
-}
-
-.request-item:hover {
-    background-color: #e0e0e0; /* Slightly darker gray on hover */
-    border-color: #888;
 }
 
 .request-details h3 {

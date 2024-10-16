@@ -7,15 +7,20 @@
         <div class="code-box">
             <h1>Track a Request!</h1>
             <form method="GET" action="/track">
-            <input class="tracking-code-box" type="text" pattern="^[0-9]{5}$" name="code" placeholder="5-digit Appliance Code">
+            <input class="tracking-code-box" type="text" pattern="^[0-9]{4,5}$" name="code" placeholder="5-digit Appliance Code">
             <input class="tracking-code-box" type="submit" value="Search">
             </form>
         </div>
         {% if applianceInfo is not none %}
         <div class="track-request-right">
-            <h2>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h2>
+            <h1>{{applianceInfo.applianceName}} ({{applianceInfo.code}})</h1>
             <h2>Building: {{applianceInfo.building}}</h2>
             <h2>Floor: {{applianceInfo.floor}}<h2>
+            <a href={{url_for('makeRequest',code=applianceInfo.code)}}>Start a New Request</a>
+        </div>
+        {% else %}
+        <div class="track-request-right">
+            <h1>No appliance selected.</h1>
         </div>
         {% endif %}
     </div>
@@ -33,7 +38,10 @@
                     <a href={{url_for('trackRequestDetailed',ticket=request.ticket)}}>More Details</a>
                 </div>
             {% endfor %}
+        {% else %}
+            <h1>No requests found.</h1>
         {% endif %}
+
     </div>
 
 </div>
