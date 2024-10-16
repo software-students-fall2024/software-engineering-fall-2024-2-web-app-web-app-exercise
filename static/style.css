@@ -1,12 +1,12 @@
 /* Common styles for buttons */
 .link {
     border: 2px solid gray; /* Define a consistent border for both views */
-    padding: 10px;
+    padding: 2vw;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     border-radius: 5px; /* Optional: for rounded corners */
-    font-size: 16px;
+    font-size: 1em;
     margin: 4px 2px;
     cursor: pointer;
 }
@@ -50,8 +50,12 @@ h2{
 
 .navLinks {
     display: flex;
-    padding: 20px;
-    gap: 40px;
+    padding: 2vw;
+    gap: 2vw;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 }
 .link{
     border: 5px solid gray;
@@ -137,7 +141,7 @@ h2 {
 .code-box{
     background: lightgray;
     padding: 10px 20px;
-    width: 250px;
+    width: 60vw;
 }
 
 .request-row{
@@ -162,5 +166,11 @@ h2 {
     border: 2px solid gray;
     padding: 10px 20px;
     min-width: 200px;
+}
+
+input {
+    height: 2vh;
+    width: 50vw;
+    font: 2em sans-serif;
 }
 
