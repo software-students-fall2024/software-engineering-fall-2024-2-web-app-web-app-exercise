@@ -8,7 +8,7 @@ from src.models.user import user_loader, request_loader
 from src.models.user import User
 from src.models.boards import *
 from src.app import get_db
-
+from bson.objectid import ObjectId
 
 @flask_login.login_required
 @routes.route('/profile', methods=["GET", "POST"])
@@ -86,14 +86,6 @@ def update_account():
         return redirect(url_for('routes.login'))
 
     return redirect(url_for('routes.account_settings'))
-
-
-from . import routes
-from flask import render_template, request, redirect, url_for, flash
-import flask_login
-from src.app import get_db
-from src.models.boards import get_board, update_board
-from bson.objectid import ObjectId
 
 @routes.route('/edit_board/<board_id>', methods=["GET", "POST"])
 @flask_login.login_required
