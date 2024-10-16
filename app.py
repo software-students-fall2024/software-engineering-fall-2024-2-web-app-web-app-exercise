@@ -106,6 +106,7 @@ def create_app():
             rendered template (str): The rendered HTML template.
         """
         if not current_user.is_authenticated :
+            flash("Login Required")
             return redirect('/login')
         docs = tasks.find({"user": {'$in': [current_user.username]}})
         return render_template("index.html", docs=docs)

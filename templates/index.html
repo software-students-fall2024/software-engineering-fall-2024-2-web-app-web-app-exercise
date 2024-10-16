@@ -12,15 +12,16 @@
 
         {% for doc in docs %}
         <article class="post">
+            <p class="name">
+                {{doc.name}}
+            </p>
             <nav class="controls">
                 <a href="{{ url_for('edit', post_id=doc._id)}}">Edit</a> | <a href="{{ url_for('delete', post_id=doc._id)}}">Delete</a>
             </nav>
-            <p class="author">
-                {{doc.name}}
-            </p>
             <p class="message">
-                {{ doc.description }}
+                Description: {{ doc.description }}
             </p>
+            <br>
         </article>
         {%endfor%}
 
