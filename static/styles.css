@@ -272,8 +272,9 @@ h2 {
 }
 
 .header {
-    color: darkblue;
-    font-size: 3rem;
+    color: #3a383d;
+    font-size: 3rem; 
+    font-weight: bold;
 }
 
 .image {
