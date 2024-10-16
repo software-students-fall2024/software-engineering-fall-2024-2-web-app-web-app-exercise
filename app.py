@@ -271,7 +271,7 @@ def create_app():
         book = db[userdb].find_one({"_id": ObjectId(book_id)})
         return render_template('edit.html', book=book)
 
-    
+    '''
     @app.route("/edit_price/<book_id>", methods=["POST"])
     @login_required
     def edit_price(book_id):
@@ -349,6 +349,7 @@ def create_app():
             {"_id": ObjectId(book_id)},
             {"$set": {"genre": genre}})
         return redirect(url_for("book_detail", book_id=book_id))
+    '''
     
     @app.route('/logout', methods=["GET"])
     def logout():
