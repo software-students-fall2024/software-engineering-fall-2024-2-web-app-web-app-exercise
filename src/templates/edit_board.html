@@ -64,7 +64,7 @@
     </style>
    
    <script>
-    // History to track board states
+    
     let history = [];
     let historyIndex = -1;
 
@@ -81,16 +81,15 @@
             }
         });
 
-        // Remove any "future" states if we've undone and then made a new change
+        
         history = history.slice(0, historyIndex + 1);
 
-        // Save the new state and update the history index
         history.push(slots);
         historyIndex = history.length - 1;
 
         console.log("State saved. Current history:", history);
     }
-    // Undo function
+    
     function undo() {
         if (historyIndex > 0) {
             historyIndex--;
@@ -100,14 +99,14 @@
             console.log("No more actions to undo.");
         }
     }
-    // Clear Board functionality
+    
     function clearBoard() {
             const slots = document.querySelectorAll('.slot');
             slots.forEach(slot => slot.innerHTML = '');
             saveState();
         }
         
-    // Redo function (if you wish to implement it)
+    
     function redo() {
         if (historyIndex < history.length - 1) {
             historyIndex++;
@@ -118,12 +117,12 @@
         }
     }
 
-    // Restore the state of the board
+    
     function restoreState(state) {
         const slots = document.querySelectorAll('.slot');
         state.forEach((content, index) => {
             const slot = slots[index];
-            slot.innerHTML = ''; // Clear slot
+            slot.innerHTML = ''; 
             if (content) {
                 const img = document.createElement('img');
                 img.src = "/static" + content.imageUrl;
@@ -139,12 +138,12 @@
         });
     }
     function goToSearch(boardId, slotIndex) {
-        // Make sure the slot index is passed correctly
+        
         window.location.href = `/search?board_id=${boardId}&slot_index=${slotIndex}`;
     }
 
     window.onload = function() {
-        saveState(); // Save the initial state
+        saveState(); 
 
         const params = new URLSearchParams(window.location.search);
         const pedalName = params.get("pedal_name");
@@ -153,17 +152,17 @@
 
         if (pedalName && pedalImage && slotIndex !== null) {
             addPedalToSlot(pedalName, pedalImage, slotIndex);
-            saveState(); // Save state after adding pedal
+            saveState(); 
 
-            // Remove URL parameters after adding to avoid adding again if the page is reloaded
+            
             const urlWithoutParams = window.location.href.split('?')[0];
             window.history.replaceState({}, document.title, urlWithoutParams);
         }
     };
 
-    // Save state after loading the page
+  
     window.onload = function() {
-        // Save the initial state
+        
         saveState();
 
         const params = new URLSearchParams(window.location.search);
@@ -173,9 +172,9 @@
 
         if (pedalName && pedalImage && slotIndex !== null) {
             addPedalToSlot(pedalName, pedalImage, slotIndex);
-            saveState(); // Save state after adding pedal
+            saveState(); 
 
-            // Remove URL parameters after adding to avoid adding again if the page is reloaded
+            
             const urlWithoutParams = window.location.href.split('?')[0];
             window.history.replaceState({}, document.title, urlWithoutParams);
         }
@@ -185,7 +184,7 @@
         const slots = document.querySelectorAll('.slot');
         const slot = slots[slotIndex];
         if (slot) {
-            slot.innerHTML = ''; // Clear any existing content in the slot
+            slot.innerHTML = '';
             const img = document.createElement('img');
             img.src = "/static" + imageUrl;
             img.alt = name;
@@ -197,13 +196,13 @@
             hiddenInput.value = `${name}|${imageUrl}`;
             slot.appendChild(hiddenInput);
 
-            saveState(); // Save the state after adding pedal
+            saveState(); 
         }
     }
 
-    // Discard changes
+
     function discardChanges() {
-        window.history.back(); // Go back to the previous page
+        window.history.back(); 
     }
 </script>
 

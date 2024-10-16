@@ -100,16 +100,16 @@ def edit_board(board_id):
         flash('Board not found', 'error')
         return redirect(url_for('routes.profile'))
     
-    # Convert the ObjectId to a string
+ 
     board['_id'] = str(board['_id'])
 
     if request.method == 'POST':
-        # Get the updated name and pedal information from the form
+     
         name = request.form.get('name')
         pedal_data = request.form.getlist('pedals')
 
-        # Create a list to store pedals based on their slot index
-        pedals = [None] * 10  # Assume a maximum of 10 slots
+       
+        pedals = [None] * 10  
         for index, data in enumerate(pedal_data):
             if data:
                 try:
@@ -118,13 +118,13 @@ def edit_board(board_id):
                 except ValueError:
                     continue
 
-        # Update the board in the database
+     
         update_board(board_id, name, pedals)
 
         flash('Board updated successfully', 'success')
         return redirect(url_for('routes.profile'))
 
-    # Handle URL parameters for pedal addition from search
+
     pedal_name = request.args.get("pedal_name")
     pedal_image = request.args.get("pedal_image")
     slot_index = request.args.get("slot_index")

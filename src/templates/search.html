@@ -26,12 +26,12 @@
         }
 
         function selectPedal(pedalName, pedalImage) {
-        // Retrieve board_id and slot_index from the URL parameters
+        
         const params = new URLSearchParams(window.location.search);
         const boardId = params.get("board_id");
         const slotIndex = params.get("slot_index");
         if (boardId && slotIndex !== null) {
-            // Redirect back to the edit board page with the selected pedal details
+           
             window.location.href = `/edit_board/${boardId}?pedal_name=${encodeURIComponent(pedalName)}&pedal_image=${encodeURIComponent(pedalImage)}&slot_index=${slotIndex}`;
         } else {
             alert("Error: Unable to add pedal. Missing board or slot information.");
