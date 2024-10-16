@@ -1,3 +1,4 @@
+
 form {
     width: 100%;
     display: flex;
@@ -22,27 +23,31 @@ form textarea,form input[type="text"],form input[type="date"],form input[type="c
     width: 100%;
     padding: 10px;
     background-color: #f7dc6f;
-    color: white;
+    color: rgb(0, 0, 0);
     border: none;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 8px;
     }
     
     #searchResult {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
     }
     
-    #searchResult th, #searchResult td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    font-size: 14px;
-    }
-    
-    #searchResult th {
-    background-color: #f2f2f2;
+#searchResult th,#searchResult td {
+    border: 1px solid #ccc;
+    padding: 8px;
     text-align: left;
+    }
+    
+#searchResult thead th {
+    background-color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
     }
     
     @media (min-width: 768px) {
@@ -60,25 +65,7 @@ form textarea,form input[type="text"],form input[type="date"] {
    width: calc(100% - 20px);}
 }
 
-#searchResult {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #f0f0f0;
-}
-
-#searchResult th,
-#searchResult td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-#searchResult thead th {
-    background-color: #d3d3d3;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-#searchResult tbody tr:hover {
-    background: #e0e0e0;
+#searchResult th, #searchResult td {
+    font-size: 14px;
+    padding: 6px;
 }
