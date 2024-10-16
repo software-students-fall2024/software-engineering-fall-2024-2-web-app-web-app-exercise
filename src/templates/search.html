@@ -44,17 +44,20 @@
 <body>
     <div class="top-bar">
         <a href="/edit_board/{{ board_id }}" class="back-arrow">&#x2190;</a>
-        <form method="GET" action="{{ url_for('routes.search') }}" style="flex-grow: 1; display: flex;">
-            <input type="hidden" name="board_id" value="{{ board_id }}"> 
-            <input type="text" name="query" class="search-query" placeholder="Search Pedals">
+        <form method="GET" action="{{ url_for('routes.search') }}">
+            <input type="text" name="query" placeholder="Search for a pedal">
+            <input type="hidden" name="board_id" value="{{ board_id }}">
+            <input type="hidden" name="slot_index" value="{{ request.args.get('slot_index', '') }}">
             <button type="submit">Search</button>
         </form>
     </div>
 
+    <!--
     <div class="filter-sort">
         <button>Filters</button>
         <button>Sort By</button>
     </div>
+    -->
 
     <ul class="pedal-list">
         {% for pedal in pedals %}

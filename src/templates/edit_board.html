@@ -48,7 +48,7 @@
 
         .btn {
             padding: 10px 15px;
-            margin: 5px;
+            margin: 20px;
             border-radius: 20px;
             border: none;
             background-color: #ddd;
@@ -152,8 +152,7 @@
 
         if (pedalName && pedalImage && slotIndex !== null) {
             addPedalToSlot(pedalName, pedalImage, slotIndex);
-            saveState(); 
-
+            saveState();
             
             const urlWithoutParams = window.location.href.split('?')[0];
             window.history.replaceState({}, document.title, urlWithoutParams);
@@ -239,6 +238,7 @@
                 {% endfor %}
             </div>
     
+            <!--
             <div class="btn-group">
                 <button type="button" class="btn" onclick="undo()">Undo</button>
                 <button type="button" class="btn" onclick="redo()">Redo</button>
@@ -247,6 +247,7 @@
             <div class="btn-group">
                 <button type="reset" class="btn" onclick="clearBoard()">Clear Board</button>
                 <button type="button" class="btn" onclick="discardChanges()">Discard Changes</button>
+            -->
                 <button type="submit" class="btn">Save Board</button>
             </div>
         </div>
