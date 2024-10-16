@@ -76,6 +76,7 @@ def create_app():
             password2 = request.form["password2"]
             firstname = request.form["firstname"]
             lastname = request.form["lastname"]
+            vocabList = []
             # check if passwords match
             if password != password2:
                 flash("Passwords don't match!")
@@ -84,7 +85,7 @@ def create_app():
             if User.find_by_username(db, username):
                 flash("Username with that email already exists!")
                 return render_template('signup.html', error="Error occurred!")
-            User.create_user(db, username, password, firstname, lastname)
+            User.create_user(db, username, password, firstname, lastname, vocabList)
             flash("User created successfully!")
             return redirect(url_for("login"))
         return render_template("signup.html")
