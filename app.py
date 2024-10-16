@@ -494,6 +494,17 @@ def create_app():
                 
                 return render_template('add_task.html', cur_members=cur_members, project=cur_project, members=all_members, members2=members2, edit=True, cur_task=cur_task)
 
+    @app.route('/search_tasks/<post_id>', methods=['GET'])
+    def search_tasks(post_id):
+        task_name = request.args.get('task_name', '').lower()
+        cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        # check if exists - no - return to project view
+        if not cur_project:
+            return redirect(url_for('project_view', post_id=post_id))
+        # tasks = [task for task in cur_project['tasks'] if task_name in task['taskName'].lower()]
+
+        return redirect(url_for('task_view', post_id=post_id, post_name=task_name))
+
 
     @app.route('/profile')
     def profile():

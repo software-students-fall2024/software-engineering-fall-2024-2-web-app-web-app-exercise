@@ -1,4 +1,20 @@
 {% extends 'base.html' %}{% block container %}
+<script>
+  function searchTasks() {
+    const searchTerm = document.getElementById('searchInput').value;
+    const tasks = document.querySelectorAll('.projects-list .project-link');
+    console.log(tasks)
+    tasks.forEach(task => {
+        const taskName = task.textContent;
+        console.log(taskName);
+        if (taskName.includes(searchTerm)) {
+            task.style.display = 'block';  
+        } else {
+            task.style.display = 'none'; 
+        }
+    });
+}
+</script>
 
 <body>
   <h1>Welcome, {{ username }}!</h1>
@@ -25,10 +41,19 @@
       {% endif %}
     </div>
 
+    
+    <!-- Search for tasks by name -->
+    <div class="section-title">Search Tasks</div>
+    <form action="{{ url_for('search_tasks', post_id=project._id) }}" method="GET">
+      <input type="text" id="searchInput" name="task_name" placeholder="Search tasks by name" oninput="searchTasks()"/>
+      <button type="submit">Search</button>
+    </form>
+
+
     <div class="section-title">Task List</div>
     <div class="projects-list">
         {% for task in tasks %}
-        <div class="project-link">
+        <div class="project-link" data-task-name="{{task.taskName}}">
           <a href="{{ url_for('task_view', post_id=project._id, post_name=task.taskName) }}" class="button-link">{{ task.taskName }}</a>
         </div>
         {% endfor %}
