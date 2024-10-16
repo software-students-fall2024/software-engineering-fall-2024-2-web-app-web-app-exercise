@@ -14,6 +14,7 @@ Before you begin, make sure to have python installed.
 ### Step 1: Clone the repository
 In the terminal of your local machine, use the command: <br>
 ```git clone git@github.com:software-students-fall2024/2-web-app-scoobygang.git``` <br>
+
 Then, navigate to the root of this project directory.
 
 ### Step 3: Set up an virtual environment (venv)
