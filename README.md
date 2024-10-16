@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-Our vision is to create a simple and easy to use job application tracker, that aims to help job seekers stay organized and prepared during their application process's.
+Our vision is to create a simple and easy to use job application tracker, that aims to help job seekers stay organized and prepared during their application process's. 
 
 ## User stories
 
