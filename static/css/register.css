@@ -54,7 +54,7 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    background-color: #f7dc6f
+    background-color: #f7dc6f;
     color: black;
     padding: 10px 15px;
     border: none;
