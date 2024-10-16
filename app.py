@@ -78,7 +78,6 @@ def create_app():
             
             existing_user = db.users.find_one({"username": username})
             if existing_user:
-                flash('Username already exists. Please choose a different one.')
                 return redirect(url_for('signup'))
             
             new_user = {
@@ -87,7 +86,6 @@ def create_app():
             }
             db.users.insert_one(new_user)
 
-            flash('Account created successfully! Please log in.')
             return redirect(url_for('login'))
 
         return render_template('signup.html')
@@ -212,26 +210,26 @@ def create_app():
     
 
     @app.route("/search", methods=["POST"])
+    @login_required  
     def search():
         """
-        Route for POST requests to the create page.
-        Accepts the form submission data for a new document and saves the document to the database.
-        Returns:
-            redirect (Response): A redirect response to the home page.
+        Route for searching sessions based on user input.
+        Retrieves the matching sessions and renders the home screen with the filtered results.
         """
-        focus_time = request.form['focus']
-        subject = request.form['subject']
+        query = request.form.get('search', '').strip()  
 
-        session_data = {
-        "focus_time": focus_time,
-        "subject": subject,
-        "created_at": datetime.now(timezone.utc)
-        }
+        if not query:
+            return redirect(url_for('home_screen'))
 
-        db.sessions.insert_one(session_data)
+        search_results = db.sessions.find(
+            {
+                "username": current_user.id,
+                "subject": {"$regex": query, "$options": "i"}
+            }
+        ).sort("created_at", -1)
 
-        return redirect(url_for("counter"))
-    
+        return render_template("home_screen.html", past=search_results, username=current_user.id)
+
     return app
 
 if __name__ == "__main__":
