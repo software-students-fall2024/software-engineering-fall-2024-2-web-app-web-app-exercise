@@ -10,6 +10,8 @@ Our product is a mobile web application maintenance portal where students and ot
 
 We decided to focus on the following user stories when building our mobile web application:
 ### [Link to Issues](https://github.com/software-students-fall2024/2-web-app-yowza/issues)
+- As a Maintenance worker, I want to be able to mark requests as done so that the requestee knows that their request has been addressed and resolved.
+- As a student, I want to be able to see past requests I've made so I can know if they've been finished or if more work needs to be done.
 - As a student, I want to be able to enter a five-digit code (from a sticker on the appliance) that will automatically tell the web app which appliance it is so that I don't have to enter all of the details about where it is manually.
 - As a student/faculty, I want to submit a request so that maintenance can fix broken appliances/facilities, such as water fountains or toilets, and they can be used again.
 - As a maintenance worker, I want to be able to remove appliances from the web app so that students do not try to submit requests for appliances or locations that no longer exist/have been removed.
