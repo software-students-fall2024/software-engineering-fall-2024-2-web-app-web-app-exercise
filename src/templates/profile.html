@@ -8,6 +8,11 @@
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
         }
+
+        function view(board_id) {
+            const view_url = `/view_board/` + board_id;
+            window.location.href = view_url;
+        }
     </script>
     <style> 
         body {
@@ -51,7 +56,7 @@
             gap: 20px;
             justify-content: space-between;
         }
-        .board {
+        .board, .new-board {
             border: 1px solid #ddd;
             padding: 10px;
             position: relative;
@@ -60,7 +65,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 220px;
+            width: 90vw;
             height: 200px;
             box-sizing: border-box;
         }
@@ -70,6 +75,9 @@
             margin-top: 5px;
             margin-bottom: 10px;
             flex-grow: 1;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
         }
         .board-title {
             font-weight: bold;
@@ -92,8 +100,18 @@
             font-size: 40px;
             cursor: pointer;
             height: 200px;
-            width: 200px;
+            width: 90vw;
             box-sizing: border-box;
+        }
+        .board-text {
+            position: relative;
+            background-color: none;
+            color: black;
+            font-size: 18px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
         }
     </style>
 </head>
@@ -137,11 +155,14 @@
         {% for board in boards %}
             <div class="board">
                 <div class="board-title">{{ board['name'] }}</div>
-                <div class="board-image"></div>
+                <div class="board-image" onclick="view('{{ board['_id'] }}')">
+                    <div class="board-text">Click to View Board</div>
+                </div>
                 <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
                     <button type="submit" name="duplicate" value="{{ board['_id'] }}">Copy</button>
                     <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
+                    <input type="hidden" name="pedal_deleted_{{ loop.index0 }}" id="pedal_deleted_{{ loop.index0 }}" value="{{ '1' if board['pedals'][loop.index0] is none else '0' }}">
                 </form>
             </div>
         {% endfor %}

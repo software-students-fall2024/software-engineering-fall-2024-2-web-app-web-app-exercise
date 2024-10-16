@@ -6,230 +6,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedal Search</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .top-bar {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #e0e0e0;
-        }
-
-        .back-arrow {
-            font-size: 1.5rem;
-            cursor: pointer;
-            margin-right: 15px;
-        }
-
-        .search-query {
-            flex-grow: 1;
-            font-size: 1.2rem;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .filter-sort {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 15px;
-            background-color: #ffffff;
-        }
-
-        .filter-sort button {
-            padding: 10px;
-            border: 1px solid #333;
-            background-color: #ffffff;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .pedal-list {
-            padding: 0;
-            list-style: none;
-            margin: 0;
-        }
-
-        .pedal-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-            background-color: #ffffff;
-        }
-
-        .pedal-item img {
-                width: 100%;
-                height: auto;
-            }
-
-        .pedal-info {
-            flex-grow: 1;
-        }
-
-        .pedal-name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin: 0;
-            cursor: pointer;
-        }
-
-        .pedal-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin: 5px 0 0;
-        }
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .top-bar { display: flex; align-items: center; padding: 15px; background-color: #e0e0e0; }
+        .back-arrow { font-size: 1.5rem; cursor: pointer; margin-right: 15px; }
+        .search-query { flex-grow: 1; font-size: 1.2rem; border-bottom: 1px solid #ccc; display: inline-block; margin-right: 15px; }
+        .filter-sort { display: flex; justify-content: space-between; padding: 10px 15px; background-color: #ffffff; }
+        .filter-sort button { padding: 10px; border: 1px solid #333; background-color: #ffffff; cursor: pointer; border-radius: 5px; }
+        .pedal-list { padding: 0; list-style: none; margin: 0; }
+        .pedal-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #ccc; background-color: #ffffff; cursor: pointer; }
+        .pedal-item img { width: 100px; height: auto; margin-right: 15px; }
+        .pedal-info { flex-grow: 1; }
+        .pedal-name { font-weight: bold; font-size: 1.1rem; margin: 0; cursor: pointer; }
+        .pedal-description { font-size: 0.9rem; color: #666; margin: 5px 0 0; }
     </style>
     <script>
         function goBack() {
-            window.location.href = "profile.html"; 
+            window.history.back();
         }
 
-        function selectPedal() {
-
-            window.location.href = "profile.html";
+        function selectPedal(pedalName, pedalImage) {
+        
+        const params = new URLSearchParams(window.location.search);
+        const boardId = params.get("board_id");
+        const slotIndex = params.get("slot_index");
+        if (boardId && slotIndex !== null) {
+            if (pedalName === "Delete pedal") {
+                window.location.href = `/edit_board/${boardId}?pedal_name=&pedal_image=&slot_index=${slotIndex}`;
+            }
+            else { 
+                window.location.href = `/edit_board/${boardId}?pedal_name=${encodeURIComponent(pedalName)}&pedal_image=${encodeURIComponent(pedalImage)}&slot_index=${slotIndex}`;
+            }
+        } else {
+            alert("Error: Unable to add pedal. Missing board or slot information.");
         }
+    }
+        
     </script>
 </head>
 
 <body>
     <div class="top-bar">
-        <span class="back-arrow" onclick="goBack()">&#x2190;</span>
-        <span class="search-query"> Example Search Query </span>
+        <a href="/edit_board/{{ board_id }}" class="back-arrow">&#x2190;</a>
+        <form method="GET" action="{{ url_for('routes.search') }}">
+            <input type="text" name="query" placeholder="Search for a pedal">
+            <input type="hidden" name="board_id" value="{{ board_id }}">
+            <input type="hidden" name="slot_index" value="{{ request.args.get('slot_index', '') }}">
+            <button type="submit">Search</button>
+        </form>
     </div>
 
+    <!--
     <div class="filter-sort">
         <button>Filters</button>
         <button>Sort By</button>
     </div>
+    -->
 
     <ul class="pedal-list">
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_tu_3_chromatic_tuner.webp" alt="Pedal Image">
+        <li class="pedal-item" onclick="selectPedal('Delete pedal', '')">
             <div class="pedal-info">
-                <p class="pedal-name">Boss TU-3 Chromatic Tuner</p>
-                <p class="pedal-description">Industry-standard tuner for precise tuning.</p>
+                <p class="pedal-name">Delete pedal</p>
             </div>
         </li>
-        
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_ce_2_chorus.webp" alt="Pedal Image">
+        {% for pedal in pedals %}
+        <li class="pedal-item" onclick="selectPedal('{{ pedal['name'] }}', '{{ pedal['image_url'] }}')">
+            <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
             <div class="pedal-info">
-                <p class="pedal-name">Boss CE-2 Chorus</p>
-                <p class="pedal-description">Classic analog chorus for warm, swirling sounds.</p>
+                <p class="pedal-name">{{ pedal['name'] }}</p>
+                <p class="pedal-description">{{ pedal['description'] }}</p>
             </div>
         </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_dd_8_digital_delay.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss DD-8 Digital Delay</p>
-                <p class="pedal-description">Versatile digital delay with multiple modes.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_dd_3t_digital_delay.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss DD-3T Digital Delay</p>
-                <p class="pedal-description">Compact digital delay for studio-quality effects.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_dm_2_delay.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss DM-2 Delay</p>
-                <p class="pedal-description">Vintage analog delay for rich, warm echoes.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_ds_1_distortion.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss DS-1 Distortion</p>
-                <p class="pedal-description">Iconic distortion pedal with a unique tonal edge.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_ds_2_distortion.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss DS-2 Distortion</p>
-                <p class="pedal-description">Turbo-charged version of the classic DS-1.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_fz_1w_fuzz.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss FZ-1W Fuzz</p>
-                <p class="pedal-description">Authentic vintage fuzz tones with modern features.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_ge_7_equalizer.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss GE-7 Equalizer</p>
-                <p class="pedal-description">7-band EQ to shape your sound with precision.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_oc_3_super_octave.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss OC-3 Super Octave</p>
-                <p class="pedal-description">Generates octave sounds for deep bass tones.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_od_320_overdrive.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss OD-320 Overdrive</p>
-                <p class="pedal-description">Smooth and creamy overdrive for classic rock tones.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_re_2_space_echo.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss RE-2 Space Echo</p>
-                <p class="pedal-description">Spacey delay and reverb effects for ambient sounds.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_rv_6_reverb.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss RV-6 Reverb</p>
-                <p class="pedal-description">Professional-grade reverb effects in a compact box.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_sde_3_dual_digital_delay.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss SDE-3 Dual Digital Delay</p>
-                <p class="pedal-description">Dual delay for rich, layered soundscapes.</p>
-            </div>
-        </li>
-
-        <li class="pedal-item" onclick="selectPedal()">
-            <img src="../data/images/boss_sl_2_slicer.webp" alt="Pedal Image">
-            <div class="pedal-info">
-                <p class="pedal-name">Boss SL-2 Slicer</p>
-                <p class="pedal-description">Unique modulation effects with rhythmic slicing.</p>
-            </div>
-        </li>
+        {% endfor %}
     </ul>
 </body>
 
