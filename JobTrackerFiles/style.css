@@ -1,0 +1,241 @@
+/* ----------A---------- */   /* A */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: "Times New Roman", serif;
+}
+:root {
+    --bg-color: white;           /* BODY background color */
+    --second-bg-color: #1b0686;  /* HEADER backgssround color */
+    --text-color: black;         /* Text color */
+    --main-color: black;         /* A */
+    --icon-color: #ffe46a;       /* Icon color */
+}
+html {
+    font-size: 60%;
+    overflow-x: hidden;
+}
+body {
+    background: var(--bg-color); /* BODY background color */
+    color: white;              /* BODY text color */
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2.5rem 8%;                 /* HEADER margin */
+    background: rgba(0, 0, 101, 0.8); /* HEADER background color */
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+}
+.logo {
+    font-size: 3rem;
+    color: var(--text-color);
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.logo:hover {transform: scale(1.1);}
+.logo span{text-shadow: 0 0 25px var(--icon-color);}
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.navbar a {
+    font-size: 1.8rem;
+    color: white;       /* color when inactive */
+    margin-left: 4rem;
+    font-weight: 500;
+    transition: 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+.navbar a:hover, 
+.navbar a.active {
+    color: var(--icon-color);                   /* color when active */
+    border-bottom: 3px solid var(--icon-color);
+}
+#logo {                                  /* Logo next to webName */
+    font-size: 2.5rem; 
+    width: 4.5rem;
+    height: 4.5rem;
+    background: transparent;
+    border: 2px solid var(--icon-color); /* border thickness */
+    border-radius: 50%;                  /* border shape (circle) */
+    color: var(--icon-color);
+    display: inline-flex;                /* in middle of border-radius */
+    align-items: center;                 
+    justify-content: center;
+}
+.webName {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    gap: 1.5rem;
+}
+#menu-icon {                    /* Dropdown menu icon */
+    font-size: 3.6rem; 
+    color: var(--icon-color);
+    display: none;              /* Doesn't display yet */
+    cursor: pointer;
+}
+.navbar.active {display: block;}
+section {
+    min-height: 100vh;
+    padding: 10rem 12%;
+}
+
+
+/* ----------HOME PAGE---------- */
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.home-content {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    text-align: left;
+    justify-content: center;
+    margin-top: 3rem;
+}
+.home-content p {
+    font-size: 2.5rem;
+    color: var(--text-color); /* Homepage header text color */
+}
+.webName {
+    color: white;  /* Website name color */
+    font-size: 3rem;
+} 
+
+
+/* ----------RETRIEVE DATA PAGE---------- */
+.heading {
+    font-size: 5rem;
+    text-align: center;
+    margin: 5rem 0;
+}
+.retrieve {
+    padding: 8rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+.retrieve h2 {
+    font-size: 2.5rem;    /* Heading font size */
+    margin-bottom: 3rem;
+}
+
+
+/* ----------ADD DATA PAGE---------- */
+.heading {
+    font-size: 5rem;
+    text-align: center;
+    margin: 5rem 0;
+}
+.add {
+    padding: 8rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+.add h2 {
+    font-size: 2.5rem;    /* Heading font size */
+    margin-bottom: 3rem;
+}
+
+
+/* ----------EDIT DATA PAGE---------- */
+.heading {
+    font-size: 5rem;
+    text-align: center;
+    margin: 5rem 0;
+}
+.edit {
+    padding: 8rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+.edit h2 {
+    font-size: 2.5rem;    /* Heading font size */
+    margin-bottom: 3rem;
+}
+
+
+/* ----------DELETE DATA PAGE---------- */
+.heading {
+    font-size: 5rem;
+    text-align: center;
+    margin: 5rem 0;
+}
+.delete {
+    padding: 8rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+.delete h2 {
+    font-size: 2.5rem;    /* Heading font size */
+    margin-bottom: 3rem;
+}
+
+
+/* ----------SEARCH DATA PAGE---------- */
+.heading {
+    font-size: 5rem;
+    text-align: center;
+    margin: 5rem 0;
+}
+.search {
+    padding: 8rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+.search h2 {
+    font-size: 2.5rem;    /* Heading font size */
+    margin-bottom: 3rem;
+}
+
+
+/* ----------MEDIA---------- */
+/* Note: only written for mobile phone width (NOT computer) */
+@media(max-width:768px) {
+    header {padding: 2rem 3%;}
+    section {padding: 10rem 3% 2rem;}
+    #menu-icon {display: block;}      /* Display menu icon */
+    .navbar {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: fit-content;
+        padding: 1rem 3%;
+        background: rgba(0,0,0,0.3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        z-index: 5;
+        flex-direction: column;
+    }
+    .navbar.active {display: flex;} /* Display menu icon when active */
+    .navbar a {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+        color: white;
+        transition: var(--bg-color) 0.3s;
+    }
+    .home {
+        flex-direction: column-reverse;
+        margin: 5rem 4rem;
+    }
+    .navbar a:hover {background-color: rgba(255, 255, 255, 0.2);}
+}

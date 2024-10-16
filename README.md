@@ -1,14 +1,14 @@
-# Web Application Exercise
+# WEB APPLICATION EXERCISE
 
-A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail.
+A little exercise to build a web application following an agile development process. See the [instructions](instructions.md) for more detail. 
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Our vision is to create a simple and easy to use job application tracker, that aims to help job seekers stay organized and prepared during their application process's.
 
 ## User stories
 
-See instructions. Delete this line and place a link to the user stories here.
+*User Story Issues:* https://github.com/software-students-fall2024/2-web-app-rbf/issues
 
 ## Steps necessary to run the software
 
@@ -16,4 +16,5 @@ See instructions. Delete this line and place instructions to download, configure
 
 ## Task boards
 
-See instructions. Delete this line and place a link to the task boards here.
+- *RBF - Sprint 1:* https://github.com/orgs/software-students-fall2024/projects/27
+- *RBF - Sprint 2:* https://github.com/orgs/software-students-fall2024/projects/29
