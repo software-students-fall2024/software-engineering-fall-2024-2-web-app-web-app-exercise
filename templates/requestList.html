@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+
+{% block body %}
+<ul>
+    {% for report in reports %}
+    <li>{{report}}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

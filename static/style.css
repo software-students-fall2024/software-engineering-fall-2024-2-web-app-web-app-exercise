@@ -1,0 +1,166 @@
+/* Common styles for buttons */
+.link {
+    border: 2px solid gray; /* Define a consistent border for both views */
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px; /* Optional: for rounded corners */
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Other shared styles */
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+h1{
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+}
+
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    overflow: hidden;
+    width: 100%;
+    background-color: bisque;
+    margin-bottom: 5vh;
+    padding: 0px;
+    height: 100px;
+}
+
+.navBar h1{
+    margin: 20px;
+}
+
+.navBar a{
+    float: right;
+    padding: 5px 5px;
+    text-decoration: none;
+}
+
+.navLinks {
+    display: flex;
+    padding: 20px;
+    gap: 40px;
+}
+.link{
+    border: 5px solid gray;
+}
+
+.welcome{
+    margin-left: 40px;
+}
+
+.code-box{
+    background: lightgray;
+    padding: 10px 20px;
+    width: 250px;
+}
+
+.request-row{
+    border: 1px solid black;
+    padding: 10px 20px;
+}
+
+.track-request{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.track-request-left{
+    flex-grow: 5;
+}
+
+.track-request-right{
+    flex-grow: 1;
+    border: 2px solid gray;
+    padding: 10px 20px;
+    min-width: 200px;
+}
+
+/* Style for the request list */
+.request-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding-left: 0; /* Remove default padding */
+}
+
+li {
+    margin-bottom: 20px; /* Add space between each request item */
+}
+
+/* Make the entire request item clickable */
+.request-item {
+    display: block;
+    background-color: #d3d3d3; /* Light gray background */
+    padding: 20px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+}
+
+.request-item:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+    border-color: #888;
+}
+
+.request-details h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.request-details p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+
+.code-box{
+    background: lightgray;
+    padding: 10px 20px;
+    width: 250px;
+}
+
+.request-row{
+    border: 1px solid black;
+    padding: 10px 20px;
+}
+
+.track-request{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.track-request-left{
+    flex-grow: 5;
+}
+
+.track-request-right{
+    flex-grow: 1;
+    border: 2px solid gray;
+    padding: 10px 20px;
+    min-width: 200px;
+}
+

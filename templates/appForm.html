@@ -1,0 +1,15 @@
+<h2 style="text-align: center;">
+    Enter Appliance Information
+</h2>
+<form method="POST" action="{{url_for('add_app')}}" style = "text-align: center;">
+    <input type = "text" id = "bname" name = "bname" placeholder="Building Name"/>
+    <br />
+    <input type = "number" id = "floor" name = "floor" placeholder = "Floor Number" />
+    <br />
+    <input type = "text" id = "appName" name = "appName" placeholder="Appliance Name"/>
+    <br />
+    <!--Maybe just have admins add codes manuually for now?-->
+    <input type = "number" id = "code" name = "code" placeholder="Create Code"/>
+    <br />
+    <input type = "submit" value = "Create"/>
+</form>

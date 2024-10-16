@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+{% block body %}
+    <h2> Work Requests</h2>
+    <ul class="request-list">
+        {% for report in reports %}
+        <li>
+            <a href="/request/{{ report._id }}" class="request-item">
+                <div class="request-details">
+                    <h3>{{ report.subject }}</h3>
+                    <p> Code: {{ report.code }}</p>
+                    <p> Date: {{ report.date }}</p>
+                    <p> Status: {{ report.status | upper }}</p>
+                    <p class="request-id">{{ report._id }}</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

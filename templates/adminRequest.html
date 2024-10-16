@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block homelink %}
+<a href="/">Home</a>
+{% endblock %}
+
+{% block body %}
+    <style>
+        .request-details-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .details-container {
+            background-color: #f2f2f2; 
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <div class="request-details-page">
+        <div class="details-container">
+            <h2>Request Details</h2>
+            <p><strong>Subject:</strong> {{ report.subject }}</p>
+            <p><strong>Description:</strong> {{ report.description }}</p>
+            <p><strong>Location:</strong> {{ report.location }}</p>
+            <p><strong>Date Submitted:</strong> {{ report.date }}</p>
+            <p><strong>Status:</strong> {{ report.status | upper }}</p>
+
+            <!-- If the status is 'pending', display a button to resolve the request -->
+            {% if report.status == 'pending' %}
+            <form action="/resolve/{{ report._id }}" method="POST">
+                <button type="submit">Mark as Resolved</button>
+            </form>
+            {% endif %}
+            <!-- If the status is 'complete'-->
+            {% if report.status == 'complete' %}
+            <p>This request has been resolved.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
