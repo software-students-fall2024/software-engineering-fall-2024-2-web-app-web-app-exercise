@@ -100,8 +100,6 @@ def create_app():
 
     @app.route('/')
     def home():
-        if not current_user.is_authenticated :
-            return redirect('/login')
         """
         Route for the home page.
         Returns:
@@ -191,6 +189,13 @@ def create_app():
         """
         tasks.delete_one({"_id": ObjectId(post_id)})
         return redirect(url_for("home"))
+    
+    @app.route('/results', methods=['POST'])
+    def search():
+        query = request.form["search"]
+        results = tasks.find({"user": current_user.username, "name": query})
+
+        return render_template('index.html', docs=results)
 
 
     @app.errorhandler(Exception)
