@@ -8,12 +8,15 @@
 </head>
 <body>
     <div class="page-layout">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Occasio Logo" class="logo">
+
         <h1>Welcome to Occasio!</h1>
         <p>Your go-to platform for event planning.</p>
-        <div class="button-group">
-            <a href="{{ url_for('login') }}"><button>Login</button></a>
-            <a href="{{ url_for('register') }}"><button>Register</button></a>
-        </div>
+    </div>
+
+    <div class="login-register">
+        <a href="{{ url_for('login') }}"><button>Login</button></a>
+        <a href="{{ url_for('register') }}"><button>Register</button></a>
     </div>
 </body>
 </html>
