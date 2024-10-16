@@ -1,21 +1,14 @@
-
-body {
-    
-    padding: 10px;
-    margin: 0;
-}
-    
 form {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    }
+}
     
 form label {
     width: 100%;
     margin-bottom: 5px;
     font-weight: bold;
-    }
+}
     
 form textarea,form input[type="text"],form input[type="date"],form input[type="checkbox"] {
     width: 100%;
@@ -23,7 +16,7 @@ form textarea,form input[type="text"],form input[type="date"],form input[type="c
     padding: 8px;
     box-sizing: border-box;
     font-size: 16px;
-    }
+}
     
 #searchButton {
     width: 100%;
@@ -56,13 +49,36 @@ form textarea,form input[type="text"],form input[type="date"],form input[type="c
     form label {
     width: calc(50% - 10px);
     margin-right: 10px;
-    }
+}
     
 form textarea,form input[type="text"],form input[type="date"] {
    width: calc(50% - 10px);
     margin-right: 10px;
-    }
+}
     
 #searchButton {
    width: calc(100% - 20px);}
-    }
+}
+
+#searchResult {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+}
+
+#searchResult th,
+#searchResult td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+#searchResult thead th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#searchResult tbody tr:hover {
+    background: #e0e0e0;
+}
