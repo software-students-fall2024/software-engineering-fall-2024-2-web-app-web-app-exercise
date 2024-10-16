@@ -17,7 +17,7 @@ In the terminal of your local machine, use the command: <br>
 
 Then, navigate to the root of this project directory.
 
-### Step 3: Set up an virtual environment (venv)
+### Step 2: Set up an virtual environment (venv)
 We ran into some issues using pipenv, so we opted for venv. To create a new virtual environment: <br>
 ```python -m venv .venv``` <br>
 
@@ -31,11 +31,11 @@ For Mac: <br>
 For Windows: <br>
 ```.venv\Scripts\activate.bat``` <br>
 
-### Step 4: Install the requirements
+### Step 3: Install the requirements
 In your virtual environment, type the command: <br>
 ```pip install -r requirements.txt``` <br>
 
-### Step 5: Create the .env file
+### Step 4: Create the .env file
 Create a file name .env. The contents of this file is located in the scoobygang discord channel.
 
 ### Running the project
