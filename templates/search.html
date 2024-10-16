@@ -13,8 +13,10 @@
         <input type="text" name="genre" placeholder="e.g. Fiction" id="genre" value={{ userInput.genre }}>
         <label for="author">Author:</label>
         <textarea name="author" placeholder="e.g. Scott" id="author">{{ userInput.author }}</textarea>
-        <label for="price">Price Under:</label>
-        <input type="text" name="price" placeholder="e.g. 10" id="price" value={{ userInput.price }}>
+        <label for="priceBelow">Price Under:</label>
+        <input type="text" name="priceBelow" placeholder="e.g. 10" id="priceBelow" value={{ userInput.priceBelow }}>
+        <label for="priceAbove">Price Over:</label>
+        <input type="text" name="priceAbove" placeholder="e.g. 10" id="priceAbove" value={{ userInput.priceAbove }}>
         <label for="dateAdded">Date Added:</label>
         <input type="date" name="dateAdded" id="dateAdded" value={{ userInput.dateAdded }}>
         <label for="regex">Use regular expressions for title, genre, and author?</label>

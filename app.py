@@ -12,7 +12,7 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     
-    app.secret_key = os.getenv("SECRET_KEY") # actually, this is supposed to go into .env, but leave it for now
+    app.secret_key = os.getenv("SECRET_KEY")  # actually, this is supposed to go into .env, but leave it for now
     
     db_uri = os.getenv("DB_URI")
     
@@ -113,19 +113,21 @@ def create_app():
         Search function to filter books based on title, author, genre, or date added.
         """
         query = {}
+        price_filters = {}
         
         title = request.args.get('title')
         author = request.args.get('author')
         genre = request.args.get('genre')
         date_added = request.args.get('dateAdded')
-        price = request.args.get('price')
+        priceBelow = request.args.get('priceBelow')
+        priceAbove = request.args.get('priceAbove')
         useRegex = request.args.get('regex')
         
-        inputDict = {'title': "", 'author': "", 'genre': "", 'price': "", 'dateAdded': "", 'regex': ""}
+        inputDict = {'title': "", 'author': "", 'genre': "", 'priceBelow': "", 'priceAbove': "", 'dateAdded': "", 'regex': ""}
         if useRegex:
             inputDict['regex'] = "checked"
         
-        if not(title or author or genre or date_added or price):
+        if not(title or author or genre or date_added or priceBelow or priceAbove):
             return render_template('search.html', message="", userInput=inputDict, books=[])
         
         if title:
@@ -144,19 +146,25 @@ def create_app():
             query['date_added'] = date_obj
             inputDict['dateAdded'] = date_added
         # Price filter: Search for books with price <= given value
-        if price:
-            try:
-                price_value = float(price)  # Ensure valid float input
-                query['price'] = {'$lte': price_value}
-                inputDict['price'] = price
-            except ValueError:
-                msg = "Invalid price format. Please enter a valid number."
-                return render_template('search.html', message=msg, userInput=inputDict, books=[])
-            
+         # Handle price filters by combining them in a single query
+        try:
+            if priceBelow:
+                price_filters['$lte'] = float(priceBelow)
+                inputDict['priceBelow'] = priceBelow
+            if priceAbove:
+                price_filters['$gte'] = float(priceAbove)
+                inputDict['priceAbove'] = priceAbove
+        except ValueError:
+            msg = "Invalid price format. Please enter a valid number."
+            return render_template('search.html', message=msg, userInput=inputDict, books=[])
+
+        if price_filters:
+            query['price'] = price_filters
+
         results = list(db[session['username']].find(query)) if query else []
         for book in results:
             book["date_added"] = book["date_added"].strftime("%Y-%m-%d")
-        
+
         return render_template('search.html', message="", userInput=inputDict, books=results)
     
     @app.route("/delete_book/<book_id>", methods=["POST"])
@@ -263,7 +271,7 @@ def create_app():
         book = db[userdb].find_one({"_id": ObjectId(book_id)})
         return render_template('edit.html', book=book)
 
-
+    
     @app.route("/edit_price/<book_id>", methods=["POST"])
     @login_required
     def edit_price(book_id):
