@@ -12,8 +12,8 @@ See instructions. Delete this line and place the Product Vision Statement here.
 
 ## Steps necessary to run the software
 
-1. Configure .env file and make sure there is a running MongoDB database within a docker container (no username, password)
-2. Install requirements
+1. Configure .env file
+2. Install requirements and virtual environment (optional)
 3. In the commandline, within project folder, type the command:
     >python app.py <br>
     OR <br>
