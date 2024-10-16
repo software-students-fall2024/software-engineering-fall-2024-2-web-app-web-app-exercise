@@ -11,6 +11,12 @@
     cursor: pointer;
 }
 
+input {
+    height: 2vh;
+    width: 50vw;
+    font: 2em sans-serif;
+}
+
 .logo{
     font-size: 1rem;
 }
@@ -109,6 +115,8 @@ h2{
     font-size: 2rem;
     padding: 12px 20px;
     border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
 }
 
 .track-request-top{
@@ -189,9 +197,5 @@ h2 {
     margin-bottom: 20px;
 }
 
-input {
-    height: 2vh;
-    width: 50vw;
-    font: 2em sans-serif;
-}
+
 
