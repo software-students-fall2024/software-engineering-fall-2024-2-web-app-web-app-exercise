@@ -498,12 +498,15 @@ def create_app():
     def search_tasks(post_id):
         task_name = request.args.get('task_name', '')
         cur_project = project_collection.find_one({"_id": ObjectId(post_id)})
+        for task in cur_project["tasks"]:
+            if task_name == task["taskName"]:
+                return redirect(url_for('task_view', post_id=post_id, post_name=task_name))
+                
         # check if exists - no - return to project view
-        if not cur_project:
-            return redirect(url_for('project_view', post_id=post_id))
+        return redirect(url_for('project_view', post_id=post_id))
         # tasks = [task for task in cur_project['tasks'] if task_name in task['taskName'].lower()]
 
-        return redirect(url_for('task_view', post_id=post_id, post_name=task_name))
+        
 
 
     @app.route('/profile')
