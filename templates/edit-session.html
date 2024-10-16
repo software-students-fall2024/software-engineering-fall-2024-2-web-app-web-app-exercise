@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Session</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='studybuns-logo.png') }}"/>
+        <form method="POST" action="{{ url_for('update_session', session_id=session._id) }}">
+            <label for="focus">Focus Time (minutes):</label>
+            <input type="number" id="focus" name="focus" value="{{ session.focus_time }}" required />
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" value="{{ session.subject }}" required />
+
+            <input type="submit" value="Update Session" />
+        </form>
+      </div>
+</body>
+</html>
