@@ -175,7 +175,6 @@ def create_app():
         }
 
         db.tasks.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
-
         return redirect(url_for("home"))
 
     @app.route("/delete/<post_id>")
