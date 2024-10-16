@@ -1,0 +1,32 @@
+N-A-J_Project/Group Project Grinder
+│
+├── app.py
+├── .env
+├── requirements.txt
+│
+├── templates/
+│   ├── base.html
+│   ├── create_project.html
+│   ├── login.html
+│   ├── main.html
+│   ├── profile.html
+│   ├── registration.html
+│   └── team.html
+│
+├── static/
+│   ├── icon.png
+│   └── css/
+│       ├── login.css
+│       └── style.css
+│
+├── .github/
+│
+├── Pipfile
+├── Pipfile.lock
+├── config.env
+├── .gitignore
+├── README.md
+├── LICENSE
+└── instructions.md
+      
+
