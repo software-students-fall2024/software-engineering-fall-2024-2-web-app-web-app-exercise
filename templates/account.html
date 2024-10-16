@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Account Setup</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+
+        <!-- setting up account, only one time use in beginning -->
+        <div id="account-page">
+            <h2>Set up your account</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('save_account') }}" method="POST">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="spending_budget">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="spending_budget">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="total_budget">Total Budget for the Month:</label>
+                    <input type="number" id="total_budget" name="total_budget" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="spending_budget">Spending Budget for the Month:</label>
+                    <input type="number" id="spending_budget" name="spending_budget" class="form-control" required>
+                </div>
+                <!-- button to redirect -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <!-- add login button in case already have acc -->
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
