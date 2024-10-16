@@ -61,87 +61,155 @@
             background-color: #bbb;
         }
     </style>
-    <script>
-        // Undo and Redo functionality
-        let history = [];
-        let historyIndex = -1;
+   
+   <script>
+    // History to track board states
+    let history = [];
+    let historyIndex = -1;
 
-        function saveState() {
-            const slots = Array.from(document.querySelectorAll('.slot')).map(slot => slot.innerHTML);
-            history = history.slice(0, historyIndex + 1);
-            history.push(slots);
-            historyIndex++;
-        }
-
-        function undo() {
-            if (historyIndex > 0) {
-                historyIndex--;
-                restoreState(history[historyIndex]);
+    function saveState() {
+        const slots = Array.from(document.querySelectorAll('.slot')).map(slot => {
+            if (slot.hasChildNodes()) {
+                const img = slot.querySelector('img');
+                return {
+                    name: img.alt,
+                    imageUrl: img.src.replace("/static", "")
+                };
+            } else {
+                return null;
             }
-        }
+        });
 
-        function redo() {
-            if (historyIndex < history.length - 1) {
-                historyIndex++;
-                restoreState(history[historyIndex]);
-            }
-        }
+        // Remove any "future" states if we've undone and then made a new change
+        history = history.slice(0, historyIndex + 1);
 
-        function restoreState(state) {
-            const slots = document.querySelectorAll('.slot');
-            state.forEach((content, index) => {
-                slots[index].innerHTML = content;
-            });
-        }
+        // Save the new state and update the history index
+        history.push(slots);
+        historyIndex = history.length - 1;
 
-        // Clear Board functionality
-        function clearBoard() {
+        console.log("State saved. Current history:", history);
+    }
+    // Undo function
+    function undo() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            console.log("Undo action. Restoring state:", history[historyIndex]);
+            restoreState(history[historyIndex]);
+        } else {
+            console.log("No more actions to undo.");
+        }
+    }
+    // Clear Board functionality
+    function clearBoard() {
             const slots = document.querySelectorAll('.slot');
             slots.forEach(slot => slot.innerHTML = '');
             saveState();
         }
-
-        // Go to search page function
-        function goToSearch() {
-            const boardId = "{{ board['_id'] }}"; 
-            window.location.href = `/search?board_id=${boardId}`;
+        
+    // Redo function (if you wish to implement it)
+    function redo() {
+        if (historyIndex < history.length - 1) {
+            historyIndex++;
+            console.log("Redo action. Restoring state:", history[historyIndex]);
+            restoreState(history[historyIndex]);
+        } else {
+            console.log("No more actions to redo.");
         }
+    }
 
-        // Add pedal to the board
-        function addPedalToBoard(name, imageUrl) {
-            const slots = document.querySelectorAll('.slot');
-            for (let slot of slots) {
-                if (!slot.hasChildNodes()) {
-                    const img = document.createElement('img');
-                    img.src = "/static" + imageUrl;
-                    img.alt = name;
-                    slot.appendChild(img);
-                    saveState();
-                    break;
-                }
+    // Restore the state of the board
+    function restoreState(state) {
+        const slots = document.querySelectorAll('.slot');
+        state.forEach((content, index) => {
+            const slot = slots[index];
+            slot.innerHTML = ''; // Clear slot
+            if (content) {
+                const img = document.createElement('img');
+                img.src = "/static" + content.imageUrl;
+                img.alt = content.name;
+                slot.appendChild(img);
+
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'pedals';
+                hiddenInput.value = `${content.name}|${content.imageUrl}`;
+                slot.appendChild(hiddenInput);
             }
-        }
+        });
+    }
+    function goToSearch(boardId, slotIndex) {
+        // Make sure the slot index is passed correctly
+        window.location.href = `/search?board_id=${boardId}&slot_index=${slotIndex}`;
+    }
 
-        // Handle on page load
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const pedalName = params.get("pedal_name");
-            const pedalImage = params.get("pedal_image");
-            if (pedalName && pedalImage) {
-                addPedalToBoard(pedalName, pedalImage);
-            }
-            saveState(); // Save initial state
-        };
+    window.onload = function() {
+        saveState(); // Save the initial state
 
-        // Discard changes
-        function discardChanges() {
-            window.history.back(); // Go back to the previous page
+        const params = new URLSearchParams(window.location.search);
+        const pedalName = params.get("pedal_name");
+        const pedalImage = params.get("pedal_image");
+        const slotIndex = params.get("slot_index");
+
+        if (pedalName && pedalImage && slotIndex !== null) {
+            addPedalToSlot(pedalName, pedalImage, slotIndex);
+            saveState(); // Save state after adding pedal
+
+            // Remove URL parameters after adding to avoid adding again if the page is reloaded
+            const urlWithoutParams = window.location.href.split('?')[0];
+            window.history.replaceState({}, document.title, urlWithoutParams);
         }
-    </script>
+    };
+
+    // Save state after loading the page
+    window.onload = function() {
+        // Save the initial state
+        saveState();
+
+        const params = new URLSearchParams(window.location.search);
+        const pedalName = params.get("pedal_name");
+        const pedalImage = params.get("pedal_image");
+        const slotIndex = params.get("slot_index");
+
+        if (pedalName && pedalImage && slotIndex !== null) {
+            addPedalToSlot(pedalName, pedalImage, slotIndex);
+            saveState(); // Save state after adding pedal
+
+            // Remove URL parameters after adding to avoid adding again if the page is reloaded
+            const urlWithoutParams = window.location.href.split('?')[0];
+            window.history.replaceState({}, document.title, urlWithoutParams);
+        }
+    };
+
+    function addPedalToSlot(name, imageUrl, slotIndex) {
+        const slots = document.querySelectorAll('.slot');
+        const slot = slots[slotIndex];
+        if (slot) {
+            slot.innerHTML = ''; // Clear any existing content in the slot
+            const img = document.createElement('img');
+            img.src = "/static" + imageUrl;
+            img.alt = name;
+            slot.appendChild(img);
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'pedals';
+            hiddenInput.value = `${name}|${imageUrl}`;
+            slot.appendChild(hiddenInput);
+
+            saveState(); // Save the state after adding pedal
+        }
+    }
+
+    // Discard changes
+    function discardChanges() {
+        window.history.back(); // Go back to the previous page
+    }
+</script>
+
 </head>
 <body>
     <div class="top-bar">
-        <a href="{{ url_for('routes.profile') }}" id="new">New</a>
+        
         <a href="{{ url_for('routes.profile') }}" id="profile">Profile</a>
         <a href="{{ url_for('routes.logout') }}" id="logout">Log Out</a>
     </div>
@@ -154,14 +222,20 @@
     
             <div class="board">
                 {% for pedal in board['pedals'] %}
-                <div class="slot" onclick="goToSearch('{{ url_for('routes.search', board_id=board['_id']) }}')">
+                <div class="slot" data-slot-index="{{ loop.index0 }}" onclick="goToSearch('{{ board['_id'] }}', {{ loop.index0 }})">
+                    {% if pedal %}
                     <img src="{{ url_for('static', filename=pedal['image_url'])}}" alt="Pedal Image"/>
                     <input type="hidden" name="pedals" value="{{ pedal['name'] }}|{{ pedal['image_url'] }}">
+                    {% else %}
+                    <input type="hidden" name="pedals" value="">
+                    {% endif %}
                 </div>
                 {% endfor %}
                 
-                {% for _ in range(10 - board['pedals']|length) %}
-                <div class="slot" onclick="goToSearch('{{ url_for('routes.search', board_id=board['_id']) }}')"></div>
+                {% for i in range(10 - board['pedals']|length) %}
+                <div class="slot" data-slot-index="{{ board['pedals']|length + i }}" onclick="goToSearch('{{ board['_id'] }}', {{ board['pedals']|length + i }})">
+                    <input type="hidden" name="pedals" value="">
+                </div>
                 {% endfor %}
             </div>
     
