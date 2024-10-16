@@ -47,7 +47,11 @@ def create_app():
     
     @app.route("/")
     def home():
-        return render_template("home.html")
+        # redirect to news page if the user is logged in, otherwise to login
+        if current_user.is_authenticated:
+            return redirect(url_for("getNews"))
+        else:
+            return redirect(url_for("login"))
     
     @app.route("/login", methods=["GET", "POST"])
     def login():
@@ -189,29 +193,47 @@ def create_app():
     @app.route("/vocab")
     @login_required
     def getVocab():
-        #retrieve vocab list of the user and return with template
-        ###TODO###
+        # retrieve vocab list of the user and return with template
+        user = db.users.find_one({"username": current_user.username})
+        vocab_list = user.get("vocabList", [])
         
-        return render_template("vocab.html")
-    
+        # render the template and pass in the vocab list
+        return render_template("Vocabulary.html", vocab_list=vocab_list)
+            
     @app.route("/vocab",methods=["POST"])
     def sendVocab():
         #add vocab(word, definition) to the user vocab list
         word = request.form["word"]
         definition = request.form["definition"]
-        ###TODO###
         
+        if word and definition:
+            new_vocab = {"word": word, "definition": definition}
+            
+            # update mongo database user's vocablist with new word
+            db.users.update_one({"username": current_user.username}, 
+                                {"$push": {"vocabList": new_vocab}})
         
-        flash("Word added to the list!")
-        return jsonify({"message": "word added!"}), 200
+            flash("Word added to the list!")
+        else:
+            flash("Error: Please provide word and definition!")
+            
+        return redirect(url_for("getVocab"))
     
     @app.route("/vocab",methods=["DELETE"])
     def deleteVocab():
         #delete word
+        word = request.form["word"]
         ###TODO###
+        if word:
+            db.users.update_one(
+                {"username": current_user.username},
+                {"$pull": {"vocabList": {"word": word}}}
+            )
         
-        
-        flash("Word successfully deleted!")
+            flash("Word successfully deleted!")
+        else:
+            flash("Error: no word was provided to delete"
+                  )
         return redirect(url_for("getVocab"))
     
     @app.route("/news")
