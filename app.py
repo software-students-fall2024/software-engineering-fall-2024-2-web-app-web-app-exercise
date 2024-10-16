@@ -204,8 +204,30 @@ def create_app():
                 subjects = ", ".join(subjectArr[:-1]) + ", and " + subjectArr[-1]
             else:
                 subjects = subjectArr[0]
+
+            #amount of time studied x sessions x bunnies
+        latest_session = db.sessions.find_one(sort=[("created_at", -1)])
+        if latest_session:
+            focus_time = int(latest_session.get('focus_time', 0))  # Default to 0 if not present
+            subject = latest_session.get('subject', 'Unknown')
+            
+            # Calculate bunnies collected (1 bunny for every 5 minutes of focus time)
+            bunnies_collected = focus_time // 5 if focus_time >= 5 else 0
+        else:
+            focus_time = 0
+            subject = 'Unknown'
+            bunnies_collected = 0
+        totalbunnies = totaltime // 5 if totaltime >= 5 else 0
+        # Pass all data to the congrats.html template
+        return render_template("congrats.html", 
+                            totaltime=totaltime, 
+                            subjects=subjects,
+                            focus_time=focus_time, 
+                            subject=subject, 
+                            bunnies_collected=bunnies_collected,
+                            totalbunnies = totalbunnies)
         
-        return render_template("congrats.html", totaltime=totaltime, subject = çsubjects)
+        
 
     # Pass all data to the congrats.html template
    # return render_template("congrats.html", 

@@ -24,7 +24,7 @@
                 <p>{{ session.focus_time }} minutes studied</p>
                 <p>Studied for {{ session.subject }}</p>
                 <p>Earned {{ ((session.focus_time | default(0) | int) / 
-                    ((session.focus_time | default(0) | int) - 5)) | int }} bunnie(s)
+                    (5)) | int }} bunnie(s)
                 </p>
                 <div class="form-buttons">
                     <form id="edit-form" action="{{ url_for('edit_session', session_id=session._id) }}" method="GET" style="display:inline;">
