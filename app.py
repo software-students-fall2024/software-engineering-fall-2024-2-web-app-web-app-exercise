@@ -38,6 +38,14 @@ def edit(entry_id):
     entry = entries.find_one({'_id': ObjectId(entry_id)})
     return render_template('edit.html', entry=entry)
 
+@app.route('/delete/<entry_id>', methods=['GET', 'POST'])
+def delete_entry(entry_id):
+    if request.method == 'POST':
+        entries.delete_one({'_id': ObjectId(entry_id)})
+        return redirect(url_for('home'))
+    entry = entries.find_one({'_id': ObjectId(entry_id)})
+    return render_template('delete.html', entry_id=entry_id, entry=entry)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
