@@ -2,10 +2,18 @@
 {% extends 'base.html' %}
 
 {% block container %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
 <h2>Add an Event</h2>
 <form method="POST" action="{{ url_for('create_task') }}">
   <input type="text" id="fname" name="fname" placeholder="Event Name" required/>
-  <br />
+  <br> <br> <br>
+  <input type="text" required style="display: block; width: 80%; max-width: 400px; margin: 0 auto; padding: 10px; font-size: 1.2em; border: 1px solid #ccc; border-radius: 5px;" id="datepicker" name="date" class="form-control" placeholder="Select Date">
+  <br> <br>
   <label for="hours">Hour:</label>
   <select id="hours" name="hours">
       <option value="00">00</option>
@@ -49,9 +57,18 @@
       <option value="50">50</option>
       <option value="55">55</option>
   </select>
-  <br>
+  <br> <br> <br>
   <textarea type="text" id="fmessage" name="fmessage" placeholder="Description"></textarea>
-  <br />
+  <br> <br> <br>
   <input type="submit" value="Save" />
 </form>
+
+<script>
+  $(document).ready(function(){
+      $('#datepicker').datepicker({
+          format: 'mm/dd/yyyy',
+          autoclose: true
+      });
+  });
+</script>
 {% endblock %}

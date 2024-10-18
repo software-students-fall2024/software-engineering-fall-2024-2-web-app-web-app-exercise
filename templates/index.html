@@ -14,7 +14,7 @@
         <article class="post">
             <p class="name">
                 {{doc.name}} <br>
-                @ {{doc.time}}
+                {{doc.time}}
             </p>
             <nav class="controls">
                 <a href="{{ url_for('edit', post_id=doc._id)}}">Edit</a> | <a href="{{ url_for('delete', post_id=doc._id)}}">Delete</a>
