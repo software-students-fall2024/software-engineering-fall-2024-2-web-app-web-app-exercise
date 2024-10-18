@@ -18,6 +18,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Content</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,10 +26,13 @@
                 <tr>
                     <td>{{ entry['title'] }}</td>
                     <td>{{ entry['content'] }}</td>
+                    <td>
+                        <a href="{{ url_for('edit', entry_id=entry['_id']) }}">Edit</a>
+                    </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="2">No entries yet.</td>
+                    <td colspan="3">No entries yet.</td>
                 </tr>
                 {% endfor %}
             </tbody>

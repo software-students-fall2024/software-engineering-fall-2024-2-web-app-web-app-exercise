@@ -17,7 +17,7 @@ Our vision is to offer a straightforward and user-friendly diary app that makes 
 pip3 install pipenv
 ```
 
-3. Activiate the environment by running the below command:
+3. Activate the environment by running the below command:
 ```
 pipenv shell
 ```
@@ -27,7 +27,7 @@ pipenv shell
 pip install -r requirements.txt
 ```
 
-5. Create an `.env` file and retrieve the information from the project owner
+5. Create an `.env` file and retrieve the information from the project owner, specifically the `MONGO_URI`.
 
 6. Run the application with `flask run`
 
