@@ -1,0 +1,43 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Diary App</title>
+</head>
+<body>
+    <div>
+        <h1>Diary App</h1>
+        <p>Write down your daily thoughts and experiences</p>
+        <a class="button" href="add">Add Entry</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry['title'] }}</td>
+                    <td>{{ entry['content'] }}</td>
+                    <td>
+                        <a href="{{ url_for('edit', entry_id=entry['_id']) }}">Edit</a>
+                        <a href="{{ url_for('delete_entry', entry_id=entry['_id']) }}">Delete</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No entries yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
