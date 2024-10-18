@@ -131,14 +131,16 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
-        hour = int(request.form["hours"])
-        minute = int(request.form["minutes"])
-        second = 0
+        hour = request.form["hours"]
+        minute = request.form["minutes"]
+        date = request.form["date"]
+
+        datetime_str = datetime.strptime(date + " " + hour + ":" + minute, '%m/%d/%Y %H:%M')
 
         doc = {
             "name": name,
             "description": description,
-            "time": datetime.combine(datetime.today().date(), time(hour, minute, second)),
+            "time": datetime_str,
             "user": current_user.username
         }
         db.tasks.insert_one(doc)
@@ -171,14 +173,16 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
-        hour = int(request.form["hours"])
-        minute = int(request.form["minutes"])
-        second = 0
+        hour = request.form["hours"]
+        minute = request.form["minutes"]
+        date = request.form["date"]
+
+        datetime_str = datetime.strptime(date + " " + hour + ":" + minute, '%m/%d/%Y %H:%M')
 
         doc = {
             "name": name,
             "description": description,
-            "time": datetime.combine(datetime.today().date(), time(hour, minute, second)),
+            "time": datetime_str,
             "user": current_user.username
         }
 
