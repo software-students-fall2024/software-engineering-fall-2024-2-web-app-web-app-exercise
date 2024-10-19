@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime, time
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 import pymongo
@@ -99,21 +99,23 @@ def create_app():
         return jsonify({'logged_in': current_user.is_authenticated})   
 
     @app.route('/')
-    @login_required
     def home():
         """
         Route for the home page.
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        docs = tasks.find({"user": {'$in': [current_user.username]}})
+        if not current_user.is_authenticated :
+            flash("Login Required")
+            return redirect('/login')
+        docs = tasks.find({"user": {'$in': [current_user.username]}}).sort("time", 1)
         return render_template("index.html", docs=docs)
 
     @app.route("/create")
     @login_required
     def add_task():
         """
-        Route for the adding task page
+        Route for the adding task page.
         Returns:
             rendered template (str): The rendered HTML template.
         """
@@ -129,14 +131,19 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
+        hour = request.form["hours"]
+        minute = request.form["minutes"]
+        date = request.form["date"]
+
+        datetime_str = datetime.strptime(date + " " + hour + ":" + minute, '%m/%d/%Y %H:%M')
 
         doc = {
             "name": name,
             "description": description,
-            "finished": "false",
-            "created_at": datetime.datetime.utcnow(),
+            "time": datetime_str,
+            "user": current_user.username
         }
-        db.messages.insert_one(doc)
+        db.tasks.insert_one(doc)
 
         return redirect(url_for("home"))
 
@@ -151,7 +158,7 @@ def create_app():
         Returns:
             rendered template (str): The rendered HTML template.
         """
-        doc = db.messages.find_one({"_id": ObjectId(post_id)})
+        doc = tasks.find_one({"_id": ObjectId(post_id)})
         return render_template("item.html", doc=doc)
 
     @app.route("/edit/<post_id>", methods=["POST"])
@@ -166,16 +173,21 @@ def create_app():
         """
         name = request.form["fname"]
         description = request.form["fmessage"]
+        hour = request.form["hours"]
+        minute = request.form["minutes"]
+        date = request.form["date"]
+
+        datetime_str = datetime.strptime(date + " " + hour + ":" + minute, '%m/%d/%Y %H:%M')
 
         doc = {
             "name": name,
             "description": description,
+            "time": datetime_str,
             "user": current_user.username
         }
 
-        db.messages.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
-
-        return redirect('/')
+        db.tasks.update_one({"_id": ObjectId(post_id)}, {"$set": doc})
+        return redirect(url_for("home"))
 
     @app.route("/delete/<post_id>")
     def delete(post_id):
@@ -187,8 +199,15 @@ def create_app():
         Returns:
             redirect (Response): A redirect response to the home page.
         """
-        db.messages.delete_one({"_id": ObjectId(post_id)})
+        tasks.delete_one({"_id": ObjectId(post_id)})
         return redirect(url_for("home"))
+    
+    @app.route('/results', methods=['POST'])
+    def search():
+        query = request.form["search"]
+        results = tasks.find({"user": current_user.username, "name": query})
+
+        return render_template('index.html', docs=results)
 
 
     @app.errorhandler(Exception)
