@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+    <h2>Daily Events</h2>
+    <form method="POST" action="{{ url_for('search') }}">
+        <input type="text" name="search" id="search" placeholder="Search...">
+    </form>
+    <br>
+    <br>
+    <section class="posts">
+
+        {% for doc in docs %}
+        <article class="post">
+            <p class="name">
+                {{doc.name}} <br>
+                {{doc.time}}
+            </p>
+            <nav class="controls">
+                <a href="{{ url_for('edit', post_id=doc._id)}}">Edit</a> | <a href="{{ url_for('delete', post_id=doc._id)}}">Delete</a>
+            </nav>
+
+            <p class="message">
+                {{ doc.description }}
+            </p>
+            <br>
+        </article>
+        {%endfor%}
+
+    </section>
+
+
+{% endblock %}
+
