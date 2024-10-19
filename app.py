@@ -15,8 +15,22 @@ entries = db["entries"]
 
 @app.route('/')
 def home():
-    all_entries = entries.find() 
-    return render_template('home.html', entries=all_entries)
+    search_query = request.args.get('search', '')  # Get the search query from the URL
+    
+    if search_query:
+        # If there's a search query, filter the entries based on title
+        filtered_entries = entries.find({"title": {"$regex": search_query, "$options": "i"}})  # Case-insensitive search
+        filtered_entries = list(filtered_entries)  # Convert cursor to list for easier checking
+    else:
+        filtered_entries = list(entries.find())  # Convert to list
+
+    # If no matching entries are found, pass an empty list
+    if not filtered_entries:
+        no_matches = True
+    else:
+        no_matches = False
+    
+    return render_template('home.html', entries=filtered_entries, search_query=search_query, no_matches=no_matches)
 
 @app.route('/add', methods=['GET','POST'])
 def add():

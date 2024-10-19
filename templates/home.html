@@ -1,18 +1,23 @@
-<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
     <title>Diary App</title>
 </head>
 <body>
-    <div>
+    <div class="page">
         <h1>Diary App</h1>
         <p>Write down your daily thoughts and experiences</p>
-        <a class="button" href="add">Add Entry</a>
-        
+        <div class="search-button">
+            <form method="GET" action="{{ url_for('home') }}">
+                <input type="text" name="search" placeholder="Search by title" value="{{ search_query }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <a class="button" href="{{ url_for('add') }}">Add Entry</a>
+
         <table>
             <thead>
                 <tr>
@@ -22,20 +27,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for entry in entries %}
+                {% if no_matches %}
                 <tr>
-                    <td>{{ entry['title'] }}</td>
-                    <td>{{ entry['content'] }}</td>
-                    <td>
-                        <a href="{{ url_for('edit', entry_id=entry['_id']) }}">Edit</a>
-                        <a href="{{ url_for('delete_entry', entry_id=entry['_id']) }}">Delete</a>
-                    </td>
+                    <td colspan="3">No matches found.</td>
                 </tr>
                 {% else %}
-                <tr>
-                    <td colspan="3">No entries yet.</td>
-                </tr>
-                {% endfor %}
+                    {% for entry in entries %}
+                    <tr>
+                        <td>{{ entry['title'] }}</td>
+                        <td>{{ entry['content'] }}</td>
+                        <td>
+                            <a href="{{ url_for('edit', entry_id=entry['_id']) }}">Edit</a>
+                            <a href="{{ url_for('delete_entry', entry_id=entry['_id']) }}">Delete</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No entries yet.</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
