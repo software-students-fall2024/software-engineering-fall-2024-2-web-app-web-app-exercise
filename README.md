@@ -4,7 +4,7 @@ A little exercise to build a web application following an agile development proc
 
 ## Product vision statement
 
-See instructions. Delete this line and place the Product Vision Statement here.
+Our app is a to-do list app that helps the user organize and keep track of their goals for a day/week/month. It includes crucial fields like date, time, requirements and name of the task or event.
 
 ## User stories
 
