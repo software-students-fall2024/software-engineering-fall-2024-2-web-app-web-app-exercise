@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
 from bson import ObjectId #to handle mongodb's objectid type
+from login import init_login, create_login_routes
+import flask_login
 
 load_dotenv()
 
@@ -10,21 +12,24 @@ app = Flask(__name__)
 MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 
+init_login(app)
+create_login_routes(app)
+
 db = client["diary"]
 entries = db["entries"]
+users= db["users"]
 
 @app.route('/')
+@flask_login.login_required
 def home():
-    search_query = request.args.get('search', '')  # Get the search query from the URL
-    
+    search_query = request.args.get('search', '')
+    user = flask_login.current_user.id
     if search_query:
-        # If there's a search query, filter the entries based on title
-        filtered_entries = entries.find({"title": {"$regex": search_query, "$options": "i"}})  # Case-insensitive search
-        filtered_entries = list(filtered_entries)  # Convert cursor to list for easier checking
+        filtered_entries = entries.find({"title": {"$regex": search_query, "user_id": ObjectId(user),"$options": "i"}})  # Case-insensitive search
+        filtered_entries = list(filtered_entries) 
     else:
-        filtered_entries = list(entries.find())  # Convert to list
+        filtered_entries = list(entries.find({"user_id": ObjectId(user)}))  
 
-    # If no matching entries are found, pass an empty list
     if not filtered_entries:
         no_matches = True
     else:
@@ -33,16 +38,18 @@ def home():
     return render_template('home.html', entries=filtered_entries, search_query=search_query, no_matches=no_matches)
 
 @app.route('/add', methods=['GET','POST'])
+@flask_login.login_required
 def add():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
         
-        entries.insert_one({'title': title, 'content': content})
+        entries.insert_one({'title': title, 'content': content, 'user_id': ObjectId(flask_login.current_user.id)})
         return redirect(url_for('home'))
     return render_template('add.html')
 
 @app.route('/edit/<string:entry_id>', methods=['GET','POST'])
+@flask_login.login_required
 def edit(entry_id):
     if request.method == 'POST':
         new_title = request.form['title']
@@ -53,6 +60,7 @@ def edit(entry_id):
     return render_template('edit.html', entry=entry)
 
 @app.route('/delete/<entry_id>', methods=['GET', 'POST'])
+@flask_login.login_required
 def delete_entry(entry_id):
     if request.method == 'POST':
         entries.delete_one({'_id': ObjectId(entry_id)})

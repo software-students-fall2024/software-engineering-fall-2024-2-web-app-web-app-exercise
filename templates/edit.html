@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Edit Entry</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <h1>Edit Entry</h1>
     <form method="POST">
         <label for="title">Title</label><br>
@@ -17,4 +12,4 @@
         <input type="submit" value="Update Entry">
     </form>
     <a href="{{ url_for('home') }}">Cancel</a>
-</body>
+{% endblock %}
